@@ -5,10 +5,14 @@ name: "FinanceUnderControl"
 
 options:
   bundleIdPrefix: "sebastian-staszczyk"
-  groupSortPosition: "top"
+  groupSortPosition: "bottom"
   platform: "iOS"
   deploymentTarget:
     iOS: "15.0"
+
+localPackages:
+  - "./Packages/FinanceCoreData"
+  - "./Packages/Shared"
 
 targets:
   FinanceUnderControl:
@@ -20,6 +24,9 @@ targets:
       gatherCoverageData: true
     templates:
       - FinanceUnderControl
+    dependencies:
+      - package: "FinanceCoreData"
+      - package: "Shared"
 
   FinanceUnderControlTests:
     type: "bundle.unit-test"
