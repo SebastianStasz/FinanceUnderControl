@@ -1,0 +1,40 @@
+# Documentation
+# https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md
+
+name: "FinanceUnderControl"
+
+options:
+  bundleIdPrefix: "sebastian-staszczyk"
+  groupSortPosition: "top"
+  platform: "iOS"
+  deploymentTarget:
+    iOS: "15.0"
+
+targets:
+  FinanceUnderControl:
+    scheme:
+      testTargets:
+        - FinanceUnderControl
+        - name: "FinanceUnderControl"
+          parallelizable: true
+      gatherCoverageData: true
+    templates:
+      - FinanceUnderControl
+
+  FinanceUnderControlTests:
+    type: "bundle.unit-test"
+    platform: "iOS"
+    sources:
+      - path: "FinanceUnderControlTests"
+    scheme:
+      testTargets:
+        - FinanceUnderControlTests
+      gatherCoverageData: true
+    dependencies:
+      - target: "FinanceUnderControl"
+#
+targetTemplates:
+    FinanceUnderControl:
+      platform: "iOS"
+      type: "application"
+      sources: ["FinanceUnderControl"]

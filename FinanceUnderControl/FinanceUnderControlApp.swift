@@ -11,7 +11,7 @@ import SwiftUI
 struct FinanceUnderControlApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Text("Finance Under Control")
         }
     }
 }
