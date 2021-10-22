@@ -8,15 +8,16 @@
 import SwiftUI
 
 public extension Color {
+    private typealias AccentGray = ColorDesign.AccentGray
     private typealias Basic = ColorDesign.Basic
+
+    // MARK: Accent Gray
+
+    static let grayMedium = AccentGray.gray_medium.color
 
     // MARK: - Basic
 
-    static var basicPrimary: Color {
-        Basic.basic_primary.color
-    }
+    static let basicPrimary = Basic.basic_primary.color
 
-    static var basicSecondary: Color {
-        Basic.basic_secondary.color
-    }
+    static let basicSecondary = Basic.basic_secondary.color
 }

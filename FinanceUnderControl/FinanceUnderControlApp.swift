@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct FinanceUnderControlApp: App {
+
+    @State private var tabBarVM = TabBarVM()
+
     var body: some Scene {
         WindowGroup {
-            Text("Finance Under Control")
+            TabBarView(viewModel: tabBarVM)
         }
     }
 }
