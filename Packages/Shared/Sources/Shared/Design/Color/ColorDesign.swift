@@ -8,7 +8,14 @@
 import Foundation
 
 enum ColorDesign: String {
+    case accentGray = "Accent gray"
     case basic = "Basic"
+
+    enum AccentGray: String, ColorAsset, CaseIterable, Identifiable {
+        case gray_medium
+
+        var id: String { rawValue }
+    }
 
     enum Basic: String, ColorAsset, CaseIterable, Identifiable {
         case basic_primary
@@ -30,6 +37,8 @@ extension ColorDesign: Identifiable, CaseIterable {
 
     var colors: [ColorAsset] {
         switch self {
+        case .accentGray:
+            return AccentGray.allCases
         case .basic:
             return Basic.allCases
         }
