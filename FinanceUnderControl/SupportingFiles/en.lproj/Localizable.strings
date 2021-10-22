@@ -1,0 +1,11 @@
+//
+//  Localizable.strings
+//  FinanceUnderControl
+//
+//  Created by Sebastian Staszczyk on 22/10/2021.
+//
+
+"tab_dashboard_title" = "Dashboard";
+"tab_cashFlow_title" = "CashFlow";
+"tab_currencies_title" = "Currencies";
+"tab_settings_title" = "Settings";
