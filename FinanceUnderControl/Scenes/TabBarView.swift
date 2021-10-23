@@ -25,6 +25,7 @@ struct TabBarView: View {
             // TabBar
             HStack(spacing: 0) {
                 ForEach(viewModel.availableTabs) { tab in
+                    if isMiddleElement(tab.id) { buttonShowAddingButtons }
                     buttonSwitchToTab(tab)
                 }
             }
@@ -45,6 +46,10 @@ struct TabBarView: View {
 
     // MARK: Interactions
 
+    private var buttonShowAddingButtons: some View {
+        TabBarActionButton(viewModel: viewModel).offset(y: -14)
+    }
+
     private func buttonSwitchToTab(_ tab: TabBarModel) -> some View {
         Button(tab.name, action: viewModel.navigate(to: .tab(tab)))
             .buttonStyle(TabBarButtonStyle(for: tab, isSelected: isTabSelected(tab)))
@@ -54,6 +59,10 @@ struct TabBarView: View {
 
     private func isTabSelected(_ tab: TabBarModel) -> Bool {
         viewModel.selectedTab == tab
+    }
+
+    private func isMiddleElement(_ element: Int) -> Bool {
+        element == viewModel.availableTabs.count / 2
     }
 }
 

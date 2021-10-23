@@ -12,6 +12,7 @@ final class TabBarVM: ObservableObject {
     var availableTabs: [Tab] { Tab.allCases }
 
     @Published var selectedTab: Tab = .dashboard
+    @Published var arePopupsShown = false
 }
 
 // MARK: - Navigator

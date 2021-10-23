@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Shared
 
-enum TabBarModel {
+enum TabBarModel: Int {
     case dashboard
     case cashFlow
     case currencies
@@ -61,7 +61,7 @@ extension TabBarModel: View {
 }
 
 extension TabBarModel: Identifiable {
-    var id: String { name }
+    var id: Int { rawValue }
 }
 
 extension TabBarModel: CaseIterable {}
