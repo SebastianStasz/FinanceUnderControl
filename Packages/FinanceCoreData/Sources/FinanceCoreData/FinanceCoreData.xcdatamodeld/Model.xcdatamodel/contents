@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19206" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <elements/>
+    <entity name="CurrencyEntity" representedClassName="CurrencyEntity" syncable="YES">
+        <attribute name="code" attributeType="String"/>
+        <attribute name="name_" attributeType="String"/>
+        <attribute name="updateDate_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="exchangeRates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExchangeRateEntity" inverseName="baseCurrency" inverseEntity="ExchangeRateEntity"/>
+    </entity>
+    <entity name="ExchangeRateEntity" representedClassName="ExchangeRateEntity" syncable="YES">
+        <attribute name="code" attributeType="String"/>
+        <attribute name="rateValue" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="baseCurrency" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyEntity" inverseName="exchangeRates" inverseEntity="CurrencyEntity"/>
+    </entity>
+    <elements>
+        <element name="CurrencyEntity" positionX="112.5107421875" positionY="-1.69378662109375" width="128" height="103"/>
+        <element name="ExchangeRateEntity" positionX="-94.4490966796875" positionY="12.94793701171875" width="128" height="88"/>
+    </elements>
 </model>
