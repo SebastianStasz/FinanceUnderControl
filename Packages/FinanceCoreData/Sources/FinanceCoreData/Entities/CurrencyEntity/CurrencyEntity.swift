@@ -31,7 +31,7 @@ public extension CurrencyEntity {
 
 // MARK: - Methods
 
-private extension CurrencyEntity {
+public extension CurrencyEntity {
 
     @discardableResult static func create(in context: NSManagedObjectContext, currencyData data: CurrencyData) -> CurrencyEntity {
         let currency = CurrencyEntity(context: context)
