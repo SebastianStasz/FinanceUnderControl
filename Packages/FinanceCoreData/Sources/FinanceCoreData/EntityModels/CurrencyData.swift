@@ -16,3 +16,10 @@ public struct CurrencyData {
         self.code = code
     }
 }
+
+
+// MARK: - Sample Data
+
+extension CurrencyData {
+    static let eur = CurrencyData(name: "Euro", code: "EUR")
+}

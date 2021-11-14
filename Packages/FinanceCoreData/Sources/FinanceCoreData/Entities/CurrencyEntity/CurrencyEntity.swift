@@ -20,11 +20,11 @@ import Foundation
 
 public extension CurrencyEntity {
 
-    public var name: String {
-        name_.localize()
+    var name: String {
+        name_
     }
 
-    public var updateDate: String? {
+    var updateDate: String? {
         updateDate_?.description // TODO: Use date formatter
     }
 }
@@ -37,8 +37,12 @@ private extension CurrencyEntity {
         let currency = CurrencyEntity(context: context)
         currency.code = data.code
         currency.name_ = data.name
-        currency.updateDate = nil
+        currency.updateDate_ = nil
         return currency
+    }
+
+    func updateExchangeRates(exchageRatesData data: [ExchangeRateData]) {
+        
     }
 }
 

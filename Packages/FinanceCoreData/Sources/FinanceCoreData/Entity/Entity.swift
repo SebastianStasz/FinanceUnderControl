@@ -8,6 +8,7 @@
 import CoreData
 import Foundation
 import SwiftUI
+import SSUtils
 
 public protocol Entity {
     associatedtype Filter: EntityFilter
@@ -18,7 +19,7 @@ public extension Entity where Sort.Entity == Self {
     static func getAll(filteringBy filters: [Filter]? = nil, sortingBy sorts: [Sort] = []) -> FetchRequest<Self> {
         let sortDescriptors = sorts.map { $0.asNSSortDescriptor }
         let request: NSFetchRequest<Self> = Self.nsFetchRequest(sortDescriptors: sortDescriptors)
-        if let predicates = filters?.compactMap { $0.nsPredicate } {
+        if let predicates = filters?.compactMap({ $0.nsPredicate }) {
             request.predicate = NSCompoundPredicate(type: .and, subpredicates: predicates)
         }
         return FetchRequest(fetchRequest: request)

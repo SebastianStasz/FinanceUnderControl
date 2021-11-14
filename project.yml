@@ -10,6 +10,11 @@ options:
   deploymentTarget:
     iOS: "15.0"
 
+packages:
+  SSUtils:
+    url: https://github.com/SebastianStasz/SSUtils
+    from: 1.0.1
+
 localPackages:
   - "./Packages/FinanceCoreData"
   - "./Packages/Shared"
@@ -27,6 +32,7 @@ targets:
     dependencies:
       - package: "FinanceCoreData"
       - package: "Shared"
+      - package: "SSUtils"
 
   FinanceUnderControlTests:
     type: "bundle.unit-test"
