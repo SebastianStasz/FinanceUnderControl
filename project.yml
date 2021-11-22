@@ -45,7 +45,7 @@ targets:
       gatherCoverageData: true
     dependencies:
       - target: "FinanceUnderControl"
-#
+
 targetTemplates:
     FinanceUnderControl:
       platform: "iOS"

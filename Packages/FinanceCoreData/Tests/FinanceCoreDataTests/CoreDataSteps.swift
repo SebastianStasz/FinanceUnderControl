@@ -7,12 +7,17 @@
 
 import CoreData
 import XCTest
+@testable import FinanceCoreData
 
 protocol CoreDataSteps {
     var context: NSManagedObjectContext { get set }
 }
 
 extension CoreDataSteps {
+    func createCurrencyEntity(data: CurrencyData) -> CurrencyEntity {
+        CurrencyEntity.create(in: context, currencyData: data)
+    }
+
     @discardableResult func fetchRequestShouldReturnElements<T: NSManagedObject>(_ amount: Int, for entity: T.Type) throws -> [T] {
         let request: NSFetchRequest<T> = T.nsFetchRequest()
         do {

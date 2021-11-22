@@ -33,21 +33,89 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
         try fetchRequestShouldReturnElements(1, for: CurrencyEntity.self)
 
         // Verify that currency entity data is correct.
-        try verifyCurrencyData(in: currencyEntity, data: currencyData)
+        try verifyCurrencyData(in: currencyEntity, data: currencyData, wasUpdated: false)
+
+        // Save context.
+        try saveContext()
+    }
+
+    func test_add_exchange_rates() throws {
+        // Define currency data.
+        let currencyData = CurrencyData.pln
+
+        // Create currency entity using defined data.
+        let currencyEntity = createCurrencyEntity(data: currencyData)
+
+        // Define exchange rates data.
+        let exchangeRatesData: [ExchangeRateData] = [.eurInPln, .usdInPln]
+
+        // Add exchange rates to currency entity.
+        currencyEntity.addExchangeRates(exchangeRatesData)
+
+        // Verify currency data is correct.
+        try verifyCurrencyData(in: currencyEntity, data: currencyData, wasUpdated: true, exchangeRates: exchangeRatesData)
+    }
+
+    func test_update_exchange_rates() throws {
+        // Define currency data.
+        let currencyData = CurrencyData.pln
+
+        // Create currency entity using defined data.
+        let currencyEntity = createCurrencyEntity(data: currencyData)
+
+        // Define exchange rates data.
+        let exchangeRatesData: [ExchangeRateData] = [.eurInPln, .usdInPln]
+
+        // Add exchange rates to currency entity.
+        currencyEntity.addExchangeRates(exchangeRatesData)
+
+        // Define exchange rates data.
+        let exchangeRatesData2: [ExchangeRateData] = [.eurInPln2, .usdInPln2]
+
+        // Update exchange rates.
+        currencyEntity.updateExchangeRates(with: exchangeRatesData2)
+
+        // Verify currency data is correct.
+        try verifyCurrencyData(in: currencyEntity, data: currencyData, wasUpdated: true, exchangeRates: exchangeRatesData2)
+    }
+
+    func test_delete_currency_entity() throws {
+        // Create currency entity using sample data.
+        let currencyEntity = createCurrencyEntity(data: .pln)
+
+        // Define exchange rates data.
+        let exchangeRatesData: [ExchangeRateData] = [.eurInPln, .usdInPln]
+
+        // Add exchange rates to currency entity.
+        currencyEntity.addExchangeRates(exchangeRatesData)
+
+        // Delete currency entity.
+        currencyEntity.delete()
+
+        // Verify that currency entity was deleted.
+        try fetchRequestShouldReturnElements(0, for: CurrencyEntity.self)
+
+        // Verify that exchange rates related to this entity were deleted.
+        try fetchRequestShouldReturnElements(0, for: ExchangeRateEntity.self)
 
         // Save context.
         try saveContext()
     }
 }
 
-private extension CurrencyEntityTests {
-    func createCurrencyEntity(data: CurrencyData) -> CurrencyEntity {
-        CurrencyEntity.create(in: context, currencyData: data)
-    }
+// MARK: - Steps
 
-    func verifyCurrencyData(in entity: CurrencyEntity, data: CurrencyData) throws {
+private extension CurrencyEntityTests {
+
+    func verifyCurrencyData(in entity: CurrencyEntity, data: CurrencyData, wasUpdated: Bool, exchangeRates: [ExchangeRateData] = []) throws {
         XCTAssertEqual(entity.name, data.name)
         XCTAssertEqual(entity.code, data.code)
-        XCTAssertEqual(entity.updateDate, nil)
+        wasUpdated ? XCTAssertNotNil(entity.updateDate) : XCTAssertNil(entity.updateDate)
+        XCTAssertEqual(entity.exchangeRates.count, exchangeRates.count)
+        for exchangeRate in entity.exchangeRates {
+            XCTAssert(exchangeRates.contains(where: {
+                $0.code == exchangeRate.code && $0.rateValue == exchangeRate.rateValue
+            }))
+        }
     }
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19206" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CurrencyEntity" representedClassName="CurrencyEntity" syncable="YES">
         <attribute name="code" attributeType="String"/>
         <attribute name="name_" attributeType="String"/>
         <attribute name="updateDate_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="exchangeRates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExchangeRateEntity" inverseName="baseCurrency" inverseEntity="ExchangeRateEntity"/>
+        <relationship name="exchangeRates" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ExchangeRateEntity" inverseName="baseCurrency" inverseEntity="ExchangeRateEntity"/>
     </entity>
     <entity name="ExchangeRateEntity" representedClassName="ExchangeRateEntity" syncable="YES">
         <attribute name="code" attributeType="String"/>

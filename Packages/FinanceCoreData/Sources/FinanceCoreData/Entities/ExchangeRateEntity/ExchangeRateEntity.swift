@@ -19,11 +19,11 @@ import Foundation
 
 public extension ExchangeRateEntity {
 
-    @discardableResult static func create(in context: NSManagedObjectContext, exchangeRateData data: ExchangeRateData) -> ExchangeRateEntity {
+    @discardableResult static func create(in context: NSManagedObjectContext, exchangeRateData data: ExchangeRateData, baseCurrency: CurrencyEntity) -> ExchangeRateEntity {
         let exchangeRate = ExchangeRateEntity(context: context)
         exchangeRate.code = data.code
         exchangeRate.rateValue = data.rateValue
-        exchangeRate.baseCurrency = data.baseCurrency
+        exchangeRate.baseCurrency = baseCurrency
         return exchangeRate
     }
 

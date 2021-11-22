@@ -22,4 +22,6 @@ public struct CurrencyData {
 
 extension CurrencyData {
     static let eur = CurrencyData(name: "Euro", code: "EUR")
+    static let pln = CurrencyData(name: "Polish złoty", code: "PLN")
+    static let usd = CurrencyData(name: "United States dollar", code: "USD")
 }

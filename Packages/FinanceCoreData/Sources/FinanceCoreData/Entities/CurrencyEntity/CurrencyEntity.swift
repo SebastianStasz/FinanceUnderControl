@@ -25,7 +25,7 @@ public extension CurrencyEntity {
     }
 
     var updateDate: String? {
-        updateDate_?.description // TODO: Use date formatter
+        updateDate_?.string(format: .medium)
     }
 }
 
@@ -41,26 +41,43 @@ public extension CurrencyEntity {
         return currency
     }
 
-    func updateExchangeRates(exchageRatesData data: [ExchangeRateData]) {
-        
+    func addExchangeRates(_ exchangeRatesData: [ExchangeRateData]) {
+        guard let context = self.getContext() else { return }
+        updateDate_ = Date()
+        for exchangeRateData in exchangeRatesData {
+            guard exchangeRateNotExist(code: exchangeRateData.code) else { continue }
+            ExchangeRateEntity.create(in: context, exchangeRateData: exchangeRateData, baseCurrency: self)
+        }
+    }
+
+    func updateExchangeRates(with exchageRatesData: [ExchangeRateData]) {
+        self.updateDate_ = Date()
+        for exchangeRateData in exchageRatesData {
+            let exchageRate = self.exchangeRates.first(where: { $0.code == exchangeRateData.code })
+            exchageRate?.updateRateValue(to: exchangeRateData.rateValue)
+        }
+    }
+
+    private func exchangeRateNotExist(code: String) -> Bool {
+        !exchangeRates.contains(where: { $0.code == code })
     }
 }
 
 // MARK: - Generated accessors for exchangeRates
 
-extension CurrencyEntity {
+private extension CurrencyEntity {
 
     @objc(addExchangeRatesObject:)
-    @NSManaged public func addToExchangeRates(_ value: ExchangeRateEntity)
+    @NSManaged func addToExchangeRates(_ value: ExchangeRateEntity)
 
     @objc(removeExchangeRatesObject:)
-    @NSManaged public func removeFromExchangeRates(_ value: ExchangeRateEntity)
+    @NSManaged func removeFromExchangeRates(_ value: ExchangeRateEntity)
 
     @objc(addExchangeRates:)
-    @NSManaged public func addToExchangeRates(_ values: NSSet)
+    @NSManaged func addToExchangeRates(_ values: NSSet)
 
     @objc(removeExchangeRates:)
-    @NSManaged public func removeFromExchangeRates(_ values: NSSet)
+    @NSManaged func removeFromExchangeRates(_ values: NSSet)
 
 }
 
