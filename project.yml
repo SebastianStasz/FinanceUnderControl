@@ -16,6 +16,7 @@ packages:
     from: 1.0.1
 
 localPackages:
+  - "./Packages/Domain"
   - "./Packages/FinanceCoreData"
   - "./Packages/Shared"
 
@@ -30,6 +31,7 @@ targets:
     templates:
       - FinanceUnderControl
     dependencies:
+      - package: "Domain"
       - package: "FinanceCoreData"
       - package: "Shared"
       - package: "SSUtils"
