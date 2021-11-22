@@ -5,6 +5,7 @@
 //  Created by Sebastian Staszczyk on 21/10/2021.
 //
 
+import FinanceCoreData
 import SwiftUI
 
 @main
@@ -15,6 +16,7 @@ struct FinanceUnderControlApp: App {
     var body: some Scene {
         WindowGroup {
             TabBarView(viewModel: tabBarVM)
+                .environment(\.managedObjectContext, PersistenceController.previewEmpty.context)
         }
     }
 }
