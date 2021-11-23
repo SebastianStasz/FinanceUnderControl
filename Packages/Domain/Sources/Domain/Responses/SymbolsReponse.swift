@@ -1,5 +1,5 @@
 //
-//  Exchangerate.swift
+//  SymbolsReponse.swift
 //  Domain
 //
 //  Created by Sebastian Staszczyk on 22/11/2021.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-public struct Exchangerate: Decodable {
-    public let currencies: [Currency]
+public struct SymbolsReponse: Decodable {
+    public private(set) var currencies: [Currency]
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -23,5 +23,17 @@ public struct Exchangerate: Decodable {
     private struct Symbol: Decodable {
         let description: String
         let code: String
+    }
+}
+
+extension SymbolsReponse: Equatable {}
+
+extension SymbolsReponse {
+    init(currencies: [Currency]) {
+        self.currencies = currencies
+    }
+
+    mutating func sortCurrencies() {
+        currencies.sort(by: { $0.code < $1.code })
     }
 }

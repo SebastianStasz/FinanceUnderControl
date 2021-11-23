@@ -11,3 +11,5 @@ public struct Currency {
     public let code: String
     public let name: String
 }
+
+extension Currency: Equatable {}
