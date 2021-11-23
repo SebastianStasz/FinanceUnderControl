@@ -5,6 +5,7 @@
 //  Created by Sebastian Staszczyk on 14/11/2021.
 //
 
+import Domain
 import CoreData
 import XCTest
 @testable import FinanceCoreData
@@ -14,7 +15,7 @@ protocol CoreDataSteps {
 }
 
 extension CoreDataSteps {
-    func createCurrencyEntity(data: CurrencyData) -> CurrencyEntity {
+    @discardableResult func createCurrencyEntity(data: Currency) -> CurrencyEntity? {
         CurrencyEntity.create(in: context, currencyData: data)
     }
 

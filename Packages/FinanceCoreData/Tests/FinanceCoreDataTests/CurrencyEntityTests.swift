@@ -5,6 +5,7 @@
 //  Created by Sebastian Staszczyk on 14/11/2021.
 //
 
+import Domain
 import XCTest
 @testable import FinanceCoreData
 
@@ -21,13 +22,16 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
 
     func test_create_currency_entity() throws {
         // Define currency data.
-        let currencyData = CurrencyData.eur
+        let currencyData = Currency.eur
 
         // Before creating, there should not be any currencies.
         try fetchRequestShouldReturnElements(0, for: CurrencyEntity.self)
 
         // Create currency entity using defined data.
-        let currencyEntity = createCurrencyEntity(data: currencyData)
+        let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: currencyData))
+
+        // Try to create second currency entity using the same data.
+        createCurrencyEntity(data: currencyData)
 
         // After creating, there should be one currency entity.
         try fetchRequestShouldReturnElements(1, for: CurrencyEntity.self)
@@ -41,10 +45,10 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
 
     func test_add_exchange_rates() throws {
         // Define currency data.
-        let currencyData = CurrencyData.pln
+        let currencyData = Currency.pln
 
         // Create currency entity using defined data.
-        let currencyEntity = createCurrencyEntity(data: currencyData)
+        let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: currencyData))
 
         // Define exchange rates data.
         let exchangeRatesData: [ExchangeRateData] = [.eurInPln, .usdInPln]
@@ -58,10 +62,10 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
 
     func test_update_exchange_rates() throws {
         // Define currency data.
-        let currencyData = CurrencyData.pln
+        let currencyData = Currency.pln
 
         // Create currency entity using defined data.
-        let currencyEntity = createCurrencyEntity(data: currencyData)
+        let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: currencyData))
 
         // Define exchange rates data.
         let exchangeRatesData: [ExchangeRateData] = [.eurInPln, .usdInPln]
@@ -81,7 +85,7 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
 
     func test_delete_currency_entity() throws {
         // Create currency entity using sample data.
-        let currencyEntity = createCurrencyEntity(data: .pln)
+        let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .pln))
 
         // Define exchange rates data.
         let exchangeRatesData: [ExchangeRateData] = [.eurInPln, .usdInPln]
@@ -107,7 +111,7 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
 
 private extension CurrencyEntityTests {
 
-    func verifyCurrencyData(in entity: CurrencyEntity, data: CurrencyData, wasUpdated: Bool, exchangeRates: [ExchangeRateData] = []) throws {
+    func verifyCurrencyData(in entity: CurrencyEntity, data: Currency, wasUpdated: Bool, exchangeRates: [ExchangeRateData] = []) throws {
         XCTAssertEqual(entity.name, data.name)
         XCTAssertEqual(entity.code, data.code)
         wasUpdated ? XCTAssertNotNil(entity.updateDate) : XCTAssertNil(entity.updateDate)

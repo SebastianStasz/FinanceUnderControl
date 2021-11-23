@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import Domain
 import Foundation
 
 @objc(CurrencyEntity) public class CurrencyEntity: NSManagedObject, Entity {
@@ -33,7 +34,8 @@ public extension CurrencyEntity {
 
 public extension CurrencyEntity {
 
-    @discardableResult static func create(in context: NSManagedObjectContext, currencyData data: CurrencyData) -> CurrencyEntity {
+    @discardableResult static func create(in context: NSManagedObjectContext, currencyData data: Currency) -> CurrencyEntity? {
+        guard currencyNotExist(withCode: data.code, in: context) else { return nil }
         let currency = CurrencyEntity(context: context)
         currency.code = data.code
         currency.name_ = data.name
@@ -45,7 +47,7 @@ public extension CurrencyEntity {
         guard let context = self.getContext() else { return }
         updateDate_ = Date()
         for exchangeRateData in exchangeRatesData {
-            guard exchangeRateNotExist(code: exchangeRateData.code) else { continue }
+            guard exchangeRateNotExist(withCode: exchangeRateData.code) else { continue }
             ExchangeRateEntity.create(in: context, exchangeRateData: exchangeRateData, baseCurrency: self)
         }
     }
@@ -58,8 +60,14 @@ public extension CurrencyEntity {
         }
     }
 
-    private func exchangeRateNotExist(code: String) -> Bool {
+    private func exchangeRateNotExist(withCode code: String) -> Bool {
         !exchangeRates.contains(where: { $0.code == code })
+    }
+
+    static private func currencyNotExist(withCode code: String, in context: NSManagedObjectContext) -> Bool {
+        let request = CurrencyEntity.getAllNSFetchRequest(filteringBy: [.byCode(code)])
+        let result = try? context.fetch(request)
+        return result?.count == 0
     }
 }
 

@@ -13,3 +13,12 @@ public struct Currency {
 }
 
 extension Currency: Equatable {}
+
+
+// MARK: - Sample Data
+
+public extension Currency {
+    static let eur = Currency(code: "EUR", name: "Euro")
+    static let pln = Currency(code: "PLN", name: "Polish złoty")
+    static let usd = Currency(code: "USD", name: "United States dollar")
+}

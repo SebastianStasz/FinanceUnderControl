@@ -5,6 +5,7 @@
 //  Created by Sebastian Staszczyk on 14/11/2021.
 //
 
+import Domain
 import XCTest
 @testable import FinanceCoreData
 
@@ -21,7 +22,7 @@ final class ExchangeRateEntityTests: XCTestCase, CoreDataSteps {
 
     func test_create_exchange_rate_entity() throws {
         // Create currency entity that will be used as base currency.
-        let currencyEntity = createCurrencyEntity(data: .pln)
+        let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .pln))
 
         // Define exhange rate data.
         let exchangeRateData = ExchangeRateData.eurInPln
@@ -44,7 +45,7 @@ final class ExchangeRateEntityTests: XCTestCase, CoreDataSteps {
 
     func test_update_rate_value() throws {
         // Create currency entity that will be used as base currency.
-        let currencyEntity = createCurrencyEntity(data: .pln)
+        let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .pln))
 
         // Define exhange rate data.
         let exchangeRateData = ExchangeRateData.eurInPln
@@ -61,7 +62,7 @@ final class ExchangeRateEntityTests: XCTestCase, CoreDataSteps {
 
     func test_delete_exchange_rate_entity() throws {
         // Create currency entity that will be used as base currency.
-        let currencyEntity = createCurrencyEntity(data: .pln)
+        let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .pln))
 
         // Create exchange rate entity using sample data.
         let exchangeRateEntity = createExchangeRateEntity(data: .eurInPln, baseCurrency: currencyEntity)
