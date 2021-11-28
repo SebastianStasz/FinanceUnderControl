@@ -12,11 +12,12 @@ import SwiftUI
 struct FinanceUnderControlApp: App {
 
     @State private var tabBarVM = TabBarVM()
+    private let appVM = AppVM()
 
     var body: some Scene {
         WindowGroup {
             TabBarView(viewModel: tabBarVM)
-                .environment(\.managedObjectContext, PersistenceController.previewEmpty.context)
+                .environment(\.managedObjectContext, appVM.context)
         }
     }
 }

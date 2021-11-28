@@ -43,6 +43,12 @@ public extension CurrencyEntity {
         return currency
     }
 
+    static func create(in context: NSManagedObjectContext, currenciesData: [Currency]) {
+        for currencyData in currenciesData {
+            CurrencyEntity.create(in: context, currencyData: currencyData)
+        }
+    }
+
     func addExchangeRates(_ exchangeRatesData: [ExchangeRateData]) {
         guard let context = self.getContext() else { return }
         updateDate_ = Date()
@@ -60,12 +66,18 @@ public extension CurrencyEntity {
         }
     }
 
+    static func getAll(from context: NSManagedObjectContext) -> [CurrencyEntity] {
+        let request = CurrencyEntity.nsFetchRequest(sortingBy: [.byCode(.forward)])
+        let result = try? context.fetch(request)
+        return result ?? []
+    }
+
     private func exchangeRateNotExist(withCode code: String) -> Bool {
         !exchangeRates.contains(where: { $0.code == code })
     }
 
     static private func currencyNotExist(withCode code: String, in context: NSManagedObjectContext) -> Bool {
-        let request = CurrencyEntity.getAllNSFetchRequest(filteringBy: [.byCode(code)])
+        let request = CurrencyEntity.nsFetchRequest(filteringBy: [.codeContains(code)])
         let result = try? context.fetch(request)
         return result?.count == 0
     }

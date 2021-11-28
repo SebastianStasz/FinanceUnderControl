@@ -10,12 +10,15 @@ import Foundation
 public extension CurrencyEntity {
     
     enum Filter: EntityFilter {
-        case byCode(String)
+        case codeContains(String)
+        case nameContains(String)
 
         public var nsPredicate: NSPredicate? {
             switch self {
-            case let .byCode(code):
-                return NSPredicate(format: "code == %@", code)
+            case let .codeContains(code):
+                return NSPredicate(format: "code CONTAINS[cd] %@", code)
+            case let .nameContains(name):
+                return NSPredicate(format: "name_ CONTAINS[cd] %@", name)
             }
         }
     }
