@@ -12,13 +12,27 @@ import SwiftUI
 struct CurrencyListView: View {
 
     @ObservedObject var viewModel: CurrencyListVM
+    let buttonType: BaseRowButtonType
+
+    init(viewModel: CurrencyListVM, buttonType: BaseRowButtonType = .none) {
+        self.viewModel = viewModel
+        self.buttonType = buttonType
+    }
 
     var body: some View {
         FetchRequestListView(items: viewModel.currencies) {
             CurrencyRowView(currency: $0)
+                .baseRowView(buttonType: .forward, action: selectCurrency($0))
         }
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer)
+        .navigation(item: $viewModel.selectedCurrency, destination: ExchangeRateListView.init)
+    }
+
+    // MARK: - Interactions
+
+    private func selectCurrency(_ currenyEntity: CurrencyEntity) {
+        viewModel.input.selectCurrency.send(currenyEntity)
     }
 }
 

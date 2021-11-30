@@ -12,12 +12,10 @@ struct CurrencyRowView: View {
 
     private let code: String
     private let name: String
-    private let buttonType: BaseRowButtonType
 
-    init(code: String, name: String, buttonType: BaseRowButtonType = .none) {
+    init(code: String, name: String) {
         self.code = code
         self.name = name
-        self.buttonType = buttonType
     }
 
     var body: some View {
@@ -28,13 +26,12 @@ struct CurrencyRowView: View {
         .infiniteWidth(alignment: .leading)
         .padding(.vertical, .medium)
         .lineLimit(1)
-        .baseRowView(buttonType: buttonType)
     }
 }
 
 extension CurrencyRowView {
-    init(currency: CurrencyEntity, buttonType: BaseRowButtonType = .none) {
-        self.init(code: currency.code, name: currency.name, buttonType: buttonType)
+    init(currency: CurrencyEntity) {
+        self.init(code: currency.code, name: currency.name)
     }
 }
 

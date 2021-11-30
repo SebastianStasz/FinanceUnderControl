@@ -12,7 +12,7 @@ struct CantorView: View {
     @StateObject private var viewModel = CantorVM()
 
     var body: some View {
-        NavigationLink("All currencies", destination: CurrencyListView(viewModel: viewModel.currencyListVM))
+        NavigationLink("All currencies", destination: CurrencyListView(viewModel: viewModel.currencyListVM, buttonType: .forward))
     }
 }
 

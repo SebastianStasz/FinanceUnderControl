@@ -10,12 +10,15 @@ import Shared
 
 enum BaseRowButtonType {
     case none
+    case forward
     case add
 
     var systemImage: String? {
         switch self {
         case .none:
             return nil
+        case .forward:
+            return SFSymbol.forward.name
         case .add:
             return SFSymbol.plus.name
         }

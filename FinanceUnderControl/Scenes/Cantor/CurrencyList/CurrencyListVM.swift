@@ -13,11 +13,23 @@ import SwiftUI
 final class CurrencyListVM: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
 
+    struct Input {
+        let selectCurrency = PassthroughSubject<CurrencyEntity, Never>()
+    }
+
     @Published private(set) var currencies: FetchRequest<CurrencyEntity>
+    @Published var selectedCurrency: CurrencyEntity?
     @Published var searchText = ""
+    let input = Input()
 
     init() {
         currencies = CurrencyEntity.fetchRequest(sortingBy: [.byCode(.forward)])
+
+        input.selectCurrency
+            .sink { [weak self] currency in
+                self?.selectedCurrency = currency
+            }
+            .store(in: &cancellables)
 
         $searchText
             .dropFirst()
