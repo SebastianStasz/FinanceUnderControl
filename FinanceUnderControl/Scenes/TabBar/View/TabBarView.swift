@@ -13,6 +13,11 @@ struct TabBarView: View {
 
     @ObservedObject var viewModel: TabBarVM
 
+    init(viewModel: TabBarVM) {
+        self.viewModel = viewModel
+        UITabBar.appearance().isHidden = true
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             // TabView

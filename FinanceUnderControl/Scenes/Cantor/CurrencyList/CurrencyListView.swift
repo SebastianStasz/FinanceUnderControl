@@ -14,9 +14,11 @@ struct CurrencyListView: View {
     @ObservedObject var viewModel: CurrencyListVM
 
     var body: some View {
-        FetchRequestListView(items: viewModel.currencies, rowView: CurrencyRowView.init)
-            .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $viewModel.searchText)
+        FetchRequestListView(items: viewModel.currencies) {
+            CurrencyRowView(currency: $0)
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer)
     }
 }
 
@@ -26,5 +28,7 @@ struct CurrencyListView: View {
 struct CurrencyListView_Previews: PreviewProvider {
     static var previews: some View {
         CurrencyListView(viewModel: CurrencyListVM())
+            .embedInNavigationView(title: "Currencies")
+            .environment(\.managedObjectContext, PersistenceController.preview.context)
     }
 }

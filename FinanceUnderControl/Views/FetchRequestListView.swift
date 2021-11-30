@@ -14,6 +14,13 @@ struct FetchRequestListView<T: Entity, Content: View>: View {
     let rowView: (T) -> Content
 
     var body: some View {
-        List(items, rowContent: rowView)
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                ForEach(items) { item in
+                    rowView(item)
+                    Divider()
+                }.padding(.horizontal, .medium)
+            }
+        }
     }
 }
