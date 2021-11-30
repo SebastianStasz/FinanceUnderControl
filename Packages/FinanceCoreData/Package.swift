@@ -23,7 +23,8 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "FinanceCoreData",
-            dependencies: ["SSUtils", "Domain"]),
+            dependencies: ["SSUtils", "Domain"],
+            resources: [.copy("Data/ExchangerateSymbols.json")]),
         .testTarget(
             name: "FinanceCoreDataTests",
             dependencies: ["FinanceCoreData"]),
