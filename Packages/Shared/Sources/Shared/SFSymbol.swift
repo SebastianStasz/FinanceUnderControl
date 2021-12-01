@@ -16,6 +16,7 @@ public enum SFSymbol: String {
     case plus = "plus"
     case minus = "minus"
     case forward = "chevron.forward"
+    case close = "xmark"
 }
 
 public extension SFSymbol {

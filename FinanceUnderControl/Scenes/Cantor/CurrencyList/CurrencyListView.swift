@@ -20,13 +20,13 @@ struct CurrencyListView: View {
     }
 
     var body: some View {
-        FetchRequestListView(items: viewModel.currencies) {
+        BaseListViewFetchRequest(items: viewModel.currencies) {
             CurrencyRowView(currency: $0)
                 .baseRowView(buttonType: .forward, action: selectCurrency($0))
         }
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer)
-        .navigation(item: $viewModel.selectedCurrency, destination: ExchangeRateListView.init)
+        .sheet(item: $viewModel.selectedCurrency) { ExchangeRateListView(currency: $0) }
     }
 
     // MARK: - Interactions
@@ -44,5 +44,6 @@ struct CurrencyListView_Previews: PreviewProvider {
         CurrencyListView(viewModel: CurrencyListVM())
             .embedInNavigationView(title: "Currencies")
             .environment(\.managedObjectContext, PersistenceController.preview.context)
+//            .environment(\.managedObjectContext, PersistenceController.previewEmpty.context)
     }
 }

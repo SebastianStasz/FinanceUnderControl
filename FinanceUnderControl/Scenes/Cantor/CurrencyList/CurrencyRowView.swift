@@ -11,17 +11,17 @@ import SwiftUI
 struct CurrencyRowView: View {
 
     private let code: String
-    private let name: String
+    private let info: String
 
-    init(code: String, name: String) {
+    init(code: String, info: String) {
         self.code = code
-        self.name = name
+        self.info = info
     }
 
     var body: some View {
         HStack(spacing: 12) {
             Text(code).currencySymbol
-            Text(name)
+            Text(info)
         }
         .infiniteWidth(alignment: .leading)
         .padding(.vertical, .medium)
@@ -31,7 +31,7 @@ struct CurrencyRowView: View {
 
 extension CurrencyRowView {
     init(currency: CurrencyEntity) {
-        self.init(code: currency.code, name: currency.name)
+        self.init(code: currency.code, info: currency.name)
     }
 }
 
@@ -40,7 +40,7 @@ extension CurrencyRowView {
 
 struct CurrencyRowView_Previews: PreviewProvider {
     static var previews: some View {
-        CurrencyRowView(code: "EUR", name: "Euro")
+        CurrencyRowView(code: "EUR", info: "Euro")
             .previewLayout(.sizeThatFits)
     }
 }

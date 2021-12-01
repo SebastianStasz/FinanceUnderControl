@@ -14,7 +14,7 @@ final class AppVM {
     private let currencyService: CurrencyService
 
     init() {
-        let context = PersistenceController.previewEmpty.context
+        let context = PersistenceController.preview.context
         self.context = context
         self.currencyService = CurrencyService(context: context)
     }
