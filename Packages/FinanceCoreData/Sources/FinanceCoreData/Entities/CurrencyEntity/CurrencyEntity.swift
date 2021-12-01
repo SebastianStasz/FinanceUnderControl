@@ -28,6 +28,10 @@ public extension CurrencyEntity {
     var updateDate: String? {
         updateDate_?.string(format: .medium)
     }
+
+    var exchangeRatesArray: [ExchangeRateEntity] {
+        exchangeRates.sorted(by: { $0.code > $1.code })
+    }
 }
 
 // MARK: - Methods
@@ -104,3 +108,12 @@ private extension CurrencyEntity {
 // MARK: - Helpers
 
 extension CurrencyEntity: Identifiable {}
+
+public extension CurrencyEntity {
+    static func sampleEUR(in context: NSManagedObjectContext) -> CurrencyEntity {
+        let currency = CurrencyEntity.create(in: context, currencyData: .eur)!
+        let eurRatesData = try! JSONDecoder().decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data)
+        currency.addExchangeRates(eurRatesData.rates.map { $0.exchangeRateData(baseCurrency: currency.code) })
+        return currency
+    }
+}

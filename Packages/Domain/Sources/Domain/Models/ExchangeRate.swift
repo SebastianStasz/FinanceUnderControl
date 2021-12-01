@@ -8,8 +8,8 @@
 import Foundation
 
 public struct ExchangeRate {
-    let code: String
-    let rate: Double
+    public let code: String
+    public let rate: Double
 }
 
 extension ExchangeRate: Equatable {}

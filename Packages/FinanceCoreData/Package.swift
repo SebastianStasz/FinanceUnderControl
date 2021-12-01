@@ -24,7 +24,7 @@ let package = Package(
         .target(
             name: "FinanceCoreData",
             dependencies: ["SSUtils", "Domain"],
-            resources: [.copy("Data/ExchangerateSymbols.json")]),
+            resources: [.copy("Data/ExchangerateSymbols.json"), .copy("Data/ExchangerateLatestEur.json")]),
         .testTarget(
             name: "FinanceCoreDataTests",
             dependencies: ["FinanceCoreData"]),
