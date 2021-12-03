@@ -10,7 +10,8 @@ import SwiftUI
 public extension Text {
 
     var currencySymbol: some View {
-        self.textCase(.uppercase)
+        self.fontWeight(.medium)
+            .textCase(.uppercase)
             .font(.system(.body, design: .monospaced))
     }
 }

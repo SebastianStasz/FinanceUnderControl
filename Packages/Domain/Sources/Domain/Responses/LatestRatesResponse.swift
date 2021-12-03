@@ -14,10 +14,12 @@ public struct LatestRatesResponse: Decodable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        base = try container.decode(String.self, forKey: .base)
-        dateStr = try container.decode(String.self, forKey: .dateStr)
+        let base = try container.decode(String.self, forKey: .base)
         let values = try container.decode([String:Double].self, forKey: .rates)
-        rates = values.map { ExchangeRate(code: $0, rate: $1) }
+
+        self.base = base
+        self.dateStr = try container.decode(String.self, forKey: .dateStr)
+        self.rates = values.map { ExchangeRate(code: $0, rate: $1) }.filter { $0.code != base }
     }
 
     private enum CodingKeys: String, CodingKey {

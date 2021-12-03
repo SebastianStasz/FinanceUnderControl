@@ -30,7 +30,7 @@ public extension CurrencyEntity {
     }
 
     var exchangeRatesArray: [ExchangeRateEntity] {
-        exchangeRates.sorted(by: { $0.code > $1.code })
+        exchangeRates.sorted(by: { $0.code < $1.code })
     }
 }
 

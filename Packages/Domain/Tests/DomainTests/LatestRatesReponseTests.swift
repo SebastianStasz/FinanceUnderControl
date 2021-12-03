@@ -32,7 +32,8 @@ final class LatestRatesReponseTests: XCTestCase {
         "rates": {
             "AED": 0.876566,
             "AFN": 22.375258,
-            "ALL": 25.775489
+            "ALL": 25.775489,
+            "PLN": 1.0,
             }
         }
         """
