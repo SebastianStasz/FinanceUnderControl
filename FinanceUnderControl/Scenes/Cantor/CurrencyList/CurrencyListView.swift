@@ -22,11 +22,11 @@ struct CurrencyListView: View {
     var body: some View {
         BaseListViewFetchRequest(items: viewModel.currencies) {
             CurrencyRowView(currency: $0)
-                .baseRowView(buttonType: .forward, action: selectCurrency($0))
+                .baseRowView(buttonType: .sheet, action: selectCurrency($0))
         }
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer)
-        .sheet(item: $viewModel.selectedCurrency) { ExchangeRateListView(currency: $0) }
+        .sheet(item: $viewModel.exchageRateListVM) { ExchangeRateListView(viewModel: $0) }
     }
 
     // MARK: - Interactions

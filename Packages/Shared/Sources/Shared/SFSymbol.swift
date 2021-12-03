@@ -15,7 +15,8 @@ public enum SFSymbol: String {
     case settingsTab = "gearshape"
     case plus = "plus"
     case minus = "minus"
-    case forward = "chevron.forward"
+    case chevronForward = "chevron.forward"
+    case chevronUp = "chevron.up"
     case close = "xmark"
 }
 

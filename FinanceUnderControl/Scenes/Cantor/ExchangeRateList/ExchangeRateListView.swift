@@ -13,14 +13,15 @@ import SSUtils
 struct ExchangeRateListView: View {
 
     @Environment(\.dismiss) var dismiss
-    let currency: CurrencyEntity
+    @ObservedObject var viewModel: ExchangeRateListVM
 
     var body: some View {
-        BaseListView(items: currency.exchangeRatesArray) {
+        BaseListView(items: viewModel.exchangeRates) {
             CurrencyRowView(code: $0.code, info: $0.rateValue.description)
         }
         .toolbar { toolbarContent }
-        .embedInNavigationView(title: "Base: \(currency.code)", displayMode: .inline)
+        .searchable(text: $viewModel.searchText)
+        .embedInNavigationView(title: "Base: \(viewModel.baseCurrencyCode)", displayMode: .inline)
     }
 
     private var toolbarContent: some ToolbarContent {
@@ -35,7 +36,7 @@ struct ExchangeRateListView_Previews: PreviewProvider {
     static var previews: some View {
         let context = PersistenceController.previewEmpty.context
         let currency = CurrencyEntity.sampleEUR(in: context)
-        ExchangeRateListView(currency: currency)
+        ExchangeRateListView(viewModel: .init(currencyEntity: currency))
             .embedInNavigationView(title: "Base: EUR", displayMode: .inline)
     }
 }

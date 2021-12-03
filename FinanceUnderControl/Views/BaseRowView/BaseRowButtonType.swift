@@ -11,6 +11,7 @@ import Shared
 enum BaseRowButtonType {
     case none
     case forward
+    case sheet
     case add
 
     var systemImage: String? {
@@ -18,7 +19,9 @@ enum BaseRowButtonType {
         case .none:
             return nil
         case .forward:
-            return SFSymbol.forward.name
+            return SFSymbol.chevronForward.name
+        case .sheet:
+            return SFSymbol.chevronUp.name
         case .add:
             return SFSymbol.plus.name
         }

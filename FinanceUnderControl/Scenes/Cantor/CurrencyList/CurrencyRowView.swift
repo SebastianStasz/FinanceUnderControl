@@ -10,13 +10,8 @@ import SwiftUI
 
 struct CurrencyRowView: View {
 
-    private let code: String
-    private let info: String
-
-    init(code: String, info: String) {
-        self.code = code
-        self.info = info
-    }
+    let code: String
+    let info: String
 
     var body: some View {
         HStack(spacing: 12) {
@@ -32,6 +27,10 @@ struct CurrencyRowView: View {
 extension CurrencyRowView {
     init(currency: CurrencyEntity) {
         self.init(code: currency.code, info: currency.name)
+    }
+
+    init(code: String, value: Double) {
+        self.init(code: code, info: value.asString(roundToDecimalPlaces: 2))
     }
 }
 
