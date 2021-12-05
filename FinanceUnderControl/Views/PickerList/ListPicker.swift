@@ -9,15 +9,13 @@ import SwiftUI
 
 struct ListPicker<ListView: PickerList>: View{
 
-    @State private var isListPresented = false
-
     let title: String
     let listView: ListView
 
     var body: some View {
-        ListPickerField(title: title, value: selectionName)
-            .onTapGesture { isListPresented = true }
-            .navigation(isActive: $isListPresented) { listView }
+        NavigationLink(destination: listView) {
+            ListPickerField(title: title, value: selectionName)
+        }
     }
 
     private var selectionName: String {
@@ -31,5 +29,6 @@ struct ListPicker<ListView: PickerList>: View{
 struct CurrencyPicker_Previews: PreviewProvider {
     static var previews: some View {
         ListPicker(title: "From:", listView: CurrencyListView(selection: .constant(nil)))
+            .embedInNavigationView()
     }
 }

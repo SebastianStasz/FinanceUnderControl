@@ -10,16 +10,19 @@ import SwiftUI
 struct BaseRowButtonStyle: ButtonStyle {
 
     let buttonType: BaseRowButtonType
+    let isBlue: Bool
 
     func makeBody(configuration: Configuration) -> some View {
         HStack(spacing: .medium) {
             configuration.label
 
+            Spacer()
+
             if let image = buttonType.systemImage {
-                Image(systemName: image)
-                    .opacity(0.4)
+                Image(systemName: image).opacity(0.4)
             }
         }
+        .foregroundColor(isBlue ? .blue : .primary)
         .contentShape(Rectangle())
         .opacity(configuration.isPressed ? 0.5 : 1)
     }

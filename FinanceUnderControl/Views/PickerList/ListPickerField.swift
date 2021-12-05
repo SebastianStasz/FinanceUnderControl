@@ -16,13 +16,8 @@ struct ListPickerField: View {
     var body: some View {
         HStack(spacing: 0) {
             Text(title)
-
             Spacer()
-
             Text(value)
-
-            Image(systemName: SFSymbol.chevronForward.name)
-                .padding(.leading, .medium)
         }
     }
 }
