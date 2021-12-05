@@ -12,7 +12,10 @@ struct CantorView: View {
     @StateObject private var viewModel = CantorVM()
 
     var body: some View {
-        NavigationLink("All currencies", destination: CurrencyListView(viewModel: viewModel.currencyListVM, buttonType: .forward))
+        Form {
+            ListPicker(title: "From:", listView: CurrencyListView(selection: $viewModel.primaryCurrency))
+            ListPicker(title: "To:", listView: CurrencyListView(selection: $viewModel.secondaryCurrency))
+        }
     }
 }
 

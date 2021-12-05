@@ -9,13 +9,21 @@ import CoreData
 import FinanceCoreData
 import SwiftUI
 
-struct CurrencyListView: View {
+struct CurrencyListView: PickerList {
 
-    @ObservedObject var viewModel: CurrencyListVM
+    @Environment(\.dismiss) var dismiss
+    @StateObject private var viewModel = CurrencyListVM()
+
+    var selection: Binding<CurrencyEntity?>
     let buttonType: BaseRowButtonType
 
-    init(viewModel: CurrencyListVM, buttonType: BaseRowButtonType = .none) {
-        self.viewModel = viewModel
+    init(selection: Binding<CurrencyEntity?>) {
+        self.selection = selection
+        self.buttonType = .forward
+    }
+
+    init(selection: Binding<CurrencyEntity?>, buttonType: BaseRowButtonType = .none) {
+        self.selection = selection
         self.buttonType = buttonType
     }
 
@@ -26,13 +34,13 @@ struct CurrencyListView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer)
-        .sheet(item: $viewModel.exchageRateListVM) { ExchangeRateListView(viewModel: $0) }
     }
 
     // MARK: - Interactions
 
     private func selectCurrency(_ currenyEntity: CurrencyEntity) {
-        viewModel.input.selectCurrency.send(currenyEntity)
+        selection.wrappedValue = currenyEntity
+        dismiss()
     }
 }
 
@@ -41,7 +49,7 @@ struct CurrencyListView: View {
 
 struct CurrencyListView_Previews: PreviewProvider {
     static var previews: some View {
-        CurrencyListView(viewModel: CurrencyListVM())
+        CurrencyListView(selection: .constant(nil))
             .embedInNavigationView(title: "Currencies")
             .environment(\.managedObjectContext, PersistenceController.preview.context)
 //            .environment(\.managedObjectContext, PersistenceController.previewEmpty.context)

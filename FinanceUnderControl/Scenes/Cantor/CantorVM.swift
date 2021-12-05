@@ -15,5 +15,4 @@ final class CantorVM: ObservableObject {
 
     @Published var primaryCurrency: CurrencyEntity?
     @Published var secondaryCurrency: CurrencyEntity?
-    @Published var currencyListVM = CurrencyListVM()
 }

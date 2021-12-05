@@ -12,21 +12,13 @@ import SwiftUI
 
 final class CurrencyListVM: ObservableObject {
 
-    struct Input {
-        let selectCurrency = PassthroughSubject<CurrencyEntity, Never>()
-    }
+    private let currenciesProvider = CurrenciesProvider()
 
-    @Published private(set) var currencies: FetchRequest<CurrencyEntity>
-    @Published var exchageRateListVM: ExchangeRateListVM?
+    @Published private(set) var currencies: FetchRequest<CurrencyEntity>!
     @Published var searchText = ""
-    let input = Input()
 
     init() {
         currencies = CurrencyEntity.fetchRequest(sortingBy: [.byCode(.forward)])
-
-        input.selectCurrency
-            .map { ExchangeRateListVM(currencyEntity: $0) }
-            .assign(to: &$exchageRateListVM)
 
         ValidationHelper.search($searchText)
             .map { text in
