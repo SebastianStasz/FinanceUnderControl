@@ -15,12 +15,7 @@ struct CurrencyListView: PickerList {
     @StateObject private var viewModel = CurrencyListVM()
 
     var selection: Binding<CurrencyEntity?>
-    let buttonType: BaseRowButtonType
-
-    init(selection: Binding<CurrencyEntity?>) {
-        self.selection = selection
-        self.buttonType = .forward
-    }
+    private let buttonType: BaseRowButtonType
 
     init(selection: Binding<CurrencyEntity?>, buttonType: BaseRowButtonType = .none) {
         self.selection = selection
@@ -30,10 +25,14 @@ struct CurrencyListView: PickerList {
     var body: some View {
         BaseListViewFetchRequest(items: viewModel.currencies) {
             CurrencyRowView(currency: $0)
-                .baseRowView(buttonType: .sheet, action: selectCurrency($0))
+                .baseRowView(buttonType: getButtonType(for: $0), action: selectCurrency($0))
         }
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer)
+    }
+
+    private func getButtonType(for currency: CurrencyEntity) -> BaseRowButtonType {
+        selection.wrappedValue == currency ? .selected : .none
     }
 
     // MARK: - Interactions
