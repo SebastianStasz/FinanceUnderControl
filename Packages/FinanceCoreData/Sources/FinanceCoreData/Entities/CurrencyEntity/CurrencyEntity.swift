@@ -30,7 +30,7 @@ public extension CurrencyEntity {
     }
 
     var exchangeRatesArray: [ExchangeRateEntity] {
-        exchangeRates.sorted(by: { $0.code < $1.code })
+        exchangeRates.sorted { $0.code < $1.code }
     }
 }
 
@@ -74,6 +74,10 @@ public extension CurrencyEntity {
         let request = CurrencyEntity.nsFetchRequest(sortingBy: [.byCode(.forward)])
         let result = try? context.fetch(request)
         return result ?? []
+    }
+
+    func getExchangeRate(for currencyCode: String) -> ExchangeRateEntity? {
+        exchangeRatesArray.first(where: { $0.code == currencyCode })
     }
 
     private func exchangeRateNotExist(withCode code: String) -> Bool {

@@ -15,4 +15,17 @@ final class CantorVM: ObservableObject {
 
     @Published var primaryCurrency: CurrencyEntity?
     @Published var secondaryCurrency: CurrencyEntity?
+    @Published private(set) var exchangeRateValue: String?
+
+    init() {
+        Publishers.CombineLatest($primaryCurrency, $secondaryCurrency)
+            .compactMap { primary, secondary -> String? in
+                guard let primary = primary, let secondary = secondary else { return nil }
+                guard let exchangeRateValue = primary.getExchangeRate(for: secondary.code)?.rateValue else {
+                    return nil
+                }
+                return "1 \(primary.code) = \(exchangeRateValue.asString(roundToDecimalPlaces: 2)) \(secondary.code)"
+            }
+            .assign(to: &$exchangeRateValue)
+    }
 }

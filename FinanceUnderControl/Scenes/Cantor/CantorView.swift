@@ -15,8 +15,14 @@ struct CantorView: View {
 
     var body: some View {
         Form {
-            ListPicker(title: "From:", listView: CurrencyListView(selection: $viewModel.primaryCurrency))
-            ListPicker(title: "To:", listView: CurrencyListView(selection: $viewModel.secondaryCurrency))
+            Section {
+                Text(viewModel.exchangeRateValue ?? "")
+            }
+
+            Section {
+                ListPicker(title: "From:", listView: CurrencyListView(selection: $viewModel.primaryCurrency))
+                ListPicker(title: "To:", listView: CurrencyListView(selection: $viewModel.secondaryCurrency))
+            }
 
             Section {
                 if let currency = viewModel.primaryCurrency {
