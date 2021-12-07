@@ -19,7 +19,7 @@ struct ListPicker<ListView: PickerList>: View{
     }
 
     private var selectionName: String {
-        listView.selection.wrappedValue?.name ?? "--"
+        listView.selection.wrappedValue?.name ?? "---"
     }
 }
 

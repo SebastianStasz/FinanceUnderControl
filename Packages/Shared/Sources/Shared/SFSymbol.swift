@@ -9,16 +9,17 @@ import Foundation
 import SwiftUI
 
 public enum SFSymbol: String {
-    case dashboardTab = "house"
-    case cashFlowTab = "doc.text.magnifyingglass"
-    case currenciesTab = "dollarsign.circle"
-    case settingsTab = "gearshape"
-    case plus = "plus"
-    case minus = "minus"
+    case dashboardTab   = "house"
+    case cashFlowTab    = "doc.text.magnifyingglass"
+    case currenciesTab  = "dollarsign.circle"
+    case settingsTab    = "gearshape"
+    case plus           = "plus"
+    case minus          = "minus"
     case chevronForward = "chevron.forward"
-    case chevronUp = "chevron.up"
-    case close = "xmark"
-    case checkmark = "checkmark"
+    case chevronUp      = "chevron.up"
+    case close          = "xmark"
+    case checkmark      = "checkmark"
+    case infoCircle     = "info.circle"
 }
 
 public extension SFSymbol {

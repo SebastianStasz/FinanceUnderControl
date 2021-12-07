@@ -7,21 +7,27 @@
 
 import FinanceCoreData
 import SwiftUI
+import Shared
+import SSUtils
 
 struct CantorView: View {
 
     @StateObject private var viewModel = CantorVM()
     @State private var exchangeRatesForCurrency: CurrencyEntity?
+    @State private var isInfoAlertPresented = false
 
     var body: some View {
         Form {
-            Section {
-                Text(viewModel.exchangeRateValue ?? "")
+            Section(header: Text("Exchange rate")) {
+                Text(viewModel.exchangeRateValue ?? "Fill in the form to display the exchange rate.")
+                    .font(.subheadline)
+                    .opacity(0.5)
             }
 
-            Section {
+            Section(header: Text("Form data")) {
                 ListPicker(title: "From:", listView: CurrencyListView(selection: $viewModel.primaryCurrency))
                 ListPicker(title: "To:", listView: CurrencyListView(selection: $viewModel.secondaryCurrency))
+                LabeledTextField(label: "Amount:", value: $viewModel.amountOfMoney, prompt: "100")
             }
 
             Section {
@@ -31,15 +37,25 @@ struct CantorView: View {
                 }
             }
         }
+        .toolbar { toolbarContent }
         .sheet(item: $exchangeRatesForCurrency) {
             ExchangeRateListView(viewModel: .init(currencyEntity: $0))
         }
+        .infoAlert(isPresented: $isInfoAlertPresented, message: "Exchange rates data provided by: \"exchangerate.host\"")
+    }
+
+    private var toolbarContent: some ToolbarContent {
+        Toolbar.trailing(systemImage: SFSymbol.infoCircle.name, action: showInfoAlert)
     }
 
     // MARK: - Interactions
 
     private func showExchangeRatesFor(_ currency: CurrencyEntity) {
         exchangeRatesForCurrency = currency
+    }
+
+    private func showInfoAlert() {
+        isInfoAlertPresented = true
     }
 }
 
@@ -49,6 +65,6 @@ struct CantorView: View {
 struct CantorView_Previews: PreviewProvider {
     static var previews: some View {
         CantorView()
-            .embedInNavigationView()
+            .embedInNavigationView(title: "Cantor")
     }
 }

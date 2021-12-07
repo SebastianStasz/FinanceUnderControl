@@ -15,6 +15,7 @@ final class CantorVM: ObservableObject {
 
     @Published var primaryCurrency: CurrencyEntity?
     @Published var secondaryCurrency: CurrencyEntity?
+    @Published var amountOfMoney = ""
     @Published private(set) var exchangeRateValue: String?
 
     init() {
