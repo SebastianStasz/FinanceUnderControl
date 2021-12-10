@@ -9,9 +9,9 @@ import FinanceCoreData
 import Foundation
 
 protocol Pickerable {
-    var name: String { get }
+    var valueName: String { get }
 }
 
 extension CurrencyEntity: Pickerable {
-    var name: String { code }
+    var valueName: String { code }
 }

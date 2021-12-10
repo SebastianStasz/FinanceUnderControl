@@ -14,7 +14,7 @@ final class CurrencyListVM: ObservableObject {
 
     private let currenciesProvider = CurrenciesProvider()
 
-    @Published private(set) var currencies: FetchRequest<CurrencyEntity>!
+    @Published private(set) var currencies: FetchRequest<CurrencyEntity>
     @Published var searchText = ""
 
     init() {

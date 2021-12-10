@@ -11,6 +11,7 @@ import SSUtils
 
 struct TabBarView: View {
 
+    @State private var isKeyboardPresented = false
     @ObservedObject var viewModel: TabBarVM
 
     init(viewModel: TabBarVM) {
@@ -36,8 +37,11 @@ struct TabBarView: View {
             }
             .infiniteWidth(maxHeight: 49)
             .background(tabBarBackground)
+            .displayIf(!isKeyboardPresented)
         }
         .background(Color.backgroundMain)
+        .onReceive(NotificationCenter.keyboardWillShow) { _ in isKeyboardPresented = true }
+        .onReceive(NotificationCenter.keyboardWillHide) { _ in isKeyboardPresented = false }
     }
 
     // MARK: View Components
