@@ -12,16 +12,29 @@ import SwiftUI
 
 final class CantorVM: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
+    private let currencySettings = CurrencySettings()
 
-    @Published var primaryCurrency: CurrencyEntity?
-    @Published var secondaryCurrency: CurrencyEntity?
+    @Published var currencySelector = CurrencySelector<CurrencyEntity?>()
     @Published var amountOfMoney = ""
     @Published private(set) var exchangeRateValue: String?
 
     init() {
-        Publishers.CombineLatest($primaryCurrency, $secondaryCurrency)
-            .compactMap { primary, secondary -> String? in
-                guard let primary = primary, let secondary = secondary else { return nil }
+        let currencySettingsOutput = currencySettings.bind()
+        currencySettingsOutput.primaryCurrency
+            .sink { [weak self] currency in
+                self?.currencySelector.setPrimaryCurrency(to: currency)
+            }
+            .store(in: &cancellables)
+
+        currencySettingsOutput.secondaryCurrency
+            .sink { [weak self] currency in
+                self?.currencySelector.setSecondaryCurrency(to: currency)
+            }
+            .store(in: &cancellables)
+
+        $currencySelector
+            .compactMap { selector -> String? in
+                guard let primary = selector.primaryCurrency, let secondary = selector.secondaryCurrency else { return nil }
                 guard let exchangeRateValue = primary.getExchangeRate(for: secondary.code)?.rateValue else {
                     return nil
                 }

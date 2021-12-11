@@ -76,6 +76,12 @@ public extension CurrencyEntity {
         return result ?? []
     }
 
+    static func get(withCode code: String, from context: NSManagedObjectContext) -> CurrencyEntity? {
+        let request = CurrencyEntity.nsFetchRequest(filteringBy: [.codeIs(code)])
+        let currency = try? context.fetch(request).first
+        return currency
+    }
+
     func getExchangeRate(for currencyCode: String) -> ExchangeRateEntity? {
         exchangeRatesArray.first(where: { $0.code == currencyCode })
     }

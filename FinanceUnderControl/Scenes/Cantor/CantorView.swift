@@ -19,23 +19,25 @@ struct CantorView: View {
     var body: some View {
         Form {
             Section(header: Text("Exchange rate")) {
-                if let exchangeRate = viewModel.exchangeRateValue {
-                    Text(exchangeRate)
-                } else {
-                    Text("Fill in the form to display the exchange rate.")
-                        .opacity(0.5)
+                Group {
+                    if let exchangeRate = viewModel.exchangeRateValue {
+                        Text(exchangeRate)
+                    } else {
+                        Text("Fill in the form to display the exchange rate.")
+                            .opacity(0.5)
+                    }
                 }
+                .font(.subheadline)
             }
-            .font(.subheadline)
 
             Section(header: Text("Form data")) {
-                ListPicker(title: "From:", listView: CurrencyListView(selection: $viewModel.primaryCurrency))
-                ListPicker(title: "To:", listView: CurrencyListView(selection: $viewModel.secondaryCurrency))
+                ListPicker(title: "From:", listView: CurrencyListView(selection: $viewModel.currencySelector.primaryCurrency))
+                ListPicker(title: "To:", listView: CurrencyListView(selection: $viewModel.currencySelector.secondaryCurrency))
                 LabeledTextField(label: "Amount:", value: $viewModel.amountOfMoney, prompt: "100")
             }
 
             Section {
-                if let currency = viewModel.primaryCurrency {
+                if let currency = viewModel.currencySelector.primaryCurrency {
                     Text("All exchange rates for \(currency.code)")
                         .baseRowView(buttonType: .sheet, isBlue: true, action: showExchangeRatesFor(currency))
                 }
