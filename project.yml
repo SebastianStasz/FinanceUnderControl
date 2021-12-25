@@ -13,7 +13,11 @@ options:
 packages:
   SSUtils:
     url: https://github.com/SebastianStasz/SSUtils
-    from: 1.0.1
+    from: 1.0.0
+
+  SSValidation:
+    url: https://github.com/SebastianStasz/SSValidation
+    from: 1.0.0
 
 localPackages:
   - "./Packages/Domain"
@@ -35,6 +39,7 @@ targets:
       - package: "FinanceCoreData"
       - package: "Shared"
       - package: "SSUtils"
+      - package: "SSValidation"
 
   FinanceUnderControlTests:
     type: "bundle.unit-test"

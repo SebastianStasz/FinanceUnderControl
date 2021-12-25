@@ -6,9 +6,10 @@
 //
 
 import FinanceCoreData
-import SwiftUI
 import Shared
 import SSUtils
+import SwiftUI
+import SSValidation
 
 struct CantorView: View {
 
@@ -24,16 +25,20 @@ struct CantorView: View {
                         Text(exchangeRate)
                     } else {
                         Text("Fill in the form to display the exchange rate.")
+                            .font(.subheadline)
                             .opacity(0.5)
                     }
+                    if let exchangedMoney = viewModel.exchangedMoney {
+                        Text(exchangedMoney)
+                    }
                 }
-                .font(.subheadline)
             }
 
             Section(header: Text("Form data")) {
                 ListPicker(title: "From:", listView: CurrencyListView(selection: $viewModel.currencySelector.primaryCurrency))
                 ListPicker(title: "To:", listView: CurrencyListView(selection: $viewModel.currencySelector.secondaryCurrency))
-                LabeledTextField(label: "Amount:", value: $viewModel.amountOfMoney, prompt: "100")
+
+                LabeledTextField<NumberInputVM>(title: "Amount", input: $viewModel.amountOfMoneyInput, prompt: "100")
             }
 
             Section {

@@ -6,25 +6,33 @@
 //
 
 import SwiftUI
+import SSValidation
 
-struct LabeledTextField: View {
+struct LabeledTextField<ViewModel: InputVM>: View {
+    public typealias Input = ViewModel.InputField
 
-    private let label: String
-    @Binding private var value: String
+    @StateObject private var viewModel = ViewModel()
+    @Binding private var input: Input
+
+    private let title: String
     private let prompt: Text?
 
-    init(label: String, value: Binding<String>, prompt: String? = nil) {
-        self.label = label
-        self._value = value
+    public init(title: String,
+                input: Binding<Input>,
+                prompt: String? = nil
+    ) {
+        self._input = input
+        self.title = title
         self.prompt = prompt != nil ? Text(prompt!) : nil
     }
 
     var body: some View {
         HStack(spacing: 0) {
-            Text(label)
+            Text(title)
 
-            TextField(label, text: $value, prompt: prompt)
+            TextField(title, text: $viewModel.text, prompt: prompt)
                 .multilineTextAlignment(.trailing)
+                .asInputView(viewModel: viewModel, input: $input)
         }
     }
 }
@@ -35,7 +43,7 @@ struct LabeledTextField: View {
 struct LabeledTextField_Previews: PreviewProvider {
     static var previews: some View {
         Form {
-            LabeledTextField(label: "Label", value: .constant("value"))
+            LabeledTextField<NumberInputVM>(title: "Input", input: .constant(.init()))
         }
     }
 }
