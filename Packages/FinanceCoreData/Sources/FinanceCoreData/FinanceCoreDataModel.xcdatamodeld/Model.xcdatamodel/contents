@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CashFlowCategoryEntity" representedClassName="CashFlowCategoryEntity" syncable="YES">
+        <attribute name="name" attributeType="String"/>
+        <attribute name="type_" attributeType="String"/>
+        <relationship name="cashFlows" toMany="YES" deletionRule="Nullify" destinationEntity="CashFlowEntity" inverseName="category" inverseEntity="CashFlowEntity"/>
+    </entity>
+    <entity name="CashFlowEntity" representedClassName="CashFlowEntity" syncable="YES">
+        <attribute name="name" attributeType="String"/>
+        <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="CashFlowCategoryEntity" inverseName="cashFlows" inverseEntity="CashFlowCategoryEntity"/>
+    </entity>
     <entity name="CurrencyEntity" representedClassName="CurrencyEntity" syncable="YES">
         <attribute name="code" attributeType="String"/>
         <attribute name="name_" attributeType="String"/>
@@ -12,7 +21,9 @@
         <relationship name="baseCurrency" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyEntity" inverseName="exchangeRates" inverseEntity="CurrencyEntity"/>
     </entity>
     <elements>
-        <element name="CurrencyEntity" positionX="112.5107421875" positionY="-1.69378662109375" width="128" height="103"/>
+        <element name="CurrencyEntity" positionX="121.6463012695312" positionY="-1.966766357421875" width="128" height="103"/>
         <element name="ExchangeRateEntity" positionX="-94.4490966796875" positionY="12.94793701171875" width="128" height="88"/>
+        <element name="CashFlowCategoryEntity" positionX="406.9306640625" positionY="-134.7352294921875" width="128" height="88"/>
+        <element name="CashFlowEntity" positionX="200.6654052734375" positionY="-120.28955078125" width="128" height="73"/>
     </elements>
 </model>
