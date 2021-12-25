@@ -117,8 +117,6 @@ private extension CurrencyEntity {
 
 // MARK: - Helpers
 
-extension CurrencyEntity: Identifiable {}
-
 public extension CurrencyEntity {
     static func sampleEUR(in context: NSManagedObjectContext) -> CurrencyEntity {
         let currency = CurrencyEntity.create(in: context, currencyData: .eur)!
@@ -127,3 +125,5 @@ public extension CurrencyEntity {
         return currency
     }
 }
+
+extension CurrencyEntity: Removable {}

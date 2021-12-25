@@ -34,4 +34,4 @@ public extension ExchangeRateEntity {
 
 // MARK: - Helpers
 
-extension ExchangeRateEntity: Identifiable {}
+extension ExchangeRateEntity: Removable {}
