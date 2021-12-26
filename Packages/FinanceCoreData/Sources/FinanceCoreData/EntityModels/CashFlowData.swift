@@ -9,6 +9,8 @@ import Foundation
 
 public struct CashFlowData {
     public let name: String
+    public let date: Date
+    public let value: Double
     public let category: CashFlowCategoryEntity
 }
 
@@ -17,6 +19,6 @@ public struct CashFlowData {
 
 extension CashFlowData {
     static func sample1(withCategory cashFlowCategoryEntity: CashFlowCategoryEntity) -> CashFlowData {
-        CashFlowData(name: "Sample1", category: cashFlowCategoryEntity)
+        CashFlowData(name: "Sample1", date: Date(), value: 10, category: cashFlowCategoryEntity)
     }
 }

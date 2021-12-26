@@ -34,7 +34,7 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
         try fetchRequestShouldReturnElements(1, for: CashFlowCategoryEntity.self)
 
         // Verify that cash flow category entity data is correct.
-        try verifyCashFlowData(in: cashFlowCategoryEntity, data: cashFlowCategoryData)
+        try verifyCashFlowCategoryData(in: cashFlowCategoryEntity, data: cashFlowCategoryData)
 
         // Save context.
         try saveContext()
@@ -51,7 +51,7 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
         cashFlowCategoryEntity.edit(name: editData.name)
 
         // Verify that cash flow category entity data is changed.
-        try verifyCashFlowData(in: cashFlowCategoryEntity, data: editData)
+        try verifyCashFlowCategoryData(in: cashFlowCategoryEntity, data: editData)
 
         // Save context.
         try saveContext()
@@ -90,11 +90,8 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
 // MARK: - Steps
 
 private extension CashFlowCategoryEntityTests {
-    func createCashFlowCategoryEntity(data: CashFlowCategoryData) -> CashFlowCategoryEntity {
-        CashFlowCategoryEntity.create(in: context, data: data)
-    }
 
-    func verifyCashFlowData(in cashFlowCategoryEntity: CashFlowCategoryEntity, data: CashFlowCategoryData, numOfCashFlows: Int = 0) throws {
+    func verifyCashFlowCategoryData(in cashFlowCategoryEntity: CashFlowCategoryEntity, data: CashFlowCategoryData, numOfCashFlows: Int = 0) throws {
         XCTAssertEqual(cashFlowCategoryEntity.name, data.name)
         XCTAssertEqual(cashFlowCategoryEntity.type, data.type)
         XCTAssertEqual(cashFlowCategoryEntity.cashFlows.count, numOfCashFlows)

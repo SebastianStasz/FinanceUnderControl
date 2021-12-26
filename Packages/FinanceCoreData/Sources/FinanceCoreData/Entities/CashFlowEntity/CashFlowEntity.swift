@@ -10,6 +10,8 @@ import Foundation
 
 @objc(CashFlowEntity)public class CashFlowEntity: NSManagedObject, Entity {
     @NSManaged public private(set) var name: String
+    @NSManaged public private(set) var date: Date
+    @NSManaged public private(set) var value: Double
     @NSManaged public private(set) var category: CashFlowCategoryEntity
 }
 
@@ -19,13 +21,20 @@ public extension CashFlowEntity {
 
     @discardableResult static func create(in context: NSManagedObjectContext, data: CashFlowData) -> CashFlowEntity {
         let cashFlow = CashFlowEntity(context: context)
-        cashFlow.edit(usingData: data)
+        cashFlow.name = data.name
+        cashFlow.date = data.date
+        cashFlow.value = data.value
+        cashFlow.category = data.category
         return cashFlow
     }
 
     func edit(usingData data: CashFlowData) {
         name = data.name
-        category = data.category
+        date = data.date
+        value = data.value
+        if category.type == data.category.type {
+            category = data.category
+        }
     }
 }
 

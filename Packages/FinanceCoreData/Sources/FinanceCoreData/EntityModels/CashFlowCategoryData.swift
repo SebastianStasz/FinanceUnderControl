@@ -18,4 +18,5 @@ public struct CashFlowCategoryData {
 extension CashFlowCategoryData {
     static let foodExpense = CashFlowCategoryData(name: "Food", type: .expenses)
     static let workExpense = CashFlowCategoryData(name: "Work", type: .expenses)
+    static let workIncome = CashFlowCategoryData(name: "Work", type: .income)
 }

@@ -23,6 +23,10 @@ extension CoreDataSteps {
         CashFlowEntity.create(in: context, data: data)
     }
 
+    @discardableResult func createCashFlowCategoryEntity(data: CashFlowCategoryData) -> CashFlowCategoryEntity {
+        CashFlowCategoryEntity.create(in: context, data: data)
+    }
+
     @discardableResult func fetchRequestShouldReturnElements<T: NSManagedObject>(_ amount: Int, for entity: T.Type) throws -> [T] {
         let request: NSFetchRequest<T> = T.nsFetchRequest()
         do {
