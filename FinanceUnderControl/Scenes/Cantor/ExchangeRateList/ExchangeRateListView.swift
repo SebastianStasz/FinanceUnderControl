@@ -16,9 +16,10 @@ struct ExchangeRateListView: View {
     @ObservedObject var viewModel: ExchangeRateListVM
 
     var body: some View {
-        BaseListView(items: viewModel.exchangeRates) {
-            CurrencyRowView(code: $0.code, info: $0.rateValue.description)
+        ForEach(viewModel.exchangeRates) {
+            BaseRowView(code: $0.code, info: $0.rateValue.description)
         }
+        .baseListStyle(title: "Currencies", isEmpty: viewModel.exchangeRates.isEmpty)
         .toolbar { toolbarContent }
         .searchable(text: $viewModel.searchText)
         .embedInNavigationView(title: "Base: \(viewModel.baseCurrencyCode)", displayMode: .inline)

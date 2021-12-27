@@ -5,6 +5,7 @@
 //  Created by Sebastian Staszczyk on 10/12/2021.
 //
 
+import SSUtils
 import SwiftUI
 
 struct SettingsView: View {
@@ -13,7 +14,12 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section(header: Text("Currencies")) {
+            Section("Categories") {
+                NavigationLink("Expenses", destination: CashFlowCategoryListView(type: .expense))
+                NavigationLink("Incomes", destination: CashFlowCategoryListView(type: .income))
+            }
+
+            Section("Currencies") {
                 ListPicker(title: "Primary:", listView: CurrencyListView(selection: $viewModel.primaryCurrency))
                 ListPicker(title: "Secondary:", listView: CurrencyListView(selection: $viewModel.secondaryCurrency))
             }

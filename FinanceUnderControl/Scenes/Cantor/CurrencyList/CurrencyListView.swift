@@ -23,8 +23,8 @@ struct CurrencyListView: PickerList {
     }
 
     var body: some View {
-        BaseListViewFetchRequest(items: viewModel.currencies) {
-            CurrencyRowView(currency: $0)
+        BaseListViewFetchRequest(items: viewModel.currencies, title: "Currencies") {
+            BaseRowView(currency: $0)
                 .baseRowView(buttonType: getButtonType(for: $0), action: selectCurrency($0))
         }
         .navigationBarTitleDisplayMode(.inline)

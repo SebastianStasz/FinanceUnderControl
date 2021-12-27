@@ -41,7 +41,7 @@ struct TabBarView: View {
         }
         .background(Color.backgroundMain)
         .onReceive(NotificationCenter.keyboardWillShow) { _ in isKeyboardPresented = true }
-        .onReceive(NotificationCenter.keyboardWillHide) { _ in isKeyboardPresented = false }
+        .onReceive(NotificationCenter.keyboardDidHide) { _ in isKeyboardPresented = false }
     }
 
     // MARK: View Components
