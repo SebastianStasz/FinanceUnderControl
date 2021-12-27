@@ -9,3 +9,5 @@
 "tab_cashFlow_title" = "Przepływy pieniężne";
 "tab_currencies_title" = "Waluty";
 "tab_settings_title" = "Ustawienia";
+
+"cannot_delete_cash_flow_category_message" = "Nie możesz usunąć tej kategorii, ponieważ jest w użyciu.";

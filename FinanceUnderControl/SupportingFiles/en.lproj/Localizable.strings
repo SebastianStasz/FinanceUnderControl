@@ -9,3 +9,5 @@
 "tab_cashFlow_title" = "CashFlow";
 "tab_currencies_title" = "Currencies";
 "tab_settings_title" = "Settings";
+
+"cannot_delete_cash_flow_category_message" = "You can not delete this category, because it is in use.";

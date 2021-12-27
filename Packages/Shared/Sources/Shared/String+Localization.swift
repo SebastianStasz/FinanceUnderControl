@@ -18,4 +18,5 @@ public extension String {
     static let tab_cashFlow_title = "tab_cashFlow_title".localize()
     static let tab_currencies_title = "tab_currencies_title".localize()
     static let tab_settings_title = "tab_settings_title".localize()
+    static let cannot_delete_cash_flow_category_message = "cannot_delete_cash_flow_category_message".localize()
 }

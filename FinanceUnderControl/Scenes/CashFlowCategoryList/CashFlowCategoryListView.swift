@@ -5,14 +5,16 @@
 //  Created by Sebastian Staszczyk on 25/12/2021.
 //
 
-import SwiftUI
 import FinanceCoreData
+import Shared
+import SSUtils
+import SwiftUI
 
 struct CashFlowCategoryListView: View {
 
     @State private var isAlertPresented = false
+    @State private var isPopupPresented = false
     @FetchRequest private var categories: FetchedResults<CashFlowCategoryEntity>
-
     private let type: CashFlowCategoryType
 
     init(type: CashFlowCategoryType) {
@@ -28,8 +30,22 @@ struct CashFlowCategoryListView: View {
         }
         .onDelete(perform: deleteCategory)
         .baseListStyle(title: type.name, isEmpty: categories.isEmpty)
-        .toolbar { EditButton() }
-        .infoAlert(isPresented: $isAlertPresented, message: "You can not delete this category, because it is in use.")
+        .toolbar { toolbarContent }
+        .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
+        .popup(isPresented: isPopupPresented) { CreateCashFlowCategoryView(isPresented: $isPopupPresented) }
+    }
+
+    private var toolbarContent: some ToolbarContent {
+        Group {
+            ToolbarItem(placement: .navigationBarTrailing) { EditButton() }
+            Toolbar.trailing(systemImage: SFSymbol.plus.name, action: presentCreateCashFlowCategoryPopup)
+        }
+    }
+
+    // MARK: - Interactions
+
+    private func presentCreateCashFlowCategoryPopup() {
+        isPopupPresented = true
     }
 
     private func deleteCategory(at offsets: IndexSet) {
