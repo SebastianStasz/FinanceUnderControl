@@ -87,6 +87,12 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
         // Create currency entity using sample data.
         let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .pln))
 
+        // Create cash flow category entity.
+        let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .workIncome)
+
+        // Create cash flow entity.
+        createCashFlowEntity(data: .sample1(currency: currencyEntity, category: cashFlowCategoryEntity))
+
         // Define exchange rates data.
         let exchangeRatesData: [ExchangeRateData] = [.eurInPln, .usdInPln]
 
@@ -101,6 +107,9 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
 
         // Verify that exchange rates related to this entity were deleted.
         try fetchRequestShouldReturnElements(0, for: ExchangeRateEntity.self)
+
+        // Verify that cash flow entity was not deleted.
+        try fetchRequestShouldReturnElements(1, for: CashFlowEntity.self)
 
         // Save context.
         try saveContext()

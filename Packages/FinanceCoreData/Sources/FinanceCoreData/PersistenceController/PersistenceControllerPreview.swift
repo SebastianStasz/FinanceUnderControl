@@ -27,6 +27,14 @@ public extension PersistenceController {
         CurrencyEntity.create(in: context, currenciesData: symbolsReponse.currencies)
         let eurCurrency = CurrencyEntity.getAll(from: context).first(where: { $0.code == "EUR" })!
         eurCurrency.addExchangeRates(latestRatesResponse.rates.map { $0.exchangeRateData(baseCurrency: "EUR") })
+
+        // Cash flow categories
+//        CashFlowCategoryData.sampleCategories.forEach { CashFlowCategoryEntity.create(in: context, data: $0) }
+
+        // Cash flows
+        
+
+
 //        persistenceController.save()
         return persistenceController
     }

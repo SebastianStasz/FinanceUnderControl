@@ -13,6 +13,7 @@ import Foundation
     @NSManaged public private(set) var date: Date
     @NSManaged public private(set) var value: Double
     @NSManaged public private(set) var category: CashFlowCategoryEntity
+    @NSManaged public private(set) var currency: CurrencyEntity?
 }
 
 // MARK: - Methods
@@ -24,6 +25,7 @@ public extension CashFlowEntity {
         cashFlow.name = data.name
         cashFlow.date = data.date
         cashFlow.value = data.value
+        cashFlow.currency = data.currency
         cashFlow.category = data.category
         return cashFlow
     }

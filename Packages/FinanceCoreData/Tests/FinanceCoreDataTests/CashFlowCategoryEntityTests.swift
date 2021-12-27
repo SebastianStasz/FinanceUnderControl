@@ -45,7 +45,7 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
         let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .foodExpense)
 
         // Define cash flow category edited data
-        let editData = CashFlowCategoryData.workExpense
+        let editData = CashFlowCategoryData.carExpense
 
         // Edit created cash flow category entity using workExpense data.
         cashFlowCategoryEntity.edit(name: editData.name)
@@ -58,11 +58,14 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
     }
 
     func test_delete_cash_flow_category_entity() throws {
+        // Create currency entity.
+        let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .eur))
+
         // Create cash flow category entity using foodExpense data.
         let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .foodExpense)
 
         // Create cash flow entity using created cash flow category entity.
-        let cashFlowEntity = createCashFlowEntity(data: .sample1(withCategory: cashFlowCategoryEntity))
+        let cashFlowEntity = createCashFlowEntity(data: .sample1(currency: currencyEntity, category: cashFlowCategoryEntity))
 
         // Try to delete cash flow category entity.
         XCTAssertFalse(cashFlowCategoryEntity.delete())

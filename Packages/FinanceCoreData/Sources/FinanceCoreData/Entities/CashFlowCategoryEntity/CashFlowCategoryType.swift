@@ -10,7 +10,7 @@ import SSUtils
 
 public enum CashFlowCategoryType: String {
     case income
-    case expenses
+    case expense
     case unknown
 }
 

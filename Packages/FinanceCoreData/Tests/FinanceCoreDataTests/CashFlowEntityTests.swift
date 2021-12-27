@@ -21,10 +21,13 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
 
     func test_create_cash_flow_entity() throws {
         // Create cash flow category entity.
-        let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .workExpense)
+        let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .carExpense)
+
+        // Create currency entity.
+        let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .eur))
 
         // Define cash flow data.
-        let cashFlowData = CashFlowData.sample1(withCategory: cashFlowCategoryEntity)
+        let cashFlowData = CashFlowData.sample1(currency: currencyEntity, category: cashFlowCategoryEntity)
 
         // Before creating, there should not be any cash flow entities.
         try fetchRequestShouldReturnElements(0, for: CashFlowEntity.self)
@@ -43,8 +46,11 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
     }
 
     func test_edit_cash_flow_entity() throws {
+        // Create currency entity.
+        let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .eur))
+
         // Create cash flow category entity.
-        let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .workExpense)
+        let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .carExpense)
 
         // Create cash flow category 2 entity.
         let cashFlowCategoryEntity2 = createCashFlowCategoryEntity(data: .workIncome)
@@ -53,13 +59,13 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
         let cashFlowCategoryEntity3 = createCashFlowCategoryEntity(data: .foodExpense)
 
         // Define cash flow data.
-        let cashFlowData = CashFlowData.sample1(withCategory: cashFlowCategoryEntity)
+        let cashFlowData = CashFlowData.sample1(currency: currencyEntity, category: cashFlowCategoryEntity)
 
         // Define cash flow data 2.
-        let cashFlowData2 = CashFlowData.sample1(withCategory: cashFlowCategoryEntity2)
+        let cashFlowData2 = CashFlowData.sample1(currency: currencyEntity, category: cashFlowCategoryEntity2)
 
         // Define cash flow data 3.
-        let cashFlowData3 = CashFlowData.sample1(withCategory: cashFlowCategoryEntity3)
+        let cashFlowData3 = CashFlowData.sample1(currency: currencyEntity, category: cashFlowCategoryEntity3)
 
         // Create cash flow entity.
         let cashFlowEntity = createCashFlowEntity(data: cashFlowData)
@@ -81,11 +87,14 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
     }
 
     func test_delete_cash_flow_entity() throws {
+        // Create currency entity.
+        let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .eur))
+
         // Create cash flow category entity.
-        let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .workExpense)
+        let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .carExpense)
 
         // Define cash flow data.
-        let cashFlowData = CashFlowData.sample1(withCategory: cashFlowCategoryEntity)
+        let cashFlowData = CashFlowData.sample1(currency: currencyEntity, category: cashFlowCategoryEntity)
 
         // Create cash flow entity.
         let cashFlowEntity = createCashFlowEntity(data: cashFlowData)
@@ -96,11 +105,14 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
         // Verify that cash flow entity was deleted.
         try fetchRequestShouldReturnElements(0, for: CashFlowEntity.self)
 
-        // Verify that cash flow entity category still exists.
+        // Verify that cash flow category entity still exists.
         try fetchRequestShouldReturnElements(1, for: CashFlowCategoryEntity.self)
 
         // Verify that cash flows are empty in cash flow category entity.
         XCTAssert(cashFlowCategoryEntity.cashFlows.isEmpty)
+
+        // Verify that currency entity still exists.
+        try fetchRequestShouldReturnElements(1, for: CurrencyEntity.self)
     }
 }
 

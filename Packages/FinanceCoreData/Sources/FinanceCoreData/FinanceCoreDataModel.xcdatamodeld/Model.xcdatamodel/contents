@@ -10,11 +10,13 @@
         <attribute name="name" attributeType="String"/>
         <attribute name="value" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="CashFlowCategoryEntity" inverseName="cashFlows" inverseEntity="CashFlowCategoryEntity"/>
+        <relationship name="currency" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyEntity" inverseName="cashFlows" inverseEntity="CurrencyEntity"/>
     </entity>
     <entity name="CurrencyEntity" representedClassName="CurrencyEntity" syncable="YES">
         <attribute name="code" attributeType="String"/>
         <attribute name="name_" attributeType="String"/>
         <attribute name="updateDate_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="cashFlows" toMany="YES" deletionRule="Nullify" destinationEntity="CashFlowEntity" inverseName="currency" inverseEntity="CashFlowEntity"/>
         <relationship name="exchangeRates" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ExchangeRateEntity" inverseName="baseCurrency" inverseEntity="ExchangeRateEntity"/>
     </entity>
     <entity name="ExchangeRateEntity" representedClassName="ExchangeRateEntity" syncable="YES">
@@ -24,8 +26,8 @@
     </entity>
     <elements>
         <element name="CashFlowCategoryEntity" positionX="406.9306640625" positionY="-134.7352294921875" width="128" height="88"/>
-        <element name="CashFlowEntity" positionX="200.6654052734375" positionY="-120.28955078125" width="128" height="103"/>
-        <element name="CurrencyEntity" positionX="121.6463012695312" positionY="-1.966766357421875" width="128" height="103"/>
+        <element name="CashFlowEntity" positionX="245.8008422851562" positionY="-124.7197875976562" width="128" height="118"/>
+        <element name="CurrencyEntity" positionX="78.34704589843744" positionY="-46.51080322265625" width="128" height="118"/>
         <element name="ExchangeRateEntity" positionX="-94.4490966796875" positionY="12.94793701171875" width="128" height="88"/>
     </elements>
 </model>
