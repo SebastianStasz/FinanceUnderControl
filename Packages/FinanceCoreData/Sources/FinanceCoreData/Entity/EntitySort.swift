@@ -14,8 +14,8 @@ public protocol EntitySort {
     var get: SortDescriptor<Entity> { get }
 }
 
-extension EntitySort {
-    var asNSSortDescriptor: NSSortDescriptor {
+public extension EntitySort {
+    var nsSortDescriptor: NSSortDescriptor {
         NSSortDescriptor(get)
     }
 }

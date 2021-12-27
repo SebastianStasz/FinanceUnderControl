@@ -19,6 +19,6 @@ public extension CashFlowEntity {
             }
         }
 
-        public typealias Entity = CurrencyEntity
+        public typealias Entity = CashFlowEntity
     }
 }

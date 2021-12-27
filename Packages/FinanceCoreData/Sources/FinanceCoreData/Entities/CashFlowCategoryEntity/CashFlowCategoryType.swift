@@ -14,6 +14,12 @@ public enum CashFlowCategoryType: String {
     case unknown
 }
 
+public extension CashFlowCategoryType {
+    var name: String {
+        self.rawValue.capitalized
+    }
+}
+
 extension CashFlowCategoryType: UnknownValueSupport {
     public static var unknownCase: CashFlowCategoryType {
         .unknown

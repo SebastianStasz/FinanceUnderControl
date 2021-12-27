@@ -22,7 +22,7 @@ public extension Entity where Sort.Entity == Self {
     }
 
     static func nsFetchRequest(filteringBy filters: [Filter]? = nil, sortingBy sorts: [Sort] = []) -> NSFetchRequest<Self> {
-        let sortDescriptors = sorts.map { $0.asNSSortDescriptor }
+        let sortDescriptors = sorts.map { $0.nsSortDescriptor }
         let request: NSFetchRequest<Self> = Self.nsFetchRequest(sortDescriptors: sortDescriptors)
         if let predicates = filters?.compactMap({ $0.nsPredicate }) {
             request.predicate = NSCompoundPredicate(type: .or, subpredicates: predicates)

@@ -10,9 +10,13 @@ import Foundation
 public extension CashFlowCategoryEntity {
 
     enum Filter: EntityFilter {
+        case typeIs(CashFlowCategoryType)
 
         public var nsPredicate: NSPredicate? {
-            nil
+            switch self {
+            case let .typeIs(type):
+                return NSPredicate(format: "type_ == %@", type.rawValue)
+            }
         }
     }
 }
