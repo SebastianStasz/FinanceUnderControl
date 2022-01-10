@@ -13,10 +13,16 @@ private struct PopupPresenter<Popup: View>: ViewModifier {
     var popup: () -> Popup
 
     func body(content: Content) -> some View {
-        if isPresented {
-            content.overlay(popup())
-        } else {
+        ZStack {
             content
+                .overlay(Color.black.opacity(isPresented ? 0.2 : 0))
+                .navigationBarBackButtonHidden(isPresented)
+                .disabled(isPresented)
+
+            if isPresented {
+                popup()
+                    .offset(x: 0, y: -50)
+            }
         }
     }
 }

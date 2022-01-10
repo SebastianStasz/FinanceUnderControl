@@ -7,11 +7,15 @@
 
 import SwiftUI
 
-public extension Text {
+public extension View {
+
+    var textHeadlineBig: some View {
+        self.font(.system(.title3).weight(.medium))
+            .foregroundColor(.white)
+    }
 
     var currencySymbol: some View {
-        self.fontWeight(.medium)
+        self.font(.system(.body, design: .monospaced).weight(.medium))
             .textCase(.uppercase)
-            .font(.system(.body, design: .monospaced))
     }
 }

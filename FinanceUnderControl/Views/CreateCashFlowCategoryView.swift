@@ -20,18 +20,9 @@ struct CreateCashFlowCategoryView: View {
     @Binding var isPresented: Bool
 
     var body: some View {
-        VStack(spacing: .medium) {
-            BaseTextField<TextInputVM>(title: "Category name", input: $viewModel.categoryNameInput)
-
-            HStack(spacing: .medium) {
-                Button("Cancel", action: closePopup)
-                    .infiniteWidth()
-
-                Button("Create", action: ())
-                    .infiniteWidth()
-            }
-        }
-        .frame(width: UIScreen.screenWidth - 2 * Spacing.medium.rawValue)
+        BaseTextField<TextInputVM>(title: "Category name", input: $viewModel.categoryNameInput)
+            .textFieldStyle(.roundedBorder)
+            .asPopup(title: "Add category", isPresented: $isPresented)
     }
 
     private func closePopup() {

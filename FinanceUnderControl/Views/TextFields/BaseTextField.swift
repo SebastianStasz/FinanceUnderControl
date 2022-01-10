@@ -26,14 +26,14 @@ struct BaseTextField<ViewModel: InputVM>: View {
     }
 
     var body: some View {
-        VStack(spacing: .medium) {
+        VStack(alignment: .leading, spacing: .micro) {
             TextField(title, text: $viewModel.text, prompt: prompt)
 
-            if let message = viewModel.message {
-                Text(message)
-                    .foregroundColor(.red)
-            }
+            Text(viewModel.message ?? "")
+                .foregroundColor(.red)
+                .font(.footnote)
         }
+        .asInputView(viewModel: viewModel, input: $input)
     }
 }
 
