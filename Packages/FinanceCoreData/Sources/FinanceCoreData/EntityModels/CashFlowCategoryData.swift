@@ -10,6 +10,11 @@ import Foundation
 public struct CashFlowCategoryData {
     public let name: String
     public let type: CashFlowCategoryType
+
+    public init(name: String, type: CashFlowCategoryType) {
+        self.name = name
+        self.type = type
+    }
 }
 
 

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BaseButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) var isEnabled
 
     let role: ButtonRole
 
@@ -20,5 +21,6 @@ struct BaseButtonStyle: ButtonStyle {
             .foregroundColor(.white)
             .cornerRadius(.radiusBase)
             .opacity(configuration.isPressed ? 0.5 : 1)
+            .opacity(isEnabled ? 1 : 0.3)
     }
 }

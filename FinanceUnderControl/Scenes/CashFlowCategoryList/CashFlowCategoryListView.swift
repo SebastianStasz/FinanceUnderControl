@@ -17,13 +17,6 @@ struct CashFlowCategoryListView: View {
     @FetchRequest private var categories: FetchedResults<CashFlowCategoryEntity>
     private let type: CashFlowCategoryType
 
-    init(type: CashFlowCategoryType) {
-        self.type = type
-        let sort = [CashFlowCategoryEntity.Sort.byName(.forward).nsSortDescriptor]
-        let filter = CashFlowCategoryEntity.Filter.typeIs(type).nsPredicate
-        _categories = FetchRequest<CashFlowCategoryEntity>(sortDescriptors: sort, predicate: filter)
-    }
-
     var body: some View {
         ForEach(categories) {
             BaseRowView(text1: $0.name)
@@ -32,7 +25,7 @@ struct CashFlowCategoryListView: View {
         .baseListStyle(title: type.name, isEmpty: categories.isEmpty)
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
-        .popup(isPresented: isPopupPresented) { CreateCashFlowCategoryView(isPresented: $isPopupPresented) }
+        .popup(isPresented: isPopupPresented) { CashFlowCategoryCreatorView(for: type, isPresented: $isPopupPresented) }
     }
 
     private var toolbarContent: some ToolbarContent {
@@ -53,6 +46,13 @@ struct CashFlowCategoryListView: View {
         if !categories[index].delete() {
             isAlertPresented = true
         }
+    }
+
+    init(type: CashFlowCategoryType) {
+        self.type = type
+        let sort = [CashFlowCategoryEntity.Sort.byName(.forward).nsSortDescriptor]
+        let filter = CashFlowCategoryEntity.Filter.typeIs(type).nsPredicate
+        _categories = FetchRequest<CashFlowCategoryEntity>(sortDescriptors: sort, predicate: filter)
     }
 }
 

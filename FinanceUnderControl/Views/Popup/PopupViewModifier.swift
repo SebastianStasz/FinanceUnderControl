@@ -11,6 +11,8 @@ import SwiftUI
 private struct PopupViewModifier: ViewModifier {
 
     let title: String
+    let action: () -> Void
+    let isActionDisabled: Bool
     @Binding var isPresented: Bool
 
     func body(content: Content) -> some View {
@@ -23,8 +25,10 @@ private struct PopupViewModifier: ViewModifier {
             HStack(spacing: .medium) {
                 Button("Cancel", action: closePopup)
                     .buttonStyle(BaseButtonStyle(role: .cancel))
-                Button("Create", action: ())
+
+                Button("Create", action: performAction)
                     .buttonStyle(BaseButtonStyle(role: .action))
+                    .disabled(isActionDisabled)
             }
             .padding(.top, .medium)
         }
@@ -37,10 +41,18 @@ private struct PopupViewModifier: ViewModifier {
     private func closePopup() {
         isPresented = false
     }
+
+    private func performAction() {
+        action()
+        closePopup()
+    }
 }
 
 extension View {
-    func asPopup(title: String, isPresented: Binding<Bool>) -> some View {
-        modifier(PopupViewModifier(title: title, isPresented: isPresented))
+    func asPopup(title: String, isPresented: Binding<Bool>, isActionDisabled: Bool = false, action: @escaping () -> Void) -> some View {
+        modifier(PopupViewModifier(title: title,
+                                   action: action,
+                                   isActionDisabled: isActionDisabled,
+                                   isPresented: isPresented))
     }
 }
