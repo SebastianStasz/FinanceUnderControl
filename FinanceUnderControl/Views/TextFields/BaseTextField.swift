@@ -28,6 +28,7 @@ struct BaseTextField<ViewModel: InputVM>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: .micro) {
             TextField(title, text: $viewModel.text, prompt: prompt)
+                .textFieldStyle(.roundedBorder)
 
             Text(viewModel.message ?? "")
                 .foregroundColor(.red)

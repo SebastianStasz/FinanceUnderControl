@@ -11,7 +11,7 @@ import SSUtils
 import Shared
 import FinanceCoreData
 
-struct CashFlowCategoryCreatorView: View {
+struct CashFlowCategoryPopup: View {
     @Environment(\.managedObjectContext) private var context
 
     @State private var input = Input<TextInputSettings>(settings: .init(minLength: 3, maxLength: 20))
@@ -20,7 +20,6 @@ struct CashFlowCategoryCreatorView: View {
 
     var body: some View {
         BaseTextField<TextInputVM>(title: "Category name", input: $input)
-            .textFieldStyle(.roundedBorder)
             .asPopup(title: "Add category", isPresented: $isPresented, isActionDisabled: input.value.isNil, action: createCashFlowCategory)
     }
 
@@ -39,9 +38,9 @@ struct CashFlowCategoryCreatorView: View {
 
 // MARK: - Preview
 
-struct CreateCashFlowCategoryView_Previews: PreviewProvider {
+struct CashFlowCategoryPopup_Previews: PreviewProvider {
     static var previews: some View {
-        CashFlowCategoryCreatorView(for: .income, isPresented: .constant(true))
+        CashFlowCategoryPopup(for: .income, isPresented: .constant(true))
             .previewLayout(.sizeThatFits)
     }
 }

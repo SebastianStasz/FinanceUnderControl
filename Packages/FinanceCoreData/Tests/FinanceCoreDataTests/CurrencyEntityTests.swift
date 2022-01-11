@@ -88,7 +88,7 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
         let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .pln))
 
         // Create cash flow category entity.
-        let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .workIncome)
+        let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .workPayment)
 
         // Create cash flow entity.
         createCashFlowEntity(data: .sample1(currency: currencyEntity, category: cashFlowCategoryEntity))

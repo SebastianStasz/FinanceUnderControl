@@ -25,7 +25,7 @@ struct CashFlowCategoryListView: View {
         .baseListStyle(title: type.name, isEmpty: categories.isEmpty)
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
-        .popup(isPresented: isPopupPresented) { CashFlowCategoryCreatorView(for: type, isPresented: $isPopupPresented) }
+        .popup(isPresented: isPopupPresented) { CashFlowCategoryPopup(for: type, isPresented: $isPopupPresented) }
     }
 
     private var toolbarContent: some ToolbarContent {

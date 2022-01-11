@@ -6,13 +6,12 @@
 //
 
 import SwiftUI
+import FinanceCoreData
 
 struct TabBarActionButton: View {
     typealias Popup = TabBarModel.Popup
 
     @ObservedObject var viewModel: TabBarVM
-
-    // MARK: - View
 
     var body: some View {
         Button("Add", action: togglePopupButtons)
@@ -22,16 +21,24 @@ struct TabBarActionButton: View {
 
     private var popupButtons: some View {
         Group {
-            popupButton(Popup.first, angle: -65, action: {}())
-            popupButton(Popup.second, angle: -115, action: {}())
+            popupButton(Popup.first, angle: -65, action: showCashFlowPopup(for: .income))
+            popupButton(Popup.second, angle: -115, action: showCashFlowPopup(for: .expense))
         }
     }
 
-    // MARK: Interactions
+    // MARK: - Interactions
 
     private func togglePopupButtons() {
         viewModel.arePopupsShown.toggle()
     }
+
+    private func showCashFlowPopup(for type: CashFlowCategoryType) {
+        togglePopupButtons()
+        viewModel.type = type
+        viewModel.isCashFlowPopupShown = true
+    }
+
+    // MARK: - Helpers
 
     private func popupButton(_ popup: Popup, angle: Double, action: @autoclosure @escaping () -> Void) -> some View {
         let offset = getOffset(for: angle)
@@ -42,8 +49,6 @@ struct TabBarActionButton: View {
             .frame(width: 47, height: 47)
             .animation(.easeInOut(duration: 0.2))
     }
-
-    // MARK: - Helpers
 
     private var interactionBlockerSettings: InteractionBlocker.Settings {
         .init(when: $viewModel.arePopupsShown, onTopShow: AnyView(popupButtons), closingDuration: 0.2, isParentViewInteractive: true)

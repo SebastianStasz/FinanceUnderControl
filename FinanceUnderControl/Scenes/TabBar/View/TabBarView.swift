@@ -42,6 +42,9 @@ struct TabBarView: View {
         .background(Color.backgroundMain)
         .onReceive(NotificationCenter.keyboardWillShow) { _ in isKeyboardPresented = true }
         .onReceive(NotificationCenter.keyboardDidHide) { _ in isKeyboardPresented = false }
+        .popup(isPresented: viewModel.isCashFlowPopupShown) {
+            CashFlowPopup(for: viewModel.type, isPresented: $viewModel.isCashFlowPopupShown)
+        }
     }
 
     // MARK: View Components

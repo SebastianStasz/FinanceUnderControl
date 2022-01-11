@@ -25,9 +25,9 @@ extension CashFlowCategoryData {
     static let carExpense = CashFlowCategoryData(name: "Car", type: .expense)
     static let hobbyExpense = CashFlowCategoryData(name: "Hobby", type: .expense)
 
-    static let workIncome = CashFlowCategoryData(name: "Work", type: .income)
-    static let parentsIncome = CashFlowCategoryData(name: "From parents", type: .income)
+    static let workPayment = CashFlowCategoryData(name: "Payment", type: .income)
+    static let workBonus = CashFlowCategoryData(name: "Work bonus", type: .income)
 
     static let sampleExpenses: [CashFlowCategoryData] = [.foodExpense, .carExpense, .hobbyExpense]
-    static let sampleIncomes: [CashFlowCategoryData] = [.workIncome, .parentsIncome]
+    static let sampleIncomes: [CashFlowCategoryData] = [.workPayment, .workBonus]
 }
