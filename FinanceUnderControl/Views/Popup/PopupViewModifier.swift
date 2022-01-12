@@ -8,12 +8,12 @@
 import Shared
 import SwiftUI
 
-private struct PopupViewModifier: ViewModifier {
+struct PopupViewModifier: ViewModifier {
+    @EnvironmentObject var appController: AppController
 
     let title: String
     let action: () -> Void
     let isActionDisabled: Bool
-    @Binding var isPresented: Bool
 
     func body(content: Content) -> some View {
         VStack(alignment: .leading, spacing: .zero) {
@@ -23,7 +23,7 @@ private struct PopupViewModifier: ViewModifier {
             content
 
             HStack(spacing: .medium) {
-                Button("Cancel", action: closePopup)
+                Button("Cancel", action: dismissPopup)
                     .buttonStyle(BaseButtonStyle(role: .cancel))
 
                 Button("Create", action: performAction)
@@ -38,21 +38,16 @@ private struct PopupViewModifier: ViewModifier {
         .cornerRadius(.radiusBase)
     }
 
-    private func closePopup() {
-        isPresented = false
-    }
-
     private func performAction() {
         action()
-        closePopup()
+        dismissPopup()
     }
 }
 
 extension View {
-    func asPopup(title: String, isPresented: Binding<Bool>, isActionDisabled: Bool = false, action: @escaping () -> Void) -> some View {
+    func asPopup(title: String, isActionDisabled: Bool = false, action: @escaping () -> Void) -> some View {
         modifier(PopupViewModifier(title: title,
                                    action: action,
-                                   isActionDisabled: isActionDisabled,
-                                   isPresented: isPresented))
+                                   isActionDisabled: isActionDisabled))
     }
 }

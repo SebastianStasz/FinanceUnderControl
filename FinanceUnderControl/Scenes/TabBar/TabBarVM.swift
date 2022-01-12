@@ -14,8 +14,6 @@ final class TabBarVM: ObservableObject {
 
     @Published var selectedTab: Tab = .dashboard
     @Published var arePopupsShown = false
-    @Published var isCashFlowPopupShown = false
-    var type: CashFlowCategoryType = .income
 }
 
 // MARK: - Navigator

@@ -11,11 +11,11 @@ import SSUtils
 
 struct TabBarView: View {
 
+    @StateObject private var viewModel = TabBarVM()
+    @StateObject private var appController = AppController()
     @State private var isKeyboardPresented = false
-    @ObservedObject var viewModel: TabBarVM
 
-    init(viewModel: TabBarVM) {
-        self.viewModel = viewModel
+    init() {
         UITabBar.appearance().isHidden = true
     }
 
@@ -42,9 +42,8 @@ struct TabBarView: View {
         .background(Color.backgroundMain)
         .onReceive(NotificationCenter.keyboardWillShow) { _ in isKeyboardPresented = true }
         .onReceive(NotificationCenter.keyboardDidHide) { _ in isKeyboardPresented = false }
-        .popup(isPresented: viewModel.isCashFlowPopupShown) {
-            CashFlowPopup(for: viewModel.type, isPresented: $viewModel.isCashFlowPopupShown)
-        }
+        .popup(appController.popupModel)
+        .environmentObject(appController)
     }
 
     // MARK: View Components
@@ -83,6 +82,6 @@ struct TabBarView: View {
 
 struct TabBarView_Previews: PreviewProvider {
     static var previews: some View {
-        TabBarView(viewModel: TabBarVM())
+        TabBarView()
     }
 }

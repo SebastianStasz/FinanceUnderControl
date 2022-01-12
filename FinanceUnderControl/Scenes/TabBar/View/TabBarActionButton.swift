@@ -11,6 +11,7 @@ import FinanceCoreData
 struct TabBarActionButton: View {
     typealias Popup = TabBarModel.Popup
 
+    @EnvironmentObject var appController: AppController
     @ObservedObject var viewModel: TabBarVM
 
     var body: some View {
@@ -34,8 +35,7 @@ struct TabBarActionButton: View {
 
     private func showCashFlowPopup(for type: CashFlowCategoryType) {
         togglePopupButtons()
-        viewModel.type = type
-        viewModel.isCashFlowPopupShown = true
+        appController.presentPopup(.cashFlow(for: type))
     }
 
     // MARK: - Helpers

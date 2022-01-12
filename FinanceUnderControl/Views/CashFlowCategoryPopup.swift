@@ -15,12 +15,11 @@ struct CashFlowCategoryPopup: View {
     @Environment(\.managedObjectContext) private var context
 
     @State private var input = Input<TextInputSettings>(settings: .init(minLength: 3, maxLength: 20))
-    @Binding var isPresented: Bool
     let type: CashFlowCategoryType
 
     var body: some View {
         BaseTextField<TextInputVM>(title: "Category name", input: $input)
-            .asPopup(title: "Add category", isPresented: $isPresented, isActionDisabled: input.value.isNil, action: createCashFlowCategory)
+            .asPopup(title: "Add category", isActionDisabled: input.value.isNil, action: createCashFlowCategory)
     }
 
     private func createCashFlowCategory() {
@@ -29,9 +28,8 @@ struct CashFlowCategoryPopup: View {
         CashFlowCategoryEntity.create(in: context, data: data)
     }
 
-    init(for type: CashFlowCategoryType, isPresented: Binding<Bool>) {
+    init(for type: CashFlowCategoryType) {
         self.type = type
-        self._isPresented = isPresented
     }
 }
 
@@ -40,7 +38,7 @@ struct CashFlowCategoryPopup: View {
 
 struct CashFlowCategoryPopup_Previews: PreviewProvider {
     static var previews: some View {
-        CashFlowCategoryPopup(for: .income, isPresented: .constant(true))
+        CashFlowCategoryPopup(for: .income)
             .previewLayout(.sizeThatFits)
     }
 }

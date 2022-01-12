@@ -12,8 +12,9 @@ import SwiftUI
 
 struct CashFlowCategoryListView: View {
 
+    @EnvironmentObject var appController: AppController
+
     @State private var isAlertPresented = false
-    @State private var isPopupPresented = false
     @FetchRequest private var categories: FetchedResults<CashFlowCategoryEntity>
     private let type: CashFlowCategoryType
 
@@ -25,7 +26,6 @@ struct CashFlowCategoryListView: View {
         .baseListStyle(title: type.name, isEmpty: categories.isEmpty)
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
-        .popup(isPresented: isPopupPresented) { CashFlowCategoryPopup(for: type, isPresented: $isPopupPresented) }
     }
 
     private var toolbarContent: some ToolbarContent {
@@ -38,7 +38,7 @@ struct CashFlowCategoryListView: View {
     // MARK: - Interactions
 
     private func presentCreateCashFlowCategoryPopup() {
-        isPopupPresented = true
+        appController.presentPopup(.cashFlowCategory(for: type))
     }
 
     private func deleteCategory(at offsets: IndexSet) {

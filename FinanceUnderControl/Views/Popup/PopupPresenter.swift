@@ -7,28 +7,30 @@
 
 import SwiftUI
 
-private struct PopupPresenter<Popup: View>: ViewModifier {
+private struct PopupPresenter: ViewModifier {
 
-    var isPresented: Bool
-    var popup: () -> Popup
+    let popupModel: PopupModel?
 
     func body(content: Content) -> some View {
         ZStack {
             content
-                .overlay(Color.black.opacity(isPresented ? 0.2 : 0))
-                .navigationBarBackButtonHidden(isPresented)
-                .disabled(isPresented)
 
-            if isPresented {
-                popup()
+            if let popupModel = popupModel {
+                popupBackground
+
+                popupModel
                     .offset(x: 0, y: -50)
             }
         }
     }
+
+    private var popupBackground: some View {
+        Color.black.opacity(0.2).ignoresSafeArea(.all)
+    }
 }
 
 extension View {
-    func popup<Popup: View>(isPresented: Bool, popup: @escaping () -> Popup) -> some View {
-        modifier(PopupPresenter(isPresented: isPresented, popup: popup))
+    func popup(_ popupModel: PopupModel?) -> some View {
+        modifier(PopupPresenter(popupModel: popupModel))
     }
 }
