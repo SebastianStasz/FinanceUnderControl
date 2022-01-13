@@ -10,7 +10,7 @@ import SwiftUI
 public extension CGFloat {
 
     /// Spacing of 8
-    static let micro = Spacing.micro.rawValue
+    static let micro = Spacing.mini.rawValue
 
     /// Spacing of 12
     static let small = Spacing.small.rawValue
