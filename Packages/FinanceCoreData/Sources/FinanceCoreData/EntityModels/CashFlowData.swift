@@ -13,6 +13,14 @@ public struct CashFlowData {
     public let value: Double
     public let currency: CurrencyEntity
     public let category: CashFlowCategoryEntity
+
+    public init(name: String, date: Date, value: Double, currency: CurrencyEntity, category: CashFlowCategoryEntity) {
+        self.name = name
+        self.date = date
+        self.value = value
+        self.currency = currency
+        self.category = category
+    }
 }
 
 
