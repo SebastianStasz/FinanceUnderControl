@@ -64,4 +64,6 @@ final class CantorVM: ObservableObject {
             }
             .assign(to: &$exchangedMoney)
     }
+
+//    func tryToSetCurr /
 }
