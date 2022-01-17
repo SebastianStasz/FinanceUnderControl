@@ -51,7 +51,7 @@ extension TabBarModel: View {
         case .dashboard:
             Text(name)
         case .cashFlow:
-            Text(name)
+            CashFlowListView()
         case .currencies:
             CantorView()
         case .settings:

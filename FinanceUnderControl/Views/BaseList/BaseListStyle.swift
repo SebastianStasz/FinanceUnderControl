@@ -19,6 +19,7 @@ struct BaseListStyle: ViewModifier {
             .emptyState(isEmpty: isEmpty, message: emptyMessage)
             .navigationBarTitleDisplayMode(titleDisplayMode)
             .navigationTitle(title)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

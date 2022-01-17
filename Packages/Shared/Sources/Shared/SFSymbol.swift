@@ -20,6 +20,7 @@ public enum SFSymbol: String {
     case close          = "xmark"
     case checkmark      = "checkmark"
     case infoCircle     = "info.circle"
+    case filter         = "line.3.horizontal.decrease.circle"
 }
 
 public extension SFSymbol {

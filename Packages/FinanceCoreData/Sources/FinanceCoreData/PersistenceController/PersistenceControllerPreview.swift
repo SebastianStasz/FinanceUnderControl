@@ -20,15 +20,21 @@ public extension PersistenceController {
     static var preview: PersistenceController {
         let persistenceController = PersistenceController(inMemory: true)
         let context = persistenceController.context
-
-        createCurrencies(in: context)
-        createCashFlowCategories(in: context)
-
+        createSampleData(in: context)
 //        persistenceController.save()
         return persistenceController
     }
 
-    static private func createCurrencies(in context: NSManagedObjectContext) {
+    static private func createSampleData(in context: NSManagedObjectContext) {
+        createCurrencies(in: context)
+        createExpenses(in: context)
+        createIncomes(in: context)
+    }
+}
+
+private extension PersistenceController {
+
+    static func createCurrencies(in context: NSManagedObjectContext) {
         let decoder = JSONDecoder()
         let symbolsReponse = try! decoder.decode(SymbolsReponse.self, from: DataFile.exchangerateSymbols.data)
         let latestRatesResponse = try! decoder.decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data)
@@ -38,13 +44,67 @@ public extension PersistenceController {
         eurCurrency.addExchangeRates(latestRatesResponse.rates.map { $0.exchangeRateData(baseCurrency: "EUR") })
     }
 
-    static private func createCashFlowCategories(in context: NSManagedObjectContext) {
-        CashFlowCategoryData.sampleIncomes.forEach {
-            CashFlowCategoryEntity.create(in: context, data: $0)
-        }
+    // MARK: - Expenses
 
-        CashFlowCategoryData.sampleExpenses.forEach {
-            CashFlowCategoryEntity.create(in: context, data: $0)
+    static func createExpenses(in context: NSManagedObjectContext) {
+        createCashFlows(in: context,
+                        names: ["Biedronka", "Biedronka", "Biedronka", "Żabka", "Pizza", "Żabka"],
+                        values: [45.2, 12.2, 78.9, 41.5, 102.51, 37.39],
+                        categoryName: "Food",
+                        categoryType: .expense)
+
+        createCashFlows(in: context,
+                        names: ["Engine oil", "Brakes replacement", "Car inspection"],
+                        values: [60, 1240, 230],
+                        categoryName: "Car",
+                        categoryType: .expense)
+
+        createCashFlows(in: context,
+                        names: ["Bike parts", "Guitar Yamaha F310", "Bicycle helmet", "Tatoo"],
+                        values: [31, 610, 257, 1400],
+                        categoryName: "Hobby",
+                        categoryType: .expense)
+
+        createCashFlows(in: context,
+                        names: ["Orlen", "Orlen", "Orlen"],
+                        values: [120, 303, 65],
+                        categoryName: "Petrol",
+                        categoryType: .expense)
+    }
+
+    // MARK: - Incomes
+
+    static func createIncomes(in context: NSManagedObjectContext) {
+        createCashFlows(in: context,
+                        names: ["Payment", "Payment", "Payment", "Work bonus"],
+                        values: [4200, 4500, 5100, 210],
+                        categoryName: "Work",
+                        categoryType: .income)
+
+        createCashFlows(in: context,
+                        names: ["Crypto", "Crypto"],
+                        values: [600, 3230],
+                        categoryName: "Investments",
+                        categoryType: .income)
+    }
+
+    // MARK: - Helpers
+
+    static func createCashFlows(in context: NSManagedObjectContext, names: [String], values: [Double], categoryName: String, categoryType: CashFlowCategoryType) {
+        guard names.count == values.count else {
+            fatalError("Each name should be associated with one value.")
         }
+        let category = CashFlowCategoryEntity.create(in: context, data: .init(name: categoryName, type: categoryType))
+        for (name, value) in zip(names, values) {
+            CashFlowEntity.create(in: context, data: .init(name: name, date: date, value: value, currency: plnCurrency(in: context), category: category))
+        }
+    }
+
+    static var date: Date {
+        Calendar.current.date(byAdding: .day, value: (-58...58).randomElement()!, to: Date())!
+    }
+
+    static func plnCurrency(in context: NSManagedObjectContext) -> CurrencyEntity {
+        CurrencyEntity.get(withCode: "PLN", from: context)!
     }
 }
