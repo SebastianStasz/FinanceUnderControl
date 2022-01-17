@@ -11,11 +11,14 @@ public extension CashFlowEntity {
 
     enum Sort: EntitySort {
         case byName(SortOrder = .forward)
+        case byDate(SortOrder = .forward)
 
         public var get: SortDescriptor<Entity> {
             switch self {
             case let .byName(order):
                 return SortDescriptor(\Entity.name, order: order)
+            case let .byDate(order):
+                return SortDescriptor(\Entity.date, order: order)
             }
         }
 

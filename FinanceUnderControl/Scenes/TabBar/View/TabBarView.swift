@@ -39,7 +39,7 @@ struct TabBarView: View {
             .background(tabBarBackground)
             .displayIf(!isKeyboardPresented)
         }
-        .background(Color.backgroundMain)
+        .background(Color.backgroundPrimary)
         .onReceive(NotificationCenter.keyboardWillShow) { _ in isKeyboardPresented = true }
         .onReceive(NotificationCenter.keyboardDidHide) { _ in isKeyboardPresented = false }
         .popup(appController.popupModel)

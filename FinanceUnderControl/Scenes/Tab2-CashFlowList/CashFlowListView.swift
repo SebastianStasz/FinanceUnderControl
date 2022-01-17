@@ -11,17 +11,39 @@ import Shared
 import SSUtils
 
 struct CashFlowListView: View {
-    @FetchRequest(sortDescriptors: [CashFlowEntity.Sort.byName(.forward).nsSortDescriptor])
-    private var cashFlows: FetchedResults<CashFlowEntity>
+    @FetchRequest(sortDescriptors: [CashFlowEntity.Sort.byName(.forward).nsSortDescriptor]
+    ) private var cashFlows: FetchedResults<CashFlowEntity>
 
     @State private var cashFlowSelection: CashFlowSelection = .all
     @State private var isFilterViewPresented = false
 
+    private var cashFlowByDate: [Date: [CashFlowEntity]] {
+        Dictionary(grouping: cashFlows, by: { $0.date.byMonthAndYear })
+    }
+
+    private var cashFlowDates: [Date] {
+        cashFlowByDate.keys.sorted { $0 > $1 }
+    }
+
     var body: some View {
-        ForEach(cashFlows) {
-            BaseRowView(text1: $0.name)
+        List(cashFlowDates) { section in
+            Section(header: Text(section.string(format: "MMMM YYYY"))) {
+                ForEach(cashFlowByDate[section]!) { cashFlow in
+                    VStack(spacing: .medium) {
+                         HStack(spacing: .medium) {
+                             Text(cashFlow.name)
+                             Spacer()
+                             Text(cashFlow.date.string(format: .medium))
+                         }
+                        Text(cashFlow.value.asString)
+                        
+                     }
+                     .background(Color.backgroundSecondary)
+                     .padding(.bottom, .small)
+                 }
+            }
         }
-        .baseListStyle(title: "CashFlows", isEmpty: cashFlows.isEmpty)
+        .background(Color.backgroundPrimary)
         .toolbar { toolbarContent }
         .sheet(isPresented: $isFilterViewPresented) { CashFlowFilterView(cashFlowSelection: $cashFlowSelection) }
         .onChange(of: cashFlowSelection) { newValue in

@@ -11,6 +11,13 @@ enum ColorDesign: String {
     case accentGray = "Accent gray"
     case basic = "Basic"
 
+    enum Background: String, ColorAsset, CaseIterable, Identifiable {
+        case background_primary
+        case background_secondary
+
+        var id: String { rawValue }
+    }
+
     enum AccentGray: String, ColorAsset, CaseIterable, Identifiable {
         case gray_medium
 
