@@ -12,9 +12,10 @@ struct CashFlowFilterView: View {
     @Binding var cashFlowSelection: CashFlowSelection
 
     var body: some View {
-        Form {
+        VStack {
             SegmentedPicker("Cash flow type", selection: $cashFlowSelection, elements: CashFlowSelection.allCases)
         }
+        .asSheet(title: "Filter")
     }
 }
 

@@ -12,7 +12,6 @@ import SSUtils
 
 struct ExchangeRateListView: View {
 
-    @Environment(\.dismiss) var dismiss
     @ObservedObject var viewModel: ExchangeRateListVM
 
     var body: some View {
@@ -20,13 +19,8 @@ struct ExchangeRateListView: View {
             BaseRowView(code: $0.code, info: $0.rateValue.description)
         }
         .baseListStyle(title: "Currencies", isEmpty: viewModel.exchangeRates.isEmpty)
-        .toolbar { toolbarContent }
         .searchable(text: $viewModel.searchText)
-        .embedInNavigationView(title: "Base: \(viewModel.baseCurrencyCode)", displayMode: .inline)
-    }
-
-    private var toolbarContent: some ToolbarContent {
-        Toolbar.trailing(systemImage: SFSymbol.close.name, action: dismiss.callAsFunction)
+        .asSheet(title: "Base: \(viewModel.baseCurrencyCode)")
     }
 }
 
