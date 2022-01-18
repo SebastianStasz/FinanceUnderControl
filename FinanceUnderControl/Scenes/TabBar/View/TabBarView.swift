@@ -14,17 +14,32 @@ struct TabBarView: View {
     @StateObject private var viewModel = TabBarVM()
     @StateObject private var appController = AppController()
     @State private var isKeyboardPresented = false
+    private let testView: AnyView?
 
     init() {
         UITabBar.appearance().isHidden = true
+        testView = nil
     }
+
+    #if DEBUG
+
+    init(view: AnyView) {
+        UITabBar.appearance().isHidden = true
+        testView = view
+    }
+
+    #endif
 
     var body: some View {
         VStack(spacing: 0) {
             // TabView
             TabView(selection: $viewModel.selectedTab ) {
                 ForEach(viewModel.availableTabs) { tab in
-                    tab.embedInNavigationView(title: tab.name).tag(tab)
+                    if let view = testView {
+                        view
+                    } else {
+                        tab.embedInNavigationView(title: tab.name).tag(tab)
+                    }
                 }
             }
 

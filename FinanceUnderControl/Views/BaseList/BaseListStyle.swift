@@ -1,37 +1,51 @@
 //
-//  BaseListStyle.swift
+//  BaseList.swift
 //  FinanceUnderControl
 //
 //  Created by Sebastian Staszczyk on 01/12/2021.
 //
 
+import FinanceCoreData
 import SwiftUI
 
-struct BaseListStyle: ViewModifier {
+struct BaseList<T: Identifiable, RowView: View>: View {
 
     let title: String
-    let isEmpty: Bool
     let emptyMessage: String?
-    let titleDisplayMode: NavigationBarItem.TitleDisplayMode
+    let elements: [T]
+    let rowView: (T) -> RowView
+    let onDelete: ((IndexSet) -> Void)?
 
-    func body(content: Content) -> some View {
-        List { content }
-            .emptyState(isEmpty: isEmpty, message: emptyMessage)
-            .navigationBarTitleDisplayMode(titleDisplayMode)
-            .navigationTitle(title)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+    var body: some View {
+        List {
+            ForEach(elements, content: rowView)
+                .onDelete(perform: onDelete)
+        }
+        .emptyState(isEmpty: elements.isEmpty, message: emptyMessage)
+        .navigationTitle(title)
     }
-}
 
-extension View {
-    func baseListStyle(title: String,
-                       isEmpty: Bool,
-                       emptyMessage: String? = nil,
-                       titleDisplayMode: NavigationBarItem.TitleDisplayMode = .automatic
-    ) -> some View {
-        modifier(BaseListStyle(title: title,
-                               isEmpty: isEmpty,
-                               emptyMessage: emptyMessage,
-                               titleDisplayMode: titleDisplayMode))
+    // MARK: - Initializers
+
+    init(_ title: String,
+         emptyMessage: String? = nil,
+         elements: [T],
+         @ViewBuilder rowView: @escaping (T) -> RowView,
+         onDelete: ((IndexSet) -> Void)? = nil
+    ) {
+        self.title = title
+        self.emptyMessage = emptyMessage
+        self.elements = elements
+        self.rowView = rowView
+        self.onDelete = onDelete
+    }
+
+    init(_ title: String,
+         emptyMessage: String? = nil,
+         elements: FetchedResults<T>,
+         @ViewBuilder rowView: @escaping (T) -> RowView,
+         onDelete: ((IndexSet) -> Void)? = nil
+    ) where T: Entity {
+        self.init(title, emptyMessage: emptyMessage, elements: elements.map{$0}, rowView: rowView, onDelete: onDelete)
     }
 }

@@ -30,3 +30,15 @@ public extension Entity where Sort.Entity == Self {
         return request
     }
 }
+
+public extension Array where Element == EntityFilter {
+    var orNSPredicate: NSPredicate {
+        let predicates = self.compactMap { $0.nsPredicate }
+        return NSCompoundPredicate(type: .or, subpredicates: predicates)
+    }
+
+    var andNSPredicate: NSPredicate {
+        let predicates = self.compactMap { $0.nsPredicate }
+        return NSCompoundPredicate(type: .and, subpredicates: predicates)
+    }
+}

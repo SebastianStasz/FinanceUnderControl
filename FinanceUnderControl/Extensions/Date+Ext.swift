@@ -8,7 +8,7 @@
 import Foundation
 
 extension Date {
-    var byMonthAndYear: Date {
+    var monthAndYearComponents: Date {
         let components = Calendar.current.dateComponents([.year, .month], from: self)
         return Calendar.current.date(from: components)!
     }

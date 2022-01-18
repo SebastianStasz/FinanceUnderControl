@@ -16,4 +16,8 @@ struct ValidationHelper {
             .debounce(for: 0.3, scheduler: DispatchQueue.main)
             .lowerCaseDiacriticInsensitive()
     }
+
+    static func search(_ text: String) -> String {
+        text.lowerCaseDiacriticInsensitive
+    }
 }

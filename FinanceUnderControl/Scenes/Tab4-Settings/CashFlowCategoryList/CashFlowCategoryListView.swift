@@ -11,19 +11,17 @@ import SSUtils
 import SwiftUI
 
 struct CashFlowCategoryListView: View {
-
     @EnvironmentObject var appController: AppController
-
-    @State private var isAlertPresented = false
     @FetchRequest private var categories: FetchedResults<CashFlowCategoryEntity>
+    @State private var isAlertPresented = false
     private let type: CashFlowCategoryType
 
     var body: some View {
-        ForEach(categories) {
+        BaseList(type.name, elements: categories) {
             BaseRowView(text1: $0.name)
+        } onDelete: {
+            deleteCategory(at: $0)
         }
-        .onDelete(perform: deleteCategory)
-        .baseListStyle(title: type.name, isEmpty: categories.isEmpty)
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
     }
@@ -47,6 +45,8 @@ struct CashFlowCategoryListView: View {
             isAlertPresented = true
         }
     }
+
+    // MARK: - Initializer
 
     init(type: CashFlowCategoryType) {
         self.type = type

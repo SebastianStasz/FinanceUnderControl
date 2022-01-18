@@ -15,12 +15,15 @@ struct ExchangeRateListView: View {
     @ObservedObject var viewModel: ExchangeRateListVM
 
     var body: some View {
-        ForEach(viewModel.exchangeRates) {
+        BaseList(title, elements: viewModel.exchangeRates) {
             BaseRowView(code: $0.code, info: $0.rateValue.description)
         }
-        .baseListStyle(title: "Currencies", isEmpty: viewModel.exchangeRates.isEmpty)
         .searchable(text: $viewModel.searchText)
-        .asSheet(title: "Base: \(viewModel.baseCurrencyCode)")
+        .asSheet(title: title)
+    }
+
+    private var title: String {
+        "Base: \(viewModel.baseCurrencyCode)"
     }
 }
 

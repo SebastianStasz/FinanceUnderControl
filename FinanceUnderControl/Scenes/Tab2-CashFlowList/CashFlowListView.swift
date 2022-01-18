@@ -18,7 +18,7 @@ struct CashFlowListView: View {
     @State private var isFilterViewPresented = false
 
     private var cashFlowByDate: [Date: [CashFlowEntity]] {
-        Dictionary(grouping: cashFlows, by: { $0.date.byMonthAndYear })
+        Dictionary(grouping: cashFlows, by: { $0.date.monthAndYearComponents })
     }
 
     private var cashFlowDates: [Date] {

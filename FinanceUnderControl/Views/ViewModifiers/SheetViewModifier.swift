@@ -1,5 +1,5 @@
 //
-//  SheetView.swift
+//  SheetViewModifier.swift
 //  FinanceUnderControl
 //
 //  Created by Sebastian Staszczyk on 17/01/2022.
@@ -9,7 +9,7 @@ import SwiftUI
 import SSUtils
 import Shared
 
-private struct SheetView: ViewModifier {
+private struct SheetViewModifier: ViewModifier {
 
     @Environment(\.dismiss) private var dismiss
     let title: String
@@ -27,6 +27,6 @@ private struct SheetView: ViewModifier {
 
 extension View {
     func asSheet(title: String) -> some View {
-        modifier(SheetView(title: title))
+        modifier(SheetViewModifier(title: title))
     }
 }

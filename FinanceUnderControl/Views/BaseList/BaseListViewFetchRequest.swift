@@ -34,7 +34,6 @@ struct BaseListViewFetchRequest<T: Entity, Content: View>: View {
     }
 
     var body: some View {
-        ForEach(items, content: rowView)
-            .baseListStyle(title: "Currencies", isEmpty: false)
+        BaseList(title, elements: itemsArray, rowView: rowView)
     }
 }

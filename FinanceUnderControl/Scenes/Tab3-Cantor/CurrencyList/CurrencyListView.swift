@@ -10,9 +10,15 @@ import FinanceCoreData
 import SwiftUI
 
 struct CurrencyListView: PickerList {
+    typealias Sort = CurrencyEntity.Sort
+    typealias Filter = CurrencyEntity.Filter
 
     @Environment(\.dismiss) var dismiss
-    @StateObject private var viewModel = CurrencyListVM()
+    @FetchRequest(sortDescriptors: [Sort.byCode(.forward).nsSortDescriptor]
+    ) private var currencies: FetchedResults<CurrencyEntity>
+
+    @State private var currenciesProvider = CurrenciesProvider()
+    @State private var searchText = ""
 
     var selection: Binding<CurrencyEntity?>
     private let buttonType: BaseRowButtonType
@@ -23,12 +29,12 @@ struct CurrencyListView: PickerList {
     }
 
     var body: some View {
-        BaseListViewFetchRequest(items: viewModel.currencies, title: "Currencies") {
+        BaseList("Currencies", elements: currencies) {
             BaseRowView(currency: $0)
                 .baseRowView(buttonType: getButtonType(for: $0), action: selectCurrency($0))
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer)
+        .searchable(text: $searchText, placement: .navigationBarDrawer)
+        .onChange(of: searchText, perform: updatePredicate)
     }
 
     private func getButtonType(for currency: CurrencyEntity) -> BaseRowButtonType {
@@ -40,6 +46,11 @@ struct CurrencyListView: PickerList {
     private func selectCurrency(_ currenyEntity: CurrencyEntity) {
         selection.wrappedValue = currenyEntity
         dismiss()
+    }
+
+    private func updatePredicate(for text: String) {
+        let text = ValidationHelper.search(text)
+        currencies.nsPredicate = text .isEmpty ? nil : [Filter.codeContains(text), Filter.nameContains(text)].orNSPredicate
     }
 }
 

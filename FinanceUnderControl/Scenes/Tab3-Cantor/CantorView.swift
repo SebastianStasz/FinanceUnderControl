@@ -49,10 +49,10 @@ struct CantorView: View {
             }
         }
         .toolbar { toolbarContent }
+        .infoAlert(isPresented: $isInfoAlertPresented, message: "Exchange rates data provided by: \"exchangerate.host\"")
         .sheet(item: $exchangeRatesForCurrency) {
             ExchangeRateListView(viewModel: .init(currencyEntity: $0))
         }
-        .infoAlert(isPresented: $isInfoAlertPresented, message: "Exchange rates data provided by: \"exchangerate.host\"")
     }
 
     private var toolbarContent: some ToolbarContent {
