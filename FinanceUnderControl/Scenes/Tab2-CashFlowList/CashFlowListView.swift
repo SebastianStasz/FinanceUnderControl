@@ -14,7 +14,7 @@ struct CashFlowListView: View {
     @FetchRequest(sortDescriptors: [CashFlowEntity.Sort.byName(.forward).nsSortDescriptor]
     ) private var cashFlows: FetchedResults<CashFlowEntity>
 
-    @State private var cashFlowSelection: CashFlowSelection = .all
+    @State private var cashFlowFilter = CashFlowFilter()
     @State private var isFilterViewPresented = false
 
     private var cashFlowByDate: [Date: [CashFlowEntity]] {
@@ -45,10 +45,10 @@ struct CashFlowListView: View {
         }
         .background(Color.backgroundPrimary)
         .toolbar { toolbarContent }
-        .sheet(isPresented: $isFilterViewPresented) { CashFlowFilterView(cashFlowSelection: $cashFlowSelection) }
-        .onChange(of: cashFlowSelection) { newValue in
-            cashFlows.nsPredicate = newValue == .all ? nil : CashFlowEntity.Filter.byType(newValue.type!).nsPredicate
-        }
+        .sheet(isPresented: $isFilterViewPresented) { CashFlowFilterView(cashFlowFilter: $cashFlowFilter) }
+//        .onChange(of: cashFlowSelection) { newValue in
+//            cashFlows.nsPredicate = newValue == .all ? nil : CashFlowEntity.Filter.byType(newValue.type!).nsPredicate
+//        }
     }
 
     private var toolbarContent: some ToolbarContent {

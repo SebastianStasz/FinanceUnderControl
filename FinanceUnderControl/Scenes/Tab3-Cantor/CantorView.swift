@@ -17,6 +17,12 @@ struct CantorView: View {
     @State private var exchangeRatesForCurrency: CurrencyEntity?
     @State private var isInfoAlertPresented = false
 
+    private var noExchangeRateMessage: String {
+        viewModel.isExchangeRateData
+            ? "Fill in the form to display the exchange rate."
+            : "Failed to load exchange rates. Please try again later."
+    }
+
     var body: some View {
         Form {
             Section(header: Text("Exchange rate")) {
@@ -24,7 +30,7 @@ struct CantorView: View {
                     if let exchangeRate = viewModel.exchangeRateValue {
                         Text(exchangeRate)
                     } else {
-                        Text("Fill in the form to display the exchange rate.")
+                        Text(noExchangeRateMessage)
                             .font(.subheadline)
                             .opacity(0.5)
                     }

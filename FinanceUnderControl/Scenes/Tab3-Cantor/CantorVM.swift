@@ -18,6 +18,13 @@ final class CantorVM: ObservableObject {
     @Published private(set) var exchangeRateValue: String?
     @Published private(set) var exchangedMoney: String?
 
+    var isExchangeRateData: Bool {
+        guard let secondaryCurrencyCode = currencySelector.secondaryCurrency?.code,
+              let primaryCurrency = currencySelector.primaryCurrency
+        else { return false }
+        return primaryCurrency.exchangeRates.contains(where: { $0.code == secondaryCurrencyCode })
+    }
+
     init() {
         let currencySettingsOutput = currencySettings.bind()
         currencySettingsOutput.primaryCurrency

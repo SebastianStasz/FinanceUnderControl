@@ -23,6 +23,10 @@ struct SettingsView: View {
                 ListPicker(title: "Primary:", listView: CurrencyListView(selection: $viewModel.primaryCurrency))
                 ListPicker(title: "Secondary:", listView: CurrencyListView(selection: $viewModel.secondaryCurrency))
             }
+
+            Section("Debug") {
+                NavigationLink("Design system", destination: DesignSystemView())
+            }
         }
     }
 }

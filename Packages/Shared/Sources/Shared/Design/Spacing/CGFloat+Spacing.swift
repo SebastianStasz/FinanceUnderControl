@@ -21,6 +21,9 @@ public extension CGFloat {
     /// Spacing of 24
     static let big = Spacing.big.rawValue
 
+    /// Spacing of 32
+    static let huge = Spacing.huge.rawValue
+
     /// Radius of 10
     static let radiusBase = CornerRadius.base.rawValue
 }
