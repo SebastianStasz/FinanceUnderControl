@@ -7,6 +7,7 @@
 
 import CoreData
 import Foundation
+import SwiftUI
 
 @objc(CashFlowCategoryEntity) public class CashFlowCategoryEntity: NSManagedObject, Entity {
     @NSManaged private var type_: String
@@ -38,6 +39,12 @@ public extension CashFlowCategoryEntity {
         guard let context = self.getContext(), self.cashFlows.isEmpty else { return false }
         context.delete(self)
         return true
+    }
+
+    static func fetchRequest(forType type: CashFlowCategoryType) -> FetchRequest<CashFlowCategoryEntity> {
+        let sort = [CashFlowCategoryEntity.Sort.byName(.forward).nsSortDescriptor]
+        let filter = CashFlowCategoryEntity.Filter.typeIs(type).nsPredicate
+        return FetchRequest<CashFlowCategoryEntity>(sortDescriptors: sort, predicate: filter)
     }
 }
 

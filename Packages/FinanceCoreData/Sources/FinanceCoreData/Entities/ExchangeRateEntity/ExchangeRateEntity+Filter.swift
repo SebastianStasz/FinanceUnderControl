@@ -12,7 +12,7 @@ public extension ExchangeRateEntity {
     enum Filter: EntityFilter {
         case byCode(String)
 
-        public var nsPredicate: NSPredicate? {
+        public var nsPredicate: NSPredicate {
             switch self {
             case let .byCode(code):
                 return NSPredicate(format: "code == %@", code)

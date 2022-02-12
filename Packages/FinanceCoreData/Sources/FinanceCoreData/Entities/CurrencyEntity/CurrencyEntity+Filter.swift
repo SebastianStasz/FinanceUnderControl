@@ -14,7 +14,7 @@ public extension CurrencyEntity {
         case codeContains(String)
         case nameContains(String)
 
-        public var nsPredicate: NSPredicate? {
+        public var nsPredicate: NSPredicate {
             switch self {
             case let .codeIs(code):
                 return NSPredicate(format: "code == %@", code)

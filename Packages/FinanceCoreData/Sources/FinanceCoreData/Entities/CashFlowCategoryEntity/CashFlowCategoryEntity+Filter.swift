@@ -12,7 +12,7 @@ public extension CashFlowCategoryEntity {
     enum Filter: EntityFilter {
         case typeIs(CashFlowCategoryType)
 
-        public var nsPredicate: NSPredicate? {
+        public var nsPredicate: NSPredicate {
             switch self {
             case let .typeIs(type):
                 return NSPredicate(format: "type_ == %@", type.rawValue)

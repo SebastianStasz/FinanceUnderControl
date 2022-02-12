@@ -31,14 +31,32 @@ public extension Entity where Sort.Entity == Self {
     }
 }
 
-public extension Array where Element == EntityFilter {
+public extension Array where Element == EntityFilter? {
     var orNSPredicate: NSPredicate {
-        let predicates = self.compactMap { $0.nsPredicate }
-        return NSCompoundPredicate(type: .or, subpredicates: predicates)
+        map { $0?.nsPredicate }.orNSPredicate
     }
 
     var andNSPredicate: NSPredicate {
-        let predicates = self.compactMap { $0.nsPredicate }
-        return NSCompoundPredicate(type: .and, subpredicates: predicates)
+        map { $0?.nsPredicate }.andNSPredicate
+    }
+}
+
+public extension Array where Element == NSPredicate? {
+    var orNSPredicate: NSPredicate {
+        compactMap { $0 }.orNSPredicate
+    }
+
+    var andNSPredicate: NSPredicate {
+        compactMap { $0 }.andNSPredicate
+    }
+}
+
+public extension Array where Element == NSPredicate {
+    var orNSPredicate: NSPredicate {
+        NSCompoundPredicate(type: .or, subpredicates: self)
+    }
+
+    var andNSPredicate: NSPredicate {
+        NSCompoundPredicate(type: .and, subpredicates: self)
     }
 }

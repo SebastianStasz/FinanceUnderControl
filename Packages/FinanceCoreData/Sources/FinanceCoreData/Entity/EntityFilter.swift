@@ -8,5 +8,5 @@
 import Foundation
 
 public protocol EntityFilter {
-    var nsPredicate: NSPredicate? { get }
+    var nsPredicate: NSPredicate { get }
 }
