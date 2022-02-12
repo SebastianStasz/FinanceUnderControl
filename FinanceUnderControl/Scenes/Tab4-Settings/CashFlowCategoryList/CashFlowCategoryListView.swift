@@ -50,9 +50,7 @@ struct CashFlowCategoryListView: View {
 
     init(type: CashFlowCategoryType) {
         self.type = type
-        let sort = [CashFlowCategoryEntity.Sort.byName(.forward).nsSortDescriptor]
-        let filter = CashFlowCategoryEntity.Filter.typeIs(type).nsPredicate
-        _categories = FetchRequest<CashFlowCategoryEntity>(sortDescriptors: sort, predicate: filter)
+        _categories = CashFlowCategoryEntity.fetchRequest(forType: type)
     }
 }
 

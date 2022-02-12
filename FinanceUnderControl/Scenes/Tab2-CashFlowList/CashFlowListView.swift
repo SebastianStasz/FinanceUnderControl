@@ -11,11 +11,31 @@ import Shared
 import SSUtils
 
 struct CashFlowListView: View {
-    @FetchRequest(sortDescriptors: [CashFlowEntity.Sort.byName(.forward).nsSortDescriptor]
+    @FetchRequest(sortDescriptors: [CashFlowEntity.Sort.byDate(.reverse).nsSortDescriptor]
     ) private var cashFlows: FetchedResults<CashFlowEntity>
 
-    @State private var cashFlowFilter = CashFlowFilter()
+    @StateObject private var viewModel = CashFlowListVM()
     @State private var isFilterViewPresented = false
+
+    var body: some View {
+        List(cashFlowDates) { date in
+            Section(date.stringMonthAndYear) {
+                ForEach(cashFlowByDate[date]!, content: CashFlowPanelView.init)
+            }
+        }
+        .listStyle(.insetGrouped)
+        .background(Color.backgroundPrimary)
+        .searchable(text: $viewModel.searchText)
+        .toolbar { toolbarContent }
+        .sheet(isPresented: $isFilterViewPresented) {
+            CashFlowFilterView(cashFlowFilter: $viewModel.cashFlowFilter)
+        }
+        .onChange(of: viewModel.cashFlowPredicate) { cashFlows.nsPredicate = $0 }
+    }
+
+    private var toolbarContent: some ToolbarContent {
+        Toolbar.trailing(systemImage: SFSymbol.filter.name, action: presentFilterView)
+    }
 
     private var cashFlowByDate: [Date: [CashFlowEntity]] {
         Dictionary(grouping: cashFlows, by: { $0.date.monthAndYearComponents })
@@ -23,36 +43,6 @@ struct CashFlowListView: View {
 
     private var cashFlowDates: [Date] {
         cashFlowByDate.keys.sorted { $0 > $1 }
-    }
-
-    var body: some View {
-        List(cashFlowDates) { section in
-            Section(header: Text(section.string(format: "MMMM YYYY"))) {
-                ForEach(cashFlowByDate[section]!) { cashFlow in
-                    VStack(spacing: .medium) {
-                         HStack(spacing: .medium) {
-                             Text(cashFlow.name)
-                             Spacer()
-                             Text(cashFlow.date.string(format: .medium))
-                         }
-                        Text(cashFlow.value.asString)
-                        
-                     }
-                     .background(Color.backgroundSecondary)
-                     .padding(.bottom, .small)
-                 }
-            }
-        }
-        .background(Color.backgroundPrimary)
-        .toolbar { toolbarContent }
-        .sheet(isPresented: $isFilterViewPresented) { CashFlowFilterView(cashFlowFilter: $cashFlowFilter) }
-//        .onChange(of: cashFlowSelection) { newValue in
-//            cashFlows.nsPredicate = newValue == .all ? nil : CashFlowEntity.Filter.byType(newValue.type!).nsPredicate
-//        }
-    }
-
-    private var toolbarContent: some ToolbarContent {
-        Toolbar.trailing(systemImage: SFSymbol.filter.name, action: presentFilterView)
     }
 
     // MARK: - Interactions

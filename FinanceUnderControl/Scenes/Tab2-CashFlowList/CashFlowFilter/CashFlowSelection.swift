@@ -8,7 +8,7 @@
 import FinanceCoreData
 import Foundation
 
-enum CashFlowSelection: String, CaseIterable {
+enum CashFlowSelection: String {
     case all
     case expenses
     case incomes
@@ -36,3 +36,6 @@ extension CashFlowSelection: Pickerable {
 extension CashFlowSelection: Identifiable {
     var id: String { rawValue }
 }
+
+extension CashFlowSelection: Equatable {}
+extension CashFlowSelection: CaseIterable {}
