@@ -14,6 +14,16 @@ public extension View {
             .foregroundColor(.white)
     }
 
+    var textBodyMedium: some View {
+        self.font(.callout.weight(.medium))
+            .foregroundColor(.basicPrimaryInverted)
+    }
+
+    var textBodyNormal: some View {
+        self.font(.callout.weight(.regular))
+            .foregroundColor(.grayMedium)
+    }
+
     var currencySymbol: some View {
         self.font(.system(.body, design: .monospaced).weight(.medium))
             .textCase(.uppercase)

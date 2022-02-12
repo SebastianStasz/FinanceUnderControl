@@ -24,6 +24,9 @@ public extension Color {
     // MARK: - Basic
 
     static let basicPrimary = Basic.basic_primary.color
-
+    static let basicPrimaryInverted = Basic.basic_primary_inverted.color
     static let basicSecondary = Basic.basic_secondary.color
+
+    static let accentRed = Color.red
+    static let accentGreen = Color.green
 }

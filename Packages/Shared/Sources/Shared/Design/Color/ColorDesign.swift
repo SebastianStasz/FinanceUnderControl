@@ -26,6 +26,7 @@ enum ColorDesign: String {
 
     enum Basic: String, ColorAsset, CaseIterable, Identifiable {
         case basic_primary
+        case basic_primary_inverted
         case basic_secondary
 
         var id: String { rawValue }
