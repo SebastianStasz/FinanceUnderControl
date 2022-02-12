@@ -39,6 +39,7 @@ struct LabeledPicker<T: Pickerable>: View {
                     }
             }
         }
+        .formField()
     }
 
     init(_ title: String, elements: [T], selection: Binding<T?>) {

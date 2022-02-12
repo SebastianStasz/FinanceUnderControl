@@ -29,7 +29,7 @@ struct LabeledToggle: View {
         }
         .padding(.small)
         .background(Color.backgroundSecondary)
-        .cornerRadius(.radiusBase)
+        .cornerRadius(.base)
     }
 }
 

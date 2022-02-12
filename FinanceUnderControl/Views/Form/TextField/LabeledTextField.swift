@@ -29,6 +29,7 @@ struct LabeledTextField<ViewModel: InputVM>: View {
     var body: some View {
         HStack(spacing: 0) {
             Text(title)
+            Text(viewModel.text)
 
             TextField(title, text: $viewModel.text, prompt: prompt)
                 .multilineTextAlignment(.trailing)

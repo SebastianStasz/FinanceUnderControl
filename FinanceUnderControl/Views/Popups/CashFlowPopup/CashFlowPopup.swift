@@ -18,11 +18,14 @@ struct CashFlowPopup: View {
     let type: CashFlowCategoryType
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             BaseTextField<TextInputVM>(title: "Name", input: $viewModel.nameInput)
             BaseTextField<NumberInputVM>(title: "Value", input: $viewModel.valueInput)
             LabeledPicker("Currency:", elements: currencies, selection: $viewModel.cashFlowModel.currency)
             DatePicker("\(type.name) date:", selection: $viewModel.cashFlowModel.date, displayedComponents: [.date])
+                .padding(.small)
+                .background(Color.backgroundSecondary)
+                .cornerRadius(.base)
             LabeledPicker("Category:", elements: categories, selection: $viewModel.cashFlowModel.category)
         }
         .asPopup(title: type.name, isActionDisabled: viewModel.cashFlowModel.cashFlowData.isNil, action: createCashFlow)
@@ -39,11 +42,9 @@ struct CashFlowPopup: View {
 
     init(for type: CashFlowCategoryType) {
         self.type = type
-        let categoriesSort = [CashFlowCategoryEntity.Sort.byName(.forward).nsSortDescriptor]
         let currenciesSort = [CurrencyEntity.Sort.byCode(.forward).nsSortDescriptor]
-        let filter = CashFlowCategoryEntity.Filter.typeIs(type).nsPredicate
         _currencies = FetchRequest<CurrencyEntity>(sortDescriptors: currenciesSort)
-        _categories = FetchRequest<CashFlowCategoryEntity>(sortDescriptors: categoriesSort, predicate: filter)
+        _categories = CashFlowCategoryEntity.fetchRequest(forType: type)
     }
 }
 

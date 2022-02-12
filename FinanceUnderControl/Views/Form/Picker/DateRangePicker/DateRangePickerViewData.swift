@@ -12,9 +12,11 @@ struct DateRangePickerViewData {
     var startDate: Date
     var endDate: Date
 
-    init(isOn: Bool = false, startDate: Date = Date(), endDate: Date = Date()) {
+    init(isOn: Bool = false, startDate: Date? = nil, endDate: Date = Date()) {
         self.isOn = isOn
-        self.startDate = startDate
+        self.startDate = startDate ?? Calendar.current.date(byAdding: .month, value: -1, to: endDate) ?? endDate
         self.endDate = endDate
     }
 }
+
+extension DateRangePickerViewData: Equatable {}

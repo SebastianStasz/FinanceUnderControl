@@ -23,11 +23,8 @@ struct PopupViewModifier: ViewModifier {
             content
 
             HStack(spacing: .medium) {
-                Button("Cancel", action: dismissPopup)
-                    .buttonStyle(BaseButtonStyle(role: .cancel))
-
-                Button("Create", action: performAction)
-                    .buttonStyle(BaseButtonStyle(role: .action))
+                BaseButton("Cancel", role: .cancel, action: dismissPopup)
+                BaseButton("Create", role: .action, action: performAction)
                     .disabled(isActionDisabled)
             }
             .padding(.top, .medium)
@@ -35,7 +32,7 @@ struct PopupViewModifier: ViewModifier {
         .padding(.medium)
         .frame(width: UIScreen.screenWidth - 2 * Spacing.medium.rawValue)
         .background(Color.backgroundSecondary)
-        .cornerRadius(.radiusBase)
+        .cornerRadius(.base)
     }
 
     private func performAction() {

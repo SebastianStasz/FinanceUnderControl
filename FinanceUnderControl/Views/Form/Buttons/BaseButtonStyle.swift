@@ -19,7 +19,7 @@ struct BaseButtonStyle: ButtonStyle {
             .padding(.small)
             .background(role.background)
             .foregroundColor(.white)
-            .cornerRadius(.radiusBase)
+            .cornerRadius(.base)
             .opacity(configuration.isPressed ? 0.5 : 1)
             .opacity(isEnabled ? 1 : 0.3)
     }

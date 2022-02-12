@@ -8,21 +8,24 @@
 import SwiftUI
 
 enum DesignSystem: String, CaseIterable {
-    case textField = "Text Field"
-    case toggle = "Toggle"
-    case picker = "Picker"
+    case buttons = "Buttons"
+    case toggles = "Toggles"
+    case pickers = "Pickers"
+    case textFields = "Text Fields"
 }
 
 extension DesignSystem: View {
     var body: some View {
         Group {
             switch self {
-            case .textField:
-                TextFieldDSView()
-            case .toggle:
+            case .buttons:
+                ButtonDSView()
+            case .toggles:
                 ToggleDSView()
-            case .picker:
+            case .pickers:
                 PickerDSView()
+            case .textFields:
+                TextFieldDSView()
             }
         }
     }

@@ -19,17 +19,17 @@ struct DateRangePicker: View {
 
             if viewData.isOn {
                 VStack(spacing: .micro) {
-                    DatePicker("Start date", selection: $viewData.startDate, displayedComponents: .date)
-                    DatePicker("End date", selection: $viewData.endDate, displayedComponents: .date)
+                    DatePicker("Start date", selection: $viewData.startDate, in: ...viewData.endDate, displayedComponents: .date)
+                    DatePicker("End date", selection: $viewData.endDate, in: viewData.startDate..., displayedComponents: .date)
                 }
+                .zIndex(-1)
                 .padding(.horizontal, .small)
                 .padding(.bottom, .small)
-                .zIndex(-1)
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
         .background(Color.backgroundSecondary)
-        .cornerRadius(.radiusBase)
+        .cornerRadius(.base)
     }
 
     init(_ title: String, viewData: Binding<DateRangePickerViewData>) {
