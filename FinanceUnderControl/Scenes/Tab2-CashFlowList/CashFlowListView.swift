@@ -30,7 +30,9 @@ struct CashFlowListView: View {
         .sheet(isPresented: $isFilterViewPresented) {
             CashFlowFilterView(cashFlowFilter: $viewModel.cashFlowFilter)
         }
-        .onChange(of: viewModel.cashFlowPredicate) { cashFlows.nsPredicate = $0 }
+        .onChange(of: viewModel.cashFlowPredicate) {
+            cashFlows.nsPredicate = $0
+        }
     }
 
     private var toolbarContent: some ToolbarContent {
