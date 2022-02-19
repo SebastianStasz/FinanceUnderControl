@@ -14,7 +14,7 @@ struct ListPickerField: View {
     let value: String
 
     var body: some View {
-        HStack(spacing: 0) {
+        HStack {
             Text(title)
             Spacer()
             Text(value)

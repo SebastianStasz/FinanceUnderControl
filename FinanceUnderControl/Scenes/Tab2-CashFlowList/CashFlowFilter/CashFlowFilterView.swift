@@ -39,7 +39,7 @@ struct CashFlowFilterView: View {
                 DateRangePicker("Date", viewData: $viewModel.cashFlowFilter.datePickerViewData)
             }
         }
-        .stackedButtons(primaryButton: .init("Apply", action: viewModel.applyFilters),
+        .horizontalButtonsScroll(primaryButton: .init("Apply", action: viewModel.applyFilters),
                         secondaryButton: .init("Reset", action: viewModel.resetFilters)
         )
         .onAppear { viewModel.onAppear(cashFlowFilter: cashFlowFilter) }

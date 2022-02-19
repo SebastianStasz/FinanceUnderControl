@@ -23,7 +23,7 @@ struct BaseRowView: View {
     var body: some View {
         HStack(spacing: 12) {
             if isCurrencySymbol {
-                Text(text1).currencySymbol
+                Text(text1, style: .currency)
             } else {
                 Text(text1)
             }

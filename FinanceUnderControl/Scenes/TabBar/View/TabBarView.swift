@@ -31,7 +31,7 @@ struct TabBarView: View {
     #endif
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack {
             // TabView
             TabView(selection: $viewModel.selectedTab ) {
                 ForEach(viewModel.availableTabs) { tab in
@@ -44,7 +44,7 @@ struct TabBarView: View {
             }
 
             // TabBar
-            HStack(spacing: 0) {
+            HStack {
                 ForEach(viewModel.availableTabs) { tab in
                     if isMiddleElement(tab.id) { buttonShowAddingButtons }
                     buttonSwitchToTab(tab)

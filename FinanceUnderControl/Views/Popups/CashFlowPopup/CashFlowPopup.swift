@@ -18,7 +18,7 @@ struct CashFlowPopup: View {
     let type: CashFlowCategoryType
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack {
             BaseTextField<TextInputVM>(title: "Name", input: $viewModel.nameInput)
             BaseTextField<NumberInputVM>(title: "Value", input: $viewModel.valueInput)
             LabeledPicker("Currency:", elements: currencies, selection: $viewModel.cashFlowModel.currency)

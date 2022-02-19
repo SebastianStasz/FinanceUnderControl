@@ -15,14 +15,14 @@ struct BaseTextField<ViewModel: InputVM>: View {
     @Binding private var input: Input
 
     private let title: String
-    private let prompt: Text?
+    private let prompt: SwiftUI.Text?
 
     public init(title: String,
                 input: Binding<Input>,
                 prompt: String? = nil) {
         self._input = input
         self.title = title
-        self.prompt = prompt != nil ? Text(prompt!) : nil
+        self.prompt = prompt != nil ? SwiftUI.Text(prompt!) : nil
     }
 
     var body: some View {

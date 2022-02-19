@@ -16,12 +16,10 @@ struct CashFlowPanelView: View {
     var body: some View {
         VStack(spacing: .medium) {
             HStack(alignment: .top, spacing: .micro) {
-                Text(cashFlow.name)
-                    .textBodyMedium
+                Text(cashFlow.name, style: .bodyMedium)
                     .lineLimit(2)
                 Spacer()
                 Text(cashFlow.date.string(format: "d MMM YYYY"))
-                    .textBodyNormal
             }
             HStack(alignment: .bottom) {
                 Text(cashFlow.category.name)
@@ -30,7 +28,7 @@ struct CashFlowPanelView: View {
 
                 Spacer()
 
-                Text("\(categoryType.symbol) \(cashFlow.value.asString) \(cashFlow.currency?.code ?? "")")
+                SwiftUI.Text("\(categoryType.symbol) \(cashFlow.value.asString) \(cashFlow.currency?.code ?? "")")
                     .foregroundColor(categoryType.color)
                     .font(.callout)
                     .fontWeight(.medium)
