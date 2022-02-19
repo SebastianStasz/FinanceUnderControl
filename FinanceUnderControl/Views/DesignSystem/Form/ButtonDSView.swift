@@ -10,10 +10,10 @@ import SwiftUI
 struct ButtonDSView: View {
     var body: some View {
         Group {
-            BaseButton("Button title", role: .action, action: {})
+            BaseButton("Button title", role: .primary, action: {})
                 .designSystemComponent("Base Button - action")
 
-            BaseButton("Button title", role: .cancel, action: {})
+            BaseButton("Button title", role: .secondary, action: {})
                 .designSystemComponent("Base Button - cancel")
         }
         .designSystemView("Buttons")
