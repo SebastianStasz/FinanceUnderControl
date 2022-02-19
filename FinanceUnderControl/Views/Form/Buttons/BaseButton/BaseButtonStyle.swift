@@ -6,15 +6,17 @@
 //
 
 import SwiftUI
+import Shared
+import SSUtils
 
 struct BaseButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) var isEnabled
 
-    let role: ButtonRole
+    let role: BaseButton.Role
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .textHeadlineBig
+            .textStyle(.headlineBig)
             .infiniteWidth()
             .padding(.small)
             .background(role.background)
@@ -24,3 +26,4 @@ struct BaseButtonStyle: ButtonStyle {
             .opacity(isEnabled ? 1 : 0.3)
     }
 }
+
