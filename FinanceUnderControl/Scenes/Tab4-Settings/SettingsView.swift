@@ -13,19 +13,21 @@ struct SettingsView: View {
     @StateObject private var viewModel = SettingsVM()
 
     var body: some View {
-        Form {
-            Section("Categories") {
-                NavigationLink("Expenses", destination: CashFlowCategoryListView(type: .expense))
-                NavigationLink("Incomes", destination: CashFlowCategoryListView(type: .income))
+        FormView {
+            Sector("Categories") {
+                Navigation("Expenses", leadsTo: CashFlowCategoryListView(type: .expense))
+                Navigation("Incomes", leadsTo: CashFlowCategoryListView(type: .income))
             }
 
-            Section("Currencies") {
-                ListPicker(title: "Primary:", listView: CurrencyListView(selection: $viewModel.primaryCurrency))
-                ListPicker(title: "Secondary:", listView: CurrencyListView(selection: $viewModel.secondaryCurrency))
+            Sector("Currencies") {
+                ListPicker(title: "Primary:",
+                           listView: CurrencyListView(selection: $viewModel.primaryCurrency))
+                ListPicker(title: "Secondary:",
+                           listView: CurrencyListView(selection: $viewModel.secondaryCurrency))
             }
 
-            Section("Debug") {
-                NavigationLink("Design system", destination: DesignSystemView())
+            Sector("Debug") {
+                Navigation("Design system", leadsTo: DesignSystemView())
             }
         }
     }
@@ -37,6 +39,7 @@ struct SettingsView: View {
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
+            .background(Color.backgroundPrimary)
             .embedInNavigationView(title: "Settings", displayMode: .large)
     }
 }

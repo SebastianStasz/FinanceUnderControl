@@ -22,7 +22,7 @@ struct Sector<Content: View>: View {
             Text(title, style: .caption)
                 .padding(.leading, .micro)
 
-            VStack(spacing: .small) {
+            VStack(spacing: .micro) {
                 content
             }
         }

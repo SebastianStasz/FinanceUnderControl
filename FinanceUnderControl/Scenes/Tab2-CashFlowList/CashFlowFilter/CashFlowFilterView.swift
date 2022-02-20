@@ -22,7 +22,7 @@ struct CashFlowFilterView: View {
     }
 
     var body: some View {
-        VStack(spacing: .big) {
+        FormView {
             cashFlowTypeSector
             amountSector
             otherSector

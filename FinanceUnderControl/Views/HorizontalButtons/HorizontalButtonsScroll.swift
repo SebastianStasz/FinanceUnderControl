@@ -16,11 +16,9 @@ private struct HorizontalButtonsScroll: ViewModifier {
 
     func body(content: Content) -> some View {
         VStack {
-            SSUtils.ScrollView(scrollViewArea: $scrollViewArea) {
-                content.padding(.medium)
-            }
-            .background(Color.backgroundPrimary)
-            .asSheet(title: "Filter")
+            ScrollContent(scrollViewArea: $scrollViewArea) { content }
+                .background(Color.backgroundPrimary)
+                .asSheet(title: "Filter")
 
             HorizontalButtons(primaryButton: primaryButton,
                               secondaryButton: secondaryButton,

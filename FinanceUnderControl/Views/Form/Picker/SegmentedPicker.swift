@@ -14,7 +14,7 @@ struct SegmentedPicker<T: Pickerable>: View {
     private let elements: [T]
 
     var body: some View {
-        Picker(title, selection: $selection) {
+        Picker(title, selection: $selection.animation(.easeInOut(duration: 0.3))) {
             ForEach(elements) {
                 Text($0.valueName).tag($0)
             }
