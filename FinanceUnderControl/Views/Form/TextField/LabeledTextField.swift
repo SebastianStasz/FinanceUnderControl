@@ -27,14 +27,18 @@ struct LabeledTextField<ViewModel: InputVM>: View {
     }
 
     var body: some View {
-        HStack {
-            Text(title)
+        VStack(spacing: .micro) {
+            HStack(spacing: .large) {
+                Text("\(title):")
 
-            TextField(title, text: $viewModel.textField, prompt: prompt)
-                .multilineTextAlignment(.trailing)
-                .asInputView(viewModel: viewModel, input: $input)
-        }
-        .formField()
+                TextField(title, text: $viewModel.textField, prompt: prompt)
+                    .multilineTextAlignment(.trailing)
+                    .asInputView(viewModel: viewModel, input: $input)
+            }
+            if let message = viewModel.message {
+                Text(message, style: .validation)
+            }
+        }.formField()
     }
 }
 
@@ -43,8 +47,7 @@ struct LabeledTextField<ViewModel: InputVM>: View {
 
 struct LabeledTextField_Previews: PreviewProvider {
     static var previews: some View {
-        Form {
-            LabeledInputNumber("Input", input: .constant(.init()))
-        }
+        LabeledInputNumber("Field name", input: .constant(.init(settings: .init(dropFirst: false))))
+            .asPreview()
     }
 }

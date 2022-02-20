@@ -17,7 +17,7 @@ struct ColorsPreview: View {
     }
 
     private func colorList(for group: ColorDesign) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(spacing: 10) {
             Text(group.title)
                 .padding(.leading, 10)
 

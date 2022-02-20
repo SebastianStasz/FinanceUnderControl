@@ -27,7 +27,8 @@ struct CashFlowFilterView: View {
             amountSector
             otherSector
         }
-        .horizontalButtonsScroll(primaryButton: .init("Apply", action: viewModel.applyFilters),
+        .horizontalButtonsScroll(title: "Filter",
+                                 primaryButton: .init("Apply", action: viewModel.applyFilters),
                                  secondaryButton: .init("Reset", action: viewModel.resetFilters)
         )
         .onAppear { viewModel.onAppear(cashFlowFilter: cashFlowFilter) }

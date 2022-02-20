@@ -59,6 +59,9 @@ struct TabBarView: View {
         .onReceive(NotificationCenter.keyboardDidHide) { _ in isKeyboardPresented = false }
         .popup(appController.popupModel)
         .environmentObject(appController)
+        .sheet(item: $viewModel.cashFlowCategoryType) { type in
+            CashFlowFormView(for: type)
+        }
     }
 
     // MARK: View Components

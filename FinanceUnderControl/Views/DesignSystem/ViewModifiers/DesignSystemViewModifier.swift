@@ -12,11 +12,11 @@ private struct DesignSystemViewModifier: ViewModifier {
     let title: String
 
     func body(content: Content) -> some View {
-        VStack(alignment: .leading, spacing: .huge) {
+        VStack(spacing: .xxlarge) {
             content
         }
-        .padding(.horizontal, .medium)
-        .padding(.top, .big)
+        .padding(.horizontal, .large)
+        .padding(.top, .xlarge)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color.backgroundPrimary)
         .navigationTitle(title)

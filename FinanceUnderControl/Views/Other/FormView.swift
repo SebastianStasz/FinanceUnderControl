@@ -17,9 +17,9 @@ struct FormView<Content: View>: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: .huge) { content }
+            VStack(spacing: .xxlarge) { content }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.medium)
+                .padding(.large)
         }
         .background(Color.backgroundPrimary)
     }

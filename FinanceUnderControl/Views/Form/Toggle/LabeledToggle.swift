@@ -19,7 +19,7 @@ struct LabeledToggle: View {
     }
 
     var body: some View {
-        HStack(spacing: .big) {
+        HStack(spacing: .xlarge) {
             Text(title)
                 .lineLimit(1)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -27,7 +27,7 @@ struct LabeledToggle: View {
             Toggle(title, isOn: $isOn)
                 .labelsHidden()
         }
-        .padding(.small)
+        .padding(.medium)
         .background(Color.backgroundSecondary)
         .cornerRadius(.base)
     }

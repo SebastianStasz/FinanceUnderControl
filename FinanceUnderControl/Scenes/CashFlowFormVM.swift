@@ -1,16 +1,15 @@
 //
-//  CashFlowPopupVM.swift
+//  CashFlowFormVM.swift
 //  FinanceUnderControl
 //
-//  Created by Sebastian Staszczyk on 12/01/2022.
+//  Created by Sebastian Staszczyk on 20/02/2022.
 //
 
 import Combine
-import CoreData
 import Foundation
 import SSValidation
 
-final class CashFlowPopupVM: ObservableObject {
+final class CashFlowFormVM: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
 
     @Published var nameInput = Input<TextInputSettings>(settings: .init(minLength: 3, maxLength: 20))

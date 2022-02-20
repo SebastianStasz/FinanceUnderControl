@@ -18,11 +18,11 @@ struct Sector<Content: View>: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: .micro) {
+        VStack(spacing: .small) {
             Text(title, style: .headlineSmall)
-                .padding(.leading, .micro)
+                .padding(.leading, .small)
 
-            VStack(spacing: .micro) {
+            VStack(spacing: .small) {
                 content
             }
         }

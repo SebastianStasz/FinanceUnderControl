@@ -13,7 +13,7 @@ struct BaseRowButtonStyle: ButtonStyle {
     let isBlue: Bool
 
     func makeBody(configuration: Configuration) -> some View {
-        HStack(spacing: .medium) {
+        HStack(spacing: .large) {
             configuration.label
 
             Spacer()

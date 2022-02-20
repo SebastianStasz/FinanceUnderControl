@@ -40,6 +40,10 @@ public extension CashFlowCategoryType {
     }
 }
 
+extension CashFlowCategoryType: Identifiable {
+    public var id: String { rawValue }
+}
+
 extension CashFlowCategoryType: UnknownValueSupport {
     public static var unknownCase: CashFlowCategoryType {
         .unknown

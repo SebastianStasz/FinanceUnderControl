@@ -12,7 +12,7 @@ private struct DesignSystemComponent: ViewModifier {
     let name: String
 
     func body(content: Content) -> some View {
-        VStack(alignment: .leading, spacing: .small) {
+        VStack(spacing: .medium) {
             Text(name)
                 .font(.title3)
                 .opacity(0.25)

@@ -14,8 +14,8 @@ struct CashFlowPanelView: View {
     let cashFlow: CashFlowEntity
 
     var body: some View {
-        VStack(spacing: .medium) {
-            HStack(alignment: .top, spacing: .micro) {
+        VStack(spacing: .large) {
+            HStack(alignment: .top, spacing: .small) {
                 Text(cashFlow.name, style: .bodyMedium)
                     .lineLimit(2)
                 Spacer()
@@ -34,7 +34,7 @@ struct CashFlowPanelView: View {
                     .fontWeight(.medium)
             }
         }
-        .padding(.vertical, .small)
+        .padding(.vertical, .medium)
         .background(Color.backgroundSecondary)
         .cornerRadius(.base)
     }

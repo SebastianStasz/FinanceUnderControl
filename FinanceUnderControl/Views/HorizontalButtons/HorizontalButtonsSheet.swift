@@ -1,5 +1,5 @@
 //
-//  HorizontalButtonsScroll.swift
+//  HorizontalButtonsSheet.swift
 //  FinanceUnderControl
 //
 //  Created by Sebastian Staszczyk on 14/02/2022.
@@ -8,9 +8,10 @@
 import SwiftUI
 import SSUtils
 
-private struct HorizontalButtonsScroll: ViewModifier {
+private struct HorizontalButtonsSheet: ViewModifier {
     @State private var scrollViewArea: ScrollViewArea = .top
 
+    let title: String
     let primaryButton: HorizontalButtons.Configuration
     let secondaryButton: HorizontalButtons.Configuration?
 
@@ -18,7 +19,7 @@ private struct HorizontalButtonsScroll: ViewModifier {
         VStack {
             ScrollContent(scrollViewArea: $scrollViewArea) { content }
                 .background(Color.backgroundPrimary)
-                .asSheet(title: "Filter")
+                .asSheet(title: title)
 
             HorizontalButtons(primaryButton: primaryButton,
                               secondaryButton: secondaryButton,
@@ -33,9 +34,10 @@ private struct HorizontalButtonsScroll: ViewModifier {
 
 extension View {
     func horizontalButtonsScroll(
+        title: String,
         primaryButton: HorizontalButtons.Configuration,
-        secondaryButton: HorizontalButtons.Configuration
+        secondaryButton: HorizontalButtons.Configuration? = nil
     ) -> some View {
-        modifier(HorizontalButtonsScroll(primaryButton: primaryButton, secondaryButton: secondaryButton))
+        modifier(HorizontalButtonsSheet(title: title, primaryButton: primaryButton, secondaryButton: secondaryButton))
     }
 }

@@ -16,20 +16,20 @@ struct PopupViewModifier: ViewModifier {
     let isActionDisabled: Bool
 
     func body(content: Content) -> some View {
-        VStack(alignment: .leading) {
+        VStack {
             Text(title)
-                .padding(.bottom, .big)
+                .padding(.bottom, .xlarge)
 
             content
 
-            HStack(spacing: .medium) {
+            HStack(spacing: .large) {
                 BaseButton("Cancel", role: .secondary, action: dismissPopup)
                 BaseButton("Create", role: .primary, action: performAction)
                     .disabled(isActionDisabled)
             }
-            .padding(.top, .medium)
+            .padding(.top, .large)
         }
-        .padding(.medium)
+        .padding(.large)
         .frame(width: UIScreen.screenWidth - 2 * Spacing.medium.rawValue)
         .background(Color.backgroundSecondary)
         .cornerRadius(.base)

@@ -13,7 +13,7 @@ struct VStack<Content: View>: View {
     let alignment: HorizontalAlignment
     let content: Content
 
-    init(alignment: HorizontalAlignment = .center,
+    init(alignment: HorizontalAlignment = .leading,
          spacing: CGFloat = 0,
          @ViewBuilder content: () -> Content
     ) {

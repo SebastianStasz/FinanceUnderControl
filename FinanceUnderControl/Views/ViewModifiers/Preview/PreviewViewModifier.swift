@@ -13,7 +13,7 @@ private struct PreviewViewModifier: ViewModifier {
         VStack {
             content
         }
-        .padding(.medium)
+        .padding(.large)
         .background(Color.backgroundPrimary.overlay(Color.black).opacity(0.3))
         .previewLayout(.sizeThatFits)
     }

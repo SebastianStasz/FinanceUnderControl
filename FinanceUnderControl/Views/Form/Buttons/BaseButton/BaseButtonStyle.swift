@@ -18,7 +18,7 @@ struct BaseButtonStyle: ButtonStyle {
         configuration.label
             .textStyle(.headlineBig)
             .infiniteWidth()
-            .padding(.small)
+            .padding(.medium)
             .background(role.background)
             .foregroundColor(.white)
             .cornerRadius(.base)

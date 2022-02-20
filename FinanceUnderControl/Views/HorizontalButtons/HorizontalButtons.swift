@@ -17,15 +17,15 @@ struct HorizontalButtons: View {
         VStack {
             Divider().displayIf(shouldStandOut)
 
-            HStack(spacing: .medium) {
+            HStack(spacing: .large) {
                 if let secondaryButton = secondaryButton {
                     BaseButton(configuration: secondaryButton)
                 }
                 BaseButton(configuration: primaryButton)
             }
-            .padding(.horizontal, .medium)
-            .padding(.top, .small)
-            .paddingIfNotSafeArea(.bottom, .small)
+            .padding(.horizontal, .large)
+            .padding(.top, .medium)
+            .paddingIfNotSafeArea(.bottom, .medium)
             .background(shouldStandOut ?  Color.backgroundSecondary : Color.backgroundPrimary)
             .animation(.easeInOut(duration: 0.1))
         }

@@ -26,7 +26,7 @@ struct BaseTextField<ViewModel: InputVM>: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: .micro) {
+        VStack(spacing: .small) {
             TextField(title, text: $viewModel.textField, prompt: prompt)
                 .textFieldStyle(.roundedBorder)
 

@@ -10,7 +10,6 @@ import SwiftUI
 
 enum PopupModel {
     case cashFlowCategory(for: CashFlowCategoryType)
-    case cashFlow(for: CashFlowCategoryType)
 }
 
 extension PopupModel: View {
@@ -19,8 +18,6 @@ extension PopupModel: View {
             switch self {
             case let .cashFlowCategory(type):
                 CashFlowCategoryPopup(for: type)
-            case let .cashFlow(type):
-                CashFlowPopup(for: type)
             }
         }
     }

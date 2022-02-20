@@ -16,7 +16,7 @@ struct LabeledPicker<T: Pickerable>: View {
     private let title: String
 
     var body: some View {
-        HStack(spacing: .medium) {
+        HStack(spacing: .large) {
             Text(title)
 
             Spacer()
@@ -62,6 +62,6 @@ struct LabeledPicker_Previews: PreviewProvider {
     static var previews: some View {
         let elements = ["Value 1", "Value 2", "Value 3", "Value 4"]
         LabeledPicker("Labeled picker:", elements: elements, selection: .constant("Value 1"))
-            .padding(.medium)
+            .padding(.large)
     }
 }

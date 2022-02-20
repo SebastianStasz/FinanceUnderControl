@@ -16,7 +16,7 @@ extension View {
 
     func formField() -> some View {
         self.infiniteWidth(alignment: .leading)
-            .padding(.small)
+            .padding(.medium)
             .background(Color.backgroundSecondary)
             .cornerRadius(.base)
     }
