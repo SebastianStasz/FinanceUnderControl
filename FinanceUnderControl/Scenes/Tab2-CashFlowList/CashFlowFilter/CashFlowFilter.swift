@@ -10,7 +10,9 @@ import Foundation
 import SSValidation
 
 struct CashFlowFilter: Equatable {
-    var cashFlowSelection: CashFlowSelection = .all
+    var cashFlowSelection: CashFlowSelection = .all {
+        didSet { cashFlowCategory = nil }
+    }
     var cashFlowCategory: CashFlowCategoryEntity? = nil
     var datePickerViewData: DateRangePickerViewData = .init()
     var minimumValueInput = Input<NumberInputSettings>(settings: .init(canBeEmpty: true))

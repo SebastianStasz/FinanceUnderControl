@@ -17,7 +17,7 @@ struct LabeledTextField<ViewModel: InputVM>: View {
     private let title: String
     private let prompt: SwiftUI.Text?
 
-    public init(title: String,
+    public init(_ title: String,
                 input: Binding<Input>,
                 prompt: String? = nil
     ) {
@@ -43,7 +43,7 @@ struct LabeledTextField<ViewModel: InputVM>: View {
 struct LabeledTextField_Previews: PreviewProvider {
     static var previews: some View {
         Form {
-            LabeledTextField<NumberInputVM>(title: "Input", input: .constant(.init()))
+            LabeledNumberInput("Input", input: .constant(.init()))
         }
     }
 }

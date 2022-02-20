@@ -18,7 +18,7 @@ struct CashFlowCategoryPopup: View {
     let type: CashFlowCategoryType
 
     var body: some View {
-        BaseTextField<TextInputVM>(title: "Category name", input: $input)
+        BaseTextInput(title: "Category name", input: $input)
             .asPopup(title: "Add category", isActionDisabled: input.value.isNil, action: createCashFlowCategory)
     }
 
