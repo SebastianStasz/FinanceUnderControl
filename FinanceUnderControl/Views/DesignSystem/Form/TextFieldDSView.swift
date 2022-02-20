@@ -16,10 +16,10 @@ struct TextFieldDSView: View {
 
     var body: some View {
         Group {
-            LabeledNumberInput("Enter Number", input: $numberInput, prompt: "100")
+            LabeledInputNumber("Enter Number", input: $numberInput, prompt: "100")
                 .designSystemComponent("Labeled text field")
             
-            BaseTextInput(title: "Name", input: $textInput)
+            BaseInputText(title: "Name", input: $textInput)
                 .designSystemComponent("Base text field")
         }
         .designSystemView("Text Fields")

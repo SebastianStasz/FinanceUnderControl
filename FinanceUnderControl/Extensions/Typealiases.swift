@@ -9,6 +9,6 @@ import Foundation
 import SSValidation
 
 typealias Action = () -> Void
-typealias LabeledNumberInput = LabeledTextField<NumberInputVM>
-typealias BaseTextInput = BaseTextField<TextInputVM>
-typealias BaseNumberInput = BaseTextField<NumberInputVM>
+typealias LabeledInputNumber = LabeledTextField<NumberInputVM>
+typealias BaseInputText = BaseTextField<TextInputVM>
+typealias BaseInputNumber = BaseTextField<NumberInputVM>

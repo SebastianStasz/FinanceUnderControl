@@ -44,6 +44,6 @@ struct BaseTextField<ViewModel: InputVM>: View {
 struct BaseTextField_Previews: PreviewProvider {
     static var previews: some View {
         let textInput = Input<TextInputSettings>()
-        BaseTextInput(title: "Text input", input: .constant(textInput))
+        BaseInputText(title: "Text input", input: .constant(textInput))
     }
 }

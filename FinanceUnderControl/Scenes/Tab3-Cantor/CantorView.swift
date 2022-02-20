@@ -44,7 +44,7 @@ struct CantorView: View {
                 ListPicker(title: "From:", listView: CurrencyListView(selection: $viewModel.currencySelector.primaryCurrency))
                 ListPicker(title: "To:", listView: CurrencyListView(selection: $viewModel.currencySelector.secondaryCurrency))
 
-                LabeledNumberInput("Amount", input: $viewModel.amountOfMoneyInput, prompt: "100")
+                LabeledInputNumber("Amount", input: $viewModel.amountOfMoneyInput, prompt: "100")
             }
 
             Section {

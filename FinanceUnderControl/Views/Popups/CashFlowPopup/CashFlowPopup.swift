@@ -19,8 +19,8 @@ struct CashFlowPopup: View {
 
     var body: some View {
         VStack {
-            BaseTextInput(title: "Name", input: $viewModel.nameInput)
-            BaseNumberInput(title: "Value", input: $viewModel.valueInput)
+            BaseInputText(title: "Name", input: $viewModel.nameInput)
+            BaseInputNumber(title: "Value", input: $viewModel.valueInput)
             LabeledPicker("Currency:", elements: currencies, selection: $viewModel.cashFlowModel.currency)
             DatePicker("\(type.name) date:", selection: $viewModel.cashFlowModel.date, displayedComponents: [.date])
                 .padding(.small)

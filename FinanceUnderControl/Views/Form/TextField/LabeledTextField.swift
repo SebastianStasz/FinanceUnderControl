@@ -43,7 +43,7 @@ struct LabeledTextField<ViewModel: InputVM>: View {
 struct LabeledTextField_Previews: PreviewProvider {
     static var previews: some View {
         Form {
-            LabeledNumberInput("Input", input: .constant(.init()))
+            LabeledInputNumber("Input", input: .constant(.init()))
         }
     }
 }
