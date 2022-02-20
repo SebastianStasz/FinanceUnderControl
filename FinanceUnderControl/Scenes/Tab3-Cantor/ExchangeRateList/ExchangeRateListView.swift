@@ -19,7 +19,6 @@ struct ExchangeRateListView: View {
             BaseRowView(code: $0.code, info: $0.rateValue.description)
         }
         .searchable(text: $viewModel.searchText)
-        .asSheet(title: title)
     }
 
     private var title: String {

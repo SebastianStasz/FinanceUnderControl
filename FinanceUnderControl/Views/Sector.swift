@@ -19,7 +19,7 @@ struct Sector<Content: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: .micro) {
-            Text(title, style: .caption)
+            Text(title, style: .headlineSmall)
                 .padding(.leading, .micro)
 
             VStack(spacing: .micro) {

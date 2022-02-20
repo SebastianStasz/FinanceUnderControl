@@ -9,19 +9,20 @@ import SwiftUI
 
 public enum TextStyle {
     case headlineBig
+    case headlineSmall
     case bodyMedium
     case body
-    case caption
+    case validation
     case currency
 
     public var font: Font.TextStyle {
         switch self {
         case .headlineBig:
             return .title3
+        case .headlineSmall, .validation:
+            return .caption
         case .bodyMedium, .body:
             return .callout
-        case .caption:
-            return .caption
         case .currency:
             return .body
         }
@@ -31,14 +32,14 @@ public enum TextStyle {
         switch self {
         case .headlineBig, .bodyMedium, .currency:
             return .medium
-        case .body, .caption:
+        default:
             return .regular
         }
     }
 
     public var textCase: Text.Case? {
         switch self {
-        case .caption, .currency:
+        case .headlineSmall, .currency:
             return .uppercase
         default:
             return nil
@@ -48,11 +49,13 @@ public enum TextStyle {
     public var color: Color {
         switch self {
         case .headlineBig:
-            return .white // TODO: Change
-        case .bodyMedium, .body, .currency:
+            return .white // TODO: Adapt to DS
+        case .headlineSmall:
+            return .gray // TODO: Adapt to DS
+        case .validation:
+            return .red.opacity(0.7) // TODO: Adapt to DS
+        default:
             return .basicPrimaryInverted
-        case .caption:
-            return .gray // TODO: Change
         }
     }
 

@@ -20,8 +20,8 @@ extension CashFlowFilterView {
 
     var amountSector: some View {
         Sector("Amount") {
-            LabeledInputNumber("Minimum value", input: filter.minimumValueInput, prompt: "None").formField()
-            LabeledInputNumber("Maximum value", input: filter.maximumValueInput, prompt: "None").formField()
+            LabeledInputNumber("Minimum value", input: filter.minimumValueInput, prompt: "None")
+            LabeledInputNumber("Maximum value", input: filter.maximumValueInput, prompt: "None")
         }
     }
 

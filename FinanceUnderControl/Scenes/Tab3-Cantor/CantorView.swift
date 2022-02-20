@@ -13,52 +13,17 @@ import SSValidation
 
 struct CantorView: View {
 
-    @StateObject private var viewModel = CantorVM()
-    @State private var exchangeRatesForCurrency: CurrencyEntity?
+    @StateObject var viewModel = CantorVM()
     @State private var isInfoAlertPresented = false
 
-    private var noExchangeRateMessage: String {
-        viewModel.isExchangeRateData
-            ? "Fill in the form to display the exchange rate."
-            : "Failed to load exchange rates. Please try again later."
-    }
-
     var body: some View {
-        Form {
-            Section(header: Text("Exchange rate")) {
-                Group {
-                    if let exchangeRate = viewModel.exchangeRateValue {
-                        Text(exchangeRate)
-                    } else {
-                        Text(noExchangeRateMessage)
-                            .font(.subheadline)
-                            .opacity(0.5)
-                    }
-                    if let exchangedMoney = viewModel.exchangedMoney {
-                        Text(exchangedMoney)
-                    }
-                }
-            }
-
-            Section(header: Text("Form data")) {
-                ListPicker(title: "From:", listView: CurrencyListView(selection: $viewModel.currencySelector.primaryCurrency))
-                ListPicker(title: "To:", listView: CurrencyListView(selection: $viewModel.currencySelector.secondaryCurrency))
-
-                LabeledInputNumber("Amount", input: $viewModel.amountOfMoneyInput, prompt: "100")
-            }
-
-            Section {
-                if let currency = viewModel.currencySelector.primaryCurrency {
-                    Text("All exchange rates for \(currency.code)")
-                        .baseRowView(buttonType: .sheet, isBlue: true, action: showExchangeRatesFor(currency))
-                }
-            }
+        FormView {
+            sectorExchangeRate
+            sectorConvert
+            sectorMore
         }
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isInfoAlertPresented, message: "Exchange rates data provided by: \"exchangerate.host\"")
-        .sheet(item: $exchangeRatesForCurrency) {
-            ExchangeRateListView(viewModel: .init(currencyEntity: $0))
-        }
     }
 
     private var toolbarContent: some ToolbarContent {
@@ -66,10 +31,6 @@ struct CantorView: View {
     }
 
     // MARK: - Interactions
-
-    private func showExchangeRatesFor(_ currency: CurrencyEntity) {
-        exchangeRatesForCurrency = currency
-    }
 
     private func showInfoAlert() {
         isInfoAlertPresented = true

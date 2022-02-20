@@ -49,7 +49,7 @@ final class CantorVM: ObservableObject {
             }
 
         Publishers.CombineLatest($currencySelector, exchangeRateValue)
-            .compactMap { values -> String? in
+            .map { values -> String? in
                 guard let primary = values.0.primaryCurrency,
                       let secondary = values.0.secondaryCurrency,
                       let rateValue = values.1

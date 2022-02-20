@@ -34,6 +34,7 @@ struct LabeledTextField<ViewModel: InputVM>: View {
                 .multilineTextAlignment(.trailing)
                 .asInputView(viewModel: viewModel, input: $input)
         }
+        .formField()
     }
 }
 

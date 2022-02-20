@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SSUtils
 import Shared
 
 extension View {
@@ -14,7 +15,8 @@ extension View {
     }
 
     func formField() -> some View {
-        self.padding(.small)
+        self.infiniteWidth(alignment: .leading)
+            .padding(.small)
             .background(Color.backgroundSecondary)
             .cornerRadius(.base)
     }
