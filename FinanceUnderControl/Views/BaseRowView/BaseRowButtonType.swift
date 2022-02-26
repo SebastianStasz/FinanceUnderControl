@@ -13,7 +13,6 @@ enum BaseRowButtonType {
     case forward
     case sheet
     case add
-    case selected
 
     var systemImage: String? {
         switch self {
@@ -25,8 +24,6 @@ enum BaseRowButtonType {
             return SFSymbol.chevronUp.name
         case .add:
             return SFSymbol.plus.name
-        case .selected:
-            return SFSymbol.checkmark.name
         }
     }
 }

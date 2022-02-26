@@ -8,6 +8,7 @@
 import CoreData
 import FinanceCoreData
 import SwiftUI
+import Shared
 
 struct CurrencyListView: PickerList {
     typealias Sort = CurrencyEntity.Sort
@@ -29,16 +30,19 @@ struct CurrencyListView: PickerList {
     }
 
     var body: some View {
-        BaseList(.common_currencies, elements: currencies) {
-            BaseRowView(currency: $0)
-                .baseRowView(buttonType: getButtonType(for: $0), action: selectCurrency($0))
+        BaseList(.common_currencies, elements: currencies) { currency in
+            Button(action: { selectCurrency(currency) }) {
+                HStack(spacing: .medium) {
+                    Text(currency.code, style: .currency)
+                    Text(currency.name)
+                    Spacer()
+                    Checkmark(isChecked: selection.wrappedValue == currency)
+                }
+                .formField()
+            }
         }
         .searchable(text: $searchText, placement: .navigationBarDrawer)
         .onChange(of: searchText, perform: updatePredicate)
-    }
-
-    private func getButtonType(for currency: CurrencyEntity) -> BaseRowButtonType {
-        selection.wrappedValue == currency ? .selected : .none
     }
 
     // MARK: - Interactions

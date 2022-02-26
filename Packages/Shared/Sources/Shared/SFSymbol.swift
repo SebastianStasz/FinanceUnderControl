@@ -18,9 +18,10 @@ public enum SFSymbol: String {
     case chevronForward = "chevron.forward"
     case chevronUp      = "chevron.up"
     case close          = "xmark"
-    case checkmark      = "checkmark"
     case infoCircle     = "info.circle"
     case filter         = "line.3.horizontal.decrease.circle"
+    case checkmarkUnchecked = "square"
+    case checkmarkChecked = "checkmark.square.fill"
 }
 
 public extension SFSymbol {

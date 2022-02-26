@@ -26,20 +26,20 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
             .listRowSeparator(.hidden)
             .listRowInsets(EdgeInsets())
             .listRowBackground(Color.backgroundPrimary)
-            .padding(.horizontal, .medium)
+            .padding(.horizontal, .large)
         }
         .listStyle(.plain)
-        .navigationTitle(title)
         .background(Color.backgroundPrimary)
         .environment(\.defaultMinListRowHeight, 1)
         .emptyState(isEmpty: elements.isEmpty, message: emptyMessage)
+        .navigationTitle(title)
     }
 
     private func separator(for element: T) -> some View {
-        Color.backgroundPrimary
-            .frame(height: .small)
+        let isLast = element == elements.last
+        return Color.backgroundPrimary
+            .frame(height: isLast ? .large : .small)
             .deleteDisabled(true)
-            .displayIf(element != elements.last)
     }
 
     // MARK: - Initializers
