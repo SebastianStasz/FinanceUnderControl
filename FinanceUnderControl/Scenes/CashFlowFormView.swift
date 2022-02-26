@@ -22,7 +22,7 @@ struct CashFlowFormView: View {
             sectorMoreInfo
         }
         .horizontalButtonsScroll(title: type.name,
-                                 primaryButton: .init("Create", action: createCashFlow)
+                                 primaryButton: .init(.button_create, action: createCashFlow)
         )
         .onAppear(perform: onAppear)
     }

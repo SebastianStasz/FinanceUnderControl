@@ -23,7 +23,7 @@ struct CantorView: View {
             sectorMore
         }
         .toolbar { toolbarContent }
-        .infoAlert(isPresented: $isInfoAlertPresented, message: "Exchange rates data provided by: \"exchangerate.host\"")
+        .infoAlert(.common_info, isPresented: $isInfoAlertPresented, message: .cantor_exchange_rates_info_message)
     }
 
     private var toolbarContent: some ToolbarContent {

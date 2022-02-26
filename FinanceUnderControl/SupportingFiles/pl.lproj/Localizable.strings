@@ -10,4 +10,41 @@
 "tab_currencies_title" = "Waluty";
 "tab_settings_title" = "Ustawienia";
 
+"button_apply" = "Zastosuj";
+"button_reset" = "Zresetuj";
+"button_create" = "Utwórz";
+
+"common_all" = "Wszystko";
+"common_none" = "Brak";
+"common_info" = "Informacja";
+"common_amount" = "Kwota";
+"common_categories" = "Kategorie";
+"common_currencies" = "Waluty";
+"common_expenses" = "Wydatki";
+"common_incomes" = "Przychody";
+"common_primary" = "Podstawowa";
+"common_secondary" = "Drugorzędna";
+"common_exchange_rate" = "Kurs wymiany";
+"common_category" = "Kategoria";
+
+"cash_flow_filter_title" = "Filtruj";
+"cash_flow_filter_type" = "Typ przepływów";
+"cash_flow_filter_date_range" = "Zakres dat";
+"cash_flow_filter_date_start" = "Data początkowa";
+"cash_flow_filter_date_end" = "Data końcowa";
+"cash_flow_filter_minimum_value" = "Wartość minimalna";
+"cash_flow_filter_maximum_value" = "Wartość maksymalna";
+
+"create_cash_flow_name" = "Nazwa";
+"create_cash_flow_currency" = "Waluta";
+"create_cash_flow_date" = "Data";
+"create_cash_flow_income" = "Przychód";
+"create_cash_flow_expense" = "Wydatek";
+
+"cantor_from" = "Z";
+"cantor_to" = "Na";
+"cantor_converter" = "Przelicznik";
+"cantor_exchange_rates_info_message" = "Kursy walut dostarczone przez: \"exchangerate.host\"";
+"cantor_load_exchange_rates_error_message" = "Nie udało się załadować kursu wymiany dla waluty \"%@\". Spróbuj ponownie później.";
+
 "cannot_delete_cash_flow_category_message" = "Nie możesz usunąć tej kategorii, ponieważ jest w użyciu.";

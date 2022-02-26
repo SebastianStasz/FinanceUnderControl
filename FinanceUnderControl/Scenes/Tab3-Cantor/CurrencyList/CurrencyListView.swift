@@ -29,7 +29,7 @@ struct CurrencyListView: PickerList {
     }
 
     var body: some View {
-        BaseList("Currencies", elements: currencies) {
+        BaseList(.common_currencies, elements: currencies) {
             BaseRowView(currency: $0)
                 .baseRowView(buttonType: getButtonType(for: $0), action: selectCurrency($0))
         }
@@ -60,7 +60,7 @@ struct CurrencyListView: PickerList {
 struct CurrencyListView_Previews: PreviewProvider {
     static var previews: some View {
         CurrencyListView(selection: .constant(nil))
-            .embedInNavigationView(title: "Currencies")
+            .embedInNavigationView(title: .common_currencies)
             .environment(\.managedObjectContext, PersistenceController.preview.context)
 //            .environment(\.managedObjectContext, PersistenceController.previewEmpty.context)
     }

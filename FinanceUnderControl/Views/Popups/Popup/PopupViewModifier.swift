@@ -24,7 +24,7 @@ struct PopupViewModifier: ViewModifier {
 
             HStack(spacing: .large) {
                 BaseButton("Cancel", role: .secondary, action: dismissPopup)
-                BaseButton("Create", role: .primary, action: performAction)
+                BaseButton(.button_create, role: .primary, action: performAction)
                     .disabled(isActionDisabled)
             }
             .padding(.top, .large)

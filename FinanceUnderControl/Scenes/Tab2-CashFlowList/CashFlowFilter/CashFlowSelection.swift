@@ -14,7 +14,12 @@ enum CashFlowSelection: String {
     case incomes
 
     var name: String {
-        rawValue.capitalized
+        switch self {
+        case .all:
+            return .common_all
+        default:
+            return type!.name
+        }
     }
 
     var type: CashFlowCategoryType? {

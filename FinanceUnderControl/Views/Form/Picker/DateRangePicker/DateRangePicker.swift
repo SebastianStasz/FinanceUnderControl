@@ -19,8 +19,8 @@ struct DateRangePicker: View {
 
             if viewData.isOn {
                 VStack(spacing: .small) {
-                    DatePicker("Start date", selection: $viewData.startDate, in: ...viewData.endDate, displayedComponents: .date)
-                    DatePicker("End date", selection: $viewData.endDate, in: viewData.startDate..., displayedComponents: .date)
+                    DatePicker("\(String.cash_flow_filter_date_start):", selection: $viewData.startDate, in: ...viewData.endDate, displayedComponents: .date)
+                    DatePicker("\(String.cash_flow_filter_date_end):", selection: $viewData.endDate, in: viewData.startDate..., displayedComponents: .date)
                 }
                 .zIndex(-1)
                 .padding(.horizontal, .medium)

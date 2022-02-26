@@ -7,6 +7,7 @@
 
 import SSUtils
 import SwiftUI
+import Shared
 
 struct SettingsView: View {
 
@@ -14,15 +15,15 @@ struct SettingsView: View {
 
     var body: some View {
         FormView {
-            Sector("Categories") {
-                Navigation("Expenses", leadsTo: CashFlowCategoryListView(type: .expense))
-                Navigation("Incomes", leadsTo: CashFlowCategoryListView(type: .income))
+            Sector(.common_categories) {
+                Navigation(.common_expenses, leadsTo: CashFlowCategoryListView(type: .expense))
+                Navigation(.common_incomes, leadsTo: CashFlowCategoryListView(type: .income))
             }
 
-            Sector("Currencies") {
-                ListPicker(title: "Primary:",
+            Sector(.common_currencies) {
+                ListPicker(title: .common_primary,
                            listView: CurrencyListView(selection: $viewModel.primaryCurrency))
-                ListPicker(title: "Secondary:",
+                ListPicker(title: .common_secondary,
                            listView: CurrencyListView(selection: $viewModel.secondaryCurrency))
             }
 
@@ -40,6 +41,6 @@ struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
             .background(Color.backgroundPrimary)
-            .embedInNavigationView(title: "Settings", displayMode: .large)
+            .embedInNavigationView(title: .tab_settings_title, displayMode: .large)
     }
 }

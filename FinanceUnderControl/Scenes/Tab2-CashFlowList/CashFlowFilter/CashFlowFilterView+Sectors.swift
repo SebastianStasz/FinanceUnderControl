@@ -7,27 +7,28 @@
 
 import SwiftUI
 import SSUtils
+import Shared
 
 extension CashFlowFilterView {
 
     var cashFlowTypeSector: some View {
-        Sector("Cash flow type") {
-            SegmentedPicker("Cash flow type", selection: filter.cashFlowSelection, elements: CashFlowSelection.allCases)
-            LabeledPicker("Category", elements: cashFlowCategories, selection: filter.cashFlowCategory)
+        Sector(.cash_flow_filter_type) {
+            SegmentedPicker(.cash_flow_filter_type, selection: filter.cashFlowSelection, elements: CashFlowSelection.allCases)
+            LabeledPicker(.common_category, elements: cashFlowCategories, selection: filter.cashFlowCategory)
                 .displayIf(filter.wrappedValue.cashFlowSelection != .all, withTransition: .scale)
         }
     }
 
     var amountSector: some View {
-        Sector("Amount") {
-            LabeledInputNumber("Minimum value", input: filter.minimumValueInput, prompt: "None")
-            LabeledInputNumber("Maximum value", input: filter.maximumValueInput, prompt: "None")
+        Sector(.common_amount) {
+            LabeledInputNumber(.cash_flow_filter_minimum_value, input: filter.minimumValueInput, prompt: .common_none)
+            LabeledInputNumber(.cash_flow_filter_maximum_value, input: filter.maximumValueInput, prompt: .common_none)
         }
     }
 
     var otherSector: some View {
         Sector("Other") {
-            DateRangePicker("Date", viewData: filter.datePickerViewData)
+            DateRangePicker(.cash_flow_filter_date_range, viewData: filter.datePickerViewData)
         }
     }
 }

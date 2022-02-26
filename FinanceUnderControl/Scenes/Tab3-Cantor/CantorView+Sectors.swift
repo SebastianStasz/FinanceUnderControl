@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import Shared
 
 extension CantorView {
 
     var sectorExchangeRate: some View {
-        Sector("Exchange rate") {
+        Sector(.common_exchange_rate) {
             Group {
                 if let exchangeRate = viewModel.exchangeRateValue {
                     Text(exchangeRate)
@@ -26,10 +27,10 @@ extension CantorView {
     }
 
     var sectorConvert: some View {
-        Sector("Convert") {
-            ListPicker(title: "From:", listView: CurrencyListView(selection: $viewModel.currencySelector.primaryCurrency))
-            ListPicker(title: "To:", listView: CurrencyListView(selection: $viewModel.currencySelector.secondaryCurrency))
-            LabeledInputNumber("Amount", input: $viewModel.amountOfMoneyInput, prompt: "100")
+        Sector(.cantor_converter) {
+            ListPicker(title: .cantor_from, listView: CurrencyListView(selection: $viewModel.currencySelector.primaryCurrency))
+            ListPicker(title: .cantor_to, listView: CurrencyListView(selection: $viewModel.currencySelector.secondaryCurrency))
+            LabeledInputNumber(.common_amount, input: $viewModel.amountOfMoneyInput, prompt: "100")
         }
     }
 
@@ -49,6 +50,6 @@ private extension CantorView {
     var noExchangeRateMessage: String {
         viewModel.isExchangeRateData
             ? "Fill in the form to display the exchange rate."
-            : "Failed to load exchange rates for \(viewModel.currencySelector.primaryCurrency?.code ?? ""). Please try again later."
+            : .cantor_load_exchange_rates_error_message(forCurrency: viewModel.currencySelector.primaryCurrency?.code ?? "")
     }
 }

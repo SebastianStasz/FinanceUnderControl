@@ -18,7 +18,14 @@ public enum CashFlowCategoryType: String {
 
 public extension CashFlowCategoryType {
     var name: String {
-        self.rawValue.capitalized
+        switch self {
+        case .income:
+            return .create_cash_flow_income
+        case .expense:
+            return .create_cash_flow_expense
+        case .unknown:
+            return rawValue
+        }
     }
 
     var symbol: String {

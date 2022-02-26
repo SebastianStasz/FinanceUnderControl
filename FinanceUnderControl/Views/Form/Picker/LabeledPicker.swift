@@ -17,7 +17,8 @@ struct LabeledPicker<T: Pickerable>: View {
 
     var body: some View {
         HStack(spacing: .large) {
-            Text(title)
+            Text("\(title):")
+                .lineLimit(1)
 
             Spacer()
 

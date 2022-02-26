@@ -10,4 +10,41 @@
 "tab_currencies_title" = "Currencies";
 "tab_settings_title" = "Settings";
 
+"button_apply" = "Apply";
+"button_reset" = "Reset";
+"button_create" = "Create";
+
+"common_all" = "All";
+"common_none" = "None";
+"common_info" = "Info";
+"common_amount" = "Amount";
+"common_categories" = "Categories";
+"common_currencies" = "Currencies";
+"common_expenses" = "Expenses";
+"common_incomes" = "Incomes";
+"common_primary" = "Primary";
+"common_secondary" = "Secondary";
+"common_exchange_rate" = "Exchange rate";
+"common_category" = "Category ";
+
+"cash_flow_filter_title" = "Filter";
+"cash_flow_filter_type" = "Cash flow type";
+"cash_flow_filter_date_range" = "Date range";
+"cash_flow_filter_date_start" = "Start date";
+"cash_flow_filter_date_end" = "End date";
+"cash_flow_filter_minimum_value" = "Minimum value";
+"cash_flow_filter_maximum_value" = "Maximum value";
+
+"create_cash_flow_name" = "Name";
+"create_cash_flow_currency" = "Currency";
+"create_cash_flow_date" = "Date";
+"create_cash_flow_income" = "Income";
+"create_cash_flow_expense" = "Expense";
+
+"cantor_from" = "From";
+"cantor_to" = "To";
+"cantor_converter" = "Converter";
+"cantor_exchange_rates_info_message" = "Exchange rates data provided by: \"exchangerate.host\"";
+"cantor_load_exchange_rates_error_message" = "Failed to load exchange rates for \"%@\" currency. Please try again later.";
+
 "cannot_delete_cash_flow_category_message" = "You can not delete this category, because it is in use.";
