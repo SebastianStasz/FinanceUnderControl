@@ -16,11 +16,14 @@ struct CashFlowCategoryListView: View {
     @State private var isAlertPresented = false
     private let type: CashFlowCategoryType
 
+    init(type: CashFlowCategoryType) {
+        self.type = type
+        _categories = CashFlowCategoryEntity.fetchRequest(forType: type)
+    }
+
     var body: some View {
-        BaseList(type.name, elements: categories) {
-            BaseRowView(text1: $0.name)
-        } onDelete: {
-            deleteCategory(at: $0)
+        BaseList(type.namePlural, elements: categories, onDelete: deleteCategory) {
+            Text($0.name).formField()
         }
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
@@ -45,13 +48,6 @@ struct CashFlowCategoryListView: View {
             isAlertPresented = true
         }
     }
-
-    // MARK: - Initializer
-
-    init(type: CashFlowCategoryType) {
-        self.type = type
-        _categories = CashFlowCategoryEntity.fetchRequest(forType: type)
-    }
 }
 
 
@@ -60,5 +56,6 @@ struct CashFlowCategoryListView: View {
 struct CashFlowCategoryListView_Previews: PreviewProvider {
     static var previews: some View {
         CashFlowCategoryListView(type: .expense)
+            .environment(\.managedObjectContext, PersistenceController.preview.context)
     }
 }

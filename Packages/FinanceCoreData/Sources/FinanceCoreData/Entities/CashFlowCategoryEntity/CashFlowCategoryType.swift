@@ -28,6 +28,17 @@ public extension CashFlowCategoryType {
         }
     }
 
+    var namePlural: String {
+        switch self {
+        case .income:
+            return .common_incomes
+        case .expense:
+            return .common_expenses
+        case .unknown:
+            return rawValue
+        }
+    }
+
     var symbol: String {
         switch self {
         case .income:

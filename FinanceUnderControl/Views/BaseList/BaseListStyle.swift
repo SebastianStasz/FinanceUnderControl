@@ -8,21 +8,38 @@
 import FinanceCoreData
 import SwiftUI
 
-struct BaseList<T: Identifiable, RowView: View>: View {
+struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
-    let title: String
-    let emptyMessage: String?
-    let elements: [T]
-    let rowView: (T) -> RowView
-    let onDelete: ((IndexSet) -> Void)?
+    private let title: String
+    private let emptyMessage: String?
+    private let elements: [T]
+    private let rowView: (T) -> RowView
+    private let onDelete: ((IndexSet) -> Void)?
 
     var body: some View {
         List {
-            ForEach(elements, content: rowView)
-                .onDelete(perform: onDelete)
+            ForEach(elements) {
+                rowView($0)
+                separator(for: $0)
+            }
+            .onDelete(perform: onDelete)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.backgroundPrimary)
+            .padding(.horizontal, .medium)
         }
-        .emptyState(isEmpty: elements.isEmpty, message: emptyMessage)
+        .listStyle(.plain)
         .navigationTitle(title)
+        .background(Color.backgroundPrimary)
+        .environment(\.defaultMinListRowHeight, 1)
+        .emptyState(isEmpty: elements.isEmpty, message: emptyMessage)
+    }
+
+    private func separator(for element: T) -> some View {
+        Color.backgroundPrimary
+            .frame(height: .small)
+            .deleteDisabled(true)
+            .displayIf(element != elements.last)
     }
 
     // MARK: - Initializers
@@ -30,8 +47,8 @@ struct BaseList<T: Identifiable, RowView: View>: View {
     init(_ title: String,
          emptyMessage: String? = nil,
          elements: [T],
-         @ViewBuilder rowView: @escaping (T) -> RowView,
-         onDelete: ((IndexSet) -> Void)? = nil
+         onDelete: ((IndexSet) -> Void)? = nil,
+         @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
         self.title = title
         self.emptyMessage = emptyMessage
@@ -43,9 +60,9 @@ struct BaseList<T: Identifiable, RowView: View>: View {
     init(_ title: String,
          emptyMessage: String? = nil,
          elements: FetchedResults<T>,
-         @ViewBuilder rowView: @escaping (T) -> RowView,
-         onDelete: ((IndexSet) -> Void)? = nil
+         onDelete: ((IndexSet) -> Void)? = nil,
+         @ViewBuilder rowView: @escaping (T) -> RowView
     ) where T: Entity {
-        self.init(title, emptyMessage: emptyMessage, elements: elements.map{$0}, rowView: rowView, onDelete: onDelete)
+        self.init(title, emptyMessage: emptyMessage, elements: elements.map{$0}, onDelete: onDelete, rowView: rowView)
     }
 }
