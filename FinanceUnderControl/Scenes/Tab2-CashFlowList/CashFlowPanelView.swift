@@ -34,9 +34,7 @@ struct CashFlowPanelView: View {
                     .fontWeight(.medium)
             }
         }
-        .padding(.vertical, .medium)
-        .background(Color.backgroundSecondary)
-        .cornerRadius(.base)
+        .formField()
     }
 
     private var categoryType: CashFlowCategoryType {

@@ -71,6 +71,11 @@ public extension String {
     static let cantor_to = "cantor_to".localize()
     static let cantor_converter = "cantor_converter".localize()
     static let cantor_exchange_rates_info_message = "cantor_exchange_rates_info_message".localize()
+
+    static func cantor_all_exchange_rates(forCurrency currency: String) -> String {
+        "cantor_all_exchange_rates".localize(parameter: currency)
+    }
+
     static func cantor_load_exchange_rates_error_message(forCurrency currency: String) -> String {
         "cantor_load_exchange_rates_error_message".localize(parameter: currency)
     }

@@ -18,33 +18,23 @@ struct CashFlowListView: View {
     @State private var isFilterViewPresented = false
 
     var body: some View {
-        List(cashFlowDates) { date in
-            Section(date.stringMonthAndYear) {
-                ForEach(cashFlowByDate[date]!, content: CashFlowPanelView.init)
+        BaseList(.tab_cashFlow_title, sectors: cashFlowSectors, rowView: CashFlowPanelView.init)
+            .searchable(text: $viewModel.searchText)
+            .toolbar { toolbarContent }
+            .sheet(isPresented: $isFilterViewPresented) {
+                CashFlowFilterView(cashFlowFilter: $viewModel.cashFlowFilter)
             }
-        }
-        .listStyle(.insetGrouped)
-        .background(Color.backgroundPrimary)
-        .searchable(text: $viewModel.searchText)
-        .toolbar { toolbarContent }
-        .sheet(isPresented: $isFilterViewPresented) {
-            CashFlowFilterView(cashFlowFilter: $viewModel.cashFlowFilter)
-        }
-        .onChange(of: viewModel.cashFlowPredicate) {
-            cashFlows.nsPredicate = $0
-        }
+            .onChange(of: viewModel.cashFlowPredicate) {
+                cashFlows.nsPredicate = $0
+            }
     }
 
     private var toolbarContent: some ToolbarContent {
         Toolbar.trailing(systemImage: SFSymbol.filter.name, action: presentFilterView)
     }
 
-    private var cashFlowByDate: [Date: [CashFlowEntity]] {
-        Dictionary(grouping: cashFlows, by: { $0.date.monthAndYearComponents })
-    }
-
-    private var cashFlowDates: [Date] {
-        cashFlowByDate.keys.sorted { $0 > $1 }
+    private var cashFlowSectors: [String: [CashFlowEntity]] {
+        Dictionary(grouping: cashFlows, by: { $0.date.monthAndYearComponents.stringMonthAndYear })
     }
 
     // MARK: - Interactions

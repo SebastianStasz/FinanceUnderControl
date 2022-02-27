@@ -44,6 +44,7 @@
 "cantor_from" = "From";
 "cantor_to" = "To";
 "cantor_converter" = "Converter";
+"cantor_all_exchange_rates" = "All exchange rates for %@";
 "cantor_exchange_rates_info_message" = "Exchange rates data provided by: \"exchangerate.host\"";
 "cantor_load_exchange_rates_error_message" = "Failed to load exchange rates for \"%@\" currency. Please try again later.";
 

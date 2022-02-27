@@ -44,6 +44,7 @@
 "cantor_from" = "Z";
 "cantor_to" = "Na";
 "cantor_converter" = "Przelicznik";
+"cantor_all_exchange_rates" = "Wszystkie kursy wymiany dla %@";
 "cantor_exchange_rates_info_message" = "Kursy walut dostarczone przez: \"exchangerate.host\"";
 "cantor_load_exchange_rates_error_message" = "Nie udało się załadować kursu wymiany dla waluty \"%@\". Spróbuj ponownie później.";
 

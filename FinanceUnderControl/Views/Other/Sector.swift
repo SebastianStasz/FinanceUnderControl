@@ -7,6 +7,21 @@
 
 import SwiftUI
 
+struct SectorHeader: View {
+
+    private let title: String
+
+    init(_ title: String) {
+        self.title = title
+    }
+
+    var body: some View {
+        Text(title, style: .headlineSmall)
+            .padding(.leading, .small)
+            .padding(.bottom, .small)
+    }
+}
+
 struct Sector<Content: View>: View {
 
     private let title: String
@@ -18,14 +33,20 @@ struct Sector<Content: View>: View {
     }
 
     var body: some View {
-        VStack(spacing: .small) {
-            Text(title, style: .headlineSmall)
-                .padding(.leading, .small)
-
-            VStack(spacing: .small) {
-                content
-            }
+        VStack {
+            SectorHeader(title)
+            VStack(spacing: .small) { content }
         }
+    }
+}
+
+extension Section where Parent == SectorHeader, Content: View, Footer == EmptyView {
+
+    /// Creates Section with text header with given title.
+    /// - Parameters:
+    ///   - headerTitle: String value representing the header title of the section.
+    init(sectorHeader title: String, content: @escaping () -> Content) {
+        self.init(header: SectorHeader(title), content: content)
     }
 }
 
