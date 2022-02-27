@@ -20,8 +20,9 @@ public enum SFSymbol: String {
     case close          = "xmark"
     case infoCircle     = "info.circle"
     case filter         = "line.3.horizontal.decrease.circle"
-    case checkmarkUnchecked = "square"
-    case checkmarkChecked = "checkmark.square.fill"
+
+    case radioUnchecked = "circle"
+    case radioChecked = "circle.inset.filled"
 }
 
 public extension SFSymbol {

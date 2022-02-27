@@ -10,6 +10,6 @@ import SwiftUI
 protocol PickerList: View {
     associatedtype Item: Pickerable
 
-    init(selection: Binding<Item?>, buttonType: BaseRowButtonType)
+    init(selection: Binding<Item?>)
     var selection: Binding<Item?> { get set }
 }

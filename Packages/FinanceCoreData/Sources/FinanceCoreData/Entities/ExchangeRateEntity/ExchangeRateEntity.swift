@@ -8,11 +8,16 @@
 
 import CoreData
 import Foundation
+import SSUtils
 
 @objc(ExchangeRateEntity) public class ExchangeRateEntity: NSManagedObject, Entity {
     @NSManaged public private(set) var code: String
     @NSManaged public private(set) var rateValue: Double
     @NSManaged public private(set) var baseCurrency: CurrencyEntity
+
+    public var rateValueRounded: String {
+        rateValue.asString(roundToDecimalPlaces: 2)
+    }
 }
 
 // MARK: - Methods

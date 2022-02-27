@@ -22,11 +22,9 @@ struct CurrencyListView: PickerList {
     @State private var searchText = ""
 
     var selection: Binding<CurrencyEntity?>
-    private let buttonType: BaseRowButtonType
 
-    init(selection: Binding<CurrencyEntity?>, buttonType: BaseRowButtonType = .none) {
+    init(selection: Binding<CurrencyEntity?>) {
         self.selection = selection
-        self.buttonType = buttonType
     }
 
     var body: some View {
@@ -36,7 +34,7 @@ struct CurrencyListView: PickerList {
                     Text(currency.code, style: .currency)
                     Text(currency.name)
                     Spacer()
-                    Checkmark(isChecked: selection.wrappedValue == currency)
+                    Radio(isSelected: selection.wrappedValue == currency)
                 }
                 .formField()
             }

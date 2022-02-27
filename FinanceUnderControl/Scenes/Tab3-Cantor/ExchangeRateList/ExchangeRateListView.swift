@@ -15,8 +15,12 @@ struct ExchangeRateListView: View {
     @ObservedObject var viewModel: ExchangeRateListVM
 
     var body: some View {
-        BaseList(title, elements: viewModel.exchangeRates) {
-            BaseRowView(code: $0.code, info: $0.rateValue.description)
+        BaseList(title, elements: viewModel.exchangeRates) { exchageRate in
+            HStack(spacing: .medium) {
+                Text(exchageRate.code, style: .currency)
+                Text(exchageRate.rateValueRounded)
+            }
+            .formField()
         }
         .searchable(text: $viewModel.searchText)
     }

@@ -8,7 +8,7 @@
 import FinanceCoreData
 import SwiftUI
 
-struct BaseListViewFetchRequest<T: Entity, Content: View>: View {
+struct BaseListFetchRequest<T: Entity, Content: View>: View {
 
     @FetchRequest private var items: FetchedResults<T>
     private let title: String

@@ -1,5 +1,5 @@
 //
-//  Checkmark.swift
+//  Radio.swift
 //  FinanceUnderControl
 //
 //  Created by Sebastian Staszczyk on 26/02/2022.
@@ -8,15 +8,15 @@
 import SwiftUI
 import Shared
 
-struct Checkmark: View {
-    let isChecked: Bool
+struct Radio: View {
+    let isSelected: Bool
 
     var body: some View {
-        if isChecked {
-            SFSymbol.checkmarkChecked.image
+        if isSelected {
+            SFSymbol.radioChecked.image
                 .foregroundColor(.green)
         } else {
-            SFSymbol.checkmarkUnchecked.image
+            SFSymbol.radioUnchecked.image
                 .opacity(0.5)
         }
     }
@@ -28,8 +28,8 @@ struct Checkmark: View {
 struct Checkmark_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            Checkmark(isChecked: true)
-            Checkmark(isChecked: false)
+            Radio(isSelected: true)
+            Radio(isSelected: false)
         }
         .padding()
         .previewLayout(.sizeThatFits)
