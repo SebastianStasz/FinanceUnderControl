@@ -19,7 +19,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
     var body: some View {
         List {
             Group {
-                if sectors.count == 1 { listWithoutSectors }
+                if sectors.count == 1 { elementsForSector("") }
                 else { listWithSectors }
             }
             .listRowBackground(Color.backgroundPrimary)
@@ -35,24 +35,18 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
         .navigationTitle(title)
     }
 
-    private var listWithoutSectors: some View {
-        ForEach(sectors[""]!) {
-            rowView($0)
-            separator
-        }
-        .onDelete(perform: onDelete)
-    }
-
     private var listWithSectors: some View {
         ForEach(Array(sectors.keys), id: \.self) { sector in
-            Section(sectorHeader: sector) {
-                ForEach(sectors[sector]!) {
-                    rowView($0)
-                    separator
-                }
-            }
+            Section(sectorHeader: sector) { elementsForSector(sector) }
         }
-        .onDelete(perform: {_ in })
+    }
+
+    @ViewBuilder
+    private func elementsForSector(_ sector: String) -> some View {
+        if let elements = sectors[sector] {
+            ForEach(elements) { rowView($0) ;separator }
+                .onDelete(perform: onDelete)
+        }
     }
 
     private var separator: some View {
