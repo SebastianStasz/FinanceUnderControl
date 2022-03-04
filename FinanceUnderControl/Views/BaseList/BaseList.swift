@@ -16,10 +16,14 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
     private let rowView: (T) -> RowView
     private let onDelete: ((IndexSet) -> Void)?
 
+    private var isWithoutSectors: Bool {
+        sectors.count == 1 && sectors.first?.key == ""
+    }
+
     var body: some View {
         List {
             Group {
-                if sectors.count == 1 { elementsForSector("") }
+                if isWithoutSectors { elementsForSector("") }
                 else { listWithSectors }
             }
             .listRowBackground(Color.backgroundPrimary)

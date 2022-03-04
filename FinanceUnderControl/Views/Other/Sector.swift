@@ -41,10 +41,6 @@ struct Sector<Content: View>: View {
 }
 
 extension Section where Parent == SectorHeader, Content: View, Footer == EmptyView {
-
-    /// Creates Section with text header with given title.
-    /// - Parameters:
-    ///   - headerTitle: String value representing the header title of the section.
     init(sectorHeader title: String, content: @escaping () -> Content) {
         self.init(header: SectorHeader(title), content: content)
     }
