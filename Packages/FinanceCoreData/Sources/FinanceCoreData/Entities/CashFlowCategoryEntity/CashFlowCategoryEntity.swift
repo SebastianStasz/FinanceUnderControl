@@ -11,8 +11,14 @@ import SwiftUI
 
 @objc(CashFlowCategoryEntity) public class CashFlowCategoryEntity: NSManagedObject, Entity {
     @NSManaged private var type_: String
+    @NSManaged private var icon_: String
     @NSManaged public private(set) var name: String
     @NSManaged public private(set) var cashFlows: Set<CashFlowEntity>
+
+    public private(set) var icon: CashFlowCategoryIcon {
+        get { .getCase(for: icon_) }
+        set { icon_ = newValue.rawValue }
+    }
 
     public private(set) var type: CashFlowCategoryType {
         get { .getCase(for: type_) }
@@ -27,12 +33,13 @@ public extension CashFlowCategoryEntity {
     @discardableResult static func create(in context: NSManagedObjectContext, data: CashFlowCategoryData) -> CashFlowCategoryEntity {
         let category = CashFlowCategoryEntity(context: context)
         category.type = data.type
-        category.edit(name: data.name)
+        category.edit(name: data.name, icon: data.icon)
         return category
     }
 
-    func edit(name: String) {
+    func edit(name: String, icon: CashFlowCategoryIcon) {
         self.name = name
+        self.icon = icon
     }
 
     func delete() -> Bool {

@@ -9,10 +9,12 @@ import Foundation
 
 public struct CashFlowCategoryData {
     public let name: String
+    public let icon: CashFlowCategoryIcon
     public let type: CashFlowCategoryType
 
-    public init(name: String, type: CashFlowCategoryType) {
+    public init(name: String, icon: CashFlowCategoryIcon, type: CashFlowCategoryType) {
         self.name = name
+        self.icon = icon
         self.type = type
     }
 }
@@ -21,12 +23,12 @@ public struct CashFlowCategoryData {
 // MARK: - Sample Data
 
 extension CashFlowCategoryData {
-    static let foodExpense = CashFlowCategoryData(name: "Food", type: .expense)
-    static let carExpense = CashFlowCategoryData(name: "Car", type: .expense)
-    static let hobbyExpense = CashFlowCategoryData(name: "Hobby", type: .expense)
+    static let foodExpense = CashFlowCategoryData(name: "Food", icon: .carFill, type: .expense)
+    static let carExpense = CashFlowCategoryData(name: "Car", icon: .airplane, type: .expense)
+    static let hobbyExpense = CashFlowCategoryData(name: "Hobby", icon: .fuelpumpFill, type: .expense)
 
-    static let workPayment = CashFlowCategoryData(name: "Payment", type: .income)
-    static let workBonus = CashFlowCategoryData(name: "Work bonus", type: .income)
+    static let workPayment = CashFlowCategoryData(name: "Payment", icon: .bagFill, type: .income)
+    static let workBonus = CashFlowCategoryData(name: "Work bonus", icon: .gameControllerFill, type: .income)
 
     static let sampleExpenses: [CashFlowCategoryData] = [.foodExpense, .carExpense, .hobbyExpense]
     static let sampleIncomes: [CashFlowCategoryData] = [.workPayment, .workBonus]
