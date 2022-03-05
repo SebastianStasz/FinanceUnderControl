@@ -48,7 +48,7 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
         let editData = CashFlowCategoryData.carExpense
 
         // Edit created cash flow category entity using workExpense data.
-        cashFlowCategoryEntity.edit(name: editData.name, icon: editData.icon)
+        cashFlowCategoryEntity.edit(name: editData.name, icon: editData.icon, color: editData.color)
 
         // Verify that cash flow category entity data is changed.
         try verifyCashFlowCategoryData(in: cashFlowCategoryEntity, data: editData)
@@ -97,6 +97,7 @@ private extension CashFlowCategoryEntityTests {
     func verifyCashFlowCategoryData(in cashFlowCategoryEntity: CashFlowCategoryEntity, data: CashFlowCategoryData, numOfCashFlows: Int = 0) throws {
         XCTAssertEqual(cashFlowCategoryEntity.name, data.name)
         XCTAssertEqual(cashFlowCategoryEntity.icon, data.icon)
+        XCTAssertEqual(cashFlowCategoryEntity.color, data.color)
         XCTAssertEqual(cashFlowCategoryEntity.type, data.type)
         XCTAssertEqual(cashFlowCategoryEntity.cashFlows.count, numOfCashFlows)
     }

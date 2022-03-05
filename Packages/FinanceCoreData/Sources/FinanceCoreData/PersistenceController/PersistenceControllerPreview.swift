@@ -52,6 +52,7 @@ private extension PersistenceController {
                         values: [45.2, 12.2, 78.9, 41.5, 102.51, 37.39],
                         categoryName: "Food",
                         categoryIcon: .pillsFill,
+                        categoryColor: .red,
                         categoryType: .expense)
 
         createCashFlows(in: context,
@@ -59,6 +60,7 @@ private extension PersistenceController {
                         values: [60, 1240, 230],
                         categoryName: "Car",
                         categoryIcon: .carFill,
+                        categoryColor: .gray,
                         categoryType: .expense)
 
         createCashFlows(in: context,
@@ -66,6 +68,7 @@ private extension PersistenceController {
                         values: [31, 610, 257, 1400],
                         categoryName: "Hobby",
                         categoryIcon: .leafFill,
+                        categoryColor: .pink,
                         categoryType: .expense)
 
         createCashFlows(in: context,
@@ -73,6 +76,7 @@ private extension PersistenceController {
                         values: [120, 303, 65],
                         categoryName: "Petrol",
                         categoryIcon: .fuelpumpFill,
+                        categoryColor: .yellow,
                         categoryType: .expense)
     }
 
@@ -84,6 +88,7 @@ private extension PersistenceController {
                         values: [4200, 4500, 5100, 210],
                         categoryName: "Work",
                         categoryIcon: .bagFill,
+                        categoryColor: .green,
                         categoryType: .income)
 
         createCashFlows(in: context,
@@ -91,6 +96,7 @@ private extension PersistenceController {
                         values: [600, 3230],
                         categoryName: "Investments",
                         categoryIcon: .banknoteFill,
+                        categoryColor: .red,
                         categoryType: .income)
     }
 
@@ -101,12 +107,13 @@ private extension PersistenceController {
                                 values: [Double],
                                 categoryName: String,
                                 categoryIcon: CashFlowCategoryIcon,
+                                categoryColor: CashFlowCategoryColor,
                                 categoryType: CashFlowCategoryType
     ) {
         guard names.count == values.count else {
             fatalError("Each name should be associated with one value.")
         }
-        let category = CashFlowCategoryEntity.create(in: context, data: .init(name: categoryName, icon: categoryIcon, type: categoryType))
+        let category = CashFlowCategoryEntity.create(in: context, data: .init(name: categoryName, icon: categoryIcon, color: categoryColor, type: categoryType))
         for (name, value) in zip(names, values) {
             CashFlowEntity.create(in: context, data: .init(name: name, date: date, value: value, currency: plnCurrency(in: context), category: category))
         }
