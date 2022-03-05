@@ -20,7 +20,7 @@ struct ExchangeRateListView: View {
                 Text(exchageRate.code, style: .currency)
                 Text(exchageRate.rateValueRounded)
             }
-            .formField()
+            .card()
         }
         .searchable(text: $viewModel.searchText)
     }

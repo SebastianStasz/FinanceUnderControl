@@ -24,17 +24,19 @@ struct SectorHeader: View {
 
 struct Sector<Content: View>: View {
 
-    private let title: String
+    private let title: String?
     private let content: Content
 
-    init(_ title: String, @ViewBuilder content: @escaping () -> Content) {
+    init(_ title: String? = nil, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
         self.content = content()
     }
 
     var body: some View {
         VStack {
-            SectorHeader(title)
+            if let title = title {
+                SectorHeader(title)
+            }
             VStack(spacing: .small) { content }
         }
     }

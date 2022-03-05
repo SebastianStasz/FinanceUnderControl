@@ -22,7 +22,7 @@ extension CantorView {
                     Text(exchangedMoney)
                 }
             }
-            .formField()
+            .card()
         }
     }
 

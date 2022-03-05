@@ -15,7 +15,7 @@ struct ListPicker<ListView: PickerList>: View{
     var body: some View {
         NavigationLink(destination: listView) {
             ListPickerField(title: "\(title):", value: selectionName)
-                .formField()
+                .card()
         }
     }
 

@@ -5,19 +5,19 @@
 //  Created by Sebastian Staszczyk on 05/02/2022.
 //
 
-import SwiftUI
-import SSUtils
 import Shared
+import SwiftUI
 
 extension View {
+
     func cornerRadius(_ radius: CornerRadius) -> some View {
         self.cornerRadius(radius.rawValue)
     }
 
-    func formField() -> some View {
+    func card(style: CardStyle = .primary) -> some View {
         self.infiniteWidth(alignment: .leading)
             .padding(.medium)
-            .background(Color.backgroundSecondary)
+            .background(style.color)
             .cornerRadius(.base)
     }
 }

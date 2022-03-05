@@ -23,7 +23,7 @@ struct CashFlowCategoryListView: View {
 
     var body: some View {
         BaseList(type.namePlural, elements: categories, onDelete: deleteCategory) {
-            Text($0.name).formField()
+            Text($0.name).card()
         }
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)

@@ -34,7 +34,7 @@ struct Navigation<Destination: View>: View {
             SFSymbol.chevronForward.image
                 .foregroundColor(.blue)
         }
-        .formField()
+        .card()
     }
 
     private func goForward() {

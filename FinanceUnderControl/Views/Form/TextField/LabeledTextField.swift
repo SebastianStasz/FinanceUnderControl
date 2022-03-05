@@ -16,14 +16,17 @@ struct LabeledTextField<ViewModel: InputVM>: View {
 
     private let title: String
     private let prompt: SwiftUI.Text?
+    private let style: CardStyle
 
     public init(_ title: String,
                 input: Binding<Input>,
-                prompt: String? = nil
+                prompt: String? = nil,
+                style: CardStyle = .primary
     ) {
         self._input = input
         self.title = title
         self.prompt = prompt != nil ? SwiftUI.Text(prompt!) : nil
+        self.style = style
     }
 
     var body: some View {
@@ -38,7 +41,7 @@ struct LabeledTextField<ViewModel: InputVM>: View {
             if let message = viewModel.message {
                 Text(message, style: .validation)
             }
-        }.formField()
+        }.card(style: style)
     }
 }
 

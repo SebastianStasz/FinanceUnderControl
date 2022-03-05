@@ -34,7 +34,7 @@ struct CashFlowPanelView: View {
                     .fontWeight(.medium)
             }
         }
-        .formField()
+        .card()
     }
 
     private var categoryType: CashFlowCategoryType {

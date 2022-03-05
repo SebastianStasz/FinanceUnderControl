@@ -36,7 +36,7 @@ struct CurrencyListView: PickerList {
                     Spacer()
                     Radio(isSelected: selection.wrappedValue == currency)
                 }
-                .formField()
+                .card()
             }
         }
         .searchable(text: $searchText, placement: .navigationBarDrawer)
