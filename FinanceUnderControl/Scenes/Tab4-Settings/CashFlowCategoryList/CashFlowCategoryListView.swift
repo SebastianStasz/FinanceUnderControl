@@ -14,6 +14,7 @@ struct CashFlowCategoryListView: View {
     @EnvironmentObject var appController: AppController
     @FetchRequest private var categories: FetchedResults<CashFlowCategoryEntity>
     @State private var isAlertPresented = false
+    @State private var isCreateCashFlowCategoryShown = false
     private let type: CashFlowCategoryType
 
     init(type: CashFlowCategoryType) {
@@ -27,6 +28,9 @@ struct CashFlowCategoryListView: View {
         }
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
+        .sheet(isPresented: $isCreateCashFlowCategoryShown) {
+            CashFlowCategoryFormView(type: type)
+        }
     }
 
     private var toolbarContent: some ToolbarContent {
@@ -39,7 +43,7 @@ struct CashFlowCategoryListView: View {
     // MARK: - Interactions
 
     private func presentCreateCashFlowCategoryPopup() {
-        appController.presentPopup(.cashFlowCategory(for: type))
+        isCreateCashFlowCategoryShown = true
     }
 
     private func deleteCategory(at offsets: IndexSet) {
