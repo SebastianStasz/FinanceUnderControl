@@ -9,6 +9,7 @@ import SwiftUI
 import FinanceCoreData
 
 struct CashFlowCategoryFormView: View {
+
     @StateObject private var viewModel = CashFlowCategoryVM()
     let type: CashFlowCategoryType
 
@@ -19,15 +20,16 @@ struct CashFlowCategoryFormView: View {
     var body: some View {
         FormView {
             VStack(alignment: .center, spacing: .medium) {
-                CircleView(color: .red, icon: .banknoteFill, size: 100)
+                CircleView(color: viewModel.model.color.color, icon: viewModel.model.icon, size: 100)
                 LabeledInputText("Name", input: $viewModel.nameInput, style: .secondary)
             }
             .card()
 
             Sector("Color", style: .card) {
                 LazyVGrid(columns: grid, alignment: .center, spacing: .medium) {
-                    ForEach(CashFlowCategoryColor.allCases) {
-                        CircleView(color: $0.color)
+                    ForEach(CashFlowCategoryColor.allCases) { color in
+                        CircleView(color: color.color)
+                            .selection($viewModel.model.color, element: color)
                     }
                 }
             }
@@ -35,7 +37,8 @@ struct CashFlowCategoryFormView: View {
             Sector("Icon", style: .card) {
                 LazyVGrid(columns: grid, alignment: .center, spacing: .medium) {
                     ForEach(CashFlowCategoryIcon.allCases) { (icon: CashFlowCategoryIcon) in
-                        CircleView(color: .gray, icon: .bagFill)
+                        CircleView(color: .gray, icon: icon)
+                            .selection($viewModel.model.icon, element: icon)
                     }
                 }
             }

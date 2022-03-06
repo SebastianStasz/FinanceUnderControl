@@ -10,5 +10,5 @@ import SSValidation
 
 final class CashFlowCategoryVM: ObservableObject {
     @Published var nameInput = Input<TextInputSettings>(settings: .init(minLength: 3, maxLength: 20))
-    @Published var cashFlowCategoryModel = CashFlowCategoryModel()
+    @Published var model = CashFlowCategoryModel()
 }

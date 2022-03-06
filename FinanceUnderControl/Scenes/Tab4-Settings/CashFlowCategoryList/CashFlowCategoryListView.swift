@@ -23,8 +23,12 @@ struct CashFlowCategoryListView: View {
     }
 
     var body: some View {
-        BaseList(type.namePlural, elements: categories, onDelete: deleteCategory) {
-            Text($0.name).card()
+        BaseList(type.namePlural, elements: categories, onDelete: deleteCategory) { category in
+            HStack(spacing: .medium) {
+                CircleView(color: category.color.color, icon: category.icon, size: 28)
+                Text(category.name)
+            }
+            .card()
         }
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)

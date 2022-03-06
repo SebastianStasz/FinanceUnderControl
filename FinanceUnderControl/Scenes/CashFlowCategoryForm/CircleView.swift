@@ -36,9 +36,16 @@ struct CircleView: View {
             SizeReader($imageSize) {
                 Image(systemName: image)
                     .resizableToFit
-                    .padding(imageSize.width * 0.26)
+                    .padding(demandSize * 0.26)
             }
         }
+    }
+
+    private var demandSize: CGFloat {
+        if let size = size {
+            return size
+        }
+        return imageSize.width
     }
 }
 
