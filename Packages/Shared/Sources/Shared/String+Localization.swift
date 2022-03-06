@@ -10,12 +10,12 @@ import Foundation
 public extension String {
 
     /// Returns a localized string, using the main bundle.
-    func localize() -> String {
+    private func localize() -> String {
         NSLocalizedString(self, bundle: .main, comment: self)
     }
 
     /// Returns a localized string with a parameter, using the main bundle.
-    func localize(parameter: String) -> String {
+    private func localize(parameter: String) -> String {
         String(format: self.localize(), parameter)
     }
 

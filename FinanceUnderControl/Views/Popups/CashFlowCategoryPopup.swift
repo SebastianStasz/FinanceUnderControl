@@ -24,7 +24,7 @@ struct CashFlowCategoryPopup: View {
 
     private func createCashFlowCategory() {
         guard let name = input.value else { return }
-        let data = CashFlowCategoryData(name: name, type: type)
+        let data = CashFlowCategoryData(name: name, icon: .banknoteFill, color: .red, type: type)
         CashFlowCategoryEntity.create(in: context, data: data)
     }
 

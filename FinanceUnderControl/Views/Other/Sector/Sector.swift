@@ -25,10 +25,12 @@ struct SectorHeader: View {
 struct Sector<Content: View>: View {
 
     private let title: String?
+    private let style: SectorStyle
     private let content: Content
 
-    init(_ title: String? = nil, @ViewBuilder content: @escaping () -> Content) {
+    init(_ title: String? = nil, style: SectorStyle = .clear, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
+        self.style = style
         self.content = content()
     }
 
@@ -37,7 +39,13 @@ struct Sector<Content: View>: View {
             if let title = title {
                 SectorHeader(title)
             }
-            VStack(spacing: .small) { content }
+            VStack(spacing: .small) {
+                if case .card = style {
+                    content.card(style: .primary)
+                } else {
+                    content
+                }
+            }
         }
     }
 }
@@ -52,8 +60,6 @@ extension Section where Parent == SectorHeader, Content: View, Footer == EmptyVi
 
 struct Sector_Previews: PreviewProvider {
     static var previews: some View {
-        Sector("Title") {
-            Text("Content")
-        }
+        SectorDSView()
     }
 }

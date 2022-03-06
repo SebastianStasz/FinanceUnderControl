@@ -5,6 +5,7 @@
 //  Created by Sebastian Staszczyk on 07/12/2021.
 //
 
+import Shared
 import SwiftUI
 import SSValidation
 
