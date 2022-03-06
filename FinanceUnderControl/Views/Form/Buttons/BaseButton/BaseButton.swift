@@ -16,12 +16,13 @@ struct BaseButton: View {
         self.configuration = configuration
     }
 
-    init(_ title: String, role: Role, action: @escaping Action) {
-        configuration = .init(title, role: role, action: action)
+    init(_ title: String, role: Role, enabled: Bool = true, action: @escaping Action) {
+        configuration = .init(title, role: role, enabled: enabled, action: action)
     }
 
     var body: some View {
         Button(configuration.title, action: configuration.action)
             .buttonStyle(BaseButtonStyle(role: configuration.role))
+            .disabled(!configuration.enabled)
     }
 }

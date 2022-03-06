@@ -11,7 +11,6 @@ import FinanceCoreData
 struct TabBarActionButton: View {
     typealias Popup = TabBarModel.Popup
 
-    @EnvironmentObject var appController: AppController
     @ObservedObject var viewModel: TabBarVM
 
     var body: some View {

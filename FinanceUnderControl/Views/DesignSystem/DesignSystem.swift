@@ -31,6 +31,7 @@ enum DesignSystem: String, CaseIterable {
         case pickers = "Pickers"
         case textFields = "Text Fields"
         case sector = "Sector"
+        case circleView = "Circle View"
 
         var body: some View {
             Group {
@@ -45,6 +46,8 @@ enum DesignSystem: String, CaseIterable {
                     TextFieldDSView()
                 case .sector:
                     SectorDSView()
+                case .circleView:
+                    CircleViewDSView()
                 }
             }
         }

@@ -9,41 +9,34 @@ import SwiftUI
 import FinanceCoreData
 
 struct CashFlowCategoryFormView: View {
+    @Environment(\.managedObjectContext) private var context
+    @Environment(\.dismiss) private var dismiss
 
-    @StateObject private var viewModel = CashFlowCategoryVM()
+    @StateObject var viewModel = CashFlowCategoryVM()
     let type: CashFlowCategoryType
 
-    private var grid: [GridItem] {
+    var grid: [GridItem] {
         Array(repeating: .init(.flexible(), spacing: .medium), count: 6)
+    }
+
+    var categoryModel: CashFlowCategoryModel {
+        viewModel.categoryModel
     }
 
     var body: some View {
         FormView {
-            VStack(alignment: .center, spacing: .medium) {
-                CircleView(color: viewModel.model.color.color, icon: viewModel.model.icon, size: 100)
-                LabeledInputText("Name", input: $viewModel.nameInput, style: .secondary)
-            }
-            .card()
-
-            Sector("Color", style: .card) {
-                LazyVGrid(columns: grid, alignment: .center, spacing: .medium) {
-                    ForEach(CashFlowCategoryColor.allCases) { color in
-                        CircleView(color: color.color)
-                            .selection($viewModel.model.color, element: color)
-                    }
-                }
-            }
-
-            Sector("Icon", style: .card) {
-                LazyVGrid(columns: grid, alignment: .center, spacing: .medium) {
-                    ForEach(CashFlowCategoryIcon.allCases) { (icon: CashFlowCategoryIcon) in
-                        CircleView(color: .gray, icon: icon)
-                            .selection($viewModel.model.icon, element: icon)
-                    }
-                }
-            }
+            categoryInfo
+            colorSector
+            iconSector
         }
-        .asSheet(title: "Create")
+        .horizontalButtonsScroll(title: "Create", primaryButton: .init("Create", enabled: categoryModel.name.notNil, action: createCashFlowCategory))
+    }
+
+    private func createCashFlowCategory() {
+        guard let name = categoryModel.name else { return }
+        let data = CashFlowCategoryData(name: name, icon: categoryModel.icon, color: categoryModel.color, type: type)
+        CashFlowCategoryEntity.create(in: context, data: data)
+        dismiss.callAsFunction()
     }
 }
 

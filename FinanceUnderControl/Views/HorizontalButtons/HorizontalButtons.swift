@@ -35,10 +35,10 @@ struct HorizontalButtons: View {
          secondaryButton: Configuration? = nil,
          shouldStandOut: Bool
     ) {
-        self.primaryButton = .init(primaryButton.title, role: .primary, action: primaryButton.action)
+        self.primaryButton = .init(primaryButton.title, role: .primary, enabled: primaryButton.enabled, action: primaryButton.action)
         self.shouldStandOut = shouldStandOut
         if let sb = secondaryButton {
-            self.secondaryButton = .init(sb.title, role: .secondary, action: sb.action)
+            self.secondaryButton = .init(sb.title, role: .secondary, enabled: sb.enabled, action: sb.action)
         } else {
             self.secondaryButton = nil
         }

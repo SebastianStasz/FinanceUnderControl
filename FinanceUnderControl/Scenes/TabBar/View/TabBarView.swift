@@ -12,7 +12,6 @@ import SSUtils
 struct TabBarView: View {
 
     @StateObject private var viewModel = TabBarVM()
-    @StateObject private var appController = AppController()
     @State private var isKeyboardPresented = false
     private let testView: AnyView?
 
@@ -57,8 +56,6 @@ struct TabBarView: View {
         .background(Color.backgroundPrimary)
         .onReceive(NotificationCenter.keyboardWillShow) { _ in isKeyboardPresented = true }
         .onReceive(NotificationCenter.keyboardDidHide) { _ in isKeyboardPresented = false }
-        .popup(appController.popupModel)
-        .environmentObject(appController)
         .sheet(item: $viewModel.cashFlowCategoryType) { type in
             CashFlowFormView(for: type)
         }

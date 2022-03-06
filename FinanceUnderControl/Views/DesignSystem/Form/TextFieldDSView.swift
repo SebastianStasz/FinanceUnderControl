@@ -18,9 +18,6 @@ struct TextFieldDSView: View {
         Group {
             LabeledInputNumber("Enter Number", input: $numberInput, prompt: "100")
                 .designSystemComponent("Labeled text field")
-            
-            BaseInputText(title: "Name", input: $textInput)
-                .designSystemComponent("Base text field")
         }
         .designSystemView("Text Fields")
     }

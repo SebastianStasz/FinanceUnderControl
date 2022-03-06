@@ -11,7 +11,6 @@ import SSUtils
 import SwiftUI
 
 struct CashFlowCategoryListView: View {
-    @EnvironmentObject var appController: AppController
     @FetchRequest private var categories: FetchedResults<CashFlowCategoryEntity>
     @State private var isAlertPresented = false
     @State private var isCreateCashFlowCategoryShown = false

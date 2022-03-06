@@ -16,14 +16,16 @@ struct CashFlowFormView: View {
 
     @StateObject var viewModel = CashFlowFormVM()
 
+    private var cashFlowData: CashFlowData? {
+        viewModel.cashFlowModel.cashFlowData
+    }
+
     var body: some View {
         FormView {
             sectorBasicInfo
             sectorMoreInfo
         }
-        .horizontalButtonsScroll(title: type.name,
-                                 primaryButton: .init(.button_create, action: createCashFlow)
-        )
+        .horizontalButtonsScroll(title: type.name, primaryButton: .init(.button_create, enabled: cashFlowData.notNil, action: createCashFlow))
         .onAppear(perform: onAppear)
     }
 
@@ -33,7 +35,7 @@ struct CashFlowFormView: View {
     }
 
     private func createCashFlow() {
-        guard let data = viewModel.cashFlowModel.cashFlowData else { return }
+        guard let data = cashFlowData else { return }
         CashFlowEntity.create(in: context, data: data)
     }
 
