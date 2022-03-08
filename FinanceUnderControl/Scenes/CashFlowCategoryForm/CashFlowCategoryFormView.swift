@@ -5,6 +5,7 @@
 //  Created by Sebastian Staszczyk on 04/03/2022.
 //
 
+import Combine
 import SwiftUI
 import FinanceCoreData
 
@@ -13,14 +14,12 @@ struct CashFlowCategoryFormView: View {
     @Environment(\.dismiss) private var dismiss
 
     @StateObject var viewModel = CashFlowCategoryVM()
-    let type: CashFlowCategoryType
+    let model: CashFlowCategoryModel
+
+    var elementsSpacing: CGFloat { .micro }
 
     var grid: [GridItem] {
-        Array(repeating: .init(.flexible(), spacing: .medium), count: 6)
-    }
-
-    var categoryModel: CashFlowCategoryModel {
-        viewModel.categoryModel
+        Array(repeating: .init(.flexible(), spacing: elementsSpacing), count: 6)
     }
 
     var body: some View {
@@ -29,14 +28,13 @@ struct CashFlowCategoryFormView: View {
             colorSector
             iconSector
         }
-        .horizontalButtonsScroll(title: "Create", primaryButton: .init("Create", enabled: categoryModel.name.notNil, action: createCashFlowCategory))
+        .horizontalButtonsScroll(title: "Create", primaryButton: .init("Create", enabled: viewModel.isFormValid, action: createCashFlowCategory))
+        .onAppear { viewModel.categoryModel = model}
+        .onReceive(viewModel.output.dismissView) { dismiss.callAsFunction() }
     }
 
     private func createCashFlowCategory() {
-        guard let name = categoryModel.name else { return }
-        let data = CashFlowCategoryData(name: name, icon: categoryModel.icon, color: categoryModel.color, type: type)
-        CashFlowCategoryEntity.create(in: context, data: data)
-        dismiss.callAsFunction()
+        viewModel.input.didTapCreate.send()
     }
 }
 
@@ -45,6 +43,6 @@ struct CashFlowCategoryFormView: View {
 
 struct CashFlowCategoryFormView_Previews: PreviewProvider {
     static var previews: some View {
-        CashFlowCategoryFormView(type: .expense)
+        CashFlowCategoryFormView(model: .newForType(.expense))
     }
 }

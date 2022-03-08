@@ -7,9 +7,36 @@
 
 import Foundation
 import FinanceCoreData
+import SSValidation
 
 struct CashFlowCategoryModel {
-    var name: String? = nil
+    var nameInput = Input<TextInputSettings>(settings: nameInputSettings)
     var icon: CashFlowCategoryIcon = .houseFill
     var color: CashFlowCategoryColor = .blue
+    var type: CashFlowCategoryType = .unknown
+
+    var data: CashFlowCategoryData? {
+        guard let name = nameInput.value, type != .unknown else { return nil }
+        return .init(name: name, icon: icon, color: color, type: type)
+    }
+
+    static func newForType(_ type: CashFlowCategoryType) -> Self {
+        var model = CashFlowCategoryModel()
+        model.type = type
+        return model
+    }
+
+    static var nameInputSettings: TextInputSettings {
+        .init(maxLength: 30, blocked: .init(message: "Category with this name already exists."))
+    }
+}
+
+extension CashFlowCategoryModel: Identifiable {
+    var id: String { nameInput.value ?? "" }
+}
+
+extension CashFlowCategoryEntity {
+    var model: CashFlowCategoryModel {
+        .init(nameInput: .init(value: name, settings: CashFlowCategoryModel.nameInputSettings), icon: icon, color: color, type: type)
+    }
 }
