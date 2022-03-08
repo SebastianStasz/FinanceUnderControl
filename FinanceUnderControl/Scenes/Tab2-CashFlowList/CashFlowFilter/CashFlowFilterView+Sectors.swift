@@ -21,8 +21,8 @@ extension CashFlowFilterView {
 
     var amountSector: some View {
         Sector(.common_amount) {
-            LabeledInputNumber(.cash_flow_filter_minimum_value, input: filter.minimumValueInput, prompt: .common_none)
-            LabeledInputNumber(.cash_flow_filter_maximum_value, input: filter.maximumValueInput, prompt: .common_none)
+            LabeledInputNumber(.cash_flow_filter_minimum_value, input: filter.minimumValueInput)
+            LabeledInputNumber(.cash_flow_filter_maximum_value, input: filter.maximumValueInput)
         }
     }
 

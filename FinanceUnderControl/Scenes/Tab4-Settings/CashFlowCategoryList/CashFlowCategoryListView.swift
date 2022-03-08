@@ -11,10 +11,12 @@ import SSUtils
 import SwiftUI
 
 struct CashFlowCategoryListView: View {
+    @Environment(\.editMode) private var editMode
     @FetchRequest private var categories: FetchedResults<CashFlowCategoryEntity>
     @State private var isAlertPresented = false
     @State private var isCreateCashFlowCategoryShown = false
     private let type: CashFlowCategoryType
+    @State private var categoryModel: CashFlowCategoryModel?
 
     init(type: CashFlowCategoryType) {
         self.type = type
@@ -28,25 +30,27 @@ struct CashFlowCategoryListView: View {
                 Text(category.name)
             }
             .card()
+            .contextMenu {
+                Button("Edit", action: presentCategoryForm(for: category.model))
+            }
         }
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
-        .sheet(isPresented: $isCreateCashFlowCategoryShown) {
-            CashFlowCategoryFormView(type: type)
-        }
+        .sheet(item: $categoryModel) { CashFlowCategoryFormView(model: $0) }
     }
 
     private var toolbarContent: some ToolbarContent {
         Group {
             ToolbarItem(placement: .navigationBarTrailing) { EditButton() }
-            Toolbar.trailing(systemImage: SFSymbol.plus.name, action: presentCreateCashFlowCategoryPopup)
+            Toolbar.trailing(systemImage: SFSymbol.plus.name) { presentCategoryForm(for: .newForType(type)) }
         }
     }
 
     // MARK: - Interactions
 
-    private func presentCreateCashFlowCategoryPopup() {
-        isCreateCashFlowCategoryShown = true
+    private func presentCategoryForm(for model: CashFlowCategoryModel) {
+        categoryModel = model
+        editMode?.animation().wrappedValue = .inactive
     }
 
     private func deleteCategory(at offsets: IndexSet) {

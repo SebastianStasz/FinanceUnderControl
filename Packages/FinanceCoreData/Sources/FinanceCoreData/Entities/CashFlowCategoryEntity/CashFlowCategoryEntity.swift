@@ -60,6 +60,12 @@ public extension CashFlowCategoryEntity {
         let filter = CashFlowCategoryEntity.Filter.typeIs(type).nsPredicate
         return FetchRequest<CashFlowCategoryEntity>(sortDescriptors: sort, predicate: filter)
     }
+
+    static func getAll(from context: NSManagedObjectContext) -> [CashFlowCategoryEntity] {
+        let request = CashFlowCategoryEntity.nsFetchRequest(sortingBy: [.byName(.forward)])
+        let result = try? context.fetch(request)
+        return result ?? []
+    }
 }
 
 // MARK: - Generated accessors for cashFlows

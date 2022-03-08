@@ -16,18 +16,18 @@ private struct CircleViewSelecting<T: Equatable>: ViewModifier {
     func body(content: Content) -> some View {
         SizeReader($size) {
             content
-                .padding(size.width * 0.08)
+                .padding(size.width * 0.11)
                 .overlay(selectionStroke)
                 .onTapGesture(perform: select)
         }
     }
 
     private var selectionStroke: some View {
-        Circle().strokeBorder(strokeColor, lineWidth: size.width * 0.04)
+        Circle().strokeBorder(strokeColor, lineWidth: size.width * 0.05)
     }
 
     private var strokeColor: Color {
-        element == selection ? .red : .clear
+        element == selection ? .grayMedium : .clear
     }
 
     private func select() {

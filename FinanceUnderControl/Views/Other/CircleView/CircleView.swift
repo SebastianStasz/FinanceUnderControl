@@ -23,29 +23,29 @@ struct CircleView: View {
     }
 
     var body: some View {
-        Circle()
-            .fill(color)
-            .aspectRatio(contentMode: .fit)
-            .frame(width: size, height: size)
-            .overlay(imageView)
+        SizeReader($imageSize) {
+            Circle()
+                .fill(color)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: size, height: size)
+        }
+        .overlay(imageView)
     }
 
     @ViewBuilder
     private var imageView: some View {
         if let image = image {
-            SizeReader($imageSize) {
-                Image(systemName: image)
-                    .resizableToFit
-                    .padding(demandSize * 0.26)
-            }
+            Image(systemName: image)
+                .resizableToFit
+                .padding(demandSize)
         }
     }
 
     private var demandSize: CGFloat {
         if let size = size {
-            return size
+            return size * 0.26
         }
-        return imageSize.width
+        return imageSize.height * 0.26
     }
 }
 

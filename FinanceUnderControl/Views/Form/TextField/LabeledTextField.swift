@@ -16,29 +16,22 @@ struct LabeledTextField<ViewModel: InputVM>: View {
     @Binding private var input: Input
 
     private let title: String
-    private let prompt: SwiftUI.Text?
     private let style: CardStyle
 
     public init(_ title: String,
                 input: Binding<Input>,
-                prompt: String? = nil,
                 style: CardStyle = .primary
     ) {
         self._input = input
         self.title = title
-        self.prompt = prompt != nil ? SwiftUI.Text(prompt!) : nil
         self.style = style
     }
 
     var body: some View {
         VStack(spacing: .micro) {
-            HStack(spacing: .large) {
-                Text("\(title):")
+            TextField(title, text: $viewModel.textField, prompt: SwiftUI.Text(title))
+                .asInputView(viewModel: viewModel, input: $input)
 
-                TextField(title, text: $viewModel.textField, prompt: prompt)
-                    .multilineTextAlignment(.trailing)
-                    .asInputView(viewModel: viewModel, input: $input)
-            }
             if let message = viewModel.message {
                 Text(message, style: .validation)
             }
