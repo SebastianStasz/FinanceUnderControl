@@ -1,5 +1,5 @@
 //
-//  CashFlowCategoryType.swift
+//  CashFlowType.swift
 //  FinanceCoreData
 //
 //  Created by Sebastian Staszczyk on 25/12/2021.
@@ -10,13 +10,13 @@ import SSUtils
 import SwiftUI
 import Shared
 
-public enum CashFlowCategoryType: String {
+public enum CashFlowType: String {
     case income
     case expense
     case unknown
 }
 
-public extension CashFlowCategoryType {
+public extension CashFlowType {
     var name: String {
         switch self {
         case .income:
@@ -58,12 +58,12 @@ public extension CashFlowCategoryType {
     }
 }
 
-extension CashFlowCategoryType: Identifiable {
+extension CashFlowType: Identifiable {
     public var id: String { rawValue }
 }
 
-extension CashFlowCategoryType: UnknownValueSupport {
-    public static var unknownCase: CashFlowCategoryType {
+extension CashFlowType: UnknownValueSupport {
+    public static var unknownCase: CashFlowType {
         .unknown
     }
 }

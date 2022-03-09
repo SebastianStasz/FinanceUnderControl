@@ -108,7 +108,7 @@ private extension PersistenceController {
                                 categoryName: String,
                                 categoryIcon: CashFlowCategoryIcon,
                                 categoryColor: CashFlowCategoryColor,
-                                categoryType: CashFlowCategoryType
+                                categoryType: CashFlowType
     ) {
         guard names.count == values.count else {
             fatalError("Each name should be associated with one value.")

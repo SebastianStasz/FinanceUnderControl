@@ -11,7 +11,7 @@ public extension CashFlowEntity {
 
     enum Filter: EntityFilter {
         case nameContains(String)
-        case byType(CashFlowCategoryType)
+        case byType(CashFlowType)
         case byCategory(CashFlowCategoryEntity)
         case byDateBetween(startDate: Date, endDate: Date)
         case minimumValue(Double)
@@ -43,7 +43,7 @@ extension CashFlowEntity {
         NSPredicate(format: "name CONTAINS[cd] %@", text)
     }
 
-    static private func predicateForCategoryType(_ type: CashFlowCategoryType) -> NSPredicate {
+    static private func predicateForCategoryType(_ type: CashFlowType) -> NSPredicate {
         NSPredicate(format: "category.type_ == %@", type.rawValue)
     }
 

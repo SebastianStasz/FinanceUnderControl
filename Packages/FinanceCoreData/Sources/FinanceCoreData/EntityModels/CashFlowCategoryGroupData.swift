@@ -9,8 +9,10 @@ import Foundation
 
 public struct CashFlowCategoryGroupData {
     public let name: String
+    public let type: CashFlowType
 
-    public init(name: String) {
+    public init(name: String, type: CashFlowType) {
         self.name = name
+        self.type = type
     }
 }

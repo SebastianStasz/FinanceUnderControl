@@ -12,7 +12,7 @@ struct CashFlowFormView: View {
     @Environment(\.managedObjectContext) private var context
     @FetchRequest var currencies: FetchedResults<CurrencyEntity>
     @FetchRequest var categories: FetchedResults<CashFlowCategoryEntity>
-    let type: CashFlowCategoryType
+    let type: CashFlowType
 
     @StateObject var viewModel = CashFlowFormVM()
 
@@ -39,7 +39,7 @@ struct CashFlowFormView: View {
         CashFlowEntity.create(in: context, data: data)
     }
 
-    init(for type: CashFlowCategoryType) {
+    init(for type: CashFlowType) {
         self.type = type
         let currenciesSort = [CurrencyEntity.Sort.byCode(.forward).nsSortDescriptor]
         _currencies = FetchRequest<CurrencyEntity>(sortDescriptors: currenciesSort)

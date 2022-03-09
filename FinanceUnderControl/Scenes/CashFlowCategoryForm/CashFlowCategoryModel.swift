@@ -13,7 +13,7 @@ struct CashFlowCategoryModel {
     var nameInput = Input<TextInputSettings>(settings: nameInputSettings)
     var icon: CashFlowCategoryIcon = .houseFill
     var color: CashFlowCategoryColor = .blue
-    var type: CashFlowCategoryType = .unknown
+    var type: CashFlowType = .unknown
 
     var name: String? {
         nameInput.value
@@ -24,7 +24,7 @@ struct CashFlowCategoryModel {
         return .init(name: name, icon: icon, color: color, type: type)
     }
 
-    static func newForType(_ type: CashFlowCategoryType) -> Self {
+    static func newForType(_ type: CashFlowType) -> Self {
         var model = CashFlowCategoryModel()
         model.type = type
         return model

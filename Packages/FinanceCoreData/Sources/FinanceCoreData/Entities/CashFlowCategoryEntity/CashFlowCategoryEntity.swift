@@ -26,13 +26,13 @@ import SwiftUI
         set { color_ = newValue.rawValue }
     }
 
-    public private(set) var type: CashFlowCategoryType {
+    public private(set) var type: CashFlowType {
         get { .getCase(for: type_) }
         set { type_ = newValue.rawValue }
     }
 }
 
-// MARK: - Methods
+// MARK: - Public methods
 
 public extension CashFlowCategoryEntity {
 
@@ -55,7 +55,7 @@ public extension CashFlowCategoryEntity {
         return true
     }
 
-    static func fetchRequest(forType type: CashFlowCategoryType) -> FetchRequest<CashFlowCategoryEntity> {
+    static func fetchRequest(forType type: CashFlowType) -> FetchRequest<CashFlowCategoryEntity> {
         let sort = [CashFlowCategoryEntity.Sort.byName(.forward).nsSortDescriptor]
         let filter = CashFlowCategoryEntity.Filter.typeIs(type).nsPredicate
         return FetchRequest<CashFlowCategoryEntity>(sortDescriptors: sort, predicate: filter)
@@ -70,17 +70,9 @@ public extension CashFlowCategoryEntity {
 
 // MARK: - Generated accessors for cashFlows
 
-extension CashFlowCategoryEntity {
-
-    @objc(addCashFlowsObject:)
-    @NSManaged private func addToCashFlows(_ value: CashFlowEntity)
-
-    @objc(removeCashFlowsObject:)
-    @NSManaged private func removeFromCashFlows(_ value: CashFlowEntity)
-
-    @objc(addCashFlows:)
-    @NSManaged private func addToCashFlows(_ values: NSSet)
-
-    @objc(removeCashFlows:)
-    @NSManaged private func removeFromCashFlows(_ values: NSSet)
+private extension CashFlowCategoryEntity {
+    @objc(removeCashFlowsObject:) @NSManaged private func removeFromCashFlows(_ value: CashFlowEntity)
+    @objc(removeCashFlows:)       @NSManaged private func removeFromCashFlows(_ values: NSSet)
+    @objc(addCashFlowsObject:)    @NSManaged private func addToCashFlows(_ value: CashFlowEntity)
+    @objc(addCashFlows:)          @NSManaged private func addToCashFlows(_ values: NSSet)
 }

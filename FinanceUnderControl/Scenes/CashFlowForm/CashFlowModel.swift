@@ -14,7 +14,7 @@ struct CashFlowModel {
     var value: Double?
     var currency: CurrencyEntity?
     var category: CashFlowCategoryEntity?
-    var type: CashFlowCategoryType?
+    var type: CashFlowType?
 
     var cashFlowData: CashFlowData? {
         guard let name = name,

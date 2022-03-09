@@ -10,7 +10,7 @@ import Foundation
 public extension CashFlowCategoryEntity {
 
     enum Filter: EntityFilter {
-        case typeIs(CashFlowCategoryType)
+        case typeIs(CashFlowType)
 
         public var nsPredicate: NSPredicate {
             switch self {

@@ -37,7 +37,7 @@ struct CashFlowPanelView: View {
         .card()
     }
 
-    private var categoryType: CashFlowCategoryType {
+    private var categoryType: CashFlowType {
         cashFlow.category.type
     }
 }

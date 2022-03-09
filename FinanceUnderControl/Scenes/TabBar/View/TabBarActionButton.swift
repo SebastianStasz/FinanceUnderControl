@@ -32,7 +32,7 @@ struct TabBarActionButton: View {
         viewModel.arePopupsShown.toggle()
     }
 
-    private func showCashFlowPopup(for type: CashFlowCategoryType) {
+    private func showCashFlowPopup(for type: CashFlowType) {
         togglePopupButtons()
         viewModel.cashFlowCategoryType = type
     }

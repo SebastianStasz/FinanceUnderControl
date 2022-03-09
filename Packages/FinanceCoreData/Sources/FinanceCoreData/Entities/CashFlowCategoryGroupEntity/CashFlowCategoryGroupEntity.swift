@@ -5,29 +5,49 @@
 //  Created by Sebastian Staszczyk on 09/03/2022.
 //
 //
-
-import Foundation
 import CoreData
+import Foundation
+import SSUtils
 
 @objc(CashFlowCategoryGroupEntity) public class CashFlowCategoryGroupEntity: NSManagedObject, Entity {
+    @NSManaged private var type_: String
     @NSManaged public private(set) var name: String?
     @NSManaged public private(set) var categories: NSSet?
+
+    public private(set) var type: CashFlowType {
+        get { .getCase(for: type_) }
+        set { type_ = newValue.rawValue }
+    }
 }
 
-// MARK: Generated accessors for categories
+// MARK: - Public methods
 
-extension CashFlowCategoryGroupEntity {
+public extension CashFlowCategoryGroupEntity {
 
-    @objc(addCategoriesObject:)
-    @NSManaged private func addToCategories(_ value: CashFlowCategoryEntity)
+    @discardableResult
+    static func create(in context: NSManagedObjectContext, data: CashFlowCategoryGroupData) -> CashFlowCategoryGroupEntity {
+        let group = CashFlowCategoryGroupEntity(context: context)
+        group.type = data.type
+        group.edit(data: data)
+        return group
+    }
 
-    @objc(removeCategoriesObject:)
-    @NSManaged private func removeFromCategories(_ value: CashFlowCategoryEntity)
+    func edit(data: CashFlowCategoryGroupData) {
+        name = data.name
+    }
+}
 
-    @objc(addCategories:)
-    @NSManaged private func addToCategories(_ values: NSSet)
+// MARK: - Private methods
 
-    @objc(removeCategories:)
-    @NSManaged private func removeFromCategories(_ values: NSSet)
+private extension CashFlowCategoryGroupEntity {
 
+}
+
+// MARK: - Generated accessors for categories
+
+private extension CashFlowCategoryGroupEntity {
+    @objc(removeCategoriesObject:) @NSManaged func removeFromCategories(_ value: CashFlowCategoryEntity)
+    @objc(removeCategories:)       @NSManaged func removeFromCategories(_ values: NSSet)
+    @objc(addCategoriesObject:)    @NSManaged func addToCategories(_ value: CashFlowCategoryEntity)
+    @objc(addCategories:)          @NSManaged func addToCategories(_ values: NSSet)
 }

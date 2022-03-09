@@ -11,13 +11,13 @@ public struct CashFlowCategoryData {
     public let name: String
     public let icon: CashFlowCategoryIcon
     public let color: CashFlowCategoryColor
-    public let type: CashFlowCategoryType
+    public let type: CashFlowType
 
     public init(
         name: String,
         icon: CashFlowCategoryIcon,
         color: CashFlowCategoryColor,
-        type: CashFlowCategoryType
+        type: CashFlowType
     ) {
         self.name = name
         self.icon = icon

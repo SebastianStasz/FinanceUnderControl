@@ -15,10 +15,10 @@ struct CashFlowCategoryListView: View {
     @FetchRequest private var categories: FetchedResults<CashFlowCategoryEntity>
     @State private var isAlertPresented = false
     @State private var isCreateCashFlowCategoryShown = false
-    private let type: CashFlowCategoryType
+    private let type: CashFlowType
     @State private var categoryForm: CashFlowCategoryForm?
 
-    init(type: CashFlowCategoryType) {
+    init(type: CashFlowType) {
         self.type = type
         _categories = CashFlowCategoryEntity.fetchRequest(forType: type)
     }

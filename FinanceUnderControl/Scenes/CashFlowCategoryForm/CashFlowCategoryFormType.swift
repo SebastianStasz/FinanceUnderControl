@@ -9,7 +9,7 @@ import Foundation
 import FinanceCoreData
 
 enum CashFlowCategoryForm {
-    case new(for: CashFlowCategoryType)
+    case new(for: CashFlowType)
     case edit(CashFlowCategoryEntity)
 
     var model: CashFlowCategoryModel {
