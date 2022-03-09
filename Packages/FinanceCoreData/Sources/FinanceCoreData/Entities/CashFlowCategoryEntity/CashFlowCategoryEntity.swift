@@ -73,15 +73,14 @@ public extension CashFlowCategoryEntity {
 extension CashFlowCategoryEntity {
 
     @objc(addCashFlowsObject:)
-    @NSManaged public func addToCashFlows(_ value: CashFlowEntity)
+    @NSManaged private func addToCashFlows(_ value: CashFlowEntity)
 
     @objc(removeCashFlowsObject:)
-    @NSManaged public func removeFromCashFlows(_ value: CashFlowEntity)
+    @NSManaged private func removeFromCashFlows(_ value: CashFlowEntity)
 
     @objc(addCashFlows:)
-    @NSManaged public func addToCashFlows(_ values: NSSet)
+    @NSManaged private func addToCashFlows(_ values: NSSet)
 
     @objc(removeCashFlows:)
-    @NSManaged public func removeFromCashFlows(_ values: NSSet)
-
+    @NSManaged private func removeFromCashFlows(_ values: NSSet)
 }
