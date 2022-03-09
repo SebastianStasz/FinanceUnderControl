@@ -23,8 +23,9 @@ final class CashFlowCategoryVM: ObservableObject {
     }
 
     struct Input {
-        let didTapCreate = PassthroughSubject<Void, Never>()
+        let didTapConfirm = PassthroughSubject<CashFlowCategoryForm, Never>()
     }
+
     private var cancellables: Set<AnyCancellable> = []
     private let context: NSManagedObjectContext
     private let action = Action()
@@ -43,16 +44,29 @@ final class CashFlowCategoryVM: ObservableObject {
             .map { $0.nameInput.value != nil }
             .assign(to: &$isFormValid)
 
-        input.didTapCreate
+        input.didTapConfirm
             .combineLatest($categoryModel)
-            .sink { [weak self] in self?.createCategory(model: $0.1) }
+            .sink { [weak self] in self?.handleConfirmAction(form: $0.0, model: $0.1) }
             .store(in: &cancellables)
     }
 
-    private func createCategory(model: CashFlowCategoryModel?) {
+    private func handleConfirmAction(form: CashFlowCategoryForm, model: CashFlowCategoryModel?) {
         guard let data = model?.data else { return }
-        CashFlowCategoryEntity.create(in: context, data: data)
+        switch form {
+        case .new:
+            createCashFlowCategory(data: data)
+        case .edit:
+            editCashFlowCategory(form: form, data: data)
+        }
         action.dismissView.send()
+    }
+
+    private func createCashFlowCategory(data: CashFlowCategoryData) {
+        CashFlowCategoryEntity.create(in: context, data: data)
+    }
+
+    private func editCashFlowCategory(form: CashFlowCategoryForm, data: CashFlowCategoryData) {
+        form.entity?.edit(name: data.name, icon: data.icon, color: data.color)
     }
 
     private func updateBlockedCategoryNames() {

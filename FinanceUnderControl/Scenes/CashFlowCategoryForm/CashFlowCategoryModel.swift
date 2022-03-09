@@ -15,8 +15,12 @@ struct CashFlowCategoryModel {
     var color: CashFlowCategoryColor = .blue
     var type: CashFlowCategoryType = .unknown
 
+    var name: String? {
+        nameInput.value
+    }
+
     var data: CashFlowCategoryData? {
-        guard let name = nameInput.value, type != .unknown else { return nil }
+        guard let name = name, type != .unknown else { return nil }
         return .init(name: name, icon: icon, color: color, type: type)
     }
 
@@ -29,10 +33,6 @@ struct CashFlowCategoryModel {
     static var nameInputSettings: TextInputSettings {
         .init(maxLength: 30, blocked: .init(message: "Category with this name already exists."))
     }
-}
-
-extension CashFlowCategoryModel: Identifiable {
-    var id: String { nameInput.value ?? "" }
 }
 
 extension CashFlowCategoryEntity {

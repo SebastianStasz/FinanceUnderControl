@@ -16,7 +16,7 @@ struct CashFlowCategoryListView: View {
     @State private var isAlertPresented = false
     @State private var isCreateCashFlowCategoryShown = false
     private let type: CashFlowCategoryType
-    @State private var categoryModel: CashFlowCategoryModel?
+    @State private var categoryForm: CashFlowCategoryForm?
 
     init(type: CashFlowCategoryType) {
         self.type = type
@@ -31,33 +31,37 @@ struct CashFlowCategoryListView: View {
             }
             .card()
             .contextMenu {
-                Button("Edit", action: presentCategoryForm(for: category.model))
+                Button("Edit", action: presentCategoryForm(.edit(category)))
+                Button("Delete", role: .destructive) { deleteCategory(category) }
             }
         }
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
-        .sheet(item: $categoryModel) { CashFlowCategoryFormView(model: $0) }
+        .sheet(item: $categoryForm) { CashFlowCategoryFormView(form: $0) }
     }
 
     private var toolbarContent: some ToolbarContent {
         Group {
             ToolbarItem(placement: .navigationBarTrailing) { EditButton() }
-            Toolbar.trailing(systemImage: SFSymbol.plus.name) { presentCategoryForm(for: .newForType(type)) }
+            Toolbar.trailing(systemImage: SFSymbol.plus.name) { presentCategoryForm(.new(for: type))}
         }
     }
 
     // MARK: - Interactions
 
-    private func presentCategoryForm(for model: CashFlowCategoryModel) {
-        categoryModel = model
+    private func presentCategoryForm(_ form: CashFlowCategoryForm) {
+        categoryForm = form
         editMode?.animation().wrappedValue = .inactive
     }
 
     private func deleteCategory(at offsets: IndexSet) {
         guard let index = offsets.first else { return }
-        if !categories[index].delete() {
-            isAlertPresented = true
-        }
+        deleteCategory(categories[index])
+    }
+
+    private func deleteCategory(_ category: CashFlowCategoryEntity) {
+        let wasDeleted = category.delete()
+        if !wasDeleted { isAlertPresented = true }
     }
 }
 

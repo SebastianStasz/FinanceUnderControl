@@ -14,7 +14,7 @@ struct CashFlowCategoryFormView: View {
     @Environment(\.dismiss) private var dismiss
 
     @StateObject var viewModel = CashFlowCategoryVM()
-    let model: CashFlowCategoryModel
+    let form: CashFlowCategoryForm
 
     var elementsSpacing: CGFloat { .micro }
 
@@ -28,13 +28,17 @@ struct CashFlowCategoryFormView: View {
             colorSector
             iconSector
         }
-        .horizontalButtonsScroll(title: "Create", primaryButton: .init("Create", enabled: viewModel.isFormValid, action: createCashFlowCategory))
-        .onAppear { viewModel.categoryModel = model}
+        .horizontalButtonsScroll(title: "Create", primaryButton: primaryButton)
+        .onAppear { viewModel.categoryModel = form.model}
         .onReceive(viewModel.output.dismissView) { dismiss.callAsFunction() }
     }
 
+    private var primaryButton: HorizontalButtons.Configuration {
+        .init(form.confirmButtonTitle, enabled: viewModel.isFormValid, action: createCashFlowCategory)
+    }
+
     private func createCashFlowCategory() {
-        viewModel.input.didTapCreate.send()
+        viewModel.input.didTapConfirm.send(form)
     }
 }
 
@@ -43,6 +47,6 @@ struct CashFlowCategoryFormView: View {
 
 struct CashFlowCategoryFormView_Previews: PreviewProvider {
     static var previews: some View {
-        CashFlowCategoryFormView(model: .newForType(.expense))
+        CashFlowCategoryFormView(form: .new(for: .expense))
     }
 }
