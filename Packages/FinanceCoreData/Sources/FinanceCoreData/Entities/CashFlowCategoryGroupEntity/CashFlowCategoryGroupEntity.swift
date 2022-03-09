@@ -24,6 +24,11 @@ import SSUtils
 
 public extension CashFlowCategoryGroupEntity {
 
+    /// Creates a cash flow category group in the given context using the data provided.
+    /// - Parameters:
+    ///   - context: Context in which the entity will be created.
+    ///   - data: Data that will be used to create the enity.
+    /// - Returns: Created cash flow category group entity.
     @discardableResult
     static func create(in context: NSManagedObjectContext, data: CashFlowCategoryGroupData) -> CashFlowCategoryGroupEntity {
         let group = CashFlowCategoryGroupEntity(context: context)
@@ -32,6 +37,9 @@ public extension CashFlowCategoryGroupEntity {
         return group
     }
 
+    /// Edists a cash flow category group using the data provided if the data is of the same type as the group.
+    /// - Parameter data: Data that will be used to edit the entity.
+    /// - Returns: `true` if the entity has been edited `false` if the entity cannot be edited.
     @discardableResult
     func edit(data: CashFlowCategoryGroupData) -> Bool {
         guard type == data.type else { return false }
@@ -39,18 +47,25 @@ public extension CashFlowCategoryGroupEntity {
         return true
     }
 
+    /// Deletes cash flow category if context found.
+    /// - Returns: `true` if the entity has been deleted, `false` if the entity cannot be deleted.
     func delete() -> Bool {
         guard let context = self.getContext() else { return false }
         context.delete(self)
         return true
     }
 
+    /// Adds a cash flow category to a cash flow category group if the category is of the same type as the group.
+    /// - Parameter category: Category to be added to the group.
+    /// - Returns: `true` if the category has been added, `false` if the category cannot be added.
     func addToCategories(_ category: CashFlowCategoryEntity) -> Bool {
         guard type == category.type else { return false }
         addToCategories(entity: category)
         return true
     }
 
+    /// Removes a cash flow category from the cash flow category group.
+    /// - Parameter category: Category to be removed from the group.
     func removeFromCategories(_ category: CashFlowCategoryEntity) {
         removeFromCategories(entity: category)
     }
