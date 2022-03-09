@@ -15,19 +15,33 @@ protocol CoreDataSteps {
 }
 
 extension CoreDataSteps {
-    @discardableResult func createCurrencyEntity(data: Currency) -> CurrencyEntity? {
+
+    // MARK: - Creating entities
+
+    @discardableResult
+    func createCurrencyEntity(data: Currency) -> CurrencyEntity? {
         CurrencyEntity.create(in: context, currencyData: data)
     }
 
-    @discardableResult func createCashFlowEntity(data: CashFlowData) -> CashFlowEntity {
+    @discardableResult
+    func createCashFlowEntity(data: CashFlowData) -> CashFlowEntity {
         CashFlowEntity.create(in: context, data: data)
     }
 
-    @discardableResult func createCashFlowCategoryEntity(data: CashFlowCategoryData) -> CashFlowCategoryEntity {
+    @discardableResult
+    func createCashFlowCategoryGroupEntity(data: CashFlowCategoryGroupData) -> CashFlowCategoryGroupEntity {
+        CashFlowCategoryGroupEntity.create(in: context, data: data)
+    }
+
+    @discardableResult
+    func createCashFlowCategoryEntity(data: CashFlowCategoryData) -> CashFlowCategoryEntity {
         CashFlowCategoryEntity.create(in: context, data: data)
     }
 
-    @discardableResult func fetchRequestShouldReturnElements<T: NSManagedObject>(_ amount: Int, for entity: T.Type) throws -> [T] {
+    // MARK: - Other
+
+    @discardableResult
+    func fetchRequestShouldReturnElements<T: NSManagedObject>(_ amount: Int, for entity: T.Type) throws -> [T] {
         let request: NSFetchRequest<T> = T.nsFetchRequest()
         do {
             let entities = try context.fetch(request)

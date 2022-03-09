@@ -58,17 +58,23 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
     }
 
     func test_delete_cash_flow_category_entity() throws {
-        // Create currency entity.
-        let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .eur))
+        // Create cash flow category group entity.
+        let group = createCashFlowCategoryGroupEntity(data: .foodExpense)
 
-        // Create cash flow category entity using foodExpense data.
-        let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .foodExpense)
+        // Create currency entity.
+        let currency = try XCTUnwrap(createCurrencyEntity(data: .eur))
+
+        // Create cash flow category entity.
+        let category = createCashFlowCategoryEntity(data: .foodExpense)
+
+        // Add category entity to group.
+        XCTAssert(group.addToCategories(category))
 
         // Create cash flow entity using created cash flow category entity.
-        let cashFlowEntity = createCashFlowEntity(data: .sample1(currency: currencyEntity, category: cashFlowCategoryEntity))
+        let cashFlowEntity = createCashFlowEntity(data: .sample1(currency: currency, category: category))
 
         // Try to delete cash flow category entity.
-        XCTAssertFalse(cashFlowCategoryEntity.delete())
+        XCTAssertFalse(category.delete())
 
         // Verify that cash flow category entity was not deleted.
         try fetchRequestShouldReturnElements(1, for: CashFlowCategoryEntity.self)
@@ -80,10 +86,13 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
         try saveContext()
 
         // Delete cash flow category entity.
-        XCTAssertTrue(cashFlowCategoryEntity.delete())
+        XCTAssertTrue(category.delete())
 
         // Verify that cash flow category entity was deleted.
         try fetchRequestShouldReturnElements(0, for: CashFlowCategoryEntity.self)
+
+        // Verify that cash flow category group entity was not deleted.
+        try fetchRequestShouldReturnElements(1, for: CashFlowCategoryGroupEntity.self)
 
         // Save context.
         try saveContext()

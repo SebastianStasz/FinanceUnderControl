@@ -16,3 +16,11 @@ public struct CashFlowCategoryGroupData {
         self.type = type
     }
 }
+
+
+// MARK: - Sample Data
+
+extension CashFlowCategoryGroupData {
+    static let foodExpense = CashFlowCategoryGroupData(name: "Food", type: .expense)
+    static let carExpense = CashFlowCategoryGroupData(name: "Car", type: .expense)
+}

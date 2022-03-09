@@ -34,9 +34,9 @@ extension CashFlowCategoryData {
     static let carExpense = CashFlowCategoryData(name: "Car", icon: .airplane, color: .gray, type: .expense)
     static let hobbyExpense = CashFlowCategoryData(name: "Hobby", icon: .fuelpumpFill, color: .blue, type: .expense)
 
-    static let workPayment = CashFlowCategoryData(name: "Payment", icon: .bagFill, color: .pink, type: .income)
+    static let workIncome = CashFlowCategoryData(name: "Payment", icon: .bagFill, color: .pink, type: .income)
     static let workBonus = CashFlowCategoryData(name: "Work bonus", icon: .gameControllerFill, color: .yellow, type: .income)
 
     static let sampleExpenses: [CashFlowCategoryData] = [.foodExpense, .carExpense, .hobbyExpense]
-    static let sampleIncomes: [CashFlowCategoryData] = [.workPayment, .workBonus]
+    static let sampleIncomes: [CashFlowCategoryData] = [.workIncome, .workBonus]
 }

@@ -53,7 +53,7 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
         let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .carExpense)
 
         // Create cash flow category 2 entity.
-        let cashFlowCategoryEntity2 = createCashFlowCategoryEntity(data: .workPayment)
+        let cashFlowCategoryEntity2 = createCashFlowCategoryEntity(data: .workIncome)
 
         // Create cash flow category 3 entity.
         let cashFlowCategoryEntity3 = createCashFlowCategoryEntity(data: .foodExpense)
