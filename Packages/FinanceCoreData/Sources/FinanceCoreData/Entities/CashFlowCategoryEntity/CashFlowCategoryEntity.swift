@@ -36,17 +36,21 @@ import SwiftUI
 
 public extension CashFlowCategoryEntity {
 
-    @discardableResult static func create(in context: NSManagedObjectContext, data: CashFlowCategoryData) -> CashFlowCategoryEntity {
+    @discardableResult
+    static func create(in context: NSManagedObjectContext, data: CashFlowCategoryData) -> CashFlowCategoryEntity {
         let category = CashFlowCategoryEntity(context: context)
         category.type = data.type
-        category.edit(name: data.name, icon: data.icon, color: data.color)
+        category.edit(data: data)
         return category
     }
 
-    func edit(name: String, icon: CashFlowCategoryIcon, color: CashFlowCategoryColor) {
-        self.name = name
-        self.icon = icon
-        self.color = color
+    @discardableResult
+    func edit(data: CashFlowCategoryData) -> Bool {
+        guard type == data.type else { return false }
+        name = data.name
+        icon = data.icon
+        color = data.color
+        return true
     }
 
     func delete() -> Bool {

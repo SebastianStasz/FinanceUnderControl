@@ -23,4 +23,5 @@ public struct CashFlowCategoryGroupData {
 extension CashFlowCategoryGroupData {
     static let foodExpense = CashFlowCategoryGroupData(name: "Food", type: .expense)
     static let carExpense = CashFlowCategoryGroupData(name: "Car", type: .expense)
+    static let workIncome = CashFlowCategoryGroupData(name: "Work", type: .income)
 }

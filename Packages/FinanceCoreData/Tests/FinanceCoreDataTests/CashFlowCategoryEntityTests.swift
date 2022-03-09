@@ -34,24 +34,30 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
         try fetchRequestShouldReturnElements(1, for: CashFlowCategoryEntity.self)
 
         // Verify that cash flow category entity data is correct.
-        try verifyCashFlowCategoryData(in: cashFlowCategoryEntity, data: cashFlowCategoryData)
+        verifyCashFlowCategoryData(in: cashFlowCategoryEntity, data: cashFlowCategoryData)
 
         // Save context.
         try saveContext()
     }
 
     func test_edit_cash_flow_category_entity() throws {
-        // Create cash flow category entity using foodExpense data.
-        let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .foodExpense)
+        // Create cash flow category entity.
+        let category = createCashFlowCategoryEntity(data: .foodExpense)
 
-        // Define cash flow category edited data
-        let editData = CashFlowCategoryData.carExpense
+        // Define cash flow category edited data.
+        let editedData = CashFlowCategoryData.carExpense
+
+        // Try to edit cash flow category entity using income data.
+        XCTAssertFalse(category.edit(data: .workIncome))
+
+        // Verify that cash flow category entity data has not changed.
+        verifyCashFlowCategoryData(in: category, data: .foodExpense)
 
         // Edit created cash flow category entity using workExpense data.
-        cashFlowCategoryEntity.edit(name: editData.name, icon: editData.icon, color: editData.color)
+        XCTAssert(category.edit(data: editedData))
 
         // Verify that cash flow category entity data is changed.
-        try verifyCashFlowCategoryData(in: cashFlowCategoryEntity, data: editData)
+        verifyCashFlowCategoryData(in: category, data: editedData)
 
         // Save context.
         try saveContext()
@@ -103,7 +109,7 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
 
 private extension CashFlowCategoryEntityTests {
 
-    func verifyCashFlowCategoryData(in cashFlowCategoryEntity: CashFlowCategoryEntity, data: CashFlowCategoryData, numOfCashFlows: Int = 0) throws {
+    func verifyCashFlowCategoryData(in cashFlowCategoryEntity: CashFlowCategoryEntity, data: CashFlowCategoryData, numOfCashFlows: Int = 0) {
         XCTAssertEqual(cashFlowCategoryEntity.name, data.name)
         XCTAssertEqual(cashFlowCategoryEntity.icon, data.icon)
         XCTAssertEqual(cashFlowCategoryEntity.color, data.color)

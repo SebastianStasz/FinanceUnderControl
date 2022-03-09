@@ -41,14 +41,20 @@ final class CashFlowCategoryGroupEntityTests: XCTestCase, CoreDataSteps {
     }
 
     func test_edit_cash_flow_category_group_entity() throws {
-        // Create cash flow category group entity.
+        // Create expense cash flow category group entity.
         let group = createCashFlowCategoryGroupEntity(data: .foodExpense)
 
         // Define cash flow category group edited data.
         let editedData = CashFlowCategoryGroupData.carExpense
 
-        // Edit created cash flow category group entity using edited data.
-        group.edit(data: editedData)
+        // Try to edit cash flow category group entity using income group data.
+        XCTAssertFalse(group.edit(data: .workIncome))
+
+        // Verify that cash flow category group entity data has not changed.
+        verifyCashFlowCategoryGroupData(in: group, data: .foodExpense)
+
+        // Edit cash flow category group entity using edited data.
+        XCTAssert(group.edit(data: editedData))
 
         // Verify that cash flow category group entity data is changed.
         verifyCashFlowCategoryGroupData(in: group, data: editedData)

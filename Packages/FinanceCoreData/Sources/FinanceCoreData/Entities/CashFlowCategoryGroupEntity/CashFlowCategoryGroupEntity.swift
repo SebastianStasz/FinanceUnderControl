@@ -32,8 +32,11 @@ public extension CashFlowCategoryGroupEntity {
         return group
     }
 
-    func edit(data: CashFlowCategoryGroupData) {
+    @discardableResult
+    func edit(data: CashFlowCategoryGroupData) -> Bool {
+        guard type == data.type else { return false }
         name = data.name
+        return true
     }
 
     func delete() -> Bool {
