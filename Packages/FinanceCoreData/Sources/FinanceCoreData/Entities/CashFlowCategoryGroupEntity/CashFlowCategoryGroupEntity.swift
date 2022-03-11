@@ -8,6 +8,7 @@
 import CoreData
 import Foundation
 import SSUtils
+import SwiftUI
 
 @objc(CashFlowCategoryGroupEntity) public class CashFlowCategoryGroupEntity: NSManagedObject, Entity {
     @NSManaged private var type_: String
@@ -68,6 +69,12 @@ public extension CashFlowCategoryGroupEntity {
     /// - Parameter category: Category to be removed from the group.
     func removeFromCategories(_ category: CashFlowCategoryEntity) {
         removeFromCategories(entity: category)
+    }
+
+    static func fetchRequest(forType type: CashFlowType) -> FetchRequest<CashFlowCategoryGroupEntity> {
+        let sort = [CashFlowCategoryGroupEntity.Sort.byName(.forward).nsSortDescriptor]
+        let filter = CashFlowCategoryGroupEntity.Filter.typeIs(type).nsPredicate
+        return FetchRequest<CashFlowCategoryGroupEntity>(sortDescriptors: sort, predicate: filter)
     }
 }
 

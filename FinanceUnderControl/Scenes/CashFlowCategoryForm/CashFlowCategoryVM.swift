@@ -66,7 +66,7 @@ final class CashFlowCategoryVM: ObservableObject {
     }
 
     private func editCashFlowCategory(form: CashFlowCategoryForm, data: CashFlowCategoryData) {
-        form.entity?.edit(name: data.name, icon: data.icon, color: data.color)
+        form.entity?.edit(data: data)
     }
 
     private func updateBlockedCategoryNames() {
