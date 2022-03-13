@@ -27,7 +27,7 @@ struct CashFlowCategoryListView: View {
     }
 
     private var sectors: [ListSector<CashFlowCategoryEntity>] {
-        var sectors = categoryGroups.map { ListSector($0.name, elements: $0.categories) }
+        var sectors = categoryGroups.map { ListSector($0.name, elements: $0.categories, visibleIfEmpty: true) }
         sectors.append(ListSector("Ungrouped", elements: ungroupedCategories.map { $0 }))
         return sectors
     }

@@ -50,7 +50,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
     @ViewBuilder
     private func listForElements(_ elements: [T]) -> some View {
-        ForEach(elements) { rowView($0) ;separator }
+        ForEach(elements) { rowView($0) ; separator }
             .onDelete(perform: onDelete)
     }
 

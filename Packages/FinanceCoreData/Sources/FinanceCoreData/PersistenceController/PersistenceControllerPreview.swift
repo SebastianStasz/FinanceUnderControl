@@ -59,7 +59,7 @@ private extension PersistenceController {
         createCashFlows(in: context,
                         names: ["Engine oil", "Brakes replacement", "Car inspection"],
                         values: [60, 1240, 230],
-                        categoryName: "Car",
+                        categoryName: "Car maintenance",
                         categoryIcon: .carFill,
                         categoryColor: .gray,
                         categoryType: .expense,
@@ -76,11 +76,13 @@ private extension PersistenceController {
         createCashFlows(in: context,
                         names: ["Orlen", "Orlen", "Orlen"],
                         values: [120, 303, 65],
-                        categoryName: "Petrol",
+                        categoryName: "Fuel",
                         categoryIcon: .fuelpumpFill,
                         categoryColor: .yellow,
                         categoryType: .expense,
                         groupName: "Car")
+        
+        CashFlowCategoryGroupEntity.create(in: context, data: .init(name: "Housing", type: .expense))
     }
 
     // MARK: - Incomes

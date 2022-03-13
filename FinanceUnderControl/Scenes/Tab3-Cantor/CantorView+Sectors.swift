@@ -48,8 +48,8 @@ extension CantorView {
 
 private extension CantorView {
     var noExchangeRateMessage: String {
-        viewModel.isExchangeRateData
-            ? "Fill in the form to display the exchange rate."
-            : .cantor_load_exchange_rates_error_message(forCurrency: viewModel.currencySelector.primaryCurrency?.code ?? "")
+        viewModel.isFormFilled
+            ? .cantor_load_exchange_rates_error_message(forCurrency: viewModel.currencySelector.primaryCurrency?.code ?? "")
+            : "Fill in the form to display the exchange rate."
     }
 }
