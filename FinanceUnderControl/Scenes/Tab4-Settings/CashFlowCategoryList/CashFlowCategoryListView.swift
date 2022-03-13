@@ -26,9 +26,9 @@ struct CashFlowCategoryListView: View {
         _ungroupedCategories = CashFlowCategoryEntity.fetchRequest(forType: type, group: .ungrouped)
     }
 
-    private var sectors: [String: [CashFlowCategoryEntity]] {
-        var sectors = Dictionary(uniqueKeysWithValues: categoryGroups.map { ($0.name, $0.categories) })
-        sectors["Ungrouped"] = ungroupedCategories.map { $0 }
+    private var sectors: [ListSector<CashFlowCategoryEntity>] {
+        var sectors = categoryGroups.map { ListSector($0.name, elements: $0.categories) }
+        sectors.append(ListSector("Ungrouped", elements: ungroupedCategories.map { $0 }))
         return sectors
     }
 

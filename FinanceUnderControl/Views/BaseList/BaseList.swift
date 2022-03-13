@@ -13,18 +13,18 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
     private let title: String
     private let emptyMessage: String?
-    private let sectors: [String: [T]]
+    private let sectors: [ListSector<T>]
     private let rowView: (T) -> RowView
     private let onDelete: ((IndexSet) -> Void)?
 
-    private var isWithoutSectors: Bool {
-        sectors.count == 1 && sectors.first?.key == ""
+    private var isListWithoutSectors: Bool {
+        sectors.count == 1 && sectors.first?.title == ListSector<T>.unvisibleSectorTitle
     }
 
     var body: some View {
         List {
             Group {
-                if isWithoutSectors { listForElements(sectors[""]!) }
+                if isListWithoutSectors { listForElements(sectors.first!.elements) }
                 else { listWithSectors }
             }
             .listRowBackground(Color.backgroundPrimary)
@@ -41,9 +41,9 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
     }
 
     private var listWithSectors: some View {
-        ForEach(Array(sectors.keys), id: \.self) { sector in
-            if let elements = sectors[sector], elements.isNotEmpty {
-                Section(sectorHeader: sector) { listForElements(elements) }
+        ForEach(sectors) { sector in
+            if sector.isNotEmpty || sector.visibleIfEmpty {
+                Section(sectorHeader: sector.title) { listForElements(sector.elements) }
             }
         }
     }
@@ -70,7 +70,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
     ) {
         self.title = title
         self.emptyMessage = emptyMessage
-        self.sectors = ["": elements]
+        self.sectors = ListSector.unvisibleSector(elements)
         self.rowView = rowView
         self.onDelete = onDelete
         UITableView.appearance().sectionFooterHeight = .xxlarge
@@ -78,7 +78,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
     init(_ title: String,
          emptyMessage: String? = nil,
-         sectors: [String: [T]],
+         sectors: [ListSector<T>],
          onDelete: ((IndexSet) -> Void)? = nil,
          @ViewBuilder rowView: @escaping (T) -> RowView
     ) {

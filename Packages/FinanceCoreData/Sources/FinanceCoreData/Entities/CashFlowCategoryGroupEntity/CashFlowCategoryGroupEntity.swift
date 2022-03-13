@@ -76,10 +76,11 @@ public extension CashFlowCategoryGroupEntity {
         removeFromCategories_(entity: category)
     }
 
+    /// Returns `FetchRequest` with `CashFlowCategoryGroupEntity` of provided `CashFlowType`, sorted by name in ascending order.
+    /// - Parameter type: Type of cash flow.
+    /// - Returns: `FetchRequest` with `CashFlowCategoryGroupEntity`.
     static func fetchRequest(forType type: CashFlowType) -> FetchRequest<CashFlowCategoryGroupEntity> {
-        let sort = [CashFlowCategoryGroupEntity.Sort.byName(.forward).nsSortDescriptor]
-        let filter = CashFlowCategoryGroupEntity.Filter.typeIs(type).nsPredicate
-        return FetchRequest<CashFlowCategoryGroupEntity>(sortDescriptors: sort, predicate: filter)
+        CashFlowCategoryGroupEntity.fetchRequest(filteringBy: [.typeIs(type)], sortingBy: [.byName()])
     }
 }
 
