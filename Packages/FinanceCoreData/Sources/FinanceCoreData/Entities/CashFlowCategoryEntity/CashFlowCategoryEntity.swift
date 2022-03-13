@@ -59,10 +59,12 @@ public extension CashFlowCategoryEntity {
         return true
     }
 
-    static func fetchRequest(forType type: CashFlowType) -> FetchRequest<CashFlowCategoryEntity> {
-        let sort = [CashFlowCategoryEntity.Sort.byName(.forward).nsSortDescriptor]
-        let filter = CashFlowCategoryEntity.Filter.typeIs(type).nsPredicate
-        return FetchRequest<CashFlowCategoryEntity>(sortDescriptors: sort, predicate: filter)
+    static func fetchRequest(forType type: CashFlowType, group: Group? = nil) -> FetchRequest<CashFlowCategoryEntity> {
+        var filters: [Filter] = [.typeIs(type)]
+        if let group = group {
+            filters.append(.groupIs(group))
+        }
+        return CashFlowCategoryEntity.fetchRequest(filteringBy: filters, sortingBy: [.byName()])
     }
 
     static func getAll(from context: NSManagedObjectContext) -> [CashFlowCategoryEntity] {

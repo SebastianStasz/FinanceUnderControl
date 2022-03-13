@@ -12,8 +12,12 @@ import SwiftUI
 
 @objc(CashFlowCategoryGroupEntity) public class CashFlowCategoryGroupEntity: NSManagedObject, Entity {
     @NSManaged private var type_: String
+    @NSManaged private var categories_: NSSet
     @NSManaged public private(set) var name: String
-    @NSManaged public private(set) var categories: NSSet
+    
+    public var categories: [CashFlowCategoryEntity] {
+        categories_.compactMap { $0 as? CashFlowCategoryEntity }
+    }
 
     public private(set) var type: CashFlowType {
         get { .getCase(for: type_) }
@@ -59,16 +63,17 @@ public extension CashFlowCategoryGroupEntity {
     /// Adds a cash flow category to a cash flow category group if the category is of the same type as the group.
     /// - Parameter category: Category to be added to the group.
     /// - Returns: `true` if the category has been added, `false` if the category cannot be added.
+    @discardableResult
     func addToCategories(_ category: CashFlowCategoryEntity) -> Bool {
         guard type == category.type else { return false }
-        addToCategories(entity: category)
+        addToCategories_(entity: category)
         return true
     }
 
     /// Removes a cash flow category from the cash flow category group.
     /// - Parameter category: Category to be removed from the group.
     func removeFromCategories(_ category: CashFlowCategoryEntity) {
-        removeFromCategories(entity: category)
+        removeFromCategories_(entity: category)
     }
 
     static func fetchRequest(forType type: CashFlowType) -> FetchRequest<CashFlowCategoryGroupEntity> {
@@ -87,8 +92,8 @@ private extension CashFlowCategoryGroupEntity {
 // MARK: - Generated accessors for categories
 
 private extension CashFlowCategoryGroupEntity {
-    @objc(removeCategoriesObject:) @NSManaged func removeFromCategories(entity: CashFlowCategoryEntity)
-    @objc(removeCategories:)       @NSManaged func removeFromCategories(entities: NSSet)
-    @objc(addCategoriesObject:)    @NSManaged func addToCategories(entity: CashFlowCategoryEntity)
-    @objc(addCategories:)          @NSManaged func addToCategories(entities: NSSet)
+    @objc(removeCategories_Object:) @NSManaged func removeFromCategories_(entity: CashFlowCategoryEntity)
+    @objc(removeCategories_:)       @NSManaged func removeFromCategories_(entities: NSSet)
+    @objc(addCategories_Object:)    @NSManaged func addToCategories_(entity: CashFlowCategoryEntity)
+    @objc(addCategories_:)          @NSManaged func addToCategories_(entities: NSSet)
 }

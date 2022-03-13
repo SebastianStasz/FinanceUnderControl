@@ -5,6 +5,7 @@
 //  Created by Sebastian Staszczyk on 25/12/2021.
 //
 
+import CoreData
 import Domain
 import XCTest
 @testable import FinanceCoreData
@@ -18,7 +19,7 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
         context = PersistenceController.previewEmpty.context
     }
 
-    // MARK: - Tests
+    // MARK: - Main tests
 
     func test_create_cash_flow_category_entity() throws {
         // Define cash flow category data.
@@ -103,6 +104,25 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
         // Save context.
         try saveContext()
     }
+    
+    // MARK: - Filter tests
+    
+    func test_filter_group_is_ungrouped() {
+        // Create cash flow category group entity.
+        let group = createCashFlowCategoryGroupEntity(data: .foodExpense)
+        
+        // Create categories and add them to the group.
+        let categoryWithGroup1 = createCashFlowCategoryEntity(data: .foodExpense)
+        let categoryWithGroup2 = createCashFlowCategoryEntity(data: .carExpense)
+        group.addToCategories(categoryWithGroup1)
+        group.addToCategories(categoryWithGroup2)
+        
+        // Create ungrouped category.
+        let ungroupedCategory = createCashFlowCategoryEntity(data: .hobbyExpense)
+        
+        // Verify filtering by ungrouped categories.
+        verifyUngroupedCategories([ungroupedCategory])
+    }
 }
 
 // MARK: - Steps
@@ -115,5 +135,14 @@ private extension CashFlowCategoryEntityTests {
         XCTAssertEqual(cashFlowCategoryEntity.color, data.color)
         XCTAssertEqual(cashFlowCategoryEntity.type, data.type)
         XCTAssertEqual(cashFlowCategoryEntity.cashFlows.count, numOfCashFlows)
+    }
+    
+    func verifyUngroupedCategories(_ categories: [CashFlowCategoryEntity]) {
+        let request = CashFlowCategoryEntity.nsFetchRequest(filteringBy: [.groupIs(.ungrouped)])
+        let ungroupedCategories = try! context.fetch(request)
+        XCTAssertEqual(ungroupedCategories.count, categories.count)
+        for category in ungroupedCategories {
+            XCTAssert(categories.contains(category))
+        }
     }
 }

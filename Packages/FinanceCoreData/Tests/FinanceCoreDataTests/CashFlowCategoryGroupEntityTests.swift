@@ -18,7 +18,7 @@ final class CashFlowCategoryGroupEntityTests: XCTestCase, CoreDataSteps {
         context = PersistenceController.previewEmpty.context
     }
 
-    // MARK: - Tests
+    // MARK: - Main tests
 
     func test_create_cash_flow_category_group_entity() throws {
         // Define cash flow category group data.
@@ -153,7 +153,7 @@ private extension CashFlowCategoryGroupEntityTests {
     func verifyGroupContainsCategories(_ group: CashFlowCategoryGroupEntity, categories: [CashFlowCategoryEntity]) {
         XCTAssertEqual(group.categories.count, categories.count)
         for category in group.categories {
-            XCTAssert(categories.contains(category as! CashFlowCategoryEntity))
+            XCTAssert(categories.contains(category))
         }
     }
 }

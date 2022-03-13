@@ -53,7 +53,8 @@ private extension PersistenceController {
                         categoryName: "Food",
                         categoryIcon: .pillsFill,
                         categoryColor: .red,
-                        categoryType: .expense)
+                        categoryType: .expense,
+                        groupName: "Food and drink")
 
         createCashFlows(in: context,
                         names: ["Engine oil", "Brakes replacement", "Car inspection"],
@@ -61,7 +62,8 @@ private extension PersistenceController {
                         categoryName: "Car",
                         categoryIcon: .carFill,
                         categoryColor: .gray,
-                        categoryType: .expense)
+                        categoryType: .expense,
+                        groupName: "Car")
 
         createCashFlows(in: context,
                         names: ["Bike parts", "Guitar Yamaha F310", "Bicycle helmet", "Tatoo"],
@@ -77,27 +79,39 @@ private extension PersistenceController {
                         categoryName: "Petrol",
                         categoryIcon: .fuelpumpFill,
                         categoryColor: .yellow,
-                        categoryType: .expense)
+                        categoryType: .expense,
+                        groupName: "Car")
     }
 
     // MARK: - Incomes
 
     static func createIncomes(in context: NSManagedObjectContext) {
         createCashFlows(in: context,
-                        names: ["Payment", "Payment", "Payment", "Work bonus"],
-                        values: [4200, 4500, 5100, 210],
-                        categoryName: "Work",
+                        names: ["Month 1", "Month 2", "Month 3"],
+                        values: [4200, 4500, 5100],
+                        categoryName: "Payment",
                         categoryIcon: .bagFill,
                         categoryColor: .green,
-                        categoryType: .income)
+                        categoryType: .income,
+                        groupName: "Work")
+        
+        createCashFlows(in: context,
+                        names: ["Bonus"],
+                        values: [210],
+                        categoryName: "Bonus",
+                        categoryIcon: .bagFill,
+                        categoryColor: .green,
+                        categoryType: .income,
+                        groupName: "Work")
 
         createCashFlows(in: context,
-                        names: ["Crypto", "Crypto"],
+                        names: ["BTC", "ETH"],
                         values: [600, 3230],
-                        categoryName: "Investments",
+                        categoryName: "Crypto",
                         categoryIcon: .banknoteFill,
                         categoryColor: .red,
-                        categoryType: .income)
+                        categoryType: .income,
+                        groupName: "Investments")
     }
 
     // MARK: - Helpers
@@ -108,7 +122,8 @@ private extension PersistenceController {
                                 categoryName: String,
                                 categoryIcon: CashFlowCategoryIcon,
                                 categoryColor: CashFlowCategoryColor,
-                                categoryType: CashFlowType
+                                categoryType: CashFlowType,
+                                groupName: String? = nil
     ) {
         guard names.count == values.count else {
             fatalError("Each name should be associated with one value.")
@@ -116,6 +131,16 @@ private extension PersistenceController {
         let category = CashFlowCategoryEntity.create(in: context, data: .init(name: categoryName, icon: categoryIcon, color: categoryColor, type: categoryType))
         for (name, value) in zip(names, values) {
             CashFlowEntity.create(in: context, data: .init(name: name, date: date, value: value, currency: plnCurrency(in: context), category: category))
+        }
+        if let groupName = groupName {
+            let request = CashFlowCategoryGroupEntity.nsFetchRequest(filteringBy: [.nameIs(groupName)])
+            let result = try! context.fetch(request)
+            if result.isEmpty {
+                let group = CashFlowCategoryGroupEntity.create(in: context, data: .init(name: groupName, type: categoryType))
+                _ = group.addToCategories(category)
+            } else {
+                _ = result.first?.addToCategories(category)
+            }
         }
     }
 

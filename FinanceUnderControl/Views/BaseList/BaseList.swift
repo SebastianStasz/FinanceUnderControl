@@ -7,6 +7,7 @@
 
 import FinanceCoreData
 import SwiftUI
+import SSUtils
 
 struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
@@ -23,7 +24,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
     var body: some View {
         List {
             Group {
-                if isWithoutSectors { elementsForSector("") }
+                if isWithoutSectors { listForElements(sectors[""]!) }
                 else { listWithSectors }
             }
             .listRowBackground(Color.backgroundPrimary)
@@ -41,16 +42,16 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
     private var listWithSectors: some View {
         ForEach(Array(sectors.keys), id: \.self) { sector in
-            Section(sectorHeader: sector) { elementsForSector(sector) }
+            if let elements = sectors[sector], elements.isNotEmpty {
+                Section(sectorHeader: sector) { listForElements(elements) }
+            }
         }
     }
 
     @ViewBuilder
-    private func elementsForSector(_ sector: String) -> some View {
-        if let elements = sectors[sector] {
-            ForEach(elements) { rowView($0) ;separator }
-                .onDelete(perform: onDelete)
-        }
+    private func listForElements(_ elements: [T]) -> some View {
+        ForEach(elements) { rowView($0) ;separator }
+            .onDelete(perform: onDelete)
     }
 
     private var separator: some View {

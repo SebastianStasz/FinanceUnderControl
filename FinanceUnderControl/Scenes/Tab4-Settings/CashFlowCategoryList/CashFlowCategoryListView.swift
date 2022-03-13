@@ -13,26 +13,27 @@ import SwiftUI
 struct CashFlowCategoryListView: View {
     @Environment(\.editMode) private var editMode
     @FetchRequest private var categoryGroups: FetchedResults<CashFlowCategoryGroupEntity>
-    @FetchRequest private var categories: FetchedResults<CashFlowCategoryEntity>
+    @FetchRequest private var ungroupedCategories: FetchedResults<CashFlowCategoryEntity>
 
     @State private var isAlertPresented = false
     @State private var isConfirmationDialogPresented = false
-    @State private var isCreateCashFlowCategoryShown = false
-    private let type: CashFlowType
     @State private var categoryForm: CashFlowCategoryForm?
+    private let type: CashFlowType
 
     init(type: CashFlowType) {
         self.type = type
         _categoryGroups = CashFlowCategoryGroupEntity.fetchRequest(forType: type)
-        _categories = CashFlowCategoryEntity.fetchRequest(forType: type)
+        _ungroupedCategories = CashFlowCategoryEntity.fetchRequest(forType: type, group: .ungrouped)
     }
 
     private var sectors: [String: [CashFlowCategoryEntity]] {
-        categoryGroups.ma
+        var sectors = Dictionary(uniqueKeysWithValues: categoryGroups.map { ($0.name, $0.categories) })
+        sectors["Ungrouped"] = ungroupedCategories.map { $0 }
+        return sectors
     }
 
     var body: some View {
-        BaseList(type.namePlural, sectors: <#T##[String : [_]]#>, onDelete: deleteCategory) { category in
+        BaseList(type.namePlural, sectors: sectors, onDelete: deleteCategory) { category in
             HStack(spacing: .medium) {
                 CircleView(color: category.color.color, icon: category.icon, size: 28)
                 Text(category.name)
@@ -72,7 +73,7 @@ struct CashFlowCategoryListView: View {
 
     private func deleteCategory(at offsets: IndexSet) {
         guard let index = offsets.first else { return }
-        deleteCategory(categories[index])
+        deleteCategory(ungroupedCategories[index])
     }
 
     private func deleteCategory(_ category: CashFlowCategoryEntity) {
