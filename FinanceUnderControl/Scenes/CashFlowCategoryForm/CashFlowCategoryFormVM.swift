@@ -1,5 +1,5 @@
 //
-//  CashFlowCategoryVM.swift
+//  CashFlowCategoryFormVM.swift
 //  FinanceUnderControl
 //
 //  Created by Sebastian Staszczyk on 06/03/2022.
@@ -12,7 +12,8 @@ import FinanceCoreData
 import SSValidation
 import SSUtils
 
-final class CashFlowCategoryVM: ObservableObject {
+final class CashFlowCategoryFormVM: ObservableObject {
+    typealias FormType = CashFlowFormType<CashFlowCategoryEntity>
 
     private struct Action {
         let dismissView = PassthroughSubject<Void, Never>()
@@ -23,7 +24,7 @@ final class CashFlowCategoryVM: ObservableObject {
     }
 
     struct Input {
-        let didTapConfirm = PassthroughSubject<CashFlowCategoryForm, Never>()
+        let didTapConfirm = PassthroughSubject<FormType, Never>()
     }
 
     private var cancellables: Set<AnyCancellable> = []
@@ -50,7 +51,7 @@ final class CashFlowCategoryVM: ObservableObject {
             .store(in: &cancellables)
     }
 
-    private func handleConfirmAction(form: CashFlowCategoryForm, model: CashFlowCategoryModel?) {
+    private func handleConfirmAction(form: FormType, model: CashFlowCategoryModel?) {
         guard let data = model?.data else { return }
         switch form {
         case .new:
@@ -65,7 +66,7 @@ final class CashFlowCategoryVM: ObservableObject {
         CashFlowCategoryEntity.create(in: context, data: data)
     }
 
-    private func editCashFlowCategory(form: CashFlowCategoryForm, data: CashFlowCategoryData) {
+    private func editCashFlowCategory(form: FormType, data: CashFlowCategoryData) {
         form.entity?.edit(data: data)
     }
 

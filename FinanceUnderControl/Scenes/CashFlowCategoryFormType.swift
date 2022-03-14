@@ -1,5 +1,5 @@
 //
-//  CashFlowCategoryForm.swift
+//  CashFlowFormType.swift
 //  FinanceUnderControl
 //
 //  Created by Sebastian Staszczyk on 08/03/2022.
@@ -8,16 +8,16 @@
 import Foundation
 import FinanceCoreData
 
-enum CashFlowCategoryForm {
+enum CashFlowFormType<Entity: CashFlowFormSupport> {
     case new(for: CashFlowType)
-    case edit(CashFlowCategoryEntity)
+    case edit(Entity)
 
-    var model: CashFlowCategoryModel {
+    var model: Entity.Model {
         switch self {
-        case .new(let cashFlowCategoryType):
-            return .newForType(cashFlowCategoryType)
-        case .edit(let cashFlowCategoryEntity):
-            return cashFlowCategoryEntity.model
+        case .new(let type):
+            return .newForType(type)
+        case .edit(let entity):
+            return entity.model
         }
     }
 
@@ -30,13 +30,13 @@ enum CashFlowCategoryForm {
         }
     }
 
-    var entity: CashFlowCategoryEntity? {
+    var entity: Entity? {
         guard case let .edit(entity) = self else { return nil }
         return entity
     }
 }
 
-extension CashFlowCategoryForm: Identifiable {
+extension CashFlowFormType: Identifiable {
     var id: Int {
         switch self {
         case .new: return 0

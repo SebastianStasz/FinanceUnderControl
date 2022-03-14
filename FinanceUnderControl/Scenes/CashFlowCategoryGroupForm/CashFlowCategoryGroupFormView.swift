@@ -1,37 +1,28 @@
 //
-//  CashFlowCategoryFormView.swift
+//  CashFlowCategoryGroupFormView.swift
 //  FinanceUnderControl
 //
-//  Created by Sebastian Staszczyk on 04/03/2022.
+//  Created by sebastianstaszczyk on 14/03/2022.
 //
 
-import Combine
-import SwiftUI
 import FinanceCoreData
+import SwiftUI
 
-struct CashFlowCategoryFormView: View {
+struct CashFlowCategoryGroupFormView: View {
     @Environment(\.dismiss) private var dismiss
-
-    @StateObject var viewModel = CashFlowCategoryFormVM()
-    let form: CashFlowFormType<CashFlowCategoryEntity>
-
-    var elementsSpacing: CGFloat { .micro }
-
-    var grid: [GridItem] {
-        Array(repeating: .init(.flexible(), spacing: elementsSpacing), count: 6)
-    }
-
+    
+    @StateObject var viewModel = CashFlowCategoryGroupFromVM()
+    let form: CashFlowFormType<CashFlowCategoryGroupEntity>
+    
     var body: some View {
         FormView {
-            categoryInfo
-            colorSector
-            iconSector
+            LabeledInputText("Name", input: $viewModel.categoryModel.nameInput)
         }
         .horizontalButtonsScroll(title: "Create", primaryButton: primaryButton)
         .onAppear { viewModel.categoryModel = form.model}
         .onReceive(viewModel.output.dismissView) { dismiss.callAsFunction() }
     }
-
+    
     private var primaryButton: HorizontalButtons.Configuration {
         .init(form.confirmButtonTitle, enabled: viewModel.isFormValid, action: createCashFlowCategory)
     }
@@ -44,8 +35,8 @@ struct CashFlowCategoryFormView: View {
 
 // MARK: - Preview
 
-struct CashFlowCategoryFormView_Previews: PreviewProvider {
+struct CashFlowCategoryGroupFormView_Previews: PreviewProvider {
     static var previews: some View {
-        CashFlowCategoryFormView(form: .new(for: .expense))
+        CashFlowCategoryGroupFormView(form: .new(for: .expense))
     }
 }

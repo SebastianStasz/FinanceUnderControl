@@ -82,6 +82,12 @@ public extension CashFlowCategoryGroupEntity {
     static func fetchRequest(forType type: CashFlowType) -> FetchRequest<CashFlowCategoryGroupEntity> {
         CashFlowCategoryGroupEntity.fetchRequest(filteringBy: [.typeIs(type)], sortingBy: [.byName()])
     }
+    
+    static func getAll(from context: NSManagedObjectContext) -> [CashFlowCategoryGroupEntity] {
+        let request = CashFlowCategoryGroupEntity.nsFetchRequest(sortingBy: [.byName()])
+        let result = try? context.fetch(request)
+        return result ?? []
+    }
 }
 
 // MARK: - Private methods

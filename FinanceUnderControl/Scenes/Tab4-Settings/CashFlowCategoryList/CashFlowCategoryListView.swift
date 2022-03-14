@@ -17,7 +17,8 @@ struct CashFlowCategoryListView: View {
 
     @State private var isAlertPresented = false
     @State private var isConfirmationDialogPresented = false
-    @State private var categoryForm: CashFlowCategoryForm?
+    @State private var categoryForm: CashFlowFormType<CashFlowCategoryEntity>?
+    @State private var categoryGroupForm: CashFlowFormType<CashFlowCategoryGroupEntity>?
     private let type: CashFlowType
 
     init(type: CashFlowType) {
@@ -46,9 +47,10 @@ struct CashFlowCategoryListView: View {
         }
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
+        .sheet(item: $categoryGroupForm) { CashFlowCategoryGroupFormView(form: $0) }
         .sheet(item: $categoryForm) { CashFlowCategoryFormView(form: $0) }
         .confirmationDialog("Select an action", isPresented: $isConfirmationDialogPresented) {
-            Button("Create group", action: {})
+            Button("Create group", action: presentCategoryGroupForm(.new(for: type)))
             Button("Create category", action: presentCategoryForm(.new(for: type)))
         }
     }
@@ -66,7 +68,7 @@ struct CashFlowCategoryListView: View {
        isConfirmationDialogPresented = true
    }
 
-    private func presentCategoryForm(_ form: CashFlowCategoryForm) {
+    private func presentCategoryForm(_ form: CashFlowFormType<CashFlowCategoryEntity>) {
         categoryForm = form
         editMode?.animation().wrappedValue = .inactive
     }
@@ -79,6 +81,11 @@ struct CashFlowCategoryListView: View {
     private func deleteCategory(_ category: CashFlowCategoryEntity) {
         let wasDeleted = category.delete()
         if !wasDeleted { isAlertPresented = true }
+    }
+    
+    private func presentCategoryGroupForm(_ form: CashFlowFormType<CashFlowCategoryGroupEntity>) {
+        categoryGroupForm = form
+        editMode?.animation().wrappedValue = .inactive
     }
 }
 

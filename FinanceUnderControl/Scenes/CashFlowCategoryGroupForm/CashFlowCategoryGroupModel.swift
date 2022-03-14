@@ -1,32 +1,30 @@
 //
-//  CashFlowCategoryModel.swift
+//  CashFlowCategoryGroupModel.swift
 //  FinanceUnderControl
 //
-//  Created by Sebastian Staszczyk on 06/03/2022.
+//  Created by sebastianstaszczyk on 14/03/2022.
 //
 
-import Foundation
 import FinanceCoreData
+import Foundation
 import SSValidation
 
-struct CashFlowCategoryModel {
+struct CashFlowCategoryGroupModel {
     var nameInput = Input<TextInputSettings>(settings: nameInputSettings)
-    var icon: CashFlowCategoryIcon = .houseFill
-    var color: CashFlowCategoryColor = .blue
     var type: CashFlowType = .unknown
-
+    
     var name: String? {
         nameInput.value
     }
-
-    var data: CashFlowCategoryData? {
+    
+    var data: CashFlowCategoryGroupData? {
         guard let name = name, type != .unknown else { return nil }
-        return .init(name: name, icon: icon, color: color, type: type)
+        return .init(name: name, type: type)
     }
-
+    
     static var nameInputSettings: TextInputSettings {
         .init(maxLength: 30, blocked: .init(message: "Category with this name already exists."))
     }
 }
 
-extension CashFlowCategoryModel: CashFlowFormModel {}
+extension CashFlowCategoryGroupModel: CashFlowFormModel {}
