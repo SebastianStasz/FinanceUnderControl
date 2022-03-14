@@ -32,8 +32,8 @@ struct CashFlowFilterView: View {
                                  secondaryButton: .init(.button_reset, action: viewModel.resetFilters)
         )
         .onAppear { viewModel.onAppear(cashFlowFilter: cashFlowFilter) }
-        .onReceive(viewModel.output.cashFlowFilter) { cashFlowFilter = $0 }
-        .onReceive(viewModel.output.dismissView) { dismiss.callAsFunction() }
+        .onReceive(viewModel.action.applyFilters) { cashFlowFilter = $0 }
+        .handleViewModelActions(viewModel)
         .onChange(of: viewModel.cashFlowCategoriesPredicate) { cashFlowCategories.nsPredicate = $0 }
     }
 }

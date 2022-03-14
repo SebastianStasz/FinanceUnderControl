@@ -20,7 +20,7 @@ struct CashFlowCategoryGroupFormView: View {
         }
         .horizontalButtonsScroll(title: "Create", primaryButton: primaryButton)
         .onAppear { viewModel.categoryModel = form.model}
-        .onReceive(viewModel.output.dismissView) { dismiss.callAsFunction() }
+        .handleViewModelActions(viewModel)
     }
     
     private var primaryButton: HorizontalButtons.Configuration {

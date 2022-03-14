@@ -12,33 +12,22 @@ import FinanceCoreData
 import SSValidation
 import SSUtils
 
-final class CashFlowCategoryFormVM: ObservableObject {
+final class CashFlowCategoryFormVM: ViewModel {
     typealias FormType = CashFlowFormType<CashFlowCategoryEntity>
-
-    private struct Action {
-        let dismissView = PassthroughSubject<Void, Never>()
-    }
-
-    struct Output {
-        let dismissView: Driver<Void>
-    }
 
     struct Input {
         let didTapConfirm = PassthroughSubject<FormType, Never>()
     }
 
-    private var cancellables: Set<AnyCancellable> = []
     private let context: NSManagedObjectContext
-    private let action = Action()
 
-    let output: Output
     let input = Input()
     @Published var categoryModel = CashFlowCategoryModel()
     @Published private(set) var isFormValid = false
 
-    init() {
+    override init() {
         self.context = AppVM.shared.context
-        output = .init(dismissView: action.dismissView.asDriver)
+        super.init()
         updateBlockedCategoryNames()
 
         $categoryModel
@@ -59,7 +48,7 @@ final class CashFlowCategoryFormVM: ObservableObject {
         case .edit:
             editCashFlowCategory(form: form, data: data)
         }
-        action.dismissView.send()
+        baseAction.dismissView.send()
     }
 
     private func createCashFlowCategory(data: CashFlowCategoryData) {
