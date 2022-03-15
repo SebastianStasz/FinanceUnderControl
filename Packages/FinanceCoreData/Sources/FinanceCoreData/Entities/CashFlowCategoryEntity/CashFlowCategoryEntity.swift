@@ -14,6 +14,7 @@ import SwiftUI
     @NSManaged private var icon_: String
     @NSManaged private var color_: String
     @NSManaged public private(set) var name: String
+    @NSManaged public private(set) var group: CashFlowCategoryGroupEntity?
     @NSManaged public private(set) var cashFlows: Set<CashFlowEntity>
 
     public private(set) var icon: CashFlowCategoryIcon {

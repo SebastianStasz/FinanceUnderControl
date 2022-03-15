@@ -12,6 +12,8 @@ import SwiftUI
 
 struct CashFlowCategoryListView: View {
     @Environment(\.editMode) private var editMode
+    @FetchRequest(sortDescriptors: [], predicate: nil) private var categories: FetchedResults<CashFlowCategoryEntity>
+    
     @FetchRequest private var categoryGroups: FetchedResults<CashFlowCategoryGroupEntity>
     @FetchRequest private var ungroupedCategories: FetchedResults<CashFlowCategoryEntity>
 
@@ -34,6 +36,8 @@ struct CashFlowCategoryListView: View {
     }
 
     var body: some View {
+        ForEach(categories) { _ in } // Its needed to properly update categories fetched from groups after editing.
+        
         BaseList(type.namePlural, sectors: sectors, onDelete: deleteCategory) { category in
             HStack(spacing: .medium) {
                 CircleView(color: category.color.color, icon: category.icon, size: 28)
