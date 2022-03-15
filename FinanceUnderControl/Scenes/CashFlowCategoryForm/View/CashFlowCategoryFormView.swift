@@ -9,7 +9,7 @@ import Combine
 import SwiftUI
 import FinanceCoreData
 
-struct CashFlowCategoryFormView: View {
+struct CashFlowCategoryFormView: BaseView {
     @Environment(\.dismiss) private var dismiss
 
     @StateObject var viewModel = CashFlowCategoryFormVM()
@@ -21,14 +21,13 @@ struct CashFlowCategoryFormView: View {
         Array(repeating: .init(.flexible(), spacing: elementsSpacing), count: 6)
     }
 
-    var body: some View {
+    var baseBody: some View {
         FormView {
             categoryInfo
             colorSector
             iconSector
         }
         .horizontalButtonsScroll(title: "Create", primaryButton: primaryButton)
-        .onAppear { viewModel.categoryModel = form.model}
         .handleViewModelActions(viewModel)
     }
 
@@ -38,6 +37,10 @@ struct CashFlowCategoryFormView: View {
 
     private func createCashFlowCategory() {
         viewModel.input.didTapConfirm.send(form)
+    }
+    
+    func onAppear() {
+        viewModel.categoryModel = form.model
     }
 }
 

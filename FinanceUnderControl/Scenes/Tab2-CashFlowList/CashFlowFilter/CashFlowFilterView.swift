@@ -8,20 +8,20 @@
 import FinanceCoreData
 import SwiftUI
 
-struct CashFlowFilterView: View {
+struct CashFlowFilterView: BaseView {
     @Environment(\.dismiss) private var dismiss
 
     @FetchRequest(sortDescriptors: [CashFlowCategoryEntity.Sort.byName(.forward).nsSortDescriptor])
     var cashFlowCategories: FetchedResults<CashFlowCategoryEntity>
 
-    @StateObject private var viewModel = CashFlowFilterVM()
+    @StateObject var viewModel = CashFlowFilterVM()
     @Binding var cashFlowFilter: CashFlowFilter
 
     var filter: Binding<CashFlowFilter> {
         $viewModel.cashFlowFilter
     }
 
-    var body: some View {
+    var baseBody: some View {
         FormView {
             cashFlowTypeSector
             amountSector
@@ -31,10 +31,13 @@ struct CashFlowFilterView: View {
                                  primaryButton: .init(.button_apply, action: viewModel.applyFilters),
                                  secondaryButton: .init(.button_reset, action: viewModel.resetFilters)
         )
-        .onAppear { viewModel.onAppear(cashFlowFilter: cashFlowFilter) }
         .onReceive(viewModel.action.applyFilters) { cashFlowFilter = $0 }
-        .handleViewModelActions(viewModel)
         .onChange(of: viewModel.cashFlowCategoriesPredicate) { cashFlowCategories.nsPredicate = $0 }
+        .handleViewModelActions(viewModel)
+    }
+    
+    func onAppear() {
+        viewModel.onAppear(cashFlowFilter: cashFlowFilter)
     }
 }
 

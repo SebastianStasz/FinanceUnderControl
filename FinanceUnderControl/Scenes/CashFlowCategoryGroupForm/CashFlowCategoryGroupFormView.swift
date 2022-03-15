@@ -8,18 +8,17 @@
 import FinanceCoreData
 import SwiftUI
 
-struct CashFlowCategoryGroupFormView: View {
+struct CashFlowCategoryGroupFormView: BaseView {
     @Environment(\.dismiss) private var dismiss
     
     @StateObject var viewModel = CashFlowCategoryGroupFromVM()
     let form: CashFlowFormType<CashFlowCategoryGroupEntity>
     
-    var body: some View {
+    var baseBody: some View {
         FormView {
             LabeledInputText("Name", input: $viewModel.categoryModel.nameInput)
         }
         .horizontalButtonsScroll(title: "Create", primaryButton: primaryButton)
-        .onAppear { viewModel.categoryModel = form.model}
         .handleViewModelActions(viewModel)
     }
     
@@ -29,6 +28,10 @@ struct CashFlowCategoryGroupFormView: View {
 
     private func createCashFlowCategory() {
         viewModel.input.didTapConfirm.send(form)
+    }
+    
+    func onAppear() {
+        viewModel.categoryModel = form.model
     }
 }
 
