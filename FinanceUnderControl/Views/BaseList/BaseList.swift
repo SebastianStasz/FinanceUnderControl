@@ -40,6 +40,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
         .navigationTitle(title)
     }
 
+    @ViewBuilder
     private var listWithSectors: some View {
         ForEach(sectors) { sector in
             if sector.isNotEmpty || sector.visibleIfEmpty {
@@ -51,7 +52,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
     @ViewBuilder
     private func listForElements(_ elements: [T]) -> some View {
         ForEach(elements) { rowView($0) ; separator }
-            .onDelete(perform: onDelete)
+        .onDelete(perform: onDelete)
     }
 
     private var separator: some View {
@@ -73,7 +74,8 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
         self.sectors = ListSector.unvisibleSector(elements)
         self.rowView = rowView
         self.onDelete = onDelete
-        UITableView.appearance().sectionFooterHeight = .xxlarge
+        UITableView.appearance().sectionFooterHeight = .small
+        UITableView.appearance().sectionHeaderTopPadding = .large
     }
 
     init(_ title: String,
@@ -87,7 +89,8 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
         self.sectors = sectors
         self.rowView = rowView
         self.onDelete = onDelete
-        UITableView.appearance().sectionFooterHeight = .xxlarge
+        UITableView.appearance().sectionFooterHeight = .small
+        UITableView.appearance().sectionHeaderTopPadding = .large
     }
 
     init(_ title: String,

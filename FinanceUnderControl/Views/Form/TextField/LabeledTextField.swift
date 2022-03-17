@@ -30,6 +30,7 @@ struct LabeledTextField<ViewModel: InputVM>: View {
     var body: some View {
         VStack(spacing: .micro) {
             TextField(title, text: $viewModel.textField, prompt: SwiftUI.Text(title))
+                .textStyle(.body)
                 .asInputView(viewModel: viewModel, input: $input)
 
             if let message = viewModel.message {

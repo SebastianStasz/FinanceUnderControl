@@ -40,7 +40,7 @@ struct CashFlowCategoryListView: View {
 
         BaseList(type.namePlural, sectors: sectors, onDelete: deleteCategory) { category in
             HStack(spacing: .medium) {
-                CircleView(color: category.color.color, icon: category.icon, size: 28)
+                CircleView(color: category.color.color, icon: category.icon, size: 20)
                 Text(category.name)
             }
             .card()
@@ -97,7 +97,11 @@ struct CashFlowCategoryListView: View {
 
 struct CashFlowCategoryListView_Previews: PreviewProvider {
     static var previews: some View {
-        CashFlowCategoryListView(type: .expense)
-            .environment(\.managedObjectContext, PersistenceController.preview.context)
+        Group {
+            CashFlowCategoryListView(type: .expense)
+                .environment(\.managedObjectContext, PersistenceController.preview.context)
+            CashFlowCategoryListView(type: .expense)
+                .environment(\.managedObjectContext, PersistenceController.preview.context)
+        }
     }
 }
