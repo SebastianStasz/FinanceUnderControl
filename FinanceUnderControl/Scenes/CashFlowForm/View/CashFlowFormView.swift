@@ -47,7 +47,6 @@ struct CashFlowFormView: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct CashFlowFormView_Previews: PreviewProvider {

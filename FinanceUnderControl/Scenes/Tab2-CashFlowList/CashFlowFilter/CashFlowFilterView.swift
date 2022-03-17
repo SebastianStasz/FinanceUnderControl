@@ -35,12 +35,11 @@ struct CashFlowFilterView: BaseView {
         .onChange(of: viewModel.cashFlowCategoriesPredicate) { cashFlowCategories.nsPredicate = $0 }
         .handleViewModelActions(viewModel)
     }
-    
+
     func onAppear() {
         viewModel.onAppear(cashFlowFilter: cashFlowFilter)
     }
 }
-
 
 // MARK: - Preview
 

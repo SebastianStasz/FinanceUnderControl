@@ -28,7 +28,6 @@ struct PickerDSView: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct PickerDSView_Previews: PreviewProvider {

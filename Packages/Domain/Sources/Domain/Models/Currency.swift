@@ -14,7 +14,6 @@ public struct Currency {
 
 extension Currency: Equatable {}
 
-
 // MARK: - Sample Data
 
 public extension Currency {

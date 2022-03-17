@@ -25,7 +25,6 @@ struct FormView<Content: View>: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct FormView_Previews: PreviewProvider {

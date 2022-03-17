@@ -56,7 +56,6 @@ struct CurrencyListView: PickerList {
     }
 }
 
-
 // MARK: - Preview
 
 struct CurrencyListView_Previews: PreviewProvider {

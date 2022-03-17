@@ -9,14 +9,13 @@ import SwiftUI
 import SSUtils
 
 struct DesignSystemView: View {
-    
+
     var body: some View {
         BaseList("Design system", sectors: DesignSystem.sectors) {
             Navigation($0.rawValue, leadsTo: $0.body)
         }
     }
 }
-
 
 // MARK: - Preview
 

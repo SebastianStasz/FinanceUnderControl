@@ -38,12 +38,11 @@ struct CashFlowCategoryFormView: BaseView {
     private func createCashFlowCategory() {
         viewModel.input.didTapConfirm.send(form)
     }
-    
+
     func onAppear() {
         viewModel.categoryModel = form.model
     }
 }
-
 
 // MARK: - Preview
 

@@ -104,22 +104,22 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
         // Save context.
         try saveContext()
     }
-    
+
     // MARK: - Filter tests
-    
+
     func test_filter_group_is_ungrouped() {
         // Create cash flow category group entity.
         let group = createCashFlowCategoryGroupEntity(data: .foodExpense)
-        
+
         // Create categories and add them to the group.
         let categoryWithGroup1 = createCashFlowCategoryEntity(data: .foodExpense)
         let categoryWithGroup2 = createCashFlowCategoryEntity(data: .carExpense)
         group.addToCategories(categoryWithGroup1)
         group.addToCategories(categoryWithGroup2)
-        
+
         // Create ungrouped category.
         let ungroupedCategory = createCashFlowCategoryEntity(data: .hobbyExpense)
-        
+
         // Verify filtering by ungrouped categories.
         verifyUngroupedCategories([ungroupedCategory])
     }
@@ -136,10 +136,10 @@ private extension CashFlowCategoryEntityTests {
         XCTAssertEqual(cashFlowCategoryEntity.type, data.type)
         XCTAssertEqual(cashFlowCategoryEntity.cashFlows.count, numOfCashFlows)
     }
-    
+
     func verifyUngroupedCategories(_ categories: [CashFlowCategoryEntity]) {
         let request = CashFlowCategoryEntity.nsFetchRequest(filteringBy: [.groupIs(.ungrouped)])
-        let ungroupedCategories = try! context.fetch(request)
+        let ungroupedCategories = try! context.fetch(request) // swiftlint:disable:this force_try
         XCTAssertEqual(ungroupedCategories.count, categories.count)
         for category in ungroupedCategories {
             XCTAssert(categories.contains(category))

@@ -41,7 +41,6 @@ extension CircleView {
     }
 }
 
-
 // MARK: - Preview
 
 struct CircleView_Selectable_Previews: PreviewProvider {

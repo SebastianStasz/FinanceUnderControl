@@ -36,8 +36,8 @@ private extension PersistenceController {
 
     static func createCurrencies(in context: NSManagedObjectContext) {
         let decoder = JSONDecoder()
-        let symbolsReponse = try! decoder.decode(SymbolsReponse.self, from: DataFile.exchangerateSymbols.data)
-        let latestRatesResponse = try! decoder.decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data)
+        let symbolsReponse = try! decoder.decode(SymbolsReponse.self, from: DataFile.exchangerateSymbols.data) // swiftlint:disable:this force_try
+        let latestRatesResponse = try! decoder.decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data) // swiftlint:disable:this force_try
 
         CurrencyEntity.create(in: context, currenciesData: symbolsReponse.currencies)
         let eurCurrency = CurrencyEntity.getAll(from: context).first(where: { $0.code == "EUR" })!
@@ -81,7 +81,7 @@ private extension PersistenceController {
                         categoryColor: .yellow,
                         categoryType: .expense,
                         groupName: "Car")
-        
+
         CashFlowCategoryGroupEntity.create(in: context, data: .init(name: "Housing", type: .expense))
     }
 
@@ -96,7 +96,7 @@ private extension PersistenceController {
                         categoryColor: .green,
                         categoryType: .income,
                         groupName: "Work")
-        
+
         createCashFlows(in: context,
                         names: ["Bonus"],
                         values: [210],
@@ -136,7 +136,7 @@ private extension PersistenceController {
         }
         if let groupName = groupName {
             let request = CashFlowCategoryGroupEntity.nsFetchRequest(filteringBy: [.nameIs(groupName)])
-            let result = try! context.fetch(request)
+            let result = try! context.fetch(request) // swiftlint:disable:this force_try
             if result.isEmpty {
                 let group = CashFlowCategoryGroupEntity.create(in: context, data: .init(name: groupName, type: categoryType))
                 _ = group.addToCategories(category)

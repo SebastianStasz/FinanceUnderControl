@@ -13,7 +13,7 @@ struct CashFlowFilter: Equatable {
     var cashFlowSelection: CashFlowSelection = .all {
         didSet { cashFlowCategory = nil }
     }
-    var cashFlowCategory: CashFlowCategoryEntity? = nil
+    var cashFlowCategory: CashFlowCategoryEntity?
     var datePickerViewData: DateRangePickerViewData = .init()
     var minimumValueInput = Input<NumberInputSettings>(settings: .init(canBeEmpty: true))
     var maximumValueInput = Input<NumberInputSettings>(settings: .init(canBeEmpty: true))

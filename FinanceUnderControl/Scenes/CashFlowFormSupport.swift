@@ -10,7 +10,7 @@ import FinanceCoreData
 
 protocol CashFlowFormSupport: Entity {
     associatedtype Model: CashFlowFormModel
-    
+
     var model: Model { get }
 }
 

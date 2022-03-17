@@ -18,7 +18,7 @@ public final class PersistenceController {
     }
 
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name:"FinanceCoreDataModel", managedObjectModel: getNSManagedObjectModel())
+        container = NSPersistentContainer(name: "FinanceCoreDataModel", managedObjectModel: getNSManagedObjectModel())
 
         if inMemory { container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null") }
 
@@ -34,7 +34,7 @@ public final class PersistenceController {
     }
 
     private func getModelURL() -> URL {
-        guard let url = Bundle.module.url(forResource:"FinanceCoreDataModel", withExtension: "momd") else {
+        guard let url = Bundle.module.url(forResource: "FinanceCoreDataModel", withExtension: "momd") else {
             fatalError("Failed to find url for the resource FinanceCoreData.momd")
         }
         return url

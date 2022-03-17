@@ -26,7 +26,6 @@ extension ExchangeRate {
     }
 }
 
-
 // MARK: - Sample Data
 
 extension ExchangeRateData {

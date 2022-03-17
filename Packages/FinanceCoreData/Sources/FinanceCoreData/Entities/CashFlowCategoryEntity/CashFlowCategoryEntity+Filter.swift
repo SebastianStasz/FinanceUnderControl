@@ -22,11 +22,11 @@ public extension CashFlowCategoryEntity {
             }
         }
     }
-    
+
     enum Group {
         case group(CashFlowCategoryGroupEntity)
         case ungrouped
-        
+
         var nsPredicate: NSPredicate {
             switch self {
             case let .group(group):

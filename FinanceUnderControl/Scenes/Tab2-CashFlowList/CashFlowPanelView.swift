@@ -42,7 +42,6 @@ struct CashFlowPanelView: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct CashFlowPanelView_Previews: PreviewProvider {

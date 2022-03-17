@@ -34,7 +34,6 @@ struct SettingsView: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct SettingsView_Previews: PreviewProvider {

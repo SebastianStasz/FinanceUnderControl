@@ -14,7 +14,7 @@ import SwiftUI
     @NSManaged private var type_: String
     @NSManaged private var categories_: NSSet
     @NSManaged public private(set) var name: String
-    
+
     public var categories: [CashFlowCategoryEntity] {
         categories_.compactMap { $0 as? CashFlowCategoryEntity }
     }
@@ -82,7 +82,7 @@ public extension CashFlowCategoryGroupEntity {
     static func fetchRequest(forType type: CashFlowType) -> FetchRequest<CashFlowCategoryGroupEntity> {
         CashFlowCategoryGroupEntity.fetchRequest(filteringBy: [.typeIs(type)], sortingBy: [.byName()])
     }
-    
+
     static func getAll(from context: NSManagedObjectContext) -> [CashFlowCategoryGroupEntity] {
         let request = CashFlowCategoryGroupEntity.nsFetchRequest(sortingBy: [.byName()])
         let result = try? context.fetch(request)

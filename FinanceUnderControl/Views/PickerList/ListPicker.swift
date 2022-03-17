@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ListPicker<ListView: PickerList>: View{
+struct ListPicker<ListView: PickerList>: View {
 
     let title: String
     let listView: ListView
@@ -23,7 +23,6 @@ struct ListPicker<ListView: PickerList>: View{
         listView.selection.wrappedValue?.valueName ?? "---"
     }
 }
-
 
 // MARK: - Preview
 

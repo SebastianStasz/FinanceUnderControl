@@ -31,5 +31,3 @@ final class ExchangeRateListVM: ObservableObject, Identifiable {
             .assign(to: &$exchangeRates)
     }
 }
-
-

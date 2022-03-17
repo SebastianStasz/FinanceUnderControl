@@ -46,7 +46,6 @@ struct CashFlowListView: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct CashFlowListView_Previews: PreviewProvider {

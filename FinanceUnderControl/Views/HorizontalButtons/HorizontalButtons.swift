@@ -45,7 +45,6 @@ struct HorizontalButtons: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct HorizontalButtons_Previews: PreviewProvider {

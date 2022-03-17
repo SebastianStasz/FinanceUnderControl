@@ -121,7 +121,7 @@ private extension CurrencyEntity {
 public extension CurrencyEntity {
     static func sampleEUR(in context: NSManagedObjectContext) -> CurrencyEntity {
         let currency = CurrencyEntity.create(in: context, currencyData: .eur)!
-        let eurRatesData = try! JSONDecoder().decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data)
+        let eurRatesData = try! JSONDecoder().decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data) // swiftlint:disable:this force_try
         currency.addExchangeRates(eurRatesData.rates.map { $0.exchangeRateData(baseCurrency: currency.code) })
         return currency
     }

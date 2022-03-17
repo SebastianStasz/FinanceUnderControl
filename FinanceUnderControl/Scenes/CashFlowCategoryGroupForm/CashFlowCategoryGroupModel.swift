@@ -12,16 +12,16 @@ import SSValidation
 struct CashFlowCategoryGroupModel {
     var nameInput = Input<TextInputSettings>(settings: nameInputSettings)
     var type: CashFlowType = .unknown
-    
+
     var name: String? {
         nameInput.value
     }
-    
+
     var data: CashFlowCategoryGroupData? {
         guard let name = name, type != .unknown else { return nil }
         return .init(name: name, type: type)
     }
-    
+
     static var nameInputSettings: TextInputSettings {
         .init(maxLength: 30, blocked: .init(message: "Category with this name already exists."))
     }

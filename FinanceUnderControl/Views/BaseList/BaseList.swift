@@ -96,6 +96,6 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
          onDelete: ((IndexSet) -> Void)? = nil,
          @ViewBuilder rowView: @escaping (T) -> RowView
     ) where T: Entity {
-        self.init(title, emptyMessage: emptyMessage, elements: elements.map{$0}, onDelete: onDelete, rowView: rowView)
+        self.init(title, emptyMessage: emptyMessage, elements: elements.map { $0 }, onDelete: onDelete, rowView: rowView)
     }
 }

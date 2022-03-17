@@ -38,7 +38,6 @@ struct DateRangePicker: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct DateRangePicker_Previews: PreviewProvider {

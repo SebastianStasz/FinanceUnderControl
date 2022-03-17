@@ -13,7 +13,7 @@ private struct SheetViewModifier: ViewModifier {
 
     @Environment(\.dismiss) private var dismiss
     let title: String
-    
+
     func body(content: Content) -> some View {
         content
             .toolbar { toolbarContent }

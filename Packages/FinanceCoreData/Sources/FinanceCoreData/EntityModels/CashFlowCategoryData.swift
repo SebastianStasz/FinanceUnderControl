@@ -26,7 +26,6 @@ public struct CashFlowCategoryData {
     }
 }
 
-
 // MARK: - Sample Data
 
 extension CashFlowCategoryData {

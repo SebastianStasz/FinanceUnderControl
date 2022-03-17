@@ -12,7 +12,7 @@ public struct SymbolsReponse: Decodable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let symbols = try container.decode([String:Symbol].self, forKey: .symbols)
+        let symbols = try container.decode([String: Symbol].self, forKey: .symbols)
         currencies = symbols.map { Currency(code: $1.code, name: $1.description) }
     }
 

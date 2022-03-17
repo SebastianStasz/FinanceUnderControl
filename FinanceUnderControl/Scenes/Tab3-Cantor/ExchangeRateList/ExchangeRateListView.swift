@@ -30,7 +30,6 @@ struct ExchangeRateListView: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct ExchangeRateListView_Previews: PreviewProvider {

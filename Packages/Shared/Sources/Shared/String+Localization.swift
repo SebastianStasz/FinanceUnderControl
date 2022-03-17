@@ -7,6 +7,7 @@
 
 import Foundation
 
+// swiftlint:disable all
 public extension String {
 
     /// Returns a localized string, using the main bundle.
@@ -20,14 +21,13 @@ public extension String {
     }
 
     // MARK: - Tab
-
     static let tab_dashboard_title = "tab_dashboard_title".localize()
     static let tab_cashFlow_title = "tab_cashFlow_title".localize()
     static let tab_currencies_title = "tab_currencies_title".localize()
     static let tab_settings_title = "tab_settings_title".localize()
 
     // MARK: - Button
-    
+
     static let button_apply = "button_apply".localize()
     static let button_reset = "button_reset".localize()
     static let button_create = "button_create".localize()

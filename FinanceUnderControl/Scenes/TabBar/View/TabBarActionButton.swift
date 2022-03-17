@@ -55,13 +55,12 @@ struct TabBarActionButton: View {
 
     private func getOffset(for angle: Double) -> (x: CGFloat, y: CGFloat) {
         let theta = CGFloat(.pi * angle / 180)
-        let x = 210 / 2 * cos(theta)
-        let y = 120 / 2 * sin(theta)
+        let x = 210 / 2 * cos(theta) // swiftlint:disable:this identifier_name
+        let y = 120 / 2 * sin(theta) // swiftlint:disable:this identifier_name
 
         return (x: viewModel.arePopupsShown ? x : 0, y: viewModel.arePopupsShown ? y : 0)
     }
 }
-
 
 // MARK: - Preview
 

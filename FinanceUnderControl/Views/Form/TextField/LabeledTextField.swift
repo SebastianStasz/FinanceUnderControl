@@ -39,7 +39,6 @@ struct LabeledTextField<ViewModel: InputVM>: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct LabeledTextField_Previews: PreviewProvider {

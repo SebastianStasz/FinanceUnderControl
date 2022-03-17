@@ -34,7 +34,7 @@ final class CurrenciesProvider {
 }
 
 extension CurrenciesProvider {
-    
+
     static var primaryCurrencyCode: String? {
         UserDefaults.string(forKey: .primaryCurrency)
     }

@@ -8,7 +8,7 @@
 import Foundation
 
 public extension CurrencyEntity {
-    
+
     enum Filter: EntityFilter {
         case codeIs(String)
         case codeContains(String)

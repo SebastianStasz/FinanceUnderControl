@@ -42,7 +42,6 @@ struct Navigation<Destination: View>: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct NavigationItem_Previews: PreviewProvider {

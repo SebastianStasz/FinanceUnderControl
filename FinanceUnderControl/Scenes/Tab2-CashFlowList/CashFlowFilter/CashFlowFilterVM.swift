@@ -12,7 +12,7 @@ import SSUtils
 import SSValidation
 
 final class CashFlowFilterVM: ViewModel {
-    
+
     final class Action: ViewModel.BaseAction {
         let applyFilters = PassthroughSubject<CashFlowFilter, Never>()
     }
@@ -23,7 +23,7 @@ final class CashFlowFilterVM: ViewModel {
 
     override init() {
         super.init()
-        
+
         $cashFlowFilter
             .compactMap { filter -> NSPredicate? in
                 guard filter.cashFlowSelection != .all,

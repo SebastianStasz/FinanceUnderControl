@@ -37,7 +37,6 @@ struct ColorsPreview: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct ColorsPreview_Previews: PreviewProvider {

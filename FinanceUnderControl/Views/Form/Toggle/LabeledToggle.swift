@@ -33,7 +33,6 @@ struct LabeledToggle: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct LabeledToggle_Previews: PreviewProvider {

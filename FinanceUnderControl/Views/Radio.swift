@@ -22,7 +22,6 @@ struct Radio: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct Checkmark_Previews: PreviewProvider {

@@ -11,7 +11,7 @@ struct ListSector<T: Identifiable> {
     let title: String
     let elements: [T]
     let visibleIfEmpty: Bool
-    
+
     init(_ title: String, elements: [T], visibleIfEmpty: Bool = false) {
         self.title = title
         self.elements = elements
@@ -23,11 +23,11 @@ extension ListSector {
     var isNotEmpty: Bool {
         elements.isNotEmpty
     }
-    
+
     static func unvisibleSector(_ elements: [T]) -> [ListSector] {
         [.init(unvisibleSectorTitle, elements: elements)]
     }
-    
+
     static var unvisibleSectorTitle: String {
         "Unvisible Sector Title"
     }

@@ -15,7 +15,6 @@ struct DashboardView: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct DashboardView_Previews: PreviewProvider {
