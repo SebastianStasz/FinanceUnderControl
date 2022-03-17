@@ -22,15 +22,18 @@ public final class PersistenceController {
 
         if inMemory { container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null") }
 
-        container.loadPersistentStores { storeDescription, error in
+        container.loadPersistentStores { _, error in
             guard let error = error else { return }
             fatalError("Loading persistent stores error: \(error)")
         }
     }
 
     public func save() {
-        do { try context.save() }
-        catch let error { fatalError("Saving context error: \(error)") }
+        do {
+            try context.save()
+        } catch let error {
+            fatalError("Saving context error: \(error)")
+        }
     }
 
     private func getModelURL() -> URL {

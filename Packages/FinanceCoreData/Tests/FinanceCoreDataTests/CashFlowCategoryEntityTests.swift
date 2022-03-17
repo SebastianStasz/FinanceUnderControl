@@ -129,7 +129,10 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
 
 private extension CashFlowCategoryEntityTests {
 
-    func verifyCashFlowCategoryData(in cashFlowCategoryEntity: CashFlowCategoryEntity, data: CashFlowCategoryData, numOfCashFlows: Int = 0) {
+    func verifyCashFlowCategoryData(in cashFlowCategoryEntity: CashFlowCategoryEntity,
+                                    data: CashFlowCategoryData,
+                                    numOfCashFlows: Int = 0
+    ) {
         XCTAssertEqual(cashFlowCategoryEntity.name, data.name)
         XCTAssertEqual(cashFlowCategoryEntity.icon, data.icon)
         XCTAssertEqual(cashFlowCategoryEntity.color, data.color)

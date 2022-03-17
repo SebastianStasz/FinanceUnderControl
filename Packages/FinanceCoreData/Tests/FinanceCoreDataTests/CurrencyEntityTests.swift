@@ -120,7 +120,11 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
 
 private extension CurrencyEntityTests {
 
-    func verifyCurrencyData(in entity: CurrencyEntity, data: Currency, wasUpdated: Bool, exchangeRates: [ExchangeRateData] = []) throws {
+    func verifyCurrencyData(in entity: CurrencyEntity,
+                            data: Currency,
+                            wasUpdated: Bool,
+                            exchangeRates: [ExchangeRateData] = []
+    ) throws {
         XCTAssertEqual(entity.name, data.name)
         XCTAssertEqual(entity.code, data.code)
         wasUpdated ? XCTAssertNotNil(entity.updateDate) : XCTAssertNil(entity.updateDate)

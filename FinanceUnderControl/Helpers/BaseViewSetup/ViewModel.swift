@@ -13,7 +13,7 @@ class ViewModel: ObservableObject {
 
     class BaseAction {
         let dismissView = PassthroughSubject<Void, Never>()
-        
+
         init() {}
     }
 

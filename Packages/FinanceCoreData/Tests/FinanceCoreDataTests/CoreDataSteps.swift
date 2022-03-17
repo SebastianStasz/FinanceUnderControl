@@ -61,8 +61,7 @@ extension CoreDataSteps {
         do {
             try context.save()
             return true
-        }
-        catch let error {
+        } catch let error {
             XCTFail("Saving context error: \(error)")
             return false
         }

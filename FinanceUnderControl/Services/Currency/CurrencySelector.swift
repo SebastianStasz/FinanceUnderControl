@@ -36,7 +36,7 @@ struct CurrencySelector<T: Equatable> {
     }
 }
 
-extension CurrencySelector where T == Optional<CurrencyEntity> {
+extension CurrencySelector where T == CurrencyEntity? {
     init() {
         primaryCurrency = nil
         secondaryCurrency = nil

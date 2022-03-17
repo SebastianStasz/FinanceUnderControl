@@ -7,6 +7,7 @@
 
 import Foundation
 import FinanceCoreData
+import SSValidation
 
 protocol CashFlowFormSupport: Entity {
     associatedtype Model: CashFlowFormModel
@@ -18,7 +19,8 @@ protocol CashFlowFormSupport: Entity {
 
 extension CashFlowCategoryEntity: CashFlowFormSupport {
     var model: CashFlowCategoryModel {
-        .init(nameInput: .init(value: name, settings: CashFlowCategoryModel.nameInputSettings), icon: icon, color: color, type: type)
+        let nameInput = Input<TextInputSettings>(value: name, settings: CashFlowCategoryModel.nameInputSettings)
+        return .init(nameInput: nameInput, icon: icon, color: color, type: type)
     }
 }
 

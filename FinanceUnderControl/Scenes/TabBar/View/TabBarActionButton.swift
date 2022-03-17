@@ -50,7 +50,11 @@ struct TabBarActionButton: View {
     }
 
     private var interactionBlockerSettings: InteractionBlocker.Settings {
-        .init(when: $viewModel.arePopupsShown, onTopShow: AnyView(popupButtons), closingDuration: 0.2, isParentViewInteractive: true)
+        .init(when: $viewModel.arePopupsShown,
+              onTopShow: AnyView(popupButtons),
+              closingDuration: 0.2,
+              isParentViewInteractive: true
+        )
     }
 
     private func getOffset(for angle: Double) -> (x: CGFloat, y: CGFloat) {

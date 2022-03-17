@@ -88,7 +88,11 @@ private extension ExchangeRateEntityTests {
         ExchangeRateEntity.create(in: context, exchangeRateData: data, baseCurrency: baseCurrency)
     }
 
-    func verifyExchangeRateData(in entity: ExchangeRateEntity, data: ExchangeRateData, baseCurrency: CurrencyEntity, rateValue: Double? = nil) throws {
+    func verifyExchangeRateData(in entity: ExchangeRateEntity,
+                                data: ExchangeRateData,
+                                baseCurrency: CurrencyEntity,
+                                rateValue: Double? = nil
+    ) throws {
         XCTAssertEqual(entity.code, data.code)
         XCTAssertEqual(entity.rateValue, rateValue ?? data.rateValue)
         XCTAssertEqual(entity.baseCurrency, baseCurrency)

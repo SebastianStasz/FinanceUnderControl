@@ -20,7 +20,6 @@ struct SectorDSView: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct SectorDSView_Previews: PreviewProvider {

@@ -119,7 +119,10 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
 // MARK: - Steps
 
 private extension CashFlowEntityTests {
-    func verifyCashFlowEntityData(in cashFlowEntity: CashFlowEntity, data: CashFlowData, category: CashFlowCategoryEntity? = nil) throws {
+    func verifyCashFlowEntityData(in cashFlowEntity: CashFlowEntity,
+                                  data: CashFlowData,
+                                  category: CashFlowCategoryEntity? = nil
+    ) throws {
         XCTAssertEqual(cashFlowEntity.name, data.name)
         XCTAssertEqual(cashFlowEntity.date, data.date)
         XCTAssertEqual(cashFlowEntity.value, data.value)
