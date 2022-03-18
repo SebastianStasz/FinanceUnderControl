@@ -7,32 +7,40 @@
 
 import Foundation
 
-struct ListSector<T: Identifiable> {
+struct SectorVD<T: Identifiable> {
     let title: String
     let elements: [T]
+    let editAction: (() -> Void)?
     let visibleIfEmpty: Bool
 
-    init(_ title: String, elements: [T], visibleIfEmpty: Bool = false) {
+    init(_ title: String,
+         elements: [T],
+         onEdit editAction: (() -> Void)? = nil,
+         visibleIfEmpty: Bool = false
+    ) {
         self.title = title
         self.elements = elements
+        self.editAction = editAction
         self.visibleIfEmpty = visibleIfEmpty
     }
-}
 
-extension ListSector {
     var isNotEmpty: Bool {
         elements.isNotEmpty
     }
+}
 
-    static func unvisibleSector(_ elements: [T]) -> [ListSector] {
+extension SectorVD: Identifiable {
+    var id: String { title }
+}
+
+// MARK: - Helpers
+
+extension SectorVD {
+    static func unvisibleSector(_ elements: [T]) -> [SectorVD] {
         [.init(unvisibleSectorTitle, elements: elements)]
     }
 
     static var unvisibleSectorTitle: String {
         "Unvisible Sector Title"
     }
-}
-
-extension ListSector: Identifiable {
-    var id: String { title }
 }

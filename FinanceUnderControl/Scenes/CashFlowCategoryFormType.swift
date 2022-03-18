@@ -21,6 +21,15 @@ enum CashFlowFormType<Entity: CashFlowFormSupport> {
         }
     }
 
+    var title: String {
+        switch self {
+        case .new:
+            return .button_create
+        case .edit:
+            return "Edit"
+        }
+    }
+
     var confirmButtonTitle: String {
         switch self {
         case .new:

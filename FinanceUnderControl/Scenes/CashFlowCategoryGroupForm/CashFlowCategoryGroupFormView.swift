@@ -18,7 +18,7 @@ struct CashFlowCategoryGroupFormView: BaseView {
         FormView {
             LabeledInputText("Name", input: $viewModel.categoryModel.nameInput)
         }
-        .horizontalButtonsScroll(title: "Create", primaryButton: primaryButton)
+        .horizontalButtonsScroll(title: form.title, primaryButton: primaryButton)
         .handleViewModelActions(viewModel)
     }
 

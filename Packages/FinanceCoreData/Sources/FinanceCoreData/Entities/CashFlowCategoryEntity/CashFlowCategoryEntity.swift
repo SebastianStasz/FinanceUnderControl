@@ -83,3 +83,9 @@ private extension CashFlowCategoryEntity {
     @objc(addCashFlowsObject:)    @NSManaged private func addToCashFlows(_ value: CashFlowEntity)
     @objc(addCashFlows:)          @NSManaged private func addToCashFlows(_ values: NSSet)
 }
+
+// MARK: - Sample data
+
+public extension CashFlowCategoryEntity {
+    static let carExpense = CashFlowCategoryEntity.create(in: PersistenceController.previewEmpty.context, data: .carExpense)
+}

@@ -29,26 +29,25 @@ struct CashFlowCategoryListView: View {
         _ungroupedCategories = CashFlowCategoryEntity.fetchRequest(forType: type, group: .ungrouped)
     }
 
-    private var sectors: [ListSector<CashFlowCategoryEntity>] {
-        var sectors = categoryGroups.map { ListSector($0.name, elements: $0.categories, visibleIfEmpty: true) }
-        sectors.append(ListSector("Ungrouped", elements: ungroupedCategories.map { $0 }))
+    private var sectors: [SectorVD<CashFlowCategoryEntity>] {
+        var sectors = categoryGroups.map { group in
+            SectorVD(group.name, elements: group.categories, onEdit: { presentCategoryGroupForm(.edit(group)) }, visibleIfEmpty: true)
+        }
+        sectors.append(SectorVD("Ungrouped", elements: ungroupedCategories.map { $0 }))
         return sectors
     }
 
     var body: some View {
         ForEach(categories) { _ in } // Its needed to properly update categories fetched from groups after editing.
 
-        BaseList(type.namePlural, sectors: sectors, onDelete: deleteCategory) { category in
-            HStack(spacing: .medium) {
-                CircleView(color: category.color.color, icon: category.icon, size: 20)
-                Text(category.name)
-            }
-            .card()
-            .contextMenu {
-                Button("Edit", action: presentCategoryForm(.edit(category)))
-                Button("Delete", role: .destructive) { deleteCategory(category) }
-            }
+        BaseList(type.namePlural, sectors: sectors) { category in
+            CashFlowCategoryRow(for: category, isEditing: isEditing, editCategory: presentCategoryForm(.edit(category)))
+                .contextMenu {
+                    Button("Edit", action: presentCategoryForm(.edit(category)))
+                    Button("Delete", role: .destructive) { deleteCategory(category) }
+                }
         }
+        .onDelete(perform: deleteCategory)
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
         .sheet(item: $categoryGroupForm) { CashFlowCategoryGroupFormView(form: $0) }
@@ -66,6 +65,10 @@ struct CashFlowCategoryListView: View {
         }
     }
 
+    private var isEditing: Bool {
+        editMode?.wrappedValue == .active
+    }
+
     // MARK: - Interactions
 
    private func presentConfirmationDialog() {
@@ -74,7 +77,6 @@ struct CashFlowCategoryListView: View {
 
     private func presentCategoryForm(_ form: CashFlowFormType<CashFlowCategoryEntity>) {
         categoryForm = form
-        editMode?.animation().wrappedValue = .inactive
     }
 
     private func deleteCategory(at offsets: IndexSet) {
@@ -87,9 +89,13 @@ struct CashFlowCategoryListView: View {
         if !wasDeleted { isAlertPresented = true }
     }
 
+    private func presentCategoryEditForm(for groupName: String) {
+        guard let group = categoryGroups.first(where: { $0.name == groupName }) else { return }
+        presentCategoryGroupForm(.edit(group))
+    }
+
     private func presentCategoryGroupForm(_ form: CashFlowFormType<CashFlowCategoryGroupEntity>) {
         categoryGroupForm = form
-        editMode?.animation().wrappedValue = .inactive
     }
 }
 

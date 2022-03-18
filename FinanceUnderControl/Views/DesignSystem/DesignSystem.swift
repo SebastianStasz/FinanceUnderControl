@@ -10,9 +10,9 @@ import SwiftUI
 enum DesignSystem: String, CaseIterable {
     case form
 
-    static var sectors: [ListSector<Form>] {
+    static var sectors: [SectorVD<Form>] {
         DesignSystem.allCases.map {
-            ListSector($0.title, elements: $0.elements)
+            SectorVD($0.title, elements: $0.elements)
         }
     }
 

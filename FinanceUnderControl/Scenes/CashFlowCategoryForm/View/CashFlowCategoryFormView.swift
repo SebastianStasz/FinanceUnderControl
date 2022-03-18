@@ -27,7 +27,7 @@ struct CashFlowCategoryFormView: BaseView {
             colorSector
             iconSector
         }
-        .horizontalButtonsScroll(title: "Create", primaryButton: primaryButton)
+        .horizontalButtonsScroll(title: form.title, primaryButton: primaryButton)
         .handleViewModelActions(viewModel)
     }
 
