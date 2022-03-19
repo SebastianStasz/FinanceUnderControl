@@ -24,8 +24,12 @@ struct ListSector<T: Identifiable> {
         self.visibleIfEmpty = visibleIfEmpty
     }
 
-    var isNotEmpty: Bool {
-        elements.isNotEmpty
+    var shouldBePresented: Bool {
+        elements.isNotEmpty || visibleIfEmpty
+    }
+
+    var header: SectorHeaderVD {
+        .init(title, editAction: editAction)
     }
 }
 

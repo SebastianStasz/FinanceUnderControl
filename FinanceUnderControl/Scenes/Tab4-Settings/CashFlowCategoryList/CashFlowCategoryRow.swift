@@ -10,17 +10,15 @@ import Shared
 import SwiftUI
 
 struct CashFlowCategoryRow: View {
+    @Environment(\.editMode) private var editMode
 
     private let category: CashFlowCategoryEntity
-    private let isEditing: Bool
     private let editCategory: () -> Void
 
     init(for category: CashFlowCategoryEntity,
-         isEditing: Bool,
          editCategory: @autoclosure @escaping () -> Void
     ) {
         self.category = category
-        self.isEditing = isEditing
         self.editCategory = editCategory
     }
 
@@ -37,6 +35,10 @@ struct CashFlowCategoryRow: View {
         }
         .card()
     }
+
+    private var isEditing: Bool {
+        editMode?.wrappedValue == .active
+    }
 }
 
 // MARK: - Preview
@@ -44,8 +46,9 @@ struct CashFlowCategoryRow: View {
 struct CashFlowCategoryRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            CashFlowCategoryRow(for: .carExpense, isEditing: false, editCategory: {}())
-            CashFlowCategoryRow(for: .carExpense, isEditing: true, editCategory: {}())
+            CashFlowCategoryRow(for: .carExpense, editCategory: {}())
+            CashFlowCategoryRow(for: .carExpense, editCategory: {}())
+                .environment(\.editMode, .constant(.active))
         }
         .previewLayout(.sizeThatFits)
     }

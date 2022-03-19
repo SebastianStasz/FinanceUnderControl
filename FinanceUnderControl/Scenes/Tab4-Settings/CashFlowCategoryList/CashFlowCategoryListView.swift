@@ -13,7 +13,6 @@ import SwiftUI
 struct CashFlowCategoryListView: View {
     @Environment(\.editMode) private var editMode
     @FetchRequest(sortDescriptors: [], predicate: nil) private var categories: FetchedResults<CashFlowCategoryEntity>
-
     @FetchRequest private var categoryGroups: FetchedResults<CashFlowCategoryGroupEntity>
     @FetchRequest private var ungroupedCategories: FetchedResults<CashFlowCategoryEntity>
 
@@ -29,22 +28,15 @@ struct CashFlowCategoryListView: View {
         _ungroupedCategories = CashFlowCategoryEntity.fetchRequest(forType: type, group: .ungrouped)
     }
 
-    private var sectors: [ListSector<CashFlowCategoryEntity>] {
-        var sectors = categoryGroups.map { group in
-            ListSector(group.name, elements: group.categories, editAction: .init(title: "Edit group", action: { presentCategoryGroupForm(.edit(group)) }), visibleIfEmpty: true)
-        }
-        sectors.append(ListSector("Ungrouped", elements: ungroupedCategories.map { $0 }))
-        return sectors
-    }
-
     var body: some View {
         ForEach(categories) { _ in } // Its needed to properly update categories fetched from groups after editing.
 
         BaseList(type.namePlural, sectors: sectors) { category in
-            CashFlowCategoryRow(for: category, isEditing: isEditing, editCategory: presentCategoryForm(.edit(category)))
+            CashFlowCategoryRow(for: category, editCategory: presentCategoryForm(.edit(category)))
+                .environment(\.editMode, editMode)
                 .contextMenu {
-                    Button("Edit", action: presentCategoryForm(.edit(category)))
-                    Button("Delete", role: .destructive) { deleteCategory(category) }
+                    Button.edit(presentCategoryForm(.edit(category)))
+                    Button.delete(deleteCategory(category))
                 }
         }
         .onDelete(perform: deleteCategory)
@@ -65,8 +57,15 @@ struct CashFlowCategoryListView: View {
         }
     }
 
-    private var isEditing: Bool {
-        editMode?.wrappedValue == .active
+    private var sectors: [ListSector<CashFlowCategoryEntity>] {
+        var sectors = categoryGroups.map { group -> ListSector<CashFlowCategoryEntity> in
+            let editAction = EditAction(title: "Edit group") {
+                presentCategoryGroupForm(.edit(group))
+            }
+            return ListSector(group.name, elements: group.categories, editAction: editAction, visibleIfEmpty: true)
+        }
+        sectors.append(ListSector("Ungrouped", elements: ungroupedCategories.map { $0 }))
+        return sectors
     }
 
     // MARK: - Interactions
@@ -105,9 +104,8 @@ struct CashFlowCategoryListView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             CashFlowCategoryListView(type: .expense)
-                .environment(\.managedObjectContext, PersistenceController.preview.context)
             CashFlowCategoryListView(type: .expense)
-                .environment(\.managedObjectContext, PersistenceController.preview.context)
         }
+        .environment(\.managedObjectContext, PersistenceController.preview.context)
     }
 }
