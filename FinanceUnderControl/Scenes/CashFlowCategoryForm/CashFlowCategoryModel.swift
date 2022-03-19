@@ -9,24 +9,14 @@ import Foundation
 import FinanceCoreData
 import SSValidation
 
-struct CashFlowCategoryModel {
-    var nameInput = Input<TextInputSettings>(settings: nameInputSettings)
+struct CashFlowCategoryModel: CashFlowFormModel {
+    var name: String?
+    var type: CashFlowType?
     var icon: CashFlowCategoryIcon = .houseFill
     var color: CashFlowCategoryColor = .blue
-    var type: CashFlowType = .unknown
-
-    var name: String? {
-        nameInput.value
-    }
 
     var data: CashFlowCategoryData? {
-        guard let name = name, type != .unknown else { return nil }
+        guard let name = name, let type = type else { return nil }
         return .init(name: name, icon: icon, color: color, type: type)
     }
-
-    static var nameInputSettings: TextInputSettings {
-        .init(maxLength: 30, blocked: .init(message: "Category with this name already exists."))
-    }
 }
-
-extension CashFlowCategoryModel: CashFlowFormModel {}

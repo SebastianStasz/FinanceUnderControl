@@ -10,6 +10,7 @@ import CoreData
 import FinanceCoreData
 import Foundation
 import SSUtils
+import SSValidation
 
 final class CashFlowCategoryGroupFromVM: ViewModel {
     typealias FormType = CashFlowFormType<CashFlowCategoryGroupEntity>
@@ -21,15 +22,22 @@ final class CashFlowCategoryGroupFromVM: ViewModel {
     private let context: NSManagedObjectContext
 
     let input = Input()
+    @Published var nameInput = SSValidation.Input<TextInputSettings>(settings: .init(maxLength: 40, blocked: .init(message: "Category with this name already exists.")))
     @Published var categoryModel = CashFlowCategoryGroupModel()
     @Published private(set) var isFormValid = false
 
     override init() {
         self.context = AppVM.shared.context
         super.init()
+        updateBlockedCategoryNames()
+
+        $nameInput.sink { [weak self] in
+            self?.categoryModel.name = $0.value
+        }
+        .store(in: &cancellables)
 
         $categoryModel
-            .map { $0.nameInput.value != nil }
+            .map { $0.data.notNil }
             .assign(to: &$isFormValid)
 
         input.didTapConfirm
@@ -59,6 +67,6 @@ final class CashFlowCategoryGroupFromVM: ViewModel {
 
     private func updateBlockedCategoryNames() {
         let categories = CashFlowCategoryGroupEntity.getAll(from: context)
-        categoryModel.nameInput.settings.blocked.values = categories.map { $0.name }
+        nameInput.settings.blocked.values = categories.map { $0.name }
     }
 }

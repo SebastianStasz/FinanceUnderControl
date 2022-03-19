@@ -19,13 +19,12 @@ protocol CashFlowFormSupport: Entity {
 
 extension CashFlowCategoryEntity: CashFlowFormSupport {
     var model: CashFlowCategoryModel {
-        let nameInput = Input<TextInputSettings>(value: name, settings: CashFlowCategoryModel.nameInputSettings)
-        return .init(nameInput: nameInput, icon: icon, color: color, type: type)
+        .init(name: name, type: type, icon: icon, color: color)
     }
 }
 
 extension CashFlowCategoryGroupEntity: CashFlowFormSupport {
     var model: CashFlowCategoryGroupModel {
-        .init(nameInput: .init(value: name, settings: CashFlowCategoryGroupModel.nameInputSettings), type: type)
+        .init(name: name, type: type)
     }
 }

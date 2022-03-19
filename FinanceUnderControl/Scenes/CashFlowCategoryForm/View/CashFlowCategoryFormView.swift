@@ -41,6 +41,7 @@ struct CashFlowCategoryFormView: BaseView {
 
     func onAppear() {
         viewModel.categoryModel = form.model
+        viewModel.nameInput.value = form.model.name
     }
 }
 

@@ -16,7 +16,7 @@ struct CashFlowCategoryGroupFormView: BaseView {
 
     var baseBody: some View {
         FormView {
-            LabeledInputText("Name", input: $viewModel.categoryModel.nameInput)
+            LabeledInputText("Name", input: $viewModel.nameInput)
         }
         .horizontalButtonsScroll(title: form.title, primaryButton: primaryButton)
         .handleViewModelActions(viewModel)
@@ -32,6 +32,7 @@ struct CashFlowCategoryGroupFormView: BaseView {
 
     func onAppear() {
         viewModel.categoryModel = form.model
+        viewModel.nameInput.value = form.model.name
     }
 }
 
