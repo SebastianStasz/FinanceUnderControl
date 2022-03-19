@@ -10,7 +10,7 @@ import SwiftUI
 struct SectorDSView: View {
     var body: some View {
         FormView {
-            Sector("Clear style", style: .clear) { text }
+            Sector("Clear style", style: .clear) { text }   
             Sector("Card style", style: .card) { text }
         }
     }

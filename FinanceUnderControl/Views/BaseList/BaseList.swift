@@ -19,12 +19,12 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
     private let title: String
     private let emptyMessage: String?
-    private let sectors: [SectorVD<T>]
+    private let sectors: [ListSector<T>]
     private let rowView: (T) -> RowView
     var deleteElement: ((IndexSet) -> Void)?
 
     private var isListWithoutSectors: Bool {
-        sectors.count == 1 && sectors.first?.title == SectorVD<T>.unvisibleSectorTitle
+        sectors.count == 1 && sectors.first?.title == ListSector<T>.unvisibleSectorTitle
     }
 
     var body: some View {
@@ -71,7 +71,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
     fileprivate init(_ title: String,
                      emptyMessage: String?,
-                     sectors: [SectorVD<T>],
+                     sectors: [ListSector<T>],
                      deleteElement: ((IndexSet) -> Void)?,
                      @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
@@ -89,7 +89,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
     ) {
         self.title = title
         self.emptyMessage = emptyMessage
-        self.sectors = SectorVD.unvisibleSector(elements)
+        self.sectors = ListSector.unvisibleSector(elements)
         self.rowView = rowView
         UITableView.appearance().sectionFooterHeight = .small
         UITableView.appearance().sectionHeaderTopPadding = .large
@@ -97,7 +97,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
     init(_ title: String,
          emptyMessage: String? = nil,
-         sectors: [SectorVD<T>],
+         sectors: [ListSector<T>],
          @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
         self.title = title

@@ -33,10 +33,10 @@ struct CashFlowListView: View {
         Toolbar.trailing(systemImage: SFSymbol.filter.name, action: presentFilterView)
     }
 
-    private var cashFlowSectors: [SectorVD<CashFlowEntity>] {
+    private var cashFlowSectors: [ListSector<CashFlowEntity>] {
         Dictionary(grouping: cashFlows, by: { $0.date.monthAndYearComponents })
             .sorted { $0.key > $1.key }
-            .map { SectorVD($0.key.stringMonthAndYear, elements: $0.value) }
+            .map { ListSector($0.key.stringMonthAndYear, elements: $0.value) }
     }
 
     // MARK: - Interactions

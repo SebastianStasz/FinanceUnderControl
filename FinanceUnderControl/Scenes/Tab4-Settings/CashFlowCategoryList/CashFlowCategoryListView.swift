@@ -29,11 +29,11 @@ struct CashFlowCategoryListView: View {
         _ungroupedCategories = CashFlowCategoryEntity.fetchRequest(forType: type, group: .ungrouped)
     }
 
-    private var sectors: [SectorVD<CashFlowCategoryEntity>] {
+    private var sectors: [ListSector<CashFlowCategoryEntity>] {
         var sectors = categoryGroups.map { group in
-            SectorVD(group.name, elements: group.categories, onEdit: { presentCategoryGroupForm(.edit(group)) }, visibleIfEmpty: true)
+            ListSector(group.name, elements: group.categories, editAction: .init(title: "Edit group", action: { presentCategoryGroupForm(.edit(group)) }), visibleIfEmpty: true)
         }
-        sectors.append(SectorVD("Ungrouped", elements: ungroupedCategories.map { $0 }))
+        sectors.append(ListSector("Ungrouped", elements: ungroupedCategories.map { $0 }))
         return sectors
     }
 

@@ -7,15 +7,15 @@
 
 import Foundation
 
-struct SectorVD<T: Identifiable> {
+struct ListSector<T: Identifiable> {
     let title: String
     let elements: [T]
-    let editAction: (() -> Void)?
+    let editAction: EditAction?
     let visibleIfEmpty: Bool
 
     init(_ title: String,
          elements: [T],
-         onEdit editAction: (() -> Void)? = nil,
+         editAction: EditAction? = nil,
          visibleIfEmpty: Bool = false
     ) {
         self.title = title
@@ -29,14 +29,14 @@ struct SectorVD<T: Identifiable> {
     }
 }
 
-extension SectorVD: Identifiable {
+extension ListSector: Identifiable {
     var id: String { title }
 }
 
 // MARK: - Helpers
 
-extension SectorVD {
-    static func unvisibleSector(_ elements: [T]) -> [SectorVD] {
+extension ListSector {
+    static func unvisibleSector(_ elements: [T]) -> [ListSector] {
         [.init(unvisibleSectorTitle, elements: elements)]
     }
 

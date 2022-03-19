@@ -5,27 +5,20 @@
 //  Created by sebastianstaszczyk on 18/03/2022.
 //
 
-import SwiftUI
-import SSUtils
 import Shared
+import SSUtils
+import SwiftUI
 
 struct SectorHeader: View {
     @Environment(\.editMode) private var editMode
-
-    private let title: String
-    private let editAction: Action?
-
-    init(_ title: String, onEdit editAction: Action? = nil) {
-        self.title = title
-        self.editAction = editAction
-    }
+    private let viewData: SectorHeaderVD
 
     var body: some View {
         HStack {
-            Text(title, style: .headlineSmall)
+            Text(viewData.title, style: .headlineSmall)
             Spacer()
-            if isEditing, let editAction = editAction {
-                Button("Edit group", action: editAction)
+            if let editAction = viewData.editAction, isEditing {
+                Button(editAction.title, action: editAction.action)
                     .textStyle(.headlineSmallAction)
                     .padding(.horizontal, .small)
             }
@@ -37,6 +30,17 @@ struct SectorHeader: View {
     private var isEditing: Bool {
         editMode?.wrappedValue == .active
     }
+
+    // MARK: - Initializers
+
+    init(_ viewData: SectorHeaderVD) {
+        self.viewData = viewData
+    }
+
+    init?(_ viewData: SectorHeaderVD?) {
+        guard let viewData = viewData else { return nil }
+        self.viewData = viewData
+    }
 }
 
 // MARK: - Preview
@@ -44,8 +48,8 @@ struct SectorHeader: View {
 struct SectorHeader_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            SectorHeader("Title")
-            SectorHeader("Title").environment(\.editMode, .constant(.active))
+            SectorHeader(.init("Title"))
+            SectorHeader(.init("Title")).environment(\.editMode, .constant(.active))
         }
         .previewLayout(.sizeThatFits)
     }
