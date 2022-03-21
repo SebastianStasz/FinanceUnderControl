@@ -12,8 +12,8 @@ import SSValidation
 final class CashFlowFormVM: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
 
-    @Published var nameInput = Input<TextInputSettings>(settings: .init(minLength: 3, maxLength: 20))
-    @Published var valueInput = Input<NumberInputSettings>(settings: .init(minValue: 0.01, keyboardType: .numbersAndPunctuation))
+    let nameInput = TextInputVM(validator: .notEmpty().and(.lengthBetween(3...20)))
+    let valueInput = DoubleInputVM(validator: .notEmpty().andDouble(.notLessThan(0.01)))
     @Published var cashFlowModel = CashFlowModel()
     private let currencySettings = CurrencySettings()
 
@@ -25,15 +25,13 @@ final class CashFlowFormVM: ObservableObject {
             }
             .store(in: &cancellables)
 
-        $valueInput.map { $0.value }
-            .sink { [weak self] cashFlowValue in
-                self?.cashFlowModel.value = cashFlowValue
-            }
-            .store(in: &cancellables)
+        nameInput.result().sink { [weak self] in
+            self?.cashFlowModel.name = $0
+        }
+        .store(in: &cancellables)
 
-        $nameInput.map { $0.value }
-        .sink { [weak self] cashFlowName in
-            self?.cashFlowModel.name = cashFlowName
+        valueInput.result().sink { [weak self] in
+            self?.cashFlowModel.value = $0
         }
         .store(in: &cancellables)
     }

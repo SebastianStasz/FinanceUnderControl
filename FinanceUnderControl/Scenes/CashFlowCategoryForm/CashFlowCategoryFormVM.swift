@@ -22,7 +22,7 @@ final class CashFlowCategoryFormVM: ViewModel {
     private let context: NSManagedObjectContext
 
     let input = Input()
-    @Published var nameInput = SSValidation.Input<TextInputSettings>(settings: .init(maxLength: 40, blocked: .init(message: "Category with this name already exists.")))
+    let nameInput = TextInputVM(validator: .notEmpty().and(.maxLength(40))) // TODO: Block value "Category with this name already exists."
     @Published var categoryModel = CashFlowCategoryModel()
     @Published private(set) var isFormValid = false
 
@@ -31,8 +31,8 @@ final class CashFlowCategoryFormVM: ViewModel {
         super.init()
         updateBlockedCategoryNames()
 
-        $nameInput.sink { [weak self] in
-            self?.categoryModel.name = $0.value
+        nameInput.result().sink { [weak self] in
+            self?.categoryModel.name = $0
         }
         .store(in: &cancellables)
 
@@ -67,6 +67,6 @@ final class CashFlowCategoryFormVM: ViewModel {
 
     private func updateBlockedCategoryNames() {
         let categories = CashFlowCategoryEntity.getAll(from: context)
-        nameInput.settings.blocked.values = categories.map { $0.name }
+//        nameInput.settings.blocked.values = categories.map { $0.name }
     }
 }

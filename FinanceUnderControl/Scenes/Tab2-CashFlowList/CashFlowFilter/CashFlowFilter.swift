@@ -15,8 +15,8 @@ struct CashFlowFilter: Equatable {
     }
     var cashFlowCategory: CashFlowCategoryEntity?
     var datePickerViewData: DateRangePickerViewData = .init()
-    var minimumValueInput = Input<NumberInputSettings>(settings: .init(canBeEmpty: true))
-    var maximumValueInput = Input<NumberInputSettings>(settings: .init(canBeEmpty: true))
+    var minimumValue: Double?
+    var maximumValue: Double?
 
     var nsPredicate: NSPredicate {
         var predicates: [Filter] = []
@@ -30,10 +30,10 @@ struct CashFlowFilter: Equatable {
         if let cashFlowCategory = cashFlowCategory {
             predicates.append(Filter.byCategory(cashFlowCategory))
         }
-        if let minValue = minimumValueInput.value {
+        if let minValue = minimumValue {
             predicates.append(Filter.minimumValue(minValue))
         }
-        if let maxValue = maximumValueInput.value {
+        if let maxValue = maximumValue {
             predicates.append(Filter.maximumValue(maxValue))
         }
         return predicates.compactMap { $0 }.andNSPredicate
@@ -43,8 +43,8 @@ struct CashFlowFilter: Equatable {
         cashFlowSelection = .all
         cashFlowCategory = nil
         datePickerViewData = .init()
-        minimumValueInput.value = nil
-        maximumValueInput.value = nil
+        minimumValue = nil
+        maximumValue = nil
     }
 }
 

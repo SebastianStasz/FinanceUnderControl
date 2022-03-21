@@ -14,7 +14,7 @@ final class CantorVM: ObservableObject {
     private let currencySettings = CurrencySettings()
 
     @Published var currencySelector = CurrencySelector<CurrencyEntity?>()
-    @Published var amountOfMoneyInput = Input<NumberInputSettings>(settings: .init(canBeEmpty: true))
+    let amountOfMoneyInput = DoubleInputVM(validator: .alwaysValid())
     @Published private(set) var exchangeRateValue: String?
     @Published private(set) var exchangedMoney: String?
 
@@ -58,12 +58,12 @@ final class CantorVM: ObservableObject {
             }
             .assign(to: &$exchangeRateValue)
 
-        Publishers.CombineLatest3(exchangeRateValue, $amountOfMoneyInput, $currencySelector)
+        Publishers.CombineLatest3(exchangeRateValue, amountOfMoneyInput.result(), $currencySelector)
             .map { values -> String? in
                 guard let primary = values.2.primaryCurrency,
                       let secondary = values.2.secondaryCurrency,
                       let rateValue = values.0,
-                      let amount = values.1.value,
+                      let amount = values.1,
                       amount != 0
                 else { return nil }
                 let result = (rateValue * amount).asString(roundToDecimalPlaces: 2)

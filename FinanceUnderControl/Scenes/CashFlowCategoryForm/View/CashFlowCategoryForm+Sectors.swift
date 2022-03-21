@@ -13,7 +13,7 @@ extension CashFlowCategoryFormView {
     var categoryInfo: some View {
         VStack(alignment: .center, spacing: .medium) {
             CircleView(color: categoryModel.color.color, icon: categoryModel.icon, size: 95)
-            LabeledInputText("Name", input: $viewModel.nameInput, style: .secondary)
+            LabeledTextField("Name", viewModel: viewModel.nameInput, style: .secondary)
         }
         .card()
     }

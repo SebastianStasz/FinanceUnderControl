@@ -17,12 +17,25 @@ final class CashFlowFilterVM: ViewModel {
         let applyFilters = PassthroughSubject<CashFlowFilter, Never>()
     }
 
+    let minValueInput = DoubleInputVM(validator: .alwaysValid())
+    let maxValueInput = DoubleInputVM(validator: .alwaysValid())
+
     @Published var cashFlowFilter = CashFlowFilter()
     @Published var cashFlowCategoriesPredicate: NSPredicate?
     let action = Action()
 
     override init() {
         super.init()
+
+        minValueInput.result().sink { [weak self] in
+            self?.cashFlowFilter.minimumValue = $0
+        }
+        .store(in: &cancellables)
+
+        maxValueInput.result().sink { [weak self] in
+            self?.cashFlowFilter.maximumValue = $0
+        }
+        .store(in: &cancellables)
 
         $cashFlowFilter
             .compactMap { filter -> NSPredicate? in

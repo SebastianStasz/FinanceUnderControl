@@ -11,12 +11,12 @@ import Shared
 
 struct TextFieldDSView: View {
 
-    @State private var textInput = Input<TextInputSettings>(settings: .init(minLength: 3))
-    @State private var numberInput = Input<NumberInputSettings>(settings: .init(minValue: 3))
+    @State private var textInput = TextInputVM(validator: .notEmpty().and(.lengthBetween(3...9)))
+    @State private var numberInput = DoubleInputVM(validator: .notEmpty().andDouble(.valueBetween(3...9)))
 
     var body: some View {
         Group {
-            LabeledInputNumber("Enter Number", input: $numberInput)
+            LabeledTextField("Enter number", viewModel: numberInput)
                 .designSystemComponent("Labeled text field")
         }
         .designSystemView("Text Fields")
