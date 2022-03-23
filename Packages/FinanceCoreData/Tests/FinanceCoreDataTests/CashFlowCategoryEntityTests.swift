@@ -11,6 +11,7 @@ import XCTest
 @testable import FinanceCoreData
 
 final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
+    typealias Model = CashFlowCategoryEntity.Model
 
     var context = PersistenceController.previewEmpty.context
 
@@ -23,7 +24,7 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
 
     func test_create_cash_flow_category_entity() throws {
         // Define cash flow category data.
-        let cashFlowCategoryData = CashFlowCategoryData.foodExpense
+        let cashFlowCategoryData = Model.foodExpense
 
         // Before creating, there should not be any cash flow categories.
         try fetchRequestShouldReturnElements(0, for: CashFlowCategoryEntity.self)
@@ -46,16 +47,16 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
         let category = createCashFlowCategoryEntity(data: .foodExpense)
 
         // Define cash flow category edited data.
-        let editedData = CashFlowCategoryData.carExpense
+        let editedData = Model.carExpense
 
         // Try to edit cash flow category entity using income data.
-        XCTAssertFalse(category.edit(data: .workIncome))
+        XCTAssertFalse(category.edit(model: .workIncome))
 
         // Verify that cash flow category entity data has not changed.
         verifyCashFlowCategoryData(in: category, data: .foodExpense)
 
         // Edit created cash flow category entity using workExpense data.
-        XCTAssert(category.edit(data: editedData))
+        XCTAssert(category.edit(model: editedData))
 
         // Verify that cash flow category entity data is changed.
         verifyCashFlowCategoryData(in: category, data: editedData)
@@ -66,7 +67,7 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
 
     func test_delete_cash_flow_category_entity() throws {
         // Create cash flow category group entity.
-        let group = createCashFlowCategoryGroupEntity(data: .foodExpense)
+        let group = createCashFlowCategoryGroupEntity(model: .foodExpense)
 
         // Create currency entity.
         let currency = try XCTUnwrap(createCurrencyEntity(data: .eur))
@@ -109,7 +110,7 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
 
     func test_filter_group_is_ungrouped() {
         // Create cash flow category group entity.
-        let group = createCashFlowCategoryGroupEntity(data: .foodExpense)
+        let group = createCashFlowCategoryGroupEntity(model: .foodExpense)
 
         // Create categories and add them to the group.
         let categoryWithGroup1 = createCashFlowCategoryEntity(data: .foodExpense)
@@ -130,7 +131,7 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
 private extension CashFlowCategoryEntityTests {
 
     func verifyCashFlowCategoryData(in cashFlowCategoryEntity: CashFlowCategoryEntity,
-                                    data: CashFlowCategoryData,
+                                    data: Model,
                                     numOfCashFlows: Int = 0
     ) {
         XCTAssertEqual(cashFlowCategoryEntity.name, data.name)

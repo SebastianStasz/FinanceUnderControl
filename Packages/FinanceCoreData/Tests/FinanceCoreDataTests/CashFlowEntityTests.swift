@@ -9,6 +9,7 @@ import XCTest
 @testable import FinanceCoreData
 
 final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
+    typealias Model = CashFlowEntity.Model
 
     var context = PersistenceController.previewEmpty.context
 
@@ -27,7 +28,7 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
         let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .eur))
 
         // Define cash flow data.
-        let cashFlowData = CashFlowData.sample1(currency: currencyEntity, category: cashFlowCategoryEntity)
+        let cashFlowData = Model.sample1(currency: currencyEntity, category: cashFlowCategoryEntity)
 
         // Before creating, there should not be any cash flow entities.
         try fetchRequestShouldReturnElements(0, for: CashFlowEntity.self)
@@ -59,13 +60,13 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
         let cashFlowCategoryEntity3 = createCashFlowCategoryEntity(data: .foodExpense)
 
         // Define cash flow data.
-        let cashFlowData = CashFlowData.sample1(currency: currencyEntity, category: cashFlowCategoryEntity)
+        let cashFlowData = Model.sample1(currency: currencyEntity, category: cashFlowCategoryEntity)
 
         // Define cash flow data 2.
-        let cashFlowData2 = CashFlowData.sample1(currency: currencyEntity, category: cashFlowCategoryEntity2)
+        let cashFlowData2 = Model.sample1(currency: currencyEntity, category: cashFlowCategoryEntity2)
 
         // Define cash flow data 3.
-        let cashFlowData3 = CashFlowData.sample1(currency: currencyEntity, category: cashFlowCategoryEntity3)
+        let cashFlowData3 = Model.sample1(currency: currencyEntity, category: cashFlowCategoryEntity3)
 
         // Create cash flow entity.
         let cashFlowEntity = createCashFlowEntity(data: cashFlowData)
@@ -94,7 +95,7 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
         let cashFlowCategoryEntity = createCashFlowCategoryEntity(data: .carExpense)
 
         // Define cash flow data.
-        let cashFlowData = CashFlowData.sample1(currency: currencyEntity, category: cashFlowCategoryEntity)
+        let cashFlowData = Model.sample1(currency: currencyEntity, category: cashFlowCategoryEntity)
 
         // Create cash flow entity.
         let cashFlowEntity = createCashFlowEntity(data: cashFlowData)
@@ -120,7 +121,7 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
 
 private extension CashFlowEntityTests {
     func verifyCashFlowEntityData(in cashFlowEntity: CashFlowEntity,
-                                  data: CashFlowData,
+                                  data: Model,
                                   category: CashFlowCategoryEntity? = nil
     ) throws {
         XCTAssertEqual(cashFlowEntity.name, data.name)

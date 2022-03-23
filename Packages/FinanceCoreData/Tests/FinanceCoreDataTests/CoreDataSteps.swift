@@ -19,23 +19,23 @@ extension CoreDataSteps {
     // MARK: - Creating entities
 
     @discardableResult
-    func createCurrencyEntity(data: Currency) -> CurrencyEntity? {
-        CurrencyEntity.create(in: context, currencyData: data)
+    func createCurrencyEntity(data: CurrencyEntity.Model) -> CurrencyEntity? {
+        CurrencyEntity.create(in: context, model: data)
     }
 
     @discardableResult
-    func createCashFlowEntity(data: CashFlowData) -> CashFlowEntity {
-        CashFlowEntity.create(in: context, data: data)
+    func createCashFlowEntity(data: CashFlowEntity.Model) -> CashFlowEntity {
+        CashFlowEntity.create(in: context, model: data)
     }
 
     @discardableResult
-    func createCashFlowCategoryGroupEntity(data: CashFlowCategoryGroupData) -> CashFlowCategoryGroupEntity {
-        CashFlowCategoryGroupEntity.create(in: context, data: data)
+    func createCashFlowCategoryGroupEntity(model: CashFlowCategoryGroupEntity.Model) -> CashFlowCategoryGroupEntity {
+        CashFlowCategoryGroupEntity.create(in: context, model: model)
     }
 
     @discardableResult
-    func createCashFlowCategoryEntity(data: CashFlowCategoryData) -> CashFlowCategoryEntity {
-        CashFlowCategoryEntity.create(in: context, data: data)
+    func createCashFlowCategoryEntity(data: CashFlowCategoryEntity.Model) -> CashFlowCategoryEntity {
+        CashFlowCategoryEntity.create(in: context, model: data)
     }
 
     // MARK: - Other

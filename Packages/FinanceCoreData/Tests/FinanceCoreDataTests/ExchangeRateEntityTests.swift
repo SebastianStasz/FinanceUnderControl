@@ -25,13 +25,13 @@ final class ExchangeRateEntityTests: XCTestCase, CoreDataSteps {
         let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .pln))
 
         // Define exhange rate data.
-        let exchangeRateData = ExchangeRateData.eurInPln
+        let exchangeRateData = ExchangeRateEntity.Model.eurInPln
 
         // Before creating, there should not be any exchange rates.
         try fetchRequestShouldReturnElements(0, for: ExchangeRateEntity.self)
 
         // Create exchange rate entity using defined data.
-        let exchangeRateEntity = createExchangeRateEntity(data: exchangeRateData, baseCurrency: currencyEntity)
+        let exchangeRateEntity = createExchangeRateEntity(model: exchangeRateData, baseCurrency: currencyEntity)
 
         // After creating, there should be one currency entity.
         try fetchRequestShouldReturnElements(1, for: ExchangeRateEntity.self)
@@ -48,10 +48,10 @@ final class ExchangeRateEntityTests: XCTestCase, CoreDataSteps {
         let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .pln))
 
         // Define exhange rate data.
-        let exchangeRateData = ExchangeRateData.eurInPln
+        let exchangeRateData = ExchangeRateEntity.Model.eurInPln
 
         // Create exchange rate entity using defined data.
-        let exchangeRateEntity = createExchangeRateEntity(data: exchangeRateData, baseCurrency: currencyEntity)
+        let exchangeRateEntity = createExchangeRateEntity(model: exchangeRateData, baseCurrency: currencyEntity)
 
         // Update rate value to 2.
         exchangeRateEntity.updateRateValue(to: 2)
@@ -65,7 +65,7 @@ final class ExchangeRateEntityTests: XCTestCase, CoreDataSteps {
         let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .pln))
 
         // Create exchange rate entity using sample data.
-        let exchangeRateEntity = createExchangeRateEntity(data: .eurInPln, baseCurrency: currencyEntity)
+        let exchangeRateEntity = createExchangeRateEntity(model: .eurInPln, baseCurrency: currencyEntity)
 
         // Delete exchange rate entity.
         exchangeRateEntity.delete()
@@ -84,12 +84,12 @@ final class ExchangeRateEntityTests: XCTestCase, CoreDataSteps {
 // MARK: - Steps
 
 private extension ExchangeRateEntityTests {
-    func createExchangeRateEntity(data: ExchangeRateData, baseCurrency: CurrencyEntity) -> ExchangeRateEntity {
-        ExchangeRateEntity.create(in: context, exchangeRateData: data, baseCurrency: baseCurrency)
+    func createExchangeRateEntity(model: ExchangeRateEntity.Model, baseCurrency: CurrencyEntity) -> ExchangeRateEntity {
+        ExchangeRateEntity.create(in: context, model: model, baseCurrency: baseCurrency)
     }
 
     func verifyExchangeRateData(in entity: ExchangeRateEntity,
-                                data: ExchangeRateData,
+                                data: ExchangeRateEntity.Model,
                                 baseCurrency: CurrencyEntity,
                                 rateValue: Double? = nil
     ) throws {

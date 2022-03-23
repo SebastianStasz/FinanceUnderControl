@@ -10,6 +10,7 @@ import XCTest
 @testable import FinanceCoreData
 
 final class CashFlowCategoryGroupEntityTests: XCTestCase, CoreDataSteps {
+    typealias Model = CashFlowCategoryGroupEntity.Model
 
     var context = PersistenceController.previewEmpty.context
 
@@ -22,19 +23,19 @@ final class CashFlowCategoryGroupEntityTests: XCTestCase, CoreDataSteps {
 
     func test_create_cash_flow_category_group_entity() throws {
         // Define cash flow category group data.
-        let data = CashFlowCategoryGroupData.foodExpense
+        let model = Model.foodExpense
 
         // Before creating, there should not be any cash flow category groups.
         try fetchRequestShouldReturnElements(0, for: CashFlowCategoryGroupEntity.self)
 
         // Create cash flow category group entity using defined data.
-        let group = createCashFlowCategoryGroupEntity(data: data)
+        let group = createCashFlowCategoryGroupEntity(model: model)
 
         // After creating, there should be one cash flow category group entity.
         try fetchRequestShouldReturnElements(1, for: CashFlowCategoryGroupEntity.self)
 
         // Verify that cash flow category group entity data is correct.
-        verifyCashFlowCategoryGroupData(in: group, data: data)
+        verifyCashFlowCategoryGroupData(in: group, model: model)
 
         // Save context.
         try saveContext()
@@ -42,22 +43,22 @@ final class CashFlowCategoryGroupEntityTests: XCTestCase, CoreDataSteps {
 
     func test_edit_cash_flow_category_group_entity() throws {
         // Create expense cash flow category group entity.
-        let group = createCashFlowCategoryGroupEntity(data: .foodExpense)
+        let group = createCashFlowCategoryGroupEntity(model: .foodExpense)
 
         // Define cash flow category group edited data.
-        let editedData = CashFlowCategoryGroupData.carExpense
+        let editedData = Model.carExpense
 
         // Try to edit cash flow category group entity using income group data.
-        XCTAssertFalse(group.edit(data: .workIncome))
+        XCTAssertFalse(group.edit(model: .workIncome))
 
         // Verify that cash flow category group entity data has not changed.
-        verifyCashFlowCategoryGroupData(in: group, data: .foodExpense)
+        verifyCashFlowCategoryGroupData(in: group, model: .foodExpense)
 
         // Edit cash flow category group entity using edited data.
-        XCTAssert(group.edit(data: editedData))
+        XCTAssert(group.edit(model: editedData))
 
         // Verify that cash flow category group entity data is changed.
-        verifyCashFlowCategoryGroupData(in: group, data: editedData)
+        verifyCashFlowCategoryGroupData(in: group, model: editedData)
 
         // Save context.
         try saveContext()
@@ -71,7 +72,7 @@ final class CashFlowCategoryGroupEntityTests: XCTestCase, CoreDataSteps {
         let incomeCategory = createCashFlowCategoryEntity(data: .workIncome)
 
         // Create expense cash flow category group entity.
-        let group = createCashFlowCategoryGroupEntity(data: .foodExpense)
+        let group = createCashFlowCategoryGroupEntity(model: .foodExpense)
 
         // Try to add income category to expense cash flow category group entity.
         XCTAssertFalse(group.addToCategories(incomeCategory))
@@ -94,7 +95,7 @@ final class CashFlowCategoryGroupEntityTests: XCTestCase, CoreDataSteps {
         let secondCategory = createCashFlowCategoryEntity(data: .carExpense)
 
         // Create cash flow category group entity.
-        let group = createCashFlowCategoryGroupEntity(data: .foodExpense)
+        let group = createCashFlowCategoryGroupEntity(model: .foodExpense)
 
         // Add categories to cash flow category group.
         XCTAssert(group.addToCategories(firstCategory))
@@ -118,7 +119,7 @@ final class CashFlowCategoryGroupEntityTests: XCTestCase, CoreDataSteps {
         let category = createCashFlowCategoryEntity(data: .carExpense)
 
         // Create cash flow category group entity.
-        let group = createCashFlowCategoryGroupEntity(data: .foodExpense)
+        let group = createCashFlowCategoryGroupEntity(model: .foodExpense)
 
         // Add category to cash flow category group entity.
         XCTAssert(group.addToCategories(category))
@@ -141,9 +142,9 @@ final class CashFlowCategoryGroupEntityTests: XCTestCase, CoreDataSteps {
 
 private extension CashFlowCategoryGroupEntityTests {
 
-    func verifyCashFlowCategoryGroupData(in group: CashFlowCategoryGroupEntity, data: CashFlowCategoryGroupData) {
-        XCTAssertEqual(group.type, data.type)
-        XCTAssertEqual(group.name, data.name)
+    func verifyCashFlowCategoryGroupData(in group: CashFlowCategoryGroupEntity, model: Model) {
+        XCTAssertEqual(group.type, model.type)
+        XCTAssertEqual(group.name, model.name)
     }
 
     func verifyGroupDoesNotContainAnyCategory(_ group: CashFlowCategoryGroupEntity) {
