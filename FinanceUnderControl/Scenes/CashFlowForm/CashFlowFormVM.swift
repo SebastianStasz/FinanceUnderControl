@@ -7,10 +7,11 @@
 
 import Combine
 import Foundation
+import SSUtils
 import SSValidation
 
-final class CashFlowFormVM: ObservableObject {
-    private var cancellables: Set<AnyCancellable> = []
+final class CashFlowFormVM: ObservableObject, CombineHelper {
+    var cancellables: Set<AnyCancellable> = []
 
     let nameInput = TextInputVM(validator: .notEmpty().and(.lengthBetween(3...20)))
     let valueInput = DoubleInputVM(validator: .notEmpty().andDouble(.notLessThan(0.01)))
@@ -18,21 +19,10 @@ final class CashFlowFormVM: ObservableObject {
     private let currencySettings = CurrencySettings()
 
     init() {
-        let currencySettingsOutput = currencySettings.bind()
-        currencySettingsOutput.primaryCurrency
-            .sink { [weak self] currency in
-                self?.cashFlowModel.currency = currency
-            }
-            .store(in: &cancellables)
+        currencySettings.bind().primaryCurrency
+            .weakAssign(to: \.cashFlowModel.currency, on: self)
 
-        nameInput.result().sink { [weak self] in
-            self?.cashFlowModel.name = $0
-        }
-        .store(in: &cancellables)
-
-        valueInput.result().sink { [weak self] in
-            self?.cashFlowModel.value = $0
-        }
-        .store(in: &cancellables)
+        nameInput.assignResult(to: \.cashFlowModel.name, on: self)
+        valueInput.assignResult(to: \.cashFlowModel.value, on: self)
     }
 }

@@ -30,10 +30,7 @@ final class CashFlowCategoryGroupFromVM: ViewModel {
         self.context = AppVM.shared.context
         super.init()
 
-        nameInput.result().sink { [weak self] in
-            self?.categoryModel.name = $0
-        }
-        .store(in: &cancellables)
+        nameInput.assignResult(to: \.categoryModel.name, on: self)
 
         $categoryModel
             .map { $0.data.notNil }

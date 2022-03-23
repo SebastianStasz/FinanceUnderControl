@@ -27,15 +27,8 @@ final class CashFlowFilterVM: ViewModel {
     override init() {
         super.init()
 
-        minValueInput.result().sink { [weak self] in
-            self?.cashFlowFilter.minimumValue = $0
-        }
-        .store(in: &cancellables)
-
-        maxValueInput.result().sink { [weak self] in
-            self?.cashFlowFilter.maximumValue = $0
-        }
-        .store(in: &cancellables)
+        minValueInput.assignResult(to: \.cashFlowFilter.minimumValue, on: self)
+        maxValueInput.assignResult(to: \.cashFlowFilter.maximumValue, on: self)
 
         $cashFlowFilter
             .compactMap { filter -> NSPredicate? in

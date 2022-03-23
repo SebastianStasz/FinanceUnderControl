@@ -8,12 +8,13 @@
 import Combine
 import FinanceCoreData
 import Foundation
+import SSUtils
 import SSValidation
 
-final class CashFlowListVM: ObservableObject {
+final class CashFlowListVM: ObservableObject, CombineHelper {
     typealias Filter = CashFlowEntity.Filter
 
-    private var cancellables: Set<AnyCancellable> = []
+    var cancellables: Set<AnyCancellable> = []
     let minValueInput = DoubleInputVM(validator: .alwaysValid())
     let maxValueInput = DoubleInputVM(validator: .alwaysValid())
 
@@ -29,15 +30,7 @@ final class CashFlowListVM: ObservableObject {
             .map { [$0, $1.nsPredicate].andNSPredicate }
             .assign(to: &$cashFlowPredicate)
 
-
-        minValueInput.result().sink { [weak self] in
-            self?.cashFlowFilter.minimumValue = $0
-        }
-        .store(in: &cancellables)
-
-        maxValueInput.result().sink { [weak self] in
-            self?.cashFlowFilter.maximumValue = $0
-        }
-        .store(in: &cancellables)
+        minValueInput.assignResult(to: \.cashFlowFilter.minimumValue, on: self)
+        maxValueInput.assignResult(to: \.cashFlowFilter.maximumValue, on: self)
     }
 }
