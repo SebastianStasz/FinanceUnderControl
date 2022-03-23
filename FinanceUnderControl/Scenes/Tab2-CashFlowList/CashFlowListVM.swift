@@ -8,11 +8,16 @@
 import Combine
 import FinanceCoreData
 import Foundation
+import SSValidation
 
 final class CashFlowListVM: ObservableObject {
     typealias Filter = CashFlowEntity.Filter
 
-    @Published private(set )var cashFlowPredicate: NSPredicate?
+    private var cancellables: Set<AnyCancellable> = []
+    let minValueInput = DoubleInputVM(validator: .alwaysValid())
+    let maxValueInput = DoubleInputVM(validator: .alwaysValid())
+
+    @Published private(set ) var cashFlowPredicate: NSPredicate?
     @Published var cashFlowFilter = CashFlowFilter()
     @Published var searchText = ""
 
@@ -23,5 +28,16 @@ final class CashFlowListVM: ObservableObject {
         Publishers.CombineLatest(searchPredicate, $cashFlowFilter)
             .map { [$0, $1.nsPredicate].andNSPredicate }
             .assign(to: &$cashFlowPredicate)
+
+
+        minValueInput.result().sink { [weak self] in
+            self?.cashFlowFilter.minimumValue = $0
+        }
+        .store(in: &cancellables)
+
+        maxValueInput.result().sink { [weak self] in
+            self?.cashFlowFilter.maximumValue = $0
+        }
+        .store(in: &cancellables)
     }
 }

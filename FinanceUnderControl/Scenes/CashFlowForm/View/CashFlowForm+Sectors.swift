@@ -12,8 +12,8 @@ extension CashFlowFormView {
 
     var sectorBasicInfo: some View {
         Sector("Basic") {
-            LabeledInputText(.create_cash_flow_name, input: $viewModel.nameInput)
-            LabeledInputNumber(.common_amount, input: $viewModel.valueInput)
+            LabeledTextField(.create_cash_flow_name, viewModel: viewModel.nameInput)
+            LabeledTextField(.common_amount, viewModel: viewModel.valueInput)
         }
     }
 
