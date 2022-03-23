@@ -20,17 +20,17 @@ import Foundation
 
 public extension CashFlowEntity {
 
-    @discardableResult static func create(in context: NSManagedObjectContext, data: CashFlowData) -> CashFlowEntity {
+    @discardableResult static func create(in context: NSManagedObjectContext, model: Model) -> CashFlowEntity {
         let cashFlow = CashFlowEntity(context: context)
-        cashFlow.name = data.name
-        cashFlow.date = data.date
-        cashFlow.value = data.value
-        cashFlow.currency = data.currency
-        cashFlow.category = data.category
+        cashFlow.name = model.name
+        cashFlow.date = model.date
+        cashFlow.value = model.value
+        cashFlow.currency = model.currency
+        cashFlow.category = model.category
         return cashFlow
     }
 
-    func edit(usingData data: CashFlowData) {
+    func edit(usingData data: Model) {
         name = data.name
         date = data.date
         value = data.value

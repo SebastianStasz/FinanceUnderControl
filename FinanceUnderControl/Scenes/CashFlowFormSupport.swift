@@ -10,9 +10,9 @@ import FinanceCoreData
 import SSValidation
 
 protocol CashFlowFormSupport: Entity {
-    associatedtype Model: CashFlowFormModel
+    associatedtype FormModel: CashFlowFormModel
 
-    var model: Model { get }
+    var model: FormModel { get }
 }
 
 // MARK: - Compatibility

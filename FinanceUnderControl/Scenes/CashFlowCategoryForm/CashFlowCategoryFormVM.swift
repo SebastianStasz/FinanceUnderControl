@@ -30,8 +30,6 @@ final class CashFlowCategoryFormVM: ViewModel {
         self.context = AppVM.shared.context
         super.init()
 
-        nameInput.assignResult(to: \.categoryModel.name, on: self)
-
         $categoryModel
             .map { $0.data.notNil }
             .assign(to: &$isFormValid)
@@ -42,10 +40,11 @@ final class CashFlowCategoryFormVM: ViewModel {
             .store(in: &cancellables)
     }
 
-    func onAppear(withModel model: CashFlowCategoryEntity.Model) {
+    func onAppear(withModel model: CashFlowCategoryEntity.FormModel) {
         categoryModel = model
         let namesInUse = CashFlowCategoryEntity.getAll(from: context).compactMap { $0.name == model.name ? nil : $0.name}
         nameInput = TextInputVM(initialValue: model.name, validator: .name(withoutRepeating: namesInUse))
+        nameInput.assignResult(to: \.categoryModel.name, on: self)
     }
 
     private func handleConfirmAction(form: FormType, model: CashFlowCategoryModel?) {
@@ -59,11 +58,11 @@ final class CashFlowCategoryFormVM: ViewModel {
         baseAction.dismissView.send()
     }
 
-    private func createCashFlowCategory(data: CashFlowCategoryData) {
-        CashFlowCategoryEntity.create(in: context, data: data)
+    private func createCashFlowCategory(data: CashFlowCategoryEntity.Model) {
+        CashFlowCategoryEntity.create(in: context, model: data)
     }
 
-    private func editCashFlowCategory(form: FormType, data: CashFlowCategoryData) {
-        form.entity?.edit(data: data)
+    private func editCashFlowCategory(form: FormType, data: CashFlowCategoryEntity.Model) {
+        form.entity?.edit(model: data)
     }
 }

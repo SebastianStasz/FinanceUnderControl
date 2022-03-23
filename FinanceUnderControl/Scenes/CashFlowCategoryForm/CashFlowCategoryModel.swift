@@ -15,7 +15,7 @@ struct CashFlowCategoryModel: CashFlowFormModel {
     var icon: CashFlowCategoryIcon = .houseFill
     var color: CashFlowCategoryColor = .blue
 
-    var data: CashFlowCategoryData? {
+    var data: CashFlowCategoryEntity.Model? {
         guard let name = name, let type = type else { return nil }
         return .init(name: name, icon: icon, color: color, type: type)
     }

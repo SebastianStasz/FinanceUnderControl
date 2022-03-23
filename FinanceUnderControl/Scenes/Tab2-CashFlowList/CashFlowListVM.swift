@@ -26,7 +26,7 @@ final class CashFlowListVM: ObservableObject, CombineHelper {
         let searchPredicate = $searchText
             .map { $0.isEmpty ? nil : Filter.nameContains($0).nsPredicate }
 
-        Publishers.CombineLatest(searchPredicate, $cashFlowFilter)
+        CombineLatest(searchPredicate, $cashFlowFilter)
             .map { [$0, $1.nsPredicate].andNSPredicate }
             .assign(to: &$cashFlowPredicate)
 

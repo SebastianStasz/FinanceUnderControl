@@ -11,6 +11,33 @@ import FinanceCoreData
 import Foundation
 import SSUtils
 import SSValidation
+import SwiftUI
+
+//final class CashFlowFormVM2<Entity: CashFlowFormSupport>: ViewModel {
+//    typealias FormType = CashFlowFormType<Entity>
+//
+//    struct Input {
+//        let didTapConfirm = PassthroughSubject<FormType, Never>()
+//    }
+//
+//    private let context: NSManagedObjectContext
+//
+//    let input = Input()
+//    private(set) var nameInput = TextInputVM()
+//    @Published var categoryModel = Entity.Model()
+//    @Published private(set) var isFormValid = false
+//
+//    override init() {
+//        self.context = AppVM.shared.context
+//        super.init()
+//
+//        nameInput.assignResult(to: \.categoryModel.name, on: self)
+//
+//        $categoryModel
+//            .map { $0.data.notNil }
+//            .assign(to: &$isFormValid)
+//    }
+//}
 
 final class CashFlowCategoryGroupFromVM: ViewModel {
     typealias FormType = CashFlowFormType<CashFlowCategoryGroupEntity>
@@ -30,8 +57,6 @@ final class CashFlowCategoryGroupFromVM: ViewModel {
         self.context = AppVM.shared.context
         super.init()
 
-        nameInput.assignResult(to: \.categoryModel.name, on: self)
-
         $categoryModel
             .map { $0.data.notNil }
             .assign(to: &$isFormValid)
@@ -42,28 +67,29 @@ final class CashFlowCategoryGroupFromVM: ViewModel {
             .store(in: &cancellables)
     }
 
-    func onAppear(withModel model: CashFlowCategoryGroupEntity.Model) {
+    func onAppear(withModel model: CashFlowCategoryGroupEntity.FormModel) {
         self.categoryModel = model
         let namesInUse = CashFlowCategoryGroupEntity.getAll(from: context).compactMap { $0.name == model.name ? nil : $0.name }
         nameInput = TextInputVM(initialValue: model.name, validator: .name(withoutRepeating: namesInUse))
+        nameInput.assignResult(to: \.categoryModel.name, on: self)
     }
 
     private func handleConfirmAction(form: FormType, model: CashFlowCategoryGroupModel?) {
-        guard let data = model?.data else { return }
+        guard let model = model?.data else { return }
         switch form {
         case .new:
-            createCashFlowCategoryGroup(data: data)
+            createCashFlowCategoryGroup(model: model)
         case .edit:
-            editCashFlowCategoryGroup(form: form, data: data)
+            editCashFlowCategoryGroup(form: form, model: model)
         }
         baseAction.dismissView.send()
     }
 
-    private func createCashFlowCategoryGroup(data: CashFlowCategoryGroupData) {
-        CashFlowCategoryGroupEntity.create(in: context, data: data)
+    private func createCashFlowCategoryGroup(model: CashFlowCategoryGroupEntity.Model) {
+        CashFlowCategoryGroupEntity.create(in: context, model: model)
     }
 
-    private func editCashFlowCategoryGroup(form: FormType, data: CashFlowCategoryGroupData) {
-        form.entity?.edit(data: data)
+    private func editCashFlowCategoryGroup(form: FormType, model: CashFlowCategoryGroupEntity.Model) {
+        form.entity?.edit(model: model)
     }
 }

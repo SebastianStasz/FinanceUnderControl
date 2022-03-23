@@ -8,6 +8,7 @@
 import Combine
 import FinanceCoreData
 import SSValidation
+import SSUtils
 
 final class CantorVM: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
@@ -48,7 +49,7 @@ final class CantorVM: ObservableObject {
                 return exchangeRateValue
             }
 
-        Publishers.CombineLatest($currencySelector, exchangeRateValue)
+        CombineLatest($currencySelector, exchangeRateValue)
             .map { values -> String? in
                 guard let primary = values.0.primaryCurrency,
                       let secondary = values.0.secondaryCurrency,
@@ -58,7 +59,7 @@ final class CantorVM: ObservableObject {
             }
             .assign(to: &$exchangeRateValue)
 
-        Publishers.CombineLatest3(exchangeRateValue, amountOfMoneyInput.result(), $currencySelector)
+        CombineLatest3(exchangeRateValue, amountOfMoneyInput.result(), $currencySelector)
             .map { values -> String? in
                 guard let primary = values.2.primaryCurrency,
                       let secondary = values.2.secondaryCurrency,
@@ -71,6 +72,4 @@ final class CantorVM: ObservableObject {
             }
             .assign(to: &$exchangedMoney)
     }
-
-//    func tryToSetCurr /
 }

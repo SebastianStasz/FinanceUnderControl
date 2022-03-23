@@ -47,7 +47,7 @@ struct CashFlowPanelView: View {
 struct CashFlowPanelView_Previews: PreviewProvider {
     static var previews: some View {
         let context = PersistenceController.previewEmpty.context
-        let cashFlow = CashFlowEntity.create(in: context, data: .sample(context: context))
+        let cashFlow = CashFlowEntity.create(in: context, model: .sample(context: context))
         CashFlowPanelView(cashFlow: cashFlow)
             .previewLayout(.sizeThatFits)
             .padding()

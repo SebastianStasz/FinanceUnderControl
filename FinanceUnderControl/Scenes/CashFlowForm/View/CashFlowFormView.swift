@@ -16,7 +16,7 @@ struct CashFlowFormView: View {
 
     @StateObject var viewModel = CashFlowFormVM()
 
-    private var cashFlowData: CashFlowData? {
+    private var cashFlowData: CashFlowEntity.Model? {
         viewModel.cashFlowModel.cashFlowData
     }
 
@@ -36,7 +36,7 @@ struct CashFlowFormView: View {
 
     private func createCashFlow() {
         guard let data = cashFlowData else { return }
-        CashFlowEntity.create(in: context, data: data)
+        CashFlowEntity.create(in: context, model: data)
     }
 
     init(for type: CashFlowType) {

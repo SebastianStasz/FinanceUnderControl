@@ -16,12 +16,12 @@ struct CashFlowModel {
     var category: CashFlowCategoryEntity?
     var type: CashFlowType?
 
-    var cashFlowData: CashFlowData? {
+    var cashFlowData: CashFlowEntity.Model? {
         guard let name = name,
               let value = value,
               let currency = currency,
               let category = category
         else { return nil }
-        return CashFlowData(name: name, date: date, value: value, currency: currency, category: category)
+        return CashFlowEntity.Model(name: name, date: date, value: value, currency: currency, category: category)
     }
 }

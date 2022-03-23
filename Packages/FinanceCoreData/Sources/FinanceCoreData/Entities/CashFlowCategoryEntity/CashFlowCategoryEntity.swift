@@ -38,19 +38,19 @@ import SwiftUI
 public extension CashFlowCategoryEntity {
 
     @discardableResult
-    static func create(in context: NSManagedObjectContext, data: CashFlowCategoryData) -> CashFlowCategoryEntity {
+    static func create(in context: NSManagedObjectContext, model: Model) -> CashFlowCategoryEntity {
         let category = CashFlowCategoryEntity(context: context)
-        category.type = data.type
-        category.edit(data: data)
+        category.type = model.type
+        category.edit(model: model)
         return category
     }
 
     @discardableResult
-    func edit(data: CashFlowCategoryData) -> Bool {
-        guard type == data.type else { return false }
-        name = data.name
-        icon = data.icon
-        color = data.color
+    func edit(model: Model) -> Bool {
+        guard type == model.type else { return false }
+        name = model.name
+        icon = model.icon
+        color = model.color
         return true
     }
 
@@ -87,5 +87,5 @@ private extension CashFlowCategoryEntity {
 // MARK: - Sample data
 
 public extension CashFlowCategoryEntity {
-    static let carExpense = CashFlowCategoryEntity.create(in: PersistenceController.previewEmpty.context, data: .carExpense)
+    static let carExpense = CashFlowCategoryEntity.create(in: PersistenceController.previewEmpty.context, model: .carExpense)
 }

@@ -39,7 +39,7 @@ private extension PersistenceController {
         let symbolsReponse = try! decoder.decode(SymbolsReponse.self, from: DataFile.exchangerateSymbols.data) // swiftlint:disable:this force_try
         let latestRatesResponse = try! decoder.decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data) // swiftlint:disable:this force_try
 
-        CurrencyEntity.create(in: context, currenciesData: symbolsReponse.currencies)
+        CurrencyEntity.create(in: context, models: symbolsReponse.currencies.map { CurrencyEntity.Model(code: $0.code, name: $0.name) })
         let eurCurrency = CurrencyEntity.getAll(from: context).first(where: { $0.code == "EUR" })!
         eurCurrency.addExchangeRates(latestRatesResponse.rates.map { $0.exchangeRateData(baseCurrency: "EUR") })
     }
@@ -82,7 +82,7 @@ private extension PersistenceController {
                         categoryType: .expense,
                         groupName: "Car")
 
-        CashFlowCategoryGroupEntity.create(in: context, data: .init(name: "Housing", type: .expense))
+        CashFlowCategoryGroupEntity.create(in: context, model: .init(name: "Housing", type: .expense))
     }
 
     // MARK: - Incomes
@@ -130,15 +130,15 @@ private extension PersistenceController {
         guard names.count == values.count else {
             fatalError("Each name should be associated with one value.")
         }
-        let category = CashFlowCategoryEntity.create(in: context, data: .init(name: categoryName, icon: categoryIcon, color: categoryColor, type: categoryType))
+        let category = CashFlowCategoryEntity.create(in: context, model: .init(name: categoryName, icon: categoryIcon, color: categoryColor, type: categoryType))
         for (name, value) in zip(names, values) {
-            CashFlowEntity.create(in: context, data: .init(name: name, date: date, value: value, currency: plnCurrency(in: context), category: category))
+            CashFlowEntity.create(in: context, model: .init(name: name, date: date, value: value, currency: plnCurrency(in: context), category: category))
         }
         if let groupName = groupName {
             let request = CashFlowCategoryGroupEntity.nsFetchRequest(filteringBy: [.nameIs(groupName)])
             let result = try! context.fetch(request) // swiftlint:disable:this force_try
             if result.isEmpty {
-                let group = CashFlowCategoryGroupEntity.create(in: context, data: .init(name: groupName, type: categoryType))
+                let group = CashFlowCategoryGroupEntity.create(in: context, model: .init(name: groupName, type: categoryType))
                 _ = group.addToCategories(category)
             } else {
                 _ = result.first?.addToCategories(category)

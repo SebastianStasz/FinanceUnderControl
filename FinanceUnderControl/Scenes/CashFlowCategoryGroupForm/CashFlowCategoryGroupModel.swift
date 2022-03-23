@@ -13,8 +13,8 @@ struct CashFlowCategoryGroupModel: CashFlowFormModel {
     var name: String?
     var type: CashFlowType?
 
-    var data: CashFlowCategoryGroupData? {
+    var data: CashFlowCategoryGroupEntity.Model? {
         guard let name = name, let type = type else { return nil }
-        return CashFlowCategoryGroupData(name: name, type: type)
+        return CashFlowCategoryGroupEntity.Model(name: name, type: type)
     }
 }

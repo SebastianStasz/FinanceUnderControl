@@ -25,12 +25,12 @@ import SSUtils
 public extension ExchangeRateEntity {
 
     @discardableResult static func create(in context: NSManagedObjectContext,
-                                          exchangeRateData data: ExchangeRateData,
+                                          model: ExchangeRateEntity.Model,
                                           baseCurrency: CurrencyEntity
     ) -> ExchangeRateEntity {
         let exchangeRate = ExchangeRateEntity(context: context)
-        exchangeRate.code = data.code
-        exchangeRate.rateValue = data.rateValue
+        exchangeRate.code = model.code
+        exchangeRate.rateValue = model.rateValue
         exchangeRate.baseCurrency = baseCurrency
         return exchangeRate
     }

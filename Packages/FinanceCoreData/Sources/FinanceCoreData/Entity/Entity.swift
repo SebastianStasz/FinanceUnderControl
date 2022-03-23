@@ -13,6 +13,7 @@ import SSUtils
 public protocol Entity: NSManagedObject, Identifiable {
     associatedtype Filter: EntityFilter
     associatedtype Sort: EntitySort
+    associatedtype Model
 }
 
 public extension Entity where Sort.Entity == Self {

@@ -9,9 +9,11 @@ import Foundation
 import FinanceCoreData
 
 protocol CashFlowFormModel {
+
     static func newForType(_ type: CashFlowType) -> Self
 
     var type: CashFlowType? { get set }
+    var name: String? { get set }
 
     init()
 }

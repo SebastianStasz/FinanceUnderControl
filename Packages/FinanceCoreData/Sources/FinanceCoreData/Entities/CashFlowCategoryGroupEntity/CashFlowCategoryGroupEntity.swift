@@ -35,10 +35,10 @@ public extension CashFlowCategoryGroupEntity {
     ///   - data: Data that will be used to create the enity.
     /// - Returns: Created cash flow category group entity.
     @discardableResult
-    static func create(in context: NSManagedObjectContext, data: CashFlowCategoryGroupData) -> CashFlowCategoryGroupEntity {
+    static func create(in context: NSManagedObjectContext, model: Model) -> CashFlowCategoryGroupEntity {
         let group = CashFlowCategoryGroupEntity(context: context)
-        group.type = data.type
-        group.edit(data: data)
+        group.type = model.type
+        group.edit(model: model)
         return group
     }
 
@@ -46,9 +46,9 @@ public extension CashFlowCategoryGroupEntity {
     /// - Parameter data: Data that will be used to edit the entity.
     /// - Returns: `true` if the entity has been edited `false` if the entity cannot be edited.
     @discardableResult
-    func edit(data: CashFlowCategoryGroupData) -> Bool {
-        guard type == data.type else { return false }
-        name = data.name
+    func edit(model: Model) -> Bool {
+        guard type == model.type else { return false }
+        name = model.name
         return true
     }
 
