@@ -17,8 +17,8 @@ final class CashFlowFilterVM: ViewModel {
         let applyFilters = PassthroughSubject<CashFlowFilter, Never>()
     }
 
-    let minValueInput = DoubleInputVM(validator: .alwaysValid())
-    let maxValueInput = DoubleInputVM(validator: .alwaysValid())
+    private(set) var minValueInput = DoubleInputVM(validator: .alwaysValid())
+    private(set) var maxValueInput = DoubleInputVM(validator: .alwaysValid())
 
     @Published var cashFlowFilter = CashFlowFilter()
     @Published var cashFlowCategoriesPredicate: NSPredicate?
@@ -62,5 +62,8 @@ final class CashFlowFilterVM: ViewModel {
 
     func onAppear(cashFlowFilter: CashFlowFilter) {
         self.cashFlowFilter = cashFlowFilter
+        if let min = cashFlowFilter.minimumValue {
+            minValueInput = DoubleInputVM(initialValue: min.asString, validator: .alwaysValid())
+        }
     }
 }

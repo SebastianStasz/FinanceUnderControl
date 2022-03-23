@@ -22,14 +22,13 @@ final class CashFlowCategoryFormVM: ViewModel {
     private let context: NSManagedObjectContext
 
     let input = Input()
-    let nameInput = TextInputVM(validator: .notEmpty().and(.maxLength(40))) // TODO: Block value "Category with this name already exists."
+    private(set) var nameInput = TextInputVM()
     @Published var categoryModel = CashFlowCategoryModel()
     @Published private(set) var isFormValid = false
 
     override init() {
         self.context = AppVM.shared.context
         super.init()
-        updateBlockedCategoryNames()
 
         nameInput.result().sink { [weak self] in
             self?.categoryModel.name = $0
@@ -44,6 +43,12 @@ final class CashFlowCategoryFormVM: ViewModel {
             .combineLatest($categoryModel)
             .sink { [weak self] in self?.handleConfirmAction(form: $0.0, model: $0.1) }
             .store(in: &cancellables)
+    }
+
+    func onAppear(withModel model: CashFlowCategoryEntity.Model) {
+        categoryModel = model
+        let namesInUse = CashFlowCategoryEntity.getAll(from: context).compactMap { $0.name == model.name ? nil : $0.name}
+        nameInput = TextInputVM(initialValue: model.name, validator: .name(withoutRepeating: namesInUse))
     }
 
     private func handleConfirmAction(form: FormType, model: CashFlowCategoryModel?) {
@@ -63,10 +68,5 @@ final class CashFlowCategoryFormVM: ViewModel {
 
     private func editCashFlowCategory(form: FormType, data: CashFlowCategoryData) {
         form.entity?.edit(data: data)
-    }
-
-    private func updateBlockedCategoryNames() {
-        let categories = CashFlowCategoryEntity.getAll(from: context)
-//        nameInput.settings.blocked.values = categories.map { $0.name }
     }
 }
