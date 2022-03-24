@@ -27,9 +27,9 @@ struct CashFlowFilterView: BaseView {
             amountSector
             otherSector
         }
-        .horizontalButtonsScroll(title: .cash_flow_filter_title,
-                                 primaryButton: .init(.button_apply, action: viewModel.applyFilters),
-                                 secondaryButton: .init(.button_reset, action: viewModel.resetFilters)
+        .asSheet(title: .cash_flow_filter_title,
+                 primaryButton: .init(.button_apply, action: viewModel.applyFilters),
+                 secondaryButton: .init(.button_reset, action: viewModel.resetFilters)
         )
         .onReceive(viewModel.action.applyFilters) { cashFlowFilter = $0 }
         .onChange(of: viewModel.cashFlowCategoriesPredicate) { cashFlowCategories.nsPredicate = $0 }

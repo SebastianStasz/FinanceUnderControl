@@ -8,7 +8,7 @@
 import SwiftUI
 import Shared
 
-extension CashFlowFormView {
+extension CashFlowFormSheet {
 
     var sectorBasicInfo: some View {
         Sector("Basic") {

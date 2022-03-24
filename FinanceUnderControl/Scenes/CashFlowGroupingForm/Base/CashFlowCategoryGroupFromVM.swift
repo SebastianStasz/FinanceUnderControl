@@ -20,33 +20,33 @@ final class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
 
     let input = Input()
     private(set) var nameInput = TextInputVM()
-    @Published var formModel = Entity.FormModel()
+    @Published var build = Entity.Build()
     @Published private(set) var isFormValid = false
 
     override init() {
         self.context = AppVM.shared.context
         super.init()
 
-        nameInput.assignResult(to: \.formModel.name, on: self)
+        nameInput.assignResult(to: \.build.name, on: self)
 
-        $formModel
+        $build
             .map { $0.model.notNil }
             .assign(to: &$isFormValid)
 
         input.didTapConfirm
-            .combineLatest($formModel)
+            .combineLatest($build)
             .sink { [weak self] in self?.handleConfirmAction(form: $0.0, formModel: $0.1) }
             .store(in: &cancellables)
     }
 
-    func onAppear(withModel model: Entity.FormModel) {
-        self.formModel = model
+    func onAppear(withModel model: Entity.Build) {
+        self.build = model
         let namesInUse = Entity.namesInUse(from: context).filter { $0 != model.name }
         nameInput = TextInputVM(initialValue: model.name, validator: .name(withoutRepeating: namesInUse))
-        nameInput.assignResult(to: \.formModel.name, on: self)
+        nameInput.assignResult(to: \.build.name, on: self)
     }
 
-    private func handleConfirmAction(form: FormType, formModel: Entity.FormModel) {
+    private func handleConfirmAction(form: FormType, formModel: Entity.Build) {
         guard let model = formModel.model else { return }
         switch form {
         case .new:

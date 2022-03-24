@@ -32,7 +32,7 @@ struct CashFlowCategoryFormView: BaseView {
             LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
                 ForEach(CashFlowCategoryColor.allCases) { color in
                     CircleView(color: color.color)
-                        .selection($viewModel.formModel.color, element: color)
+                        .selection($viewModel.build.color, element: color)
                 }
             }
             .embedInSection("Color", style: .card)
@@ -40,7 +40,7 @@ struct CashFlowCategoryFormView: BaseView {
             LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
                 ForEach(CashFlowCategoryIcon.allCases) { (icon: CashFlowCategoryIcon) in
                     CircleView(color: .basicSecondary, icon: icon)
-                        .selection($viewModel.formModel.icon, element: icon)
+                        .selection($viewModel.build.icon, element: icon)
                 }
             }
             .embedInSection("Icon", style: .card)
@@ -48,8 +48,8 @@ struct CashFlowCategoryFormView: BaseView {
         .cashFlowGroupingForm(viewModel: viewModel, form: form)
     }
 
-    private var categoryModel: CashFlowCategoryEntity.FormModel {
-        viewModel.formModel
+    private var categoryModel: CashFlowCategoryEntity.Build {
+        viewModel.build
     }
 }
 

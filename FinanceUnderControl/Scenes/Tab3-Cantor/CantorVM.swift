@@ -27,7 +27,7 @@ final class CantorVM: ObservableObject {
     }
 
     init() {
-        let currencySettingsOutput = currencySettings.bind()
+        let currencySettingsOutput = currencySettings.result()
         currencySettingsOutput.primaryCurrency
             .sink { [weak self] currency in
                 self?.currencySelector.setPrimaryCurrency(to: currency)

@@ -1,5 +1,5 @@
 //
-//  CashFlowFormView.swift
+//  CashFlowFormSheet.swift
 //  FinanceUnderControl
 //
 //  Created by Sebastian Staszczyk on 20/02/2022.
@@ -8,7 +8,7 @@
 import SwiftUI
 import FinanceCoreData
 
-struct CashFlowFormView: View {
+struct CashFlowFormSheet: BaseView {
     @Environment(\.managedObjectContext) private var context
     @FetchRequest var currencies: FetchedResults<CurrencyEntity>
     @FetchRequest var categories: FetchedResults<CashFlowCategoryEntity>
@@ -17,21 +17,25 @@ struct CashFlowFormView: View {
     @StateObject var viewModel = CashFlowFormVM()
 
     private var cashFlowData: CashFlowEntity.Model? {
-        viewModel.cashFlowModel.cashFlowData
+        viewModel.cashFlowModel.model
     }
 
-    var body: some View {
+    var baseBody: some View {
         FormView {
             sectorBasicInfo
             sectorMoreInfo
         }
-        .horizontalButtonsScroll(title: type.name, primaryButton: .init(.button_create, enabled: cashFlowData.notNil, action: createCashFlow))
-        .onAppear(perform: onAppear)
+        .asSheet(title: type.name, askToDismiss: viewModel.formChanged, primaryButton: primaruButton)
     }
 
-    private func onAppear() {
-        viewModel.cashFlowModel.category = categories.first
-        viewModel.cashFlowModel.type = type
+    private var primaruButton: HorizontalButtons.Configuration {
+        .init(.button_create, enabled: cashFlowData.notNil, action: createCashFlow)
+    }
+
+    func onAppear() {
+        let model = CashFlowBuild(category: categories.first, type: type)
+        viewModel.initialCashFlowModel = model
+        viewModel.cashFlowModel = model
     }
 
     private func createCashFlow() {
@@ -51,6 +55,6 @@ struct CashFlowFormView: View {
 
 struct CashFlowFormView_Previews: PreviewProvider {
     static var previews: some View {
-        CashFlowFormView(for: .income)
+        CashFlowFormSheet(for: .income)
     }
 }

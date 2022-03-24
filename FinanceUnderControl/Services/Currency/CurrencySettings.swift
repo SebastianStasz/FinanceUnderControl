@@ -39,7 +39,7 @@ final class CurrencySettings {
             .store(in: &cancellables)
     }
 
-    func bind() -> Output {
+    func result() -> Output {
         let primaryCurrency = $currencySelector
             .compactMap { $0.primaryCurrency }
             .map { [weak self] primaryCurrency -> CurrencyEntity? in

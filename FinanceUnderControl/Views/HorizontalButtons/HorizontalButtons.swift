@@ -11,41 +11,33 @@ struct HorizontalButtons: View {
 
     private let primaryButton: BaseButton.Configuration
     private let secondaryButton: BaseButton.Configuration?
-    private let shouldStandOut: Bool
 
     var body: some View {
-        VStack {
-            Divider().displayIf(shouldStandOut)
-
-            HStack(spacing: .large) {
-                if let secondaryButton = secondaryButton {
-                    BaseButton(configuration: secondaryButton)
-                }
-                BaseButton(configuration: primaryButton)
+        HStack(spacing: .large) {
+            if let secondaryButton = secondaryButton {
+                BaseButton(configuration: secondaryButton)
             }
-            .padding(.horizontal, .large)
-            .padding(.top, .medium)
-            .paddingIfNotSafeArea(.bottom, .medium)
-            .background(shouldStandOut ?  Color.backgroundSecondary : Color.backgroundPrimary)
-            .animation(.easeInOut(duration: 0.1))
+            BaseButton(configuration: primaryButton)
         }
+        .padding(.top, .medium)
     }
 
-    init(primaryButton: Configuration,
-         secondaryButton: Configuration? = nil,
-         shouldStandOut: Bool
-    ) {
+    init(primaryButton: Configuration, secondaryButton: Configuration? = nil) {
         self.primaryButton = .init(primaryButton.title,
                                    role: .primary,
                                    enabled: primaryButton.enabled,
                                    action: primaryButton.action
         )
-        self.shouldStandOut = shouldStandOut
         if let sb = secondaryButton {
             self.secondaryButton = .init(sb.title, role: .secondary, enabled: sb.enabled, action: sb.action)
         } else {
             self.secondaryButton = nil
         }
+    }
+
+    init?(primaryButton: Configuration?, secondaryButton: Configuration? = nil) {
+        guard let primaryButton = primaryButton else { return nil }
+        self.init(primaryButton: primaryButton, secondaryButton: secondaryButton)
     }
 }
 
@@ -54,12 +46,10 @@ struct HorizontalButtons: View {
 struct HorizontalButtons_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            HorizontalButtons(primaryButton: .init("Primary Button", action: {}),
-                              shouldStandOut: true)
+            HorizontalButtons(primaryButton: .init("Primary Button", action: {}))
 
             HorizontalButtons(primaryButton: .init("Primary", action: {}),
-                              secondaryButton: .init("Secondary", action: {}),
-                              shouldStandOut: true)
+                              secondaryButton: .init("Secondary", action: {}))
         }
         .frame(maxHeight: .infinity, alignment: .bottom)
     }

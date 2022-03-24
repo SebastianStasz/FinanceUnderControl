@@ -11,9 +11,9 @@ import FinanceCoreData
 import SSValidation
 
 protocol CashFlowFormSupport: Entity {
-    associatedtype FormModel: CashFlowFormModel where FormModel.Ent == Self
+    associatedtype Build: CashFlowGroupingBuild where Build.Ent == Self
 
-    var formModel: FormModel { get }
+    var build: Build { get }
 
     static func namesInUse(from context: NSManagedObjectContext) -> [String]
     static func create(in context: NSManagedObjectContext, model: Model)
@@ -23,7 +23,7 @@ protocol CashFlowFormSupport: Entity {
 // MARK: - Compatibility
 
 extension CashFlowCategoryEntity: CashFlowFormSupport {
-    var formModel: FormModel {
+    var build: Build {
         .init(name: name, type: type, icon: icon, color: color)
     }
 
@@ -33,7 +33,7 @@ extension CashFlowCategoryEntity: CashFlowFormSupport {
 }
 
 extension CashFlowCategoryGroupEntity: CashFlowFormSupport {
-    var formModel: FormModel {
+    var build: Build {
         .init(name: name, type: type)
     }
 

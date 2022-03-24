@@ -11,7 +11,7 @@ import SSValidation
 
 extension CashFlowCategoryGroupEntity {
 
-    struct FormModel: CashFlowFormModel {
+    struct Build: CashFlowGroupingBuild {
         typealias Ent = CashFlowCategoryGroupEntity
 
         var name: String?

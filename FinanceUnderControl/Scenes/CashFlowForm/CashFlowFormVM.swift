@@ -5,21 +5,25 @@
 //  Created by Sebastian Staszczyk on 20/02/2022.
 //
 
-import Combine
 import Foundation
-import SSUtils
 import SSValidation
 
-final class CashFlowFormVM: ObservableObject, CombineHelper {
-    var cancellables: Set<AnyCancellable> = []
-
-    let nameInput = TextInputVM(validator: .notEmpty().and(.lengthBetween(3...20)))
-    let valueInput = DoubleInputVM(validator: .notEmpty().andDouble(.notLessThan(0.01)))
-    @Published var cashFlowModel = CashFlowModel()
+final class CashFlowFormVM: ViewModel {
     private let currencySettings = CurrencySettings()
+    var initialCashFlowModel: CashFlowBuild!
+    let nameInput = TextInputVM(validator: .name())
+    let valueInput = DoubleInputVM(validator: .money())
 
-    init() {
-        currencySettings.bind().primaryCurrency
+    @Published var cashFlowModel = CashFlowBuild()
+
+    var formChanged: Bool {
+        initialCashFlowModel != cashFlowModel
+    }
+
+    override init() {
+        super.init()
+
+        currencySettings.result().primaryCurrency
             .weakAssign(to: \.cashFlowModel.currency, on: self)
 
         nameInput.assignResult(to: \.cashFlowModel.name, on: self)

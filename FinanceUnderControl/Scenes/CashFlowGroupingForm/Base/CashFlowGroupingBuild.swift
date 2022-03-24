@@ -1,5 +1,5 @@
 //
-//  CashFlowFormModel.swift
+//  CashFlowGroupingBuild.swift
 //  FinanceUnderControl
 //
 //  Created by sebastianstaszczyk on 13/03/2022.
@@ -8,7 +8,7 @@
 import Foundation
 import FinanceCoreData
 
-protocol CashFlowFormModel {
+protocol CashFlowGroupingBuild: Equatable {
     associatedtype Ent: Entity
 
     var type: CashFlowType? { get set }
@@ -20,7 +20,7 @@ protocol CashFlowFormModel {
     static func newForType(_ type: CashFlowType) -> Self
 }
 
-extension CashFlowFormModel {
+extension CashFlowGroupingBuild {
     static func newForType(_ type: CashFlowType) -> Self {
         var model = Self()
         model.type = type

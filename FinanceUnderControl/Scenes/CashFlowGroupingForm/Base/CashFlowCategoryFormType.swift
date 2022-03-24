@@ -12,12 +12,12 @@ enum CashFlowFormType<Entity: CashFlowFormSupport> {
     case new(for: CashFlowType)
     case edit(Entity)
 
-    var formModel: Entity.FormModel {
+    var build: Entity.Build {
         switch self {
         case .new(let type):
             return .newForType(type)
         case .edit(let entity):
-            return entity.formModel
+            return entity.build
         }
     }
 
