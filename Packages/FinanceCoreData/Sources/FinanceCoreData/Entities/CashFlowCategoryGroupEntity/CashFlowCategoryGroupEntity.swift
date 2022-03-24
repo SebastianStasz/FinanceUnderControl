@@ -35,11 +35,15 @@ public extension CashFlowCategoryGroupEntity {
     ///   - data: Data that will be used to create the enity.
     /// - Returns: Created cash flow category group entity.
     @discardableResult
-    static func create(in context: NSManagedObjectContext, model: Model) -> CashFlowCategoryGroupEntity {
+    static func createAndReturn(in context: NSManagedObjectContext, model: Model) -> CashFlowCategoryGroupEntity {
         let group = CashFlowCategoryGroupEntity(context: context)
         group.type = model.type
         group.edit(model: model)
         return group
+    }
+
+    static func create(in context: NSManagedObjectContext, model: Model) {
+        createAndReturn(in: context, model: model)
     }
 
     /// Edists a cash flow category group using the data provided if the data is of the same type as the group.

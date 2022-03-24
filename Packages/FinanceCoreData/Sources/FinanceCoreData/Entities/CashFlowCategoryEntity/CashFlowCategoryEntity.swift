@@ -38,11 +38,15 @@ import SwiftUI
 public extension CashFlowCategoryEntity {
 
     @discardableResult
-    static func create(in context: NSManagedObjectContext, model: Model) -> CashFlowCategoryEntity {
+    static func createAndReturn(in context: NSManagedObjectContext, model: Model) -> CashFlowCategoryEntity {
         let category = CashFlowCategoryEntity(context: context)
         category.type = model.type
         category.edit(model: model)
         return category
+    }
+
+    static func create(in context: NSManagedObjectContext, model: Model) {
+        createAndReturn(in: context, model: model)
     }
 
     @discardableResult
@@ -87,5 +91,5 @@ private extension CashFlowCategoryEntity {
 // MARK: - Sample data
 
 public extension CashFlowCategoryEntity {
-    static let carExpense = CashFlowCategoryEntity.create(in: PersistenceController.previewEmpty.context, model: .carExpense)
+    static let carExpense = CashFlowCategoryEntity.createAndReturn(in: PersistenceController.previewEmpty.context, model: .carExpense)
 }

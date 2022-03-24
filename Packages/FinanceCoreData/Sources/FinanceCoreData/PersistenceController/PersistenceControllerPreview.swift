@@ -130,7 +130,7 @@ private extension PersistenceController {
         guard names.count == values.count else {
             fatalError("Each name should be associated with one value.")
         }
-        let category = CashFlowCategoryEntity.create(in: context, model: .init(name: categoryName, icon: categoryIcon, color: categoryColor, type: categoryType))
+        let category = CashFlowCategoryEntity.createAndReturn(in: context, model: .init(name: categoryName, icon: categoryIcon, color: categoryColor, type: categoryType))
         for (name, value) in zip(names, values) {
             CashFlowEntity.create(in: context, model: .init(name: name, date: date, value: value, currency: plnCurrency(in: context), category: category))
         }
@@ -138,7 +138,7 @@ private extension PersistenceController {
             let request = CashFlowCategoryGroupEntity.nsFetchRequest(filteringBy: [.nameIs(groupName)])
             let result = try! context.fetch(request) // swiftlint:disable:this force_try
             if result.isEmpty {
-                let group = CashFlowCategoryGroupEntity.create(in: context, model: .init(name: groupName, type: categoryType))
+                let group = CashFlowCategoryGroupEntity.createAndReturn(in: context, model: .init(name: groupName, type: categoryType))
                 _ = group.addToCategories(category)
             } else {
                 _ = result.first?.addToCategories(category)

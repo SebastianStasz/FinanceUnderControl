@@ -9,13 +9,15 @@ import Foundation
 import FinanceCoreData
 
 protocol CashFlowFormModel {
-
-    static func newForType(_ type: CashFlowType) -> Self
+    associatedtype Ent: Entity
 
     var type: CashFlowType? { get set }
     var name: String? { get set }
+    var model: Ent.Model? { get }
 
     init()
+
+    static func newForType(_ type: CashFlowType) -> Self
 }
 
 extension CashFlowFormModel {

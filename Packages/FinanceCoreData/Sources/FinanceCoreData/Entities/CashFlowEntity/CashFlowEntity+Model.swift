@@ -36,7 +36,7 @@ extension CashFlowEntity.Model {
 
     public static func sample(context: NSManagedObjectContext) -> CashFlowEntity.Model {
         let currency = CurrencyEntity.create(in: context, model: .pln)!
-        let category = CashFlowCategoryEntity.create(in: context, model: .foodExpense)
+        let category = CashFlowCategoryEntity.createAndReturn(in: context, model: .foodExpense)
         return CashFlowEntity.Model(name: "Bideronka shopping", date: Date(), value: 104.87, currency: currency, category: category)
     }
 }
