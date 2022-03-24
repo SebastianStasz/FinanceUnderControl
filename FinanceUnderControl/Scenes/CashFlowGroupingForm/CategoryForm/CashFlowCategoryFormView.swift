@@ -29,23 +29,21 @@ struct CashFlowCategoryFormView: BaseView {
             }
             .card()
 
-            Sector("Color", style: .card) {
-                LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
-                    ForEach(CashFlowCategoryColor.allCases) { color in
-                        CircleView(color: color.color)
-                            .selection($viewModel.formModel.color, element: color)
-                    }
+            LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
+                ForEach(CashFlowCategoryColor.allCases) { color in
+                    CircleView(color: color.color)
+                        .selection($viewModel.formModel.color, element: color)
                 }
             }
+            .embedInSection("Color", style: .card)
 
-            Sector("Icon", style: .card) {
-                LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
-                    ForEach(CashFlowCategoryIcon.allCases) { (icon: CashFlowCategoryIcon) in
-                        CircleView(color: .basicSecondary, icon: icon)
-                            .selection($viewModel.formModel.icon, element: icon)
-                    }
+            LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
+                ForEach(CashFlowCategoryIcon.allCases) { (icon: CashFlowCategoryIcon) in
+                    CircleView(color: .basicSecondary, icon: icon)
+                        .selection($viewModel.formModel.icon, element: icon)
                 }
             }
+            .embedInSection("Icon", style: .card)
         }
         .cashFlowGroupingForm(viewModel: viewModel, form: form)
     }

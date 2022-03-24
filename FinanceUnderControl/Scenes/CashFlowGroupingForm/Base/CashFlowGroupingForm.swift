@@ -17,6 +17,7 @@ private struct CashFlowGroupingForm<Entity: CashFlowFormSupport>: ViewModifier {
         content
             .horizontalButtonsScroll(title: form.title, primaryButton: primaryButton)
             .handleViewModelActions(viewModel)
+            .onAppear(perform: onAppear)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {

@@ -41,6 +41,12 @@ struct Sector<Content: View>: View {
     }
 }
 
+extension View {
+    func embedInSection(_ title: String, style: SectorStyle = .clear) -> some View {
+        Sector(title, style: style) { self }
+    }
+}
+
 // MARK: - Preview
 
 struct Sector_Previews: PreviewProvider {
