@@ -28,11 +28,12 @@ struct CashFlowCategoryFormView: BaseView {
                 LabeledTextField("Name", viewModel: viewModel.nameInput, style: .secondary)
             }
             .card()
+            .padding(.horizontal, .large)
 
             LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
                 ForEach(CashFlowCategoryColor.allCases) { color in
                     CircleView(color: color.color)
-                        .selection($viewModel.build.color, element: color)
+                        .selection($viewModel.formModel.color, element: color)
                 }
             }
             .embedInSection("Color", style: .card)
@@ -40,7 +41,7 @@ struct CashFlowCategoryFormView: BaseView {
             LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
                 ForEach(CashFlowCategoryIcon.allCases) { (icon: CashFlowCategoryIcon) in
                     CircleView(color: .basicSecondary, icon: icon)
-                        .selection($viewModel.build.icon, element: icon)
+                        .selection($viewModel.formModel.icon, element: icon)
                 }
             }
             .embedInSection("Icon", style: .card)
@@ -49,7 +50,7 @@ struct CashFlowCategoryFormView: BaseView {
     }
 
     private var categoryModel: CashFlowCategoryEntity.Build {
-        viewModel.build
+        viewModel.formModel
     }
 }
 

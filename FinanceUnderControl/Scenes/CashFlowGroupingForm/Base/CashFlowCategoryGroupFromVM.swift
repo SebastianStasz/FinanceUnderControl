@@ -8,42 +8,43 @@
 import Combine
 import CoreData
 import SSValidation
+import FinanceCoreData
 
-final class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
+class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
     typealias FormType = CashFlowFormType<Entity>
 
     struct Input {
         let didTapConfirm = PassthroughSubject<FormType, Never>()
     }
 
-    private let context: NSManagedObjectContext
+    let context: NSManagedObjectContext
 
     let input = Input()
     private(set) var nameInput = TextInputVM()
-    @Published var build = Entity.Build()
+    @Published var formModel = Entity.Build()
     @Published private(set) var isFormValid = false
 
     override init() {
         self.context = AppVM.shared.context
         super.init()
 
-        nameInput.assignResult(to: \.build.name, on: self)
+        nameInput.assignResult(to: \.formModel.name, on: self)
 
-        $build
+        $formModel
             .map { $0.model.notNil }
             .assign(to: &$isFormValid)
 
         input.didTapConfirm
-            .combineLatest($build)
+            .combineLatest($formModel)
             .sink { [weak self] in self?.handleConfirmAction(form: $0.0, formModel: $0.1) }
             .store(in: &cancellables)
     }
 
-    func onAppear(withModel model: Entity.Build) {
-        self.build = model
-        let namesInUse = Entity.namesInUse(from: context).filter { $0 != model.name }
-        nameInput = TextInputVM(initialValue: model.name, validator: .name(withoutRepeating: namesInUse))
-        nameInput.assignResult(to: \.build.name, on: self)
+    func onAppear(formType: FormType) {
+        self.formModel = formType.formModel
+        let namesInUse = Entity.namesInUse(from: context).filter { $0 != formModel.name }
+        nameInput = TextInputVM(initialValue: formModel.name, validator: .name(withoutRepeating: namesInUse))
+        nameInput.assignResult(to: \.formModel.name, on: self)
     }
 
     private func handleConfirmAction(form: FormType, formModel: Entity.Build) {

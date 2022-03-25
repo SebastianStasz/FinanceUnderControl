@@ -67,13 +67,13 @@ public extension CashFlowCategoryEntity {
     static func fetchRequest(forType type: CashFlowType, group: Group? = nil) -> FetchRequest<CashFlowCategoryEntity> {
         var filters: [Filter] = [.typeIs(type)]
         if let group = group {
-            filters.append(.groupIs(group))
+            filters.append(.group(group))
         }
         return CashFlowCategoryEntity.fetchRequest(filteringBy: filters, sortingBy: [.byName()])
     }
 
-    static func getAll(from context: NSManagedObjectContext) -> [CashFlowCategoryEntity] {
-        let request = CashFlowCategoryEntity.nsFetchRequest(sortingBy: [.byName(.forward)])
+    static func getAll(from context: NSManagedObjectContext, filteringBy filters: [Filter] = []) -> [CashFlowCategoryEntity] {
+        let request = CashFlowCategoryEntity.nsFetchRequest(filteringBy: filters, sortingBy: [.byName(.forward)])
         let result = try? context.fetch(request)
         return result ?? []
     }

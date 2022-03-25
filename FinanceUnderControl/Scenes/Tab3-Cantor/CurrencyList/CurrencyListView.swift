@@ -29,15 +29,13 @@ struct CurrencyListView: PickerList {
 
     var body: some View {
         BaseList(.common_currencies, elements: currencies) { currency in
-            Button(action: { selectCurrency(currency) }) {
-                HStack(spacing: .medium) {
-                    Text(currency.code, style: .currency)
-                    Text(currency.name)
-                    Spacer()
-                    Radio(isSelected: selection.wrappedValue == currency)
-                }
-                .card()
+            HStack(spacing: .medium) {
+                Text(currency.code, style: .currency)
+                Text(currency.name)
+                Spacer()
+                Radio(isOn: selection.wrappedValue == currency, action: selectCurrency(currency))
             }
+            .card()
         }
         .searchable(text: $searchText, placement: .navigationBarDrawer)
         .onChange(of: searchText, perform: updatePredicate)

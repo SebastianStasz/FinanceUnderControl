@@ -11,25 +11,28 @@ public extension CashFlowCategoryEntity {
 
     enum Filter: EntityFilter {
         case typeIs(CashFlowType)
-        case groupIs(Group)
+        case group(Group)
 
         public var nsPredicate: NSPredicate {
             switch self {
             case let .typeIs(type):
                 return NSPredicate(format: "type_ == %@", type.rawValue)
-            case let .groupIs(groupType):
+            case let .group(groupType):
                 return groupType.nsPredicate
             }
         }
     }
 
     enum Group {
-        case group(CashFlowCategoryGroupEntity)
+        case isNotWithName(String)
+        case `is`(CashFlowCategoryGroupEntity)
         case ungrouped
 
         var nsPredicate: NSPredicate {
             switch self {
-            case let .group(group):
+            case let .isNotWithName(groupName):
+                return NSPredicate(format: "group.name != %@", groupName)
+            case let .is(group):
                 return NSPredicate(format: "group == %@", group)
             case .ungrouped:
                 return NSPredicate(format: "group = nil")

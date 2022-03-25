@@ -12,10 +12,12 @@ public extension CashFlowCategoryGroupEntity {
     struct Model {
         public let name: String
         public let type: CashFlowType
+        public let categories: [CashFlowCategoryEntity]
 
-        public init(name: String, type: CashFlowType) {
+        public init(name: String, type: CashFlowType, categories: [CashFlowCategoryEntity] = []) {
             self.name = name
             self.type = type
+            self.categories = categories
         }
     }
 }

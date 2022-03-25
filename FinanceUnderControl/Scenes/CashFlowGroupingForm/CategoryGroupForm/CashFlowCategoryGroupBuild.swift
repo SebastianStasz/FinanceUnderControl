@@ -1,5 +1,5 @@
 //
-//  CashFlowCategoryGroupModel.swift
+//  CashFlowCategoryGroupBuild.swift
 //  FinanceUnderControl
 //
 //  Created by sebastianstaszczyk on 14/03/2022.
@@ -11,11 +11,12 @@ import SSValidation
 
 extension CashFlowCategoryGroupEntity {
 
-    struct Build: CashFlowGroupingBuild {
+    struct Build: CashFlowGroupingFormModel {
         typealias Ent = CashFlowCategoryGroupEntity
 
         var name: String?
         var type: CashFlowType?
+        var categories: [CashFlowCategoryEntity] = []
 
         var model: Model? {
             guard let name = name, let type = type else { return nil }

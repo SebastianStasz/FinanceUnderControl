@@ -11,25 +11,25 @@ import FinanceCoreData
 private struct CashFlowGroupingFormSheet<Entity: CashFlowFormSupport>: ViewModifier {
 
     @ObservedObject var viewModel: CashFlowGroupingFormVM<Entity>
-    let form: CashFlowFormType<Entity>
+    let formType: CashFlowFormType<Entity>
 
     func body(content: Content) -> some View {
         content
-            .asSheet(title: form.title, askToDismiss: form.build != viewModel.build, primaryButton: primaryButton)
+            .asSheet(title: formType.title, askToDismiss: formType.formModel != viewModel.formModel, primaryButton: primaryButton)
             .handleViewModelActions(viewModel)
             .onAppear(perform: onAppear)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {
-        .init(form.confirmButtonTitle, enabled: viewModel.isFormValid, action: createCashFlowCategory)
+        .init(formType.confirmButtonTitle, enabled: viewModel.isFormValid, action: createCashFlowCategory)
     }
 
     private func createCashFlowCategory() {
-        viewModel.input.didTapConfirm.send(form)
+        viewModel.input.didTapConfirm.send(formType)
     }
 
     func onAppear() {
-        viewModel.onAppear(withModel: form.build)
+        viewModel.onAppear(formType: formType)
     }
 }
 
@@ -38,6 +38,6 @@ extension View {
         viewModel: CashFlowGroupingFormVM<Entity>,
         form: CashFlowFormType<Entity>
     ) -> some View {
-        modifier(CashFlowGroupingFormSheet(viewModel: viewModel, form: form))
+        modifier(CashFlowGroupingFormSheet(viewModel: viewModel, formType: form))
     }
 }

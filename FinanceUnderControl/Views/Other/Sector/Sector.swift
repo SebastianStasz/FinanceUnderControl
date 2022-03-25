@@ -15,13 +15,16 @@ struct Sector<Content: View>: View {
     var body: some View {
         VStack {
             SectorHeader(viewData.header)
+                .padding(.horizontal, .large)
 
             VStack(spacing: .small) {
-                if case .card = viewData.style {
-                    viewData.content.card(style: .primary)
-                } else {
-                    viewData.content
-                }
+                Group {
+                    if case .card = viewData.style {
+                        viewData.content.card(style: .primary)
+                    } else {
+                        viewData.content
+                    }
+                }.padding(.horizontal, .large)
             }
         }
     }
