@@ -12,7 +12,7 @@ enum DataFile {
     case exchangerateLatestEur
 
     var data: Data {
-        try! Data(contentsOf: url)
+        try! Data(contentsOf: url) // swiftlint:disable:this force_try
     }
 
     private var url: URL {

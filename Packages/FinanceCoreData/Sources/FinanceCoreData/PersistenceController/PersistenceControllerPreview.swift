@@ -36,10 +36,10 @@ private extension PersistenceController {
 
     static func createCurrencies(in context: NSManagedObjectContext) {
         let decoder = JSONDecoder()
-        let symbolsReponse = try! decoder.decode(SymbolsReponse.self, from: DataFile.exchangerateSymbols.data)
-        let latestRatesResponse = try! decoder.decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data)
+        let symbolsReponse = try! decoder.decode(SymbolsReponse.self, from: DataFile.exchangerateSymbols.data) // swiftlint:disable:this force_try
+        let latestRatesResponse = try! decoder.decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data) // swiftlint:disable:this force_try
 
-        CurrencyEntity.create(in: context, currenciesData: symbolsReponse.currencies)
+        CurrencyEntity.create(in: context, models: symbolsReponse.currencies.map { CurrencyEntity.Model(code: $0.code, name: $0.name) })
         let eurCurrency = CurrencyEntity.getAll(from: context).first(where: { $0.code == "EUR" })!
         eurCurrency.addExchangeRates(latestRatesResponse.rates.map { $0.exchangeRateData(baseCurrency: "EUR") })
     }
@@ -53,15 +53,17 @@ private extension PersistenceController {
                         categoryName: "Food",
                         categoryIcon: .pillsFill,
                         categoryColor: .red,
-                        categoryType: .expense)
+                        categoryType: .expense,
+                        groupName: "Food and drink")
 
         createCashFlows(in: context,
                         names: ["Engine oil", "Brakes replacement", "Car inspection"],
                         values: [60, 1240, 230],
-                        categoryName: "Car",
+                        categoryName: "Car maintenance",
                         categoryIcon: .carFill,
                         categoryColor: .gray,
-                        categoryType: .expense)
+                        categoryType: .expense,
+                        groupName: "Car")
 
         createCashFlows(in: context,
                         names: ["Bike parts", "Guitar Yamaha F310", "Bicycle helmet", "Tatoo"],
@@ -74,30 +76,44 @@ private extension PersistenceController {
         createCashFlows(in: context,
                         names: ["Orlen", "Orlen", "Orlen"],
                         values: [120, 303, 65],
-                        categoryName: "Petrol",
+                        categoryName: "Fuel",
                         categoryIcon: .fuelpumpFill,
                         categoryColor: .yellow,
-                        categoryType: .expense)
+                        categoryType: .expense,
+                        groupName: "Car")
+
+        CashFlowCategoryGroupEntity.create(in: context, model: .init(name: "Housing", type: .expense))
     }
 
     // MARK: - Incomes
 
     static func createIncomes(in context: NSManagedObjectContext) {
         createCashFlows(in: context,
-                        names: ["Payment", "Payment", "Payment", "Work bonus"],
-                        values: [4200, 4500, 5100, 210],
-                        categoryName: "Work",
+                        names: ["Month 1", "Month 2", "Month 3"],
+                        values: [4200, 4500, 5100],
+                        categoryName: "Payment",
                         categoryIcon: .bagFill,
                         categoryColor: .green,
-                        categoryType: .income)
+                        categoryType: .income,
+                        groupName: "Work")
 
         createCashFlows(in: context,
-                        names: ["Crypto", "Crypto"],
+                        names: ["Bonus"],
+                        values: [210],
+                        categoryName: "Bonus",
+                        categoryIcon: .bagFill,
+                        categoryColor: .green,
+                        categoryType: .income,
+                        groupName: "Work")
+
+        createCashFlows(in: context,
+                        names: ["BTC", "ETH"],
                         values: [600, 3230],
-                        categoryName: "Investments",
+                        categoryName: "Crypto",
                         categoryIcon: .banknoteFill,
                         categoryColor: .red,
-                        categoryType: .income)
+                        categoryType: .income,
+                        groupName: "Investments")
     }
 
     // MARK: - Helpers
@@ -108,14 +124,25 @@ private extension PersistenceController {
                                 categoryName: String,
                                 categoryIcon: CashFlowCategoryIcon,
                                 categoryColor: CashFlowCategoryColor,
-                                categoryType: CashFlowCategoryType
+                                categoryType: CashFlowType,
+                                groupName: String? = nil
     ) {
         guard names.count == values.count else {
             fatalError("Each name should be associated with one value.")
         }
-        let category = CashFlowCategoryEntity.create(in: context, data: .init(name: categoryName, icon: categoryIcon, color: categoryColor, type: categoryType))
+        let category = CashFlowCategoryEntity.createAndReturn(in: context, model: .init(name: categoryName, icon: categoryIcon, color: categoryColor, type: categoryType))
         for (name, value) in zip(names, values) {
-            CashFlowEntity.create(in: context, data: .init(name: name, date: date, value: value, currency: plnCurrency(in: context), category: category))
+            CashFlowEntity.create(in: context, model: .init(name: name, date: date, value: value, currency: plnCurrency(in: context), category: category))
+        }
+        if let groupName = groupName {
+            let request = CashFlowCategoryGroupEntity.nsFetchRequest(filteringBy: [.nameIs(groupName)])
+            let result = try! context.fetch(request) // swiftlint:disable:this force_try
+            if result.isEmpty {
+                let group = CashFlowCategoryGroupEntity.createAndReturn(in: context, model: .init(name: groupName, type: categoryType))
+                _ = group.addToCategories(category)
+            } else {
+                _ = result.first?.addToCategories(category)
+            }
         }
     }
 

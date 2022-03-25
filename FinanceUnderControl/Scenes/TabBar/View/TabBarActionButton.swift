@@ -32,7 +32,7 @@ struct TabBarActionButton: View {
         viewModel.arePopupsShown.toggle()
     }
 
-    private func showCashFlowPopup(for type: CashFlowCategoryType) {
+    private func showCashFlowPopup(for type: CashFlowType) {
         togglePopupButtons()
         viewModel.cashFlowCategoryType = type
     }
@@ -50,18 +50,21 @@ struct TabBarActionButton: View {
     }
 
     private var interactionBlockerSettings: InteractionBlocker.Settings {
-        .init(when: $viewModel.arePopupsShown, onTopShow: AnyView(popupButtons), closingDuration: 0.2, isParentViewInteractive: true)
+        .init(when: $viewModel.arePopupsShown,
+              onTopShow: AnyView(popupButtons),
+              closingDuration: 0.2,
+              isParentViewInteractive: true
+        )
     }
 
     private func getOffset(for angle: Double) -> (x: CGFloat, y: CGFloat) {
         let theta = CGFloat(.pi * angle / 180)
-        let x = 210 / 2 * cos(theta)
-        let y = 120 / 2 * sin(theta)
+        let x = 210 / 2 * cos(theta) // swiftlint:disable:this identifier_name
+        let y = 120 / 2 * sin(theta) // swiftlint:disable:this identifier_name
 
         return (x: viewModel.arePopupsShown ? x : 0, y: viewModel.arePopupsShown ? y : 0)
     }
 }
-
 
 // MARK: - Preview
 

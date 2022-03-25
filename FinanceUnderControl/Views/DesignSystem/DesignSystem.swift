@@ -10,12 +10,10 @@ import SwiftUI
 enum DesignSystem: String, CaseIterable {
     case form
 
-    static var sectors: [String: [Form]] {
-        var dic: [String: [Form]] = [:]
-        for ds in DesignSystem.allCases {
-            dic[ds.rawValue] = ds.elements
+    static var sectors: [ListSector<Form>] {
+        DesignSystem.allCases.map {
+            ListSector($0.title, elements: $0.elements)
         }
-        return dic
     }
 
     var elements: [Form] {

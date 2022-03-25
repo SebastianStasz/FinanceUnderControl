@@ -7,24 +7,28 @@
 
 import FinanceCoreData
 import SwiftUI
+import SSUtils
 
 struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
     private let title: String
     private let emptyMessage: String?
-    private let sectors: [String: [T]]
+    private let sectors: [ListSector<T>]
     private let rowView: (T) -> RowView
-    private let onDelete: ((IndexSet) -> Void)?
-
-    private var isWithoutSectors: Bool {
-        sectors.count == 1 && sectors.first?.key == ""
-    }
+    var deleteElement: ((IndexSet) -> Void)?
 
     var body: some View {
         List {
             Group {
-                if isWithoutSectors { elementsForSector("") }
-                else { listWithSectors }
+                if isListWithoutSectors {
+                    listForElements(sectors.first!.elements)
+                } else {
+                    ForEach(sectors) { sector in
+                        Section(sector.header, shouldBePresented: sector.shouldBePresented) {
+                            listForElements(sector.elements)
+                        }
+                    }
+                }
             }
             .listRowBackground(Color.backgroundPrimary)
             .listRowInsets(EdgeInsets())
@@ -39,18 +43,9 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
         .navigationTitle(title)
     }
 
-    private var listWithSectors: some View {
-        ForEach(Array(sectors.keys), id: \.self) { sector in
-            Section(sectorHeader: sector) { elementsForSector(sector) }
-        }
-    }
-
-    @ViewBuilder
-    private func elementsForSector(_ sector: String) -> some View {
-        if let elements = sectors[sector] {
-            ForEach(elements) { rowView($0) ;separator }
-                .onDelete(perform: onDelete)
-        }
+    private func listForElements(_ elements: [T]) -> some View {
+        ForEach(elements) { rowView($0) ; separator }
+            .onDelete(perform: deleteElement)
     }
 
     private var separator: some View {
@@ -59,42 +54,57 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
             .deleteDisabled(true)
     }
 
-    // MARK: - Initializers
-
-    init(_ title: String,
-         emptyMessage: String? = nil,
-         elements: [T],
-         onDelete: ((IndexSet) -> Void)? = nil,
-         @ViewBuilder rowView: @escaping (T) -> RowView
-    ) {
-        self.title = title
-        self.emptyMessage = emptyMessage
-        self.sectors = ["": elements]
-        self.rowView = rowView
-        self.onDelete = onDelete
-        UITableView.appearance().sectionFooterHeight = .xxlarge
+    private var isListWithoutSectors: Bool {
+        sectors.count == 1 && sectors.first?.title == ListSector<T>.unvisibleSectorTitle
     }
 
-    init(_ title: String,
-         emptyMessage: String? = nil,
-         sectors: [String: [T]],
-         onDelete: ((IndexSet) -> Void)? = nil,
-         @ViewBuilder rowView: @escaping (T) -> RowView
+    fileprivate init(
+        _ title: String,
+        emptyMessage: String?,
+        sectors: [ListSector<T>],
+        deleteElement: ((IndexSet) -> Void)?,
+        @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
         self.title = title
         self.emptyMessage = emptyMessage
         self.sectors = sectors
+        self.deleteElement = deleteElement
         self.rowView = rowView
-        self.onDelete = onDelete
-        UITableView.appearance().sectionFooterHeight = .xxlarge
+        UITableView.appearance().sectionFooterHeight = .small
+        UITableView.appearance().sectionHeaderTopPadding = .large
+    }
+}
+
+// MARK: - Initializers
+
+extension BaseList {
+    init(_ title: String,
+         emptyMessage: String? = nil,
+         sectors: [ListSector<T>],
+         @ViewBuilder rowView: @escaping (T) -> RowView
+    ) {
+        self.init(title, emptyMessage: emptyMessage, sectors: sectors, deleteElement: nil, rowView: rowView)
+    }
+
+    init(_ title: String,
+         emptyMessage: String? = nil,
+         elements: [T],
+         @ViewBuilder rowView: @escaping (T) -> RowView
+    ) {
+        self.init(title, emptyMessage: emptyMessage, sectors: ListSector.unvisibleSector(elements), deleteElement: nil, rowView: rowView)
     }
 
     init(_ title: String,
          emptyMessage: String? = nil,
          elements: FetchedResults<T>,
-         onDelete: ((IndexSet) -> Void)? = nil,
          @ViewBuilder rowView: @escaping (T) -> RowView
     ) where T: Entity {
-        self.init(title, emptyMessage: emptyMessage, elements: elements.map{$0}, onDelete: onDelete, rowView: rowView)
+        self.init(title, emptyMessage: emptyMessage, elements: elements.map { $0 }, rowView: rowView)
+    }
+}
+
+extension BaseList {
+    func onDelete(perform action: ((IndexSet) -> Void)?) -> BaseList {
+        BaseList(title, emptyMessage: emptyMessage, sectors: sectors, deleteElement: action, rowView: rowView)
     }
 }

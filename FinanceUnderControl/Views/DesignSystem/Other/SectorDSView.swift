@@ -10,7 +10,7 @@ import SwiftUI
 struct SectorDSView: View {
     var body: some View {
         FormView {
-            Sector("Clear style", style: .clear) { text }
+            Sector("Clear style", style: .clear) { text }   
             Sector("Card style", style: .card) { text }
         }
     }
@@ -19,7 +19,6 @@ struct SectorDSView: View {
         Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec feugiat laoreet nisl, a cursus lacus vehicula vitae. Nam tempus placerat leo, malesuada dapibus libero convallis a.")
     }
 }
-
 
 // MARK: - Preview
 

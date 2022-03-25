@@ -22,7 +22,6 @@ struct ListPickerField: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct ListPickerField_Previews: PreviewProvider {

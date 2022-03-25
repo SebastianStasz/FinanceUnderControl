@@ -11,27 +11,24 @@ import Foundation
 import SSUtils
 import SSValidation
 
-final class CashFlowFilterVM: ObservableObject {
+final class CashFlowFilterVM: ViewModel {
 
-    private struct Action {
-        let dismissView = PassthroughSubject<Void, Never>()
+    final class Action: ViewModel.BaseAction {
         let applyFilters = PassthroughSubject<CashFlowFilter, Never>()
     }
 
-    struct Output {
-        let dismissView: Driver<Void>
-        let cashFlowFilter: Driver<CashFlowFilter>
-    }
+    private(set) var minValueInput = DoubleInputVM(validator: .alwaysValid())
+    private(set) var maxValueInput = DoubleInputVM(validator: .alwaysValid())
 
     @Published var cashFlowFilter = CashFlowFilter()
     @Published var cashFlowCategoriesPredicate: NSPredicate?
+    let action = Action()
 
-    private let action = Action()
-    let output: Output
+    override init() {
+        super.init()
 
-    init() {
-        output = .init(dismissView: action.dismissView.asDriver,
-                       cashFlowFilter: action.applyFilters.asDriver)
+        minValueInput.assignResult(to: \.cashFlowFilter.minimumValue, on: self)
+        maxValueInput.assignResult(to: \.cashFlowFilter.maximumValue, on: self)
 
         $cashFlowFilter
             .compactMap { filter -> NSPredicate? in
@@ -48,7 +45,7 @@ final class CashFlowFilterVM: ObservableObject {
 
     func applyFilters() {
         action.applyFilters.send(cashFlowFilter)
-        action.dismissView.send()
+        baseAction.dismissView.send()
     }
 
     func resetFilters() {
@@ -58,5 +55,8 @@ final class CashFlowFilterVM: ObservableObject {
 
     func onAppear(cashFlowFilter: CashFlowFilter) {
         self.cashFlowFilter = cashFlowFilter
+        if let min = cashFlowFilter.minimumValue {
+            minValueInput = DoubleInputVM(initialValue: min.asString, validator: .alwaysValid())
+        }
     }
 }

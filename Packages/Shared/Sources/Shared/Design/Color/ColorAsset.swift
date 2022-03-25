@@ -15,4 +15,3 @@ protocol ColorAsset {
 extension ColorAsset {
     var color: Color { Color(self.rawValue, bundle: .module) }
 }
-

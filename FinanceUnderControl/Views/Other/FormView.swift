@@ -19,12 +19,11 @@ struct FormView<Content: View>: View {
         ScrollView {
             VStack(spacing: .xxlarge) { content }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.large)
+                .padding(.vertical, .large)
         }
         .background(Color.backgroundPrimary)
     }
 }
-
 
 // MARK: - Preview
 

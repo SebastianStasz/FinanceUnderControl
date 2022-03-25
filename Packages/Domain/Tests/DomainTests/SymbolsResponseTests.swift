@@ -53,6 +53,3 @@ final class SymbolsReponseTests: XCTestCase {
         ]
     }
 }
-
-
-

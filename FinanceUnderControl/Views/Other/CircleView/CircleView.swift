@@ -49,14 +49,12 @@ struct CircleView: View {
     }
 }
 
-
 extension CircleView {
 
     init(color: Color, icon: CashFlowCategoryIcon, size: CGFloat? = nil) {
         self.init(color: color, image: icon.rawValue, size: size)
     }
 }
-
 
 // MARK: - Preview
 

@@ -26,4 +26,3 @@ struct BaseButtonStyle: ButtonStyle {
             .opacity(isEnabled ? 1 : 0.3)
     }
 }
-

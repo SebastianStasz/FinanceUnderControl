@@ -25,7 +25,7 @@ final class CurrencyService {
                     print("CurrencyService: Error")
                 }
             } receiveValue: { newCurrencies in
-                CurrencyEntity.create(in: context, currenciesData: newCurrencies)
+                CurrencyEntity.create(in: context, models: newCurrencies.map { CurrencyEntity.Model(code: $0.code, name: $0.name) })
             }
             .store(in: &cancellables)
     }

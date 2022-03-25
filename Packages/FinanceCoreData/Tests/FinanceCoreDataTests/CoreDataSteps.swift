@@ -15,19 +15,33 @@ protocol CoreDataSteps {
 }
 
 extension CoreDataSteps {
-    @discardableResult func createCurrencyEntity(data: Currency) -> CurrencyEntity? {
-        CurrencyEntity.create(in: context, currencyData: data)
+
+    // MARK: - Creating entities
+
+    @discardableResult
+    func createCurrencyEntity(data: CurrencyEntity.Model) -> CurrencyEntity? {
+        CurrencyEntity.create(in: context, model: data)
     }
 
-    @discardableResult func createCashFlowEntity(data: CashFlowData) -> CashFlowEntity {
-        CashFlowEntity.create(in: context, data: data)
+    @discardableResult
+    func createCashFlowEntity(data: CashFlowEntity.Model) -> CashFlowEntity {
+        CashFlowEntity.create(in: context, model: data)
     }
 
-    @discardableResult func createCashFlowCategoryEntity(data: CashFlowCategoryData) -> CashFlowCategoryEntity {
-        CashFlowCategoryEntity.create(in: context, data: data)
+    @discardableResult
+    func createCashFlowCategoryGroupEntity(model: CashFlowCategoryGroupEntity.Model) -> CashFlowCategoryGroupEntity {
+        CashFlowCategoryGroupEntity.createAndReturn(in: context, model: model)
     }
 
-    @discardableResult func fetchRequestShouldReturnElements<T: NSManagedObject>(_ amount: Int, for entity: T.Type) throws -> [T] {
+    @discardableResult
+    func createCashFlowCategoryEntity(data: CashFlowCategoryEntity.Model) -> CashFlowCategoryEntity {
+        CashFlowCategoryEntity.createAndReturn(in: context, model: data)
+    }
+
+    // MARK: - Other
+
+    @discardableResult
+    func fetchRequestShouldReturnElements<T: NSManagedObject>(_ amount: Int, for entity: T.Type) throws -> [T] {
         let request: NSFetchRequest<T> = T.nsFetchRequest()
         do {
             let entities = try context.fetch(request)
@@ -47,8 +61,7 @@ extension CoreDataSteps {
         do {
             try context.save()
             return true
-        }
-        catch let error {
+        } catch let error {
             XCTFail("Saving context error: \(error)")
             return false
         }

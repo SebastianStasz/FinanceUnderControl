@@ -8,7 +8,7 @@
 import Foundation
 
 public extension ExchangeRateEntity {
-    
+
     enum Filter: EntityFilter {
         case byCode(String)
 

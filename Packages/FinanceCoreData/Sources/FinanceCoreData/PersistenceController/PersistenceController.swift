@@ -18,23 +18,26 @@ public final class PersistenceController {
     }
 
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name:"FinanceCoreDataModel", managedObjectModel: getNSManagedObjectModel())
+        container = NSPersistentContainer(name: "FinanceCoreDataModel", managedObjectModel: getNSManagedObjectModel())
 
         if inMemory { container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null") }
 
-        container.loadPersistentStores { storeDescription, error in
+        container.loadPersistentStores { _, error in
             guard let error = error else { return }
             fatalError("Loading persistent stores error: \(error)")
         }
     }
 
     public func save() {
-        do { try context.save() }
-        catch let error { fatalError("Saving context error: \(error)") }
+        do {
+            try context.save()
+        } catch let error {
+            fatalError("Saving context error: \(error)")
+        }
     }
 
     private func getModelURL() -> URL {
-        guard let url = Bundle.module.url(forResource:"FinanceCoreDataModel", withExtension: "momd") else {
+        guard let url = Bundle.module.url(forResource: "FinanceCoreDataModel", withExtension: "momd") else {
             fatalError("Failed to find url for the resource FinanceCoreData.momd")
         }
         return url

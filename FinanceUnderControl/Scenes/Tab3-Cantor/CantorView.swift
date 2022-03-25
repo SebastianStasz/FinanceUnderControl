@@ -37,7 +37,6 @@ struct CantorView: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct CantorView_Previews: PreviewProvider {

@@ -17,7 +17,7 @@ final class SettingsVM: ObservableObject {
     @Published var secondaryCurrency: CurrencyEntity?
 
     init() {
-        let currencySettingsOutput = currencySettings.bind()
+        let currencySettingsOutput = currencySettings.result()
         currencySettingsOutput.primaryCurrency.assign(to: &$primaryCurrency)
         currencySettingsOutput.secondaryCurrency.assign(to: &$secondaryCurrency)
 

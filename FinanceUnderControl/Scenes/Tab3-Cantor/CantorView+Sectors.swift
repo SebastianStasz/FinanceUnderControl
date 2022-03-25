@@ -30,7 +30,7 @@ extension CantorView {
         Sector(.cantor_converter) {
             ListPicker(title: .cantor_from, listView: CurrencyListView(selection: $viewModel.currencySelector.primaryCurrency))
             ListPicker(title: .cantor_to, listView: CurrencyListView(selection: $viewModel.currencySelector.secondaryCurrency))
-            LabeledInputNumber(.common_amount, input: $viewModel.amountOfMoneyInput)
+            LabeledTextField(.common_amount, viewModel: viewModel.amountOfMoneyInput)
         }
     }
 
@@ -38,7 +38,9 @@ extension CantorView {
     var sectorMore: some View {
         if let currency = viewModel.currencySelector.primaryCurrency, currency.exchangeRates.isNotEmpty {
             Sector("More") {
-                Navigation(.cantor_all_exchange_rates(forCurrency: currency.code), leadsTo: ExchangeRateListView(viewModel: .init(currencyEntity: currency)))
+                Navigation(.cantor_all_exchange_rates(forCurrency: currency.code),
+                           leadsTo: ExchangeRateListView(viewModel: .init(currencyEntity: currency))
+                )
             }
         }
     }
@@ -48,8 +50,8 @@ extension CantorView {
 
 private extension CantorView {
     var noExchangeRateMessage: String {
-        viewModel.isExchangeRateData
-            ? "Fill in the form to display the exchange rate."
-            : .cantor_load_exchange_rates_error_message(forCurrency: viewModel.currencySelector.primaryCurrency?.code ?? "")
+        viewModel.isFormFilled
+            ? .cantor_load_exchange_rates_error_message(forCurrency: viewModel.currencySelector.primaryCurrency?.code ?? "")
+            : "Fill in the form to display the exchange rate."
     }
 }

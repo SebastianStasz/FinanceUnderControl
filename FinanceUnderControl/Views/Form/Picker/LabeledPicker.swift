@@ -56,7 +56,6 @@ struct LabeledPicker<T: Pickerable>: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct LabeledPicker_Previews: PreviewProvider {

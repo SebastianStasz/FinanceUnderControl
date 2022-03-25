@@ -20,7 +20,6 @@ struct ToggleDSView: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct ToggleDSView_Previews: PreviewProvider {

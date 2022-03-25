@@ -23,6 +23,9 @@ public enum SFSymbol: String {
 
     case radioUnchecked = "circle"
     case radioChecked = "circle.inset.filled"
+
+    case checkboxUnchecked = "square"
+    case checkboxChecked = "checkmark.square.fill"
 }
 
 public extension SFSymbol {

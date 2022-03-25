@@ -15,7 +15,7 @@ public struct LatestRatesResponse: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let base = try container.decode(String.self, forKey: .base)
-        let values = try container.decode([String:Double].self, forKey: .rates)
+        let values = try container.decode([String: Double].self, forKey: .rates)
 
         self.base = base
         self.dateStr = try container.decode(String.self, forKey: .dateStr)

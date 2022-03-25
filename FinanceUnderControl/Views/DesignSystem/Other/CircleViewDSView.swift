@@ -24,7 +24,6 @@ struct CircleViewDSView: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct CircleViewDSView_Previews: PreviewProvider {

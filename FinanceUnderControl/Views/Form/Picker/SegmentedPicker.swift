@@ -29,7 +29,6 @@ struct SegmentedPicker<T: Pickerable>: View {
     }
 }
 
-
 // MARK: - Preview
 
 struct SegmentedPicker_Previews: PreviewProvider {

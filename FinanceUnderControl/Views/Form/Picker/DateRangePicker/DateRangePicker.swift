@@ -19,8 +19,16 @@ struct DateRangePicker: View {
 
             if viewData.isOn {
                 VStack(spacing: .small) {
-                    DatePicker("\(String.cash_flow_filter_date_start):", selection: $viewData.startDate, in: ...viewData.endDate, displayedComponents: .date)
-                    DatePicker("\(String.cash_flow_filter_date_end):", selection: $viewData.endDate, in: viewData.startDate..., displayedComponents: .date)
+                    DatePicker("\(String.cash_flow_filter_date_start):",
+                               selection: $viewData.startDate,
+                               in: ...viewData.endDate,
+                               displayedComponents: .date
+                    )
+                    DatePicker("\(String.cash_flow_filter_date_end):",
+                               selection: $viewData.endDate,
+                               in: viewData.startDate...,
+                               displayedComponents: .date
+                    )
                 }
                 .zIndex(-1)
                 .padding(.horizontal, .medium)
@@ -37,7 +45,6 @@ struct DateRangePicker: View {
         self._viewData = viewData
     }
 }
-
 
 // MARK: - Preview
 

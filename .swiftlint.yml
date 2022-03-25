@@ -1,0 +1,14 @@
+disabled_rules:
+  - multiple_closures_with_trailing_closure
+  - nesting
+  - identifier_name
+
+line_length: 
+  warning: 140
+  ignores_comments: true
+
+type_name:
+  allowed_symbols: "_"
+
+identifier_name:
+  allowed_symbols: "_"

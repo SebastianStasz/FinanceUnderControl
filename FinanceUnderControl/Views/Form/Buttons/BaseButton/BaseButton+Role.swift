@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension BaseButton {
-    
+
     enum Role {
         case primary
         case secondary

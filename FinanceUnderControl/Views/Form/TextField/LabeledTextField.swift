@@ -9,42 +9,38 @@ import Shared
 import SwiftUI
 import SSValidation
 
-struct LabeledTextField<ViewModel: InputVM>: View {
-    public typealias Input = ViewModel.InputField
+struct LabeledTextField<T>: View {
 
-    @StateObject private var viewModel = ViewModel()
-    @Binding private var input: Input
+    @ObservedObject private var viewModel: InputVM<T>
 
     private let title: String
     private let style: CardStyle
 
     public init(_ title: String,
-                input: Binding<Input>,
+                viewModel: InputVM<T>,
                 style: CardStyle = .primary
     ) {
-        self._input = input
         self.title = title
+        self.viewModel = viewModel
         self.style = style
     }
 
     var body: some View {
         VStack(spacing: .micro) {
-            TextField(title, text: $viewModel.textField, prompt: SwiftUI.Text(title))
-                .asInputView(viewModel: viewModel, input: $input)
+            InputField(title, viewModel: viewModel, prompt: title).textStyle(.body)
 
-            if let message = viewModel.message {
+            if let message = viewModel.validationMessage {
                 Text(message, style: .validation)
             }
         }.card(style: style)
     }
 }
 
-
 // MARK: - Preview
 
 struct LabeledTextField_Previews: PreviewProvider {
     static var previews: some View {
-        LabeledInputNumber("Field name", input: .constant(.init(settings: .init(dropFirst: false))))
+        LabeledTextField("Field name", viewModel: TextInputVM())
             .asPreview()
     }
 }

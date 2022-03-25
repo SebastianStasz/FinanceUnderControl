@@ -22,7 +22,7 @@ enum CashFlowSelection: String {
         }
     }
 
-    var type: CashFlowCategoryType? {
+    var type: CashFlowType? {
         switch self {
         case .all:
             return nil

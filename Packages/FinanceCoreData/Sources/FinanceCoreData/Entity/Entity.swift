@@ -13,6 +13,7 @@ import SSUtils
 public protocol Entity: NSManagedObject, Identifiable {
     associatedtype Filter: EntityFilter
     associatedtype Sort: EntitySort
+    associatedtype Model
 }
 
 public extension Entity where Sort.Entity == Self {
@@ -25,7 +26,7 @@ public extension Entity where Sort.Entity == Self {
         let sortDescriptors = sorts.map { $0.nsSortDescriptor }
         let request: NSFetchRequest<Self> = Self.nsFetchRequest(sortDescriptors: sortDescriptors)
         if let predicates = filters?.compactMap({ $0.nsPredicate }) {
-            request.predicate = NSCompoundPredicate(type: .or, subpredicates: predicates)
+            request.predicate = NSCompoundPredicate(type: .and, subpredicates: predicates)
         }
         return request
     }

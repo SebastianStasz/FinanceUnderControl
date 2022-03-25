@@ -47,7 +47,6 @@ struct InteractionBlocker: ViewModifier {
 
             overlayView
                 .opacity(isOverlayVisible ? 1 : 0)
-
                 .onChange(of: isInteractionBlocked) { isBlocked in
                     if isBlocked { isOverlayVisible = true }
                     else { enableInteractions() }
@@ -149,4 +148,3 @@ extension View {
                                          onDismiss: settings.onDismiss))
     }
 }
-

@@ -14,6 +14,7 @@ import SwiftUI
     @NSManaged private var icon_: String
     @NSManaged private var color_: String
     @NSManaged public private(set) var name: String
+    @NSManaged public private(set) var group: CashFlowCategoryGroupEntity?
     @NSManaged public private(set) var cashFlows: Set<CashFlowEntity>
 
     public private(set) var icon: CashFlowCategoryIcon {
@@ -26,27 +27,35 @@ import SwiftUI
         set { color_ = newValue.rawValue }
     }
 
-    public private(set) var type: CashFlowCategoryType {
+    public private(set) var type: CashFlowType {
         get { .getCase(for: type_) }
         set { type_ = newValue.rawValue }
     }
 }
 
-// MARK: - Methods
+// MARK: - Public methods
 
 public extension CashFlowCategoryEntity {
 
-    @discardableResult static func create(in context: NSManagedObjectContext, data: CashFlowCategoryData) -> CashFlowCategoryEntity {
+    @discardableResult
+    static func createAndReturn(in context: NSManagedObjectContext, model: Model) -> CashFlowCategoryEntity {
         let category = CashFlowCategoryEntity(context: context)
-        category.type = data.type
-        category.edit(name: data.name, icon: data.icon, color: data.color)
+        category.type = model.type
+        category.edit(model: model)
         return category
     }
 
-    func edit(name: String, icon: CashFlowCategoryIcon, color: CashFlowCategoryColor) {
-        self.name = name
-        self.icon = icon
-        self.color = color
+    static func create(in context: NSManagedObjectContext, model: Model) {
+        createAndReturn(in: context, model: model)
+    }
+
+    @discardableResult
+    func edit(model: Model) -> Bool {
+        guard type == model.type else { return false }
+        name = model.name
+        icon = model.icon
+        color = model.color
+        return true
     }
 
     func delete() -> Bool {
@@ -55,14 +64,16 @@ public extension CashFlowCategoryEntity {
         return true
     }
 
-    static func fetchRequest(forType type: CashFlowCategoryType) -> FetchRequest<CashFlowCategoryEntity> {
-        let sort = [CashFlowCategoryEntity.Sort.byName(.forward).nsSortDescriptor]
-        let filter = CashFlowCategoryEntity.Filter.typeIs(type).nsPredicate
-        return FetchRequest<CashFlowCategoryEntity>(sortDescriptors: sort, predicate: filter)
+    static func fetchRequest(forType type: CashFlowType, group: Group? = nil) -> FetchRequest<CashFlowCategoryEntity> {
+        var filters: [Filter] = [.typeIs(type)]
+        if let group = group {
+            filters.append(.group(group))
+        }
+        return CashFlowCategoryEntity.fetchRequest(filteringBy: filters, sortingBy: [.byName()])
     }
 
-    static func getAll(from context: NSManagedObjectContext) -> [CashFlowCategoryEntity] {
-        let request = CashFlowCategoryEntity.nsFetchRequest(sortingBy: [.byName(.forward)])
+    static func getAll(from context: NSManagedObjectContext, filteringBy filters: [Filter] = []) -> [CashFlowCategoryEntity] {
+        let request = CashFlowCategoryEntity.nsFetchRequest(filteringBy: filters, sortingBy: [.byName(.forward)])
         let result = try? context.fetch(request)
         return result ?? []
     }
@@ -70,18 +81,15 @@ public extension CashFlowCategoryEntity {
 
 // MARK: - Generated accessors for cashFlows
 
-extension CashFlowCategoryEntity {
+private extension CashFlowCategoryEntity {
+    @objc(removeCashFlowsObject:) @NSManaged private func removeFromCashFlows(_ value: CashFlowEntity)
+    @objc(removeCashFlows:)       @NSManaged private func removeFromCashFlows(_ values: NSSet)
+    @objc(addCashFlowsObject:)    @NSManaged private func addToCashFlows(_ value: CashFlowEntity)
+    @objc(addCashFlows:)          @NSManaged private func addToCashFlows(_ values: NSSet)
+}
 
-    @objc(addCashFlowsObject:)
-    @NSManaged public func addToCashFlows(_ value: CashFlowEntity)
+// MARK: - Sample data
 
-    @objc(removeCashFlowsObject:)
-    @NSManaged public func removeFromCashFlows(_ value: CashFlowEntity)
-
-    @objc(addCashFlows:)
-    @NSManaged public func addToCashFlows(_ values: NSSet)
-
-    @objc(removeCashFlows:)
-    @NSManaged public func removeFromCashFlows(_ values: NSSet)
-
+public extension CashFlowCategoryEntity {
+    static let carExpense = CashFlowCategoryEntity.createAndReturn(in: PersistenceController.previewEmpty.context, model: .carExpense)
 }

@@ -5,36 +5,28 @@
 //  Created by Sebastian Staszczyk on 20/02/2022.
 //
 
-import Combine
 import Foundation
 import SSValidation
 
-final class CashFlowFormVM: ObservableObject {
-    private var cancellables: Set<AnyCancellable> = []
-
-    @Published var nameInput = Input<TextInputSettings>(settings: .init(minLength: 3, maxLength: 20))
-    @Published var valueInput = Input<NumberInputSettings>(settings: .init(minValue: 0.01, keyboardType: .numbersAndPunctuation))
-    @Published var cashFlowModel = CashFlowModel()
+final class CashFlowFormVM: ViewModel {
     private let currencySettings = CurrencySettings()
+    var initialCashFlowModel: CashFlowFormModel!
+    let nameInput = TextInputVM(validator: .name())
+    let valueInput = DoubleInputVM(validator: .money())
 
-    init() {
-        let currencySettingsOutput = currencySettings.bind()
-        currencySettingsOutput.primaryCurrency
-            .sink { [weak self] currency in
-                self?.cashFlowModel.currency = currency
-            }
-            .store(in: &cancellables)
+    @Published var cashFlowModel = CashFlowFormModel()
 
-        $valueInput.map { $0.value }
-            .sink { [weak self] cashFlowValue in
-                self?.cashFlowModel.value = cashFlowValue
-            }
-            .store(in: &cancellables)
+    var formChanged: Bool {
+        initialCashFlowModel != cashFlowModel
+    }
 
-        $nameInput.map { $0.value }
-        .sink { [weak self] cashFlowName in
-            self?.cashFlowModel.name = cashFlowName
-        }
-        .store(in: &cancellables)
+    override init() {
+        super.init()
+
+        currencySettings.result().primaryCurrency
+            .weakAssign(to: \.cashFlowModel.currency, on: self)
+
+        nameInput.assignResult(to: \.cashFlowModel.name, on: self)
+        valueInput.assignResult(to: \.cashFlowModel.value, on: self)
     }
 }
