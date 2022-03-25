@@ -1,14 +1,18 @@
 //
 //  View+Ext.swift
-//  FinanceUnderControl
+//  Shared
 //
-//  Created by Sebastian Staszczyk on 05/02/2022.
+//  Created by sebastianstaszczyk on 25/03/2022.
 //
 
-import Shared
 import SwiftUI
+import SSUtils
 
-extension View {
+public extension View {
+
+    func sizeThatFits() -> some View {
+        self.padding(.medium).previewLayout(.sizeThatFits)
+    }
 
     func cornerRadius(_ radius: CornerRadius) -> some View {
         self.cornerRadius(radius.rawValue)

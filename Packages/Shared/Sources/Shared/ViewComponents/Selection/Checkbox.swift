@@ -12,7 +12,7 @@ public struct Checkbox: View {
     private let isOn: Bool
     private let action: Action
 
-    public init(isOn: Bool, action: @escaping Action) {
+    public init(isOn: Bool, action: @autoclosure @escaping Action) {
         self.isOn = isOn
         self.action = action
     }
@@ -27,8 +27,8 @@ public struct Checkbox: View {
 struct Checkbox_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            Checkbox(isOn: true, action: {})
-            Checkbox(isOn: false, action: {})
+            Checkbox(isOn: true, action: ())
+            Checkbox(isOn: false, action: ())
         }
         .sizeThatFits()
     }

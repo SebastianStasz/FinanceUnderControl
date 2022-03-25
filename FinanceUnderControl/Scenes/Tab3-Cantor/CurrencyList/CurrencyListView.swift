@@ -28,14 +28,8 @@ struct CurrencyListView: PickerList {
     }
 
     var body: some View {
-        BaseList(.common_currencies, elements: currencies) { currency in
-            HStack(spacing: .medium) {
-                Text(currency.code, style: .currency)
-                Text(currency.name)
-                Spacer()
-                Radio(isOn: selection.wrappedValue == currency, action: selectCurrency(currency))
-            }
-            .card()
+        BaseList(.common_currencies, elements: currencies) {
+            CurrencyRowView(for: $0, isOn: selection.wrappedValue == $0, select: selectCurrency($0))
         }
         .searchable(text: $searchText, placement: .navigationBarDrawer)
         .onChange(of: searchText, perform: updatePredicate)

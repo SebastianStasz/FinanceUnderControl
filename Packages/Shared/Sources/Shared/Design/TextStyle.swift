@@ -38,7 +38,7 @@ public enum TextStyle {
         }
     }
 
-    public var textCase: Text.Case? {
+    public var textCase: SwiftUI.Text.Case? {
         switch self {
         case .headlineSmall, .headlineSmallAction, .currency:
             return .uppercase

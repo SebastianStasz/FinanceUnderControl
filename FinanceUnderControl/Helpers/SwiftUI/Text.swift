@@ -19,6 +19,6 @@ struct Text: View {
     }
 
     var body: some View {
-        SwiftUI.Text(text).textStyle(style)
+        Shared.Text(text, style: style)
     }
 }

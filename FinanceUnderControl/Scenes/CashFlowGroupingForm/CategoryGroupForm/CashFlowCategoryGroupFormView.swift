@@ -12,17 +12,14 @@ import Shared
 struct CashFlowCategoryGroupRow: View {
 
     let category: CashFlowCategoryEntity
-    let isChecked: Bool
+    let isOn: Bool
     let action: Action
 
     var body: some View {
-        HStack {
-            Text(category.name)
-            Spacer()
-            Checkbox(isOn: isChecked, action: action)
-        }
-        .card()
-        .transition(.move(edge: .leading).combined(with: .scale))
+        Text(category.name)
+            .trailingAction(.checkbox(isOn: isOn, action: action))
+            .card()
+            .transition(.move(edge: .leading).combined(with: .scale))
     }
 }
 
@@ -42,15 +39,17 @@ struct CashFlowCategoryGroupFormView: BaseView {
 
             Sector("Include") {
                 ForEach(viewModel.includedCategories) { category in
-                    CashFlowCategoryGroupRow(category: category, isChecked: true, action: { uncheckCategory(category) })
+                    CashFlowCategoryGroupRow(category: category, isOn: true, action: { uncheckCategory(category) })
                 }
             }
+            .displayIf(viewModel.includedCategories.isNotEmpty)
 
             Sector("More") {
                 ForEach(viewModel.otherCategories) { category in
-                    CashFlowCategoryGroupRow(category: category, isChecked: false, action: { checkCategory(category) })
+                    CashFlowCategoryGroupRow(category: category, isOn: false, action: { checkCategory(category) })
                 }
             }
+            .displayIf(viewModel.otherCategories.isNotEmpty)
         }
         .cashFlowGroupingForm(viewModel: viewModel, form: form)
     }
