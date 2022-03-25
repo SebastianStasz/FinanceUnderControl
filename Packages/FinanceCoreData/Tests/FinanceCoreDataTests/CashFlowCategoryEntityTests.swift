@@ -142,7 +142,7 @@ private extension CashFlowCategoryEntityTests {
     }
 
     func verifyUngroupedCategories(_ categories: [CashFlowCategoryEntity]) {
-        let request = CashFlowCategoryEntity.nsFetchRequest(filteringBy: [.groupIs(.ungrouped)])
+        let request = CashFlowCategoryEntity.nsFetchRequest(filteringBy: [.group(.ungrouped)])
         let ungroupedCategories = try! context.fetch(request) // swiftlint:disable:this force_try
         XCTAssertEqual(ungroupedCategories.count, categories.count)
         for category in ungroupedCategories {

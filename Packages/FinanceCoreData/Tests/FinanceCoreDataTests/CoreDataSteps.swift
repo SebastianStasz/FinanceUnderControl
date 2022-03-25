@@ -30,12 +30,12 @@ extension CoreDataSteps {
 
     @discardableResult
     func createCashFlowCategoryGroupEntity(model: CashFlowCategoryGroupEntity.Model) -> CashFlowCategoryGroupEntity {
-        CashFlowCategoryGroupEntity.create(in: context, model: model)
+        CashFlowCategoryGroupEntity.createAndReturn(in: context, model: model)
     }
 
     @discardableResult
     func createCashFlowCategoryEntity(data: CashFlowCategoryEntity.Model) -> CashFlowCategoryEntity {
-        CashFlowCategoryEntity.create(in: context, model: data)
+        CashFlowCategoryEntity.createAndReturn(in: context, model: data)
     }
 
     // MARK: - Other

@@ -28,4 +28,12 @@ extension CashFlowCategoryGroupEntity.Model {
     static let foodExpense = CashFlowCategoryGroupEntity.Model(name: "Food", type: .expense)
     static let carExpense = CashFlowCategoryGroupEntity.Model(name: "Car", type: .expense)
     static let workIncome = CashFlowCategoryGroupEntity.Model(name: "Work", type: .income)
+
+    static func carExpense(withCategories categories: [CashFlowCategoryEntity]) -> CashFlowCategoryGroupEntity.Model {
+        .init(name: "Car", type: .expense, categories: categories)
+    }
+
+    static func foodExpense(withCategories categories: [CashFlowCategoryEntity]) -> CashFlowCategoryGroupEntity.Model {
+        .init(name: "Food", type: .expense, categories: categories)
+    }
 }
