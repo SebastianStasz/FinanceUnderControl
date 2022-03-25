@@ -10,11 +10,11 @@ import SSValidation
 
 final class CashFlowFormVM: ViewModel {
     private let currencySettings = CurrencySettings()
-    var initialCashFlowModel: CashFlowBuild!
+    var initialCashFlowModel: CashFlowFormModel!
     let nameInput = TextInputVM(validator: .name())
     let valueInput = DoubleInputVM(validator: .money())
 
-    @Published var cashFlowModel = CashFlowBuild()
+    @Published var cashFlowModel = CashFlowFormModel()
 
     var formChanged: Bool {
         initialCashFlowModel != cashFlowModel

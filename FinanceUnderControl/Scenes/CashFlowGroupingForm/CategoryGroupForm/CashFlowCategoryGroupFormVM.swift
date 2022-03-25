@@ -10,27 +10,25 @@ import Foundation
 
 final class CashFlowCategoryGroupFormVM: CashFlowGroupingFormVM<CashFlowCategoryGroupEntity> {
 
-    @Published private(set) var includedCategories: [CashFlowCategoryEntity] = []
     @Published private(set) var otherCategories: [CashFlowCategoryEntity] = []
 
     override func onAppear(formType: FormType) {
         super.onAppear(formType: formType)
-        includedCategories = formType.formModel.categories
         if let name = formModel.name {
-            otherCategories = CashFlowCategoryEntity.getAll(from: context, filteringBy: [.group(.isNotWithName(name))])
+            otherCategories = CashFlowCategoryEntity.getAll(from: context, filteringBy: [.typeIs(formModel.type!), .group(.isNotWithName(name))])
         } else {
-            otherCategories = CashFlowCategoryEntity.getAll(from: context)
+            otherCategories = CashFlowCategoryEntity.getAll(from: context, filteringBy: [.typeIs(formModel.type!)])
         }
     }
 
     func checkCategory(_ category: CashFlowCategoryEntity) {
         otherCategories.remove(element: category)
-        includedCategories.append(category)
-        includedCategories.sort(by: { $0.name < $1.name })
+        formModel.categories.append(category)
+        formModel.categories.sort(by: { $0.name < $1.name })
     }
 
     func uncheckCategory(_ category: CashFlowCategoryEntity) {
-        includedCategories.remove(element: category)
+        formModel.categories.remove(element: category)
         otherCategories.append(category)
         otherCategories.sort(by: { $0.name < $1.name })
     }

@@ -21,7 +21,7 @@ class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
 
     let input = Input()
     private(set) var nameInput = TextInputVM()
-    @Published var formModel = Entity.Build()
+    @Published var formModel = Entity.FormModel()
     @Published private(set) var isFormValid = false
 
     override init() {
@@ -47,7 +47,7 @@ class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
         nameInput.assignResult(to: \.formModel.name, on: self)
     }
 
-    private func handleConfirmAction(form: FormType, formModel: Entity.Build) {
+    private func handleConfirmAction(form: FormType, formModel: Entity.FormModel) {
         guard let model = formModel.model else { return }
         switch form {
         case .new:

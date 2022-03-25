@@ -1,5 +1,5 @@
 //
-//  CashFlowBuild.swift
+//  CashFlowFormModel.swift
 //  FinanceUnderControl
 //
 //  Created by Sebastian Staszczyk on 12/01/2022.
@@ -8,7 +8,7 @@
 import FinanceCoreData
 import Foundation
 
-struct CashFlowBuild: Equatable {
+struct CashFlowFormModel: Equatable {
     var date = Date()
     var name: String?
     var value: Double?

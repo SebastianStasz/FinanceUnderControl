@@ -9,20 +9,6 @@ import FinanceCoreData
 import SwiftUI
 import Shared
 
-struct CashFlowCategoryGroupRow: View {
-
-    let category: CashFlowCategoryEntity
-    let isOn: Bool
-    let action: Action
-
-    var body: some View {
-        Text(category.name)
-            .trailingAction(.checkbox(isOn: isOn, action: action))
-            .card()
-            .transition(.move(edge: .leading).combined(with: .scale))
-    }
-}
-
 struct CashFlowCategoryGroupFormView: BaseView {
     @Environment(\.dismiss) private var dismiss
 
@@ -38,15 +24,15 @@ struct CashFlowCategoryGroupFormView: BaseView {
             }
 
             Sector("Include") {
-                ForEach(viewModel.includedCategories) { category in
-                    CashFlowCategoryGroupRow(category: category, isOn: true, action: { uncheckCategory(category) })
+                ForEach(viewModel.formModel.categories) { category in
+                    CashFlowCategoryGroupItem(for: category, isOn: true, action: { uncheckCategory(category) })
                 }
             }
-            .displayIf(viewModel.includedCategories.isNotEmpty)
+            .displayIf(viewModel.formModel.categories.isNotEmpty)
 
             Sector("More") {
                 ForEach(viewModel.otherCategories) { category in
-                    CashFlowCategoryGroupRow(category: category, isOn: false, action: { checkCategory(category) })
+                    CashFlowCategoryGroupItem(for: category, isOn: false, action: { checkCategory(category) })
                 }
             }
             .displayIf(viewModel.otherCategories.isNotEmpty)

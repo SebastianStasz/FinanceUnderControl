@@ -33,7 +33,7 @@ struct CashFlowFormSheet: BaseView {
     }
 
     func onAppear() {
-        let model = CashFlowBuild(category: categories.first, type: type)
+        let model = CashFlowFormModel(category: categories.first, type: type)
         viewModel.initialCashFlowModel = model
         viewModel.cashFlowModel = model
     }

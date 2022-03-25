@@ -49,7 +49,7 @@ struct CashFlowCategoryFormView: BaseView {
         .cashFlowGroupingForm(viewModel: viewModel, form: form)
     }
 
-    private var categoryModel: CashFlowCategoryEntity.Build {
+    private var categoryModel: CashFlowCategoryEntity.FormModel {
         viewModel.formModel
     }
 }

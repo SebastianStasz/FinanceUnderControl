@@ -31,7 +31,7 @@ public extension CashFlowCategoryEntity {
 
 // MARK: - Sample Model
 
-extension CashFlowCategoryEntity.Model {
+public extension CashFlowCategoryEntity.Model {
     static let foodExpense = CashFlowCategoryEntity.Model(name: "Food", icon: .carFill, color: .red, type: .expense)
     static let carExpense = CashFlowCategoryEntity.Model(name: "Car", icon: .airplane, color: .gray, type: .expense)
     static let hobbyExpense = CashFlowCategoryEntity.Model(name: "Hobby", icon: .fuelpumpFill, color: .blue, type: .expense)
