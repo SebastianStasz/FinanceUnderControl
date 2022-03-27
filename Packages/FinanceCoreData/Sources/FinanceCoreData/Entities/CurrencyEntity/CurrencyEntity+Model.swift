@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Shared
 
 public extension CurrencyEntity {
 
@@ -17,6 +18,16 @@ public extension CurrencyEntity {
             self.code = code
             self.name = name
         }
+    }
+}
+
+public extension SupportedCurrency {
+    var currencyEntityModel: CurrencyEntity.Model {
+        .init(code: code, name: name)
+    }
+
+    static var currencyEntityModels: [CurrencyEntity.Model] {
+        SupportedCurrency.allCases.map { $0.currencyEntityModel }
     }
 }
 

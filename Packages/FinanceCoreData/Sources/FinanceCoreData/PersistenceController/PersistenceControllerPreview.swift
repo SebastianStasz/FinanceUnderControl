@@ -8,6 +8,7 @@
 import Domain
 import Foundation
 import CoreData
+import Shared
 
 public extension PersistenceController {
 
@@ -36,12 +37,13 @@ private extension PersistenceController {
 
     static func createCurrencies(in context: NSManagedObjectContext) {
         let decoder = JSONDecoder()
-        let symbolsReponse = try! decoder.decode(SymbolsReponse.self, from: DataFile.exchangerateSymbols.data) // swiftlint:disable:this force_try
-        let latestRatesResponse = try! decoder.decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data) // swiftlint:disable:this force_try
+//        let symbolsReponse = try! decoder.decode(SymbolsReponse.self, from: DataFile.exchangerateSymbols.data) // swiftlint:disable:this force_try
+//        let latestRatesResponse = try! decoder.decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data) // swiftlint:disable:this force_try
 
-        CurrencyEntity.create(in: context, models: symbolsReponse.currencies.map { CurrencyEntity.Model(code: $0.code, name: $0.name) })
-        let eurCurrency = CurrencyEntity.getAll(from: context).first(where: { $0.code == "EUR" })!
-        eurCurrency.addExchangeRates(latestRatesResponse.rates.map { $0.exchangeRateData(baseCurrency: "EUR") })
+        CurrencyEntity.create(in: context, models: SupportedCurrency.currencyEntityModels)
+
+//        let eurCurrency = CurrencyEntity.getAll(from: context).first(where: { $0.code == "EUR" })!
+//        eurCurrency.addExchangeRates(latestRatesResponse.rates.map { $0.exchangeRateData(baseCurrency: "EUR") })
     }
 
     // MARK: - Expenses

@@ -8,9 +8,11 @@
 import Foundation
 
 protocol APIConfigurationProtocol {
+    var decoder: JSONDecoder { get }
     var encoder: JSONEncoder { get }
 }
 
 struct APIConfiguration: APIConfigurationProtocol {
+    let decoder = JSONDecoder()
     let encoder = JSONEncoder()
 }
