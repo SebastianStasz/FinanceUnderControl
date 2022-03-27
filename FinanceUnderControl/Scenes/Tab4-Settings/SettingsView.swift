@@ -5,11 +5,15 @@
 //  Created by Sebastian Staszczyk on 10/12/2021.
 //
 
+import FinanceCoreData
 import SSUtils
 import SwiftUI
 import Shared
 
 struct SettingsView: View {
+
+    @FetchRequest(sortDescriptors: [CurrencyEntity.Sort.byCode(.forward).nsSortDescriptor]
+    ) var currencies: FetchedResults<CurrencyEntity>
 
     @StateObject private var viewModel = SettingsVM()
 
@@ -21,10 +25,8 @@ struct SettingsView: View {
             }
 
             Sector(.common_currencies) {
-                ListPicker(title: .common_primary,
-                           listView: CurrencyListView(selection: $viewModel.primaryCurrency))
-                ListPicker(title: .common_secondary,
-                           listView: CurrencyListView(selection: $viewModel.secondaryCurrency))
+                LabeledPicker(.cantor_from, elements: currencies, selection: $viewModel.primaryCurrency)
+                LabeledPicker(.cantor_to, elements: currencies, selection: $viewModel.secondaryCurrency)
             }
 
             Sector("Debug") {

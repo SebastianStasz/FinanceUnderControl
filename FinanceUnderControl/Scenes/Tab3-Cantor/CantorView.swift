@@ -13,6 +13,9 @@ import SSValidation
 
 struct CantorView: View {
 
+    @FetchRequest(sortDescriptors: [CurrencyEntity.Sort.byCode(.forward).nsSortDescriptor]
+    ) var currencies: FetchedResults<CurrencyEntity>
+
     @StateObject var viewModel = CantorVM()
     @State private var isInfoAlertPresented = false
 
