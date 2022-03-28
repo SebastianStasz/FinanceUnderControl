@@ -12,11 +12,11 @@ public extension CurrencyEntity {
 
     struct Model {
         public let code: String
-        public let name: String
+        public let nameKey: String
 
         public init(code: String, name: String) {
             self.code = code
-            self.name = name
+            self.nameKey = name
         }
     }
 }

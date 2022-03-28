@@ -6,14 +6,9 @@
 //
 
 import Combine
+import Domain
 import Foundation
 import SSUtils
-
-enum APIError: Error {
-    case other(Error)
-    case decoding(Error)
-    case unknown
-}
 
 final class APIService {
     static let shared = APIService()

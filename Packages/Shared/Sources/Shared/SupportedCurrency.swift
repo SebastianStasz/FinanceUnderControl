@@ -25,19 +25,19 @@ public extension SupportedCurrency {
     var name: String {
         switch self {
         case .BYN:
-            return .currency_BYN
+            return "currency_BYN"
         case .EUR:
-            return .currency_EUR
+            return "currency_EUR"
         case .GBP:
-            return .currency_GBP
+            return "currency_GBP"
         case .PLN:
-            return .currency_PLN
+            return "currency_PLN"
         case .RUB:
-            return .currency_RUB
+            return "currency_RUB"
         case .UAH:
-            return .currency_UAH
+            return "currency_UAH"
         case .USD:
-            return .currency_USD
+            return "currency_USD"
         }
     }
 }

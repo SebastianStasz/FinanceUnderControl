@@ -1,14 +1,14 @@
 //
 //  APIRequest.swift
-//  FinanceUnderControl
+//  Domain
 //
-//  Created by sebastianstaszczyk on 25/03/2022.
+//  Created by sebastianstaszczyk on 28/03/2022.
 //
 
 import Foundation
 import SSUtils
 
-protocol APIRequest {
+public protocol APIRequest {
     var path: String { get }
     var body: Encodable? { get }
     var method: RequestMethod { get }
@@ -16,13 +16,13 @@ protocol APIRequest {
     var queryParams: [String: String] { get }
 }
 
-extension APIRequest {
+public extension APIRequest {
     var body: Encodable? { nil }
     var headers: [String: String] { [:] }
     var queryParams: [String: String] { [:] }
 }
 
-extension APIRequest {
+public extension APIRequest {
     func getURLRequest(for type: RequestType, configuration: APIConfigurationProtocol) -> URLRequest {
         let baseURL = type.baseURL.appendingPathComponent(path)
         var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)!

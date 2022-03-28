@@ -1,13 +1,13 @@
 //
 //  RequestMethod.swift
-//  FinanceUnderControl
+//  Domain
 //
-//  Created by sebastianstaszczyk on 25/03/2022.
+//  Created by sebastianstaszczyk on 28/03/2022.
 //
 
 import Foundation
 
-enum RequestMethod: String {
+public enum RequestMethod: String {
     case GET
     case PUT
     case POST

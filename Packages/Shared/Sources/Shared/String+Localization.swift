@@ -11,7 +11,7 @@ import Foundation
 public extension String {
 
     /// Returns a localized string, using the main bundle.
-    private func localize() -> String {
+    func localize() -> String {
         NSLocalizedString(self, bundle: .main, comment: self)
     }
 
