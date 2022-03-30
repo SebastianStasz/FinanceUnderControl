@@ -19,16 +19,8 @@ struct DateRangePicker: View {
 
             if viewData.isOn {
                 VStack(spacing: .small) {
-                    DatePicker("\(String.cash_flow_filter_date_start):",
-                               selection: $viewData.startDate,
-                               in: ...viewData.endDate,
-                               displayedComponents: .date
-                    )
-                    DatePicker("\(String.cash_flow_filter_date_end):",
-                               selection: $viewData.endDate,
-                               in: viewData.startDate...,
-                               displayedComponents: .date
-                    )
+                    LabeledDatePicker(.cash_flow_filter_date_start, selection: $viewData.startDate, in: ...viewData.endDate)
+                    LabeledDatePicker(.cash_flow_filter_date_end, selection: $viewData.endDate, in: viewData.startDate...)
                 }
                 .zIndex(-1)
                 .padding(.horizontal, .medium)
@@ -50,7 +42,10 @@ struct DateRangePicker: View {
 
 struct DateRangePicker_Previews: PreviewProvider {
     static var previews: some View {
-        DateRangePicker("Date range picker", viewData: .constant(.init(isOn: true)))
-            .asPreview()
+        Group {
+            DateRangePicker("Date range picker", viewData: .constant(.init(isOn: true)))
+            DateRangePicker("Date range picker", viewData: .constant(.init(isOn: true))).darkScheme()
+        }
+        .sizeThatFits()
     }
 }

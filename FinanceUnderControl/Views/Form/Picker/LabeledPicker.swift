@@ -16,12 +16,7 @@ struct LabeledPicker<T: Pickerable>: View {
     private let title: String
 
     var body: some View {
-        HStack(spacing: .large) {
-            Text("\(title):")
-                .lineLimit(1)
-
-            Spacer()
-
+        LabeledView("\(title):") {
             Menu {
                 Picker(title, selection: $selection) {
                     ForEach(elements, id: \.self) {
@@ -31,16 +26,11 @@ struct LabeledPicker<T: Pickerable>: View {
             } label: {
                 HStack {
                     Spacer()
-                    Text(selection?.valueName ?? "---")
-                        .padding(.vertical, 7)
-                        .padding(.horizontal, 12)
-                        .foregroundColor(.black)
-                        .background(Color(UIColor.systemGray6))
+                    Text(selection?.valueName ?? "---", style: .headlineSmallAction)
                         .cornerRadius(8)
                     }
             }
         }
-        .card()
     }
 
     init(_ title: String, elements: [T], selection: Binding<T?>) {
@@ -61,7 +51,10 @@ struct LabeledPicker<T: Pickerable>: View {
 struct LabeledPicker_Previews: PreviewProvider {
     static var previews: some View {
         let elements = ["Value 1", "Value 2", "Value 3", "Value 4"]
-        LabeledPicker("Labeled picker:", elements: elements, selection: .constant("Value 1"))
-            .padding(.large)
+        Group {
+            LabeledPicker("Picker title", elements: elements, selection: .constant("Value 1"))
+            LabeledPicker("Picker title", elements: elements, selection: .constant("Value 1")).darkScheme()
+        }
+        .sizeThatFits()
     }
 }

@@ -37,7 +37,6 @@ struct CashFlowCategoryGroupItem_Previews: PreviewProvider {
             CashFlowCategoryGroupItem(for: category, isOn: true, action: {})
             CashFlowCategoryGroupItem(for: category, isOn: false, action: {})
         }
-        .padding(.vertical, .medium)
-        .asPreview()
+        .sizeThatFits()
     }
 }

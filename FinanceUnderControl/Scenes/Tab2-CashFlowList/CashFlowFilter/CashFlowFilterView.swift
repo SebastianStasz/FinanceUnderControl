@@ -14,6 +14,9 @@ struct CashFlowFilterView: BaseView {
     @FetchRequest(sortDescriptors: [CashFlowCategoryEntity.Sort.byName(.forward).nsSortDescriptor])
     var cashFlowCategories: FetchedResults<CashFlowCategoryEntity>
 
+    @FetchRequest(sortDescriptors: [CurrencyEntity.Sort.byCode(.forward).nsSortDescriptor]
+    ) var currencies: FetchedResults<CurrencyEntity>
+
     @StateObject var viewModel = CashFlowFilterVM()
     @Binding var cashFlowFilter: CashFlowFilter
 

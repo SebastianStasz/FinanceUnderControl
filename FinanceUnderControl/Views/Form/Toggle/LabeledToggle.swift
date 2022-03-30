@@ -37,7 +37,10 @@ struct LabeledToggle: View {
 
 struct LabeledToggle_Previews: PreviewProvider {
     static var previews: some View {
-        LabeledToggle("Labeled toggle", isOn: .constant(true))
-            .asPreview()
+        Group {
+            LabeledToggle("Labeled toggle", isOn: .constant(true))
+            LabeledToggle("Labeled toggle", isOn: .constant(true))
+        }
+        .sizeThatFits()
     }
 }

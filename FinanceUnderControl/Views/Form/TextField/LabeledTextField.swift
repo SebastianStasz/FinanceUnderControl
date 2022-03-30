@@ -41,6 +41,6 @@ struct LabeledTextField<T>: View {
 struct LabeledTextField_Previews: PreviewProvider {
     static var previews: some View {
         LabeledTextField("Field name", viewModel: TextInputVM())
-            .asPreview()
+            .sizeThatFits()
     }
 }

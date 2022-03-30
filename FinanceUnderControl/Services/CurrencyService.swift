@@ -5,29 +5,10 @@
 //  Created by Sebastian Staszczyk on 23/11/2021.
 //
 
-import Combine
 import CoreData
-import Domain
 import FinanceCoreData
 import Foundation
 import Shared
-
-final class ExchangeRateService {
-
-    private let apiService: APIService
-
-    init(apiService: APIService = .shared) {
-        self.apiService = apiService
-    }
-
-    func getLatestExchangeRates(for currency: String) async throws -> LatestRatesResponse {
-        try await apiService.execute(GetLatestExchangeRatesRequest(for: currency), type: .exchangerate)
-    }
-
-//    func getLatestExchangeRates(for currency: String) -> AnyPublisher<LatestRatesResponse, Error> {
-//        apiService.execute(GetLatestExchangeRates(for: currency), type: .exchangerate)
-//    }
-}
 
 final class CurrencyService {
 

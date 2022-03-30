@@ -23,6 +23,7 @@ extension CashFlowFilterView {
         Sector(.common_amount) {
             LabeledTextField(.cash_flow_filter_minimum_value, viewModel: viewModel.minValueInput)
             LabeledTextField(.cash_flow_filter_maximum_value, viewModel: viewModel.maxValueInput)
+            LabeledPicker(.create_cash_flow_currency, elements: currencies, selection: filter.currency)
         }
     }
 

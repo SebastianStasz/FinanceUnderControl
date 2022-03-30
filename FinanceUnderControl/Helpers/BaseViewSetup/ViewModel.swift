@@ -19,5 +19,4 @@ class ViewModel: ObservableObject, CombineHelper {
 
     var cancellables: Set<AnyCancellable> = []
     let baseAction = BaseAction()
-
 }

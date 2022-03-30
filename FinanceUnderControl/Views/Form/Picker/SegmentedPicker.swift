@@ -34,6 +34,10 @@ struct SegmentedPicker<T: Pickerable>: View {
 struct SegmentedPicker_Previews: PreviewProvider {
     static var previews: some View {
         let elements = ["Value 1", "Value 2", "Value 3"]
-        SegmentedPicker("Picker", selection: .constant("Value 1"), elements: elements)
+        Group {
+            SegmentedPicker("Picker", selection: .constant("Value 1"), elements: elements)
+            SegmentedPicker("Picker", selection: .constant("Value 1"), elements: elements).darkScheme()
+        }
+        .sizeThatFits()
     }
 }

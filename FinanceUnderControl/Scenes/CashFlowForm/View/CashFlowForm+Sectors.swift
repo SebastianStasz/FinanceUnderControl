@@ -20,8 +20,7 @@ extension CashFlowFormSheet {
     var sectorMoreInfo: some View {
         Sector("More") {
             LabeledPicker(.create_cash_flow_currency, elements: currencies, selection: $viewModel.cashFlowModel.currency)
-            DatePicker("\(String.create_cash_flow_date):", selection: $viewModel.cashFlowModel.date, displayedComponents: [.date])
-                .card()
+            LabeledDatePicker(.create_cash_flow_date, selection: $viewModel.cashFlowModel.date)
             LabeledPicker(.common_category, elements: categories, selection: $viewModel.cashFlowModel.category)
         }
     }

@@ -10,8 +10,14 @@ import SSUtils
 
 public extension View {
 
-    func sizeThatFits() -> some View {
-        self.padding(.medium).previewLayout(.sizeThatFits)
+    func darkScheme() -> some View {
+        self.preferredColorScheme(.dark)
+    }
+
+    func sizeThatFits(backgroundColor: Color = .backgroundPrimary) -> some View {
+        self.padding(.large)
+            .background(backgroundColor)
+            .previewLayout(.sizeThatFits)
     }
 
     func cornerRadius(_ radius: CornerRadius) -> some View {

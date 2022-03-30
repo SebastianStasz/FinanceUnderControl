@@ -25,7 +25,7 @@
 "common_primary" = "Primary";
 "common_secondary" = "Secondary";
 "common_exchange_rate" = "Exchange rate";
-"common_category" = "Category ";
+"common_category" = "Category";
 
 "cash_flow_filter_title" = "Filter";
 "cash_flow_filter_type" = "Cash flow type";

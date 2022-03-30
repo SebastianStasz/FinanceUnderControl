@@ -26,6 +26,7 @@ struct CashFlowFormSheet: BaseView {
             sectorMoreInfo
         }
         .asSheet(title: type.name, askToDismiss: viewModel.formChanged, primaryButton: primaruButton)
+        .handleViewModelActions(viewModel)
     }
 
     private var primaruButton: HorizontalButtons.Configuration {
@@ -39,8 +40,7 @@ struct CashFlowFormSheet: BaseView {
     }
 
     private func createCashFlow() {
-        guard let data = cashFlowData else { return }
-        CashFlowEntity.create(in: context, model: data)
+        viewModel.didTapCreate.send()
     }
 
     init(for type: CashFlowType) {
