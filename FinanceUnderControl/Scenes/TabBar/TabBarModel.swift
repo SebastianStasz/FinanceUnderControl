@@ -65,3 +65,10 @@ extension TabBarModel: Identifiable {
 }
 
 extension TabBarModel: CaseIterable {}
+
+
+extension TabBarButtonStyle {
+    init(for tab: TabBarModel, isSelected: Bool) {
+        self.init(image: tab.icon.image, isSelected: isSelected)
+    }
+}

@@ -11,7 +11,7 @@ import Foundation
 public extension String {
 
     /// Returns a localized string, using the main bundle.
-    private func localize() -> String {
+    func localize() -> String {
         NSLocalizedString(self, bundle: .main, comment: self)
     }
 
@@ -81,4 +81,14 @@ public extension String {
     }
 
     static let cannot_delete_cash_flow_category_message = "cannot_delete_cash_flow_category_message".localize()
+
+    // MARK: - Currency
+
+    static let currency_BYN = "currency_BYN".localize()
+    static let currency_EUR = "currency_EUR".localize()
+    static let currency_GBP = "currency_GBP".localize()
+    static let currency_PLN = "currency_PLN".localize()
+    static let currency_RUB = "currency_RUB".localize()
+    static let currency_UAH = "currency_UAH".localize()
+    static let currency_USD = "currency_USD".localize()
 }

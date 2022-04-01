@@ -6,17 +6,28 @@
 //
 
 import Foundation
+import Shared
 
 public extension CurrencyEntity {
 
     struct Model {
         public let code: String
-        public let name: String
+        public let nameKey: String
 
         public init(code: String, name: String) {
             self.code = code
-            self.name = name
+            self.nameKey = name
         }
+    }
+}
+
+public extension SupportedCurrency {
+    var currencyEntityModel: CurrencyEntity.Model {
+        .init(code: code, name: name)
+    }
+
+    static var currencyEntityModels: [CurrencyEntity.Model] {
+        SupportedCurrency.allCases.map { $0.currencyEntityModel }
     }
 }
 

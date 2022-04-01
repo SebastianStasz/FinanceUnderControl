@@ -7,6 +7,7 @@
 
 import FinanceCoreData
 import Foundation
+import Shared
 import SSValidation
 
 struct CashFlowFilter: Equatable {
@@ -17,6 +18,7 @@ struct CashFlowFilter: Equatable {
     var datePickerViewData: DateRangePickerViewData = .init()
     var minimumValue: Double?
     var maximumValue: Double?
+    var currency: CurrencyEntity?
 
     var nsPredicate: NSPredicate {
         var predicates: [Filter] = []
@@ -36,6 +38,9 @@ struct CashFlowFilter: Equatable {
         if let maxValue = maximumValue {
             predicates.append(Filter.maximumValue(maxValue))
         }
+        if let currency = currency {
+            predicates.append(Filter.currencyIs(currency))
+        }
         return predicates.compactMap { $0 }.andNSPredicate
     }
 
@@ -45,6 +50,7 @@ struct CashFlowFilter: Equatable {
         datePickerViewData = .init()
         minimumValue = nil
         maximumValue = nil
+        currency = nil
     }
 }
 

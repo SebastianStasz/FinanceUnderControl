@@ -16,6 +16,7 @@ public extension CashFlowEntity {
         case byDateBetween(startDate: Date, endDate: Date)
         case minimumValue(Double)
         case maximumValue(Double)
+        case currencyIs(CurrencyEntity)
 
         public var nsPredicate: NSPredicate {
             switch self {
@@ -31,6 +32,8 @@ public extension CashFlowEntity {
                 return predicateForMinimumValue(value)
             case let .maximumValue(value):
                 return predicateForMaximumValue(value)
+            case let .currencyIs(currency):
+                return predicateForCurrency(currency)
             }
         }
     }
@@ -63,5 +66,9 @@ extension CashFlowEntity {
 
     static private func predicateForMaximumValue(_ value: Double) -> NSPredicate {
         NSPredicate(format: "value <= %f", value)
+    }
+
+    static private func predicateForCurrency(_ currency: CurrencyEntity) -> NSPredicate {
+        NSPredicate(format: "currency == %@", currency)
     }
 }

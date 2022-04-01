@@ -5,6 +5,7 @@
 //  Created by Sebastian Staszczyk on 19/02/2022.
 //
 
+import Shared
 import SwiftUI
 
 struct HorizontalButtons: View {

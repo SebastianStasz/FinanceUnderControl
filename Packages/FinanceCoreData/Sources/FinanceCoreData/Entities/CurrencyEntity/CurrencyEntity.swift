@@ -9,11 +9,12 @@
 import CoreData
 import Domain
 import Foundation
+import Shared
 
 @objc(CurrencyEntity) public class CurrencyEntity: NSManagedObject, Entity {
-    @NSManaged private var name_: String
-    @NSManaged private var updateDate_: Date?
+    @NSManaged private var nameKey: String
     @NSManaged public private(set) var code: String
+    @NSManaged public private(set) var updateDate: Date?
     @NSManaged public private(set) var exchangeRates: Set<ExchangeRateEntity>
     @NSManaged public private(set) var cashFlows: Set<CashFlowEntity>
 }
@@ -23,11 +24,11 @@ import Foundation
 public extension CurrencyEntity {
 
     var name: String {
-        name_
+        nameKey.localize()
     }
 
-    var updateDate: String? {
-        updateDate_?.string(format: .medium)
+    var updateDateString: String? {
+        updateDate?.string(format: .medium)
     }
 
     var exchangeRatesArray: [ExchangeRateEntity] {
@@ -43,20 +44,20 @@ public extension CurrencyEntity {
         guard currencyNotExist(withCode: model.code, in: context) else { return nil }
         let currency = CurrencyEntity(context: context)
         currency.code = model.code
-        currency.name_ = model.name
-        currency.updateDate_ = nil
+        currency.nameKey = model.nameKey
+        currency.updateDate = nil
         return currency
     }
 
     static func create(in context: NSManagedObjectContext, models: [Model]) {
         for model in models {
-            CurrencyEntity.create(in: context, model: model)
+            guard let currency = CurrencyEntity.create(in: context, model: model) else { continue }
+            currency.addExchangeRates(in: context, SupportedCurrency.allCases.map { ExchangeRateEntity.Model(code: $0.code, rateValue: 0, baseCurrency: currency.code) })
         }
     }
 
-    func addExchangeRates(_ exchangeRatesData: [ExchangeRateEntity.Model]) {
-        guard let context = self.getContext() else { return }
-        updateDate_ = Date()
+    func addExchangeRates(in context: NSManagedObjectContext, _ exchangeRatesData: [ExchangeRateEntity.Model]) {
+        let exchangeRatesData = exchangeRatesData.filter { $0.code != self.code }
         for exchangeRateData in exchangeRatesData {
             guard exchangeRateNotExist(withCode: exchangeRateData.code) else { continue }
             ExchangeRateEntity.create(in: context, model: exchangeRateData, baseCurrency: self)
@@ -64,7 +65,7 @@ public extension CurrencyEntity {
     }
 
     func updateExchangeRates(with exchageRatesData: [ExchangeRateEntity.Model]) {
-        self.updateDate_ = Date()
+        self.updateDate = Date()
         for exchangeRateData in exchageRatesData {
             let exchageRate = self.exchangeRates.first(where: { $0.code == exchangeRateData.code })
             exchageRate?.updateRateValue(to: exchangeRateData.rateValue)
@@ -122,7 +123,7 @@ public extension CurrencyEntity {
     static func sampleEUR(in context: NSManagedObjectContext) -> CurrencyEntity {
         let currency = CurrencyEntity.create(in: context, model: .eur)!
         let eurRatesData = try! JSONDecoder().decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data) // swiftlint:disable:this force_try
-        currency.addExchangeRates(eurRatesData.rates.map { $0.exchangeRateData(baseCurrency: currency.code) })
+        currency.addExchangeRates(in: context, eurRatesData.rates.map { $0.exchangeRateData(baseCurrency: currency.code) })
         return currency
     }
 }

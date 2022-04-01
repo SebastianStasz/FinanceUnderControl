@@ -34,8 +34,10 @@ public struct Navigation<Destination: View>: View {
 
 struct Navigation_Previews: PreviewProvider {
     static var previews: some View {
-        Navigation("Title", leadsTo: Text("Inside")).sizeThatFits()
-        Navigation("Title", leadsTo: Text("Inside")).sizeThatFits()
-            .preferredColorScheme(.dark)
+        Group {
+            Navigation("Title", leadsTo: Text("Inside"))
+            Navigation("Title", leadsTo: Text("Inside")).darkScheme()
+        }
+        .sizeThatFits()
     }
 }

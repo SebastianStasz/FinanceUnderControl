@@ -15,11 +15,11 @@ struct SectorHeader: View {
 
     var body: some View {
         HStack {
-            Text(viewData.title, style: .headlineSmall)
+            Text(viewData.title, style: .headlineSmall())
             Spacer()
             if let editAction = viewData.editAction, isEditing {
                 Button(editAction.title, action: editAction.action)
-                    .textStyle(.headlineSmallAction)
+                    .textStyle(.headlineSmall(.action))
                     .padding(.horizontal, .small)
             }
         }

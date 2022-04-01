@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import SSUtils
+import Shared
 
 struct FormView<Content: View>: View {
 
@@ -22,6 +24,14 @@ struct FormView<Content: View>: View {
                 .padding(.vertical, .large)
         }
         .background(Color.backgroundPrimary)
+        .toolbar { toolbarContent }
+    }
+
+    private var toolbarContent: some ToolbarContent {
+        Toolbar.keyboard {
+            Button(symbol: .dismissKeyboard, action: hideKeyboard)
+                .infiniteWidth(alignment: .trailing)
+        }
     }
 }
 

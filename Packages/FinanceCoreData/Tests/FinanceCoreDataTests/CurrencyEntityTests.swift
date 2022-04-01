@@ -126,9 +126,9 @@ private extension CurrencyEntityTests {
                             wasUpdated: Bool,
                             exchangeRates: [ExchangeRateEntity.Model] = []
     ) throws {
-        XCTAssertEqual(entity.name, data.name)
+        XCTAssertEqual(entity.name, data.nameKey)
         XCTAssertEqual(entity.code, data.code)
-        wasUpdated ? XCTAssertNotNil(entity.updateDate) : XCTAssertNil(entity.updateDate)
+        wasUpdated ? XCTAssertNotNil(entity.updateDateString) : XCTAssertNil(entity.updateDateString)
         XCTAssertEqual(entity.exchangeRates.count, exchangeRates.count)
         for exchangeRate in entity.exchangeRates {
             XCTAssert(exchangeRates.contains(where: {

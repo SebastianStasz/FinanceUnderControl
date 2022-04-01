@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.6
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -15,8 +15,8 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(name: "SSUtils", url: "https://github.com/SebastianStasz/SSUtils", from: "1.0.1"),
-        .package(name: "Domain", path: "../Domain"),
+        .package(url: "https://github.com/SebastianStasz/SSUtils", from: "1.0.1"),
+//        .package(name: "Domain", path: "../Domain"),
         .package(name: "Shared", path: "../Shared")
     ],
     targets: [
@@ -24,7 +24,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "FinanceCoreData",
-            dependencies: ["SSUtils", "Domain", "Shared"],
+            dependencies: ["SSUtils", "Shared"],
             resources: [.copy("Data/ExchangerateSymbols.json"), .copy("Data/ExchangerateLatestEur.json")]),
         .testTarget(
             name: "FinanceCoreDataTests",

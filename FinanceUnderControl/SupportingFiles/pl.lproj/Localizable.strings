@@ -49,3 +49,11 @@
 "cantor_load_exchange_rates_error_message" = "Nie udało się załadować kursu wymiany dla waluty \"%@\". Spróbuj ponownie później.";
 
 "cannot_delete_cash_flow_category_message" = "Nie możesz usunąć tej kategorii, ponieważ jest w użyciu.";
+
+"currency_BYN" = "Rubel białoruski";
+"currency_EUR" = "Euro";
+"currency_GBP" = "Brytyjski funt szterling";
+"currency_PLN" = "Złoty";
+"currency_RUB" = "Rubel rosyjski ";
+"currency_UAH" = "Hrywna";
+"currency_USD" = "Dolar amerykański ";

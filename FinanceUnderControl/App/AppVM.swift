@@ -17,7 +17,11 @@ final class AppVM {
 
     private init() {
         let context = PersistenceController.preview.context
-        self.currencyService = CurrencyService(context: context)
+        self.currencyService = CurrencyService()
         self.context = context
+    }
+
+    func setupCurrencies() async {
+        await currencyService.setupCurrencies(in: context)
     }
 }
