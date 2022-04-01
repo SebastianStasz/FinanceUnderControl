@@ -9,6 +9,7 @@ import Combine
 import FinanceCoreData
 import SSValidation
 import SSUtils
+import SwiftUI
 
 final class CantorVM: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
@@ -28,13 +29,13 @@ final class CantorVM: ObservableObject {
 
     init() {
         let currencySettingsOutput = currencySettings.result()
-        currencySettingsOutput.primaryCurrency
+        currencySettingsOutput.secondaryCurrency
             .sink { [weak self] currency in
                 self?.currencySelector.setPrimaryCurrency(to: currency)
             }
             .store(in: &cancellables)
 
-        currencySettingsOutput.secondaryCurrency
+        currencySettingsOutput.primaryCurrency
             .sink { [weak self] currency in
                 self?.currencySelector.setSecondaryCurrency(to: currency)
             }
@@ -70,6 +71,11 @@ final class CantorVM: ObservableObject {
                 let result = (rateValue * amount).asString(roundToDecimalPlaces: 2)
                 return "\(amount.asString) \(primary.code) = \(result) \(secondary.code)"
             }
-            .assign(to: &$exchangedMoney)
+            .sink { [weak self] value in
+                withAnimation(.easeInOut) {
+                    self?.exchangedMoney = value
+                }
+            }
+            .store(in: &cancellables)
     }
 }

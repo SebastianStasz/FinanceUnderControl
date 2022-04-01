@@ -26,7 +26,7 @@ struct LabeledPicker<T: Pickerable>: View {
             } label: {
                 HStack {
                     Spacer()
-                    Text(selection?.valueName ?? "---", style: .headlineSmallAction)
+                    Text(selection?.valueName ?? "---", style: .body(.action))
                         .cornerRadius(8)
                     }
             }

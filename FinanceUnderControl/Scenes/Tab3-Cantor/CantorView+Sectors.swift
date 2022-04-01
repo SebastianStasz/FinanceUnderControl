@@ -14,12 +14,12 @@ extension CantorView {
         Sector(.common_exchange_rate) {
             Group {
                 if let exchangeRate = viewModel.exchangeRateValue {
-                    Text(exchangeRate)
+                    Text(exchangeRate, style: .body())
                 } else {
                     Text(noExchangeRateMessage, style: .validation)
                 }
                 if let exchangedMoney = viewModel.exchangedMoney {
-                    Text(exchangedMoney)
+                    Text(exchangedMoney, style: .body()).transition(.scale)
                 }
             }
             .card()

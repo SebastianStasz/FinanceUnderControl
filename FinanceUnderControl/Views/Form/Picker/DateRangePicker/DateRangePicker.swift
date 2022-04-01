@@ -14,17 +14,15 @@ struct DateRangePicker: View {
     private let title: String
 
     var body: some View {
-        VStack(spacing: .small) {
+        VStack {
             LabeledToggle(title, isOn: $viewData.isOn.animation(.easeOut))
 
             if viewData.isOn {
-                VStack(spacing: .small) {
+                VStack {
                     LabeledDatePicker(.cash_flow_filter_date_start, selection: $viewData.startDate, in: ...viewData.endDate)
                     LabeledDatePicker(.cash_flow_filter_date_end, selection: $viewData.endDate, in: viewData.startDate...)
                 }
                 .zIndex(-1)
-                .padding(.horizontal, .medium)
-                .padding(.bottom, .medium)
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
         }

@@ -57,6 +57,7 @@ public extension CurrencyEntity {
     }
 
     func addExchangeRates(in context: NSManagedObjectContext, _ exchangeRatesData: [ExchangeRateEntity.Model]) {
+        let exchangeRatesData = exchangeRatesData.filter { $0.code != self.code }
         for exchangeRateData in exchangeRatesData {
             guard exchangeRateNotExist(withCode: exchangeRateData.code) else { continue }
             ExchangeRateEntity.create(in: context, model: exchangeRateData, baseCurrency: self)

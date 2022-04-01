@@ -27,12 +27,13 @@ struct LabeledTextField<T>: View {
 
     var body: some View {
         VStack(spacing: .micro) {
-            InputField(title, viewModel: viewModel, prompt: title).textStyle(.body)
+            InputField(title, viewModel: viewModel, prompt: title).textStyle(.body())
 
             if let message = viewModel.validationMessage {
                 Text(message, style: .validation)
             }
-        }.card(style: style)
+        }
+        .card(style: style)
     }
 }
 
@@ -40,7 +41,10 @@ struct LabeledTextField<T>: View {
 
 struct LabeledTextField_Previews: PreviewProvider {
     static var previews: some View {
-        LabeledTextField("Field name", viewModel: TextInputVM())
-            .sizeThatFits()
+        Group {
+            LabeledTextField("Field name", viewModel: TextInputVM())
+            LabeledTextField("Field name", viewModel: TextInputVM()).darkScheme()
+        }
+        .sizeThatFits()
     }
 }

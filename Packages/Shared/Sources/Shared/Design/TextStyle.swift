@@ -7,12 +7,39 @@
 
 import SwiftUI
 
+public enum HeadlineSmallTextType {
+    case normal
+    case action
+
+    var color: Color {
+        switch self {
+        case .normal:
+            return .gray // TODO: Adapt to DS
+        case .action:
+            return .blue // TODO: Adapt to DS
+        }
+    }
+}
+
+public enum BodyTextType {
+    case normal
+    case action
+
+    var color: Color {
+        switch self {
+        case .normal:
+            return .basicPrimaryInverted
+        case .action:
+            return .blue // TODO: Adapt to DS
+        }
+    }
+}
+
 public enum TextStyle {
     case headlineBig
-    case headlineSmall
-    case headlineSmallAction
+    case headlineSmall(HeadlineSmallTextType = .normal)
     case bodyMedium
-    case body
+    case body(BodyTextType = .normal)
     case validation
     case currency
 
@@ -20,7 +47,7 @@ public enum TextStyle {
         switch self {
         case .headlineBig:
             return .title3
-        case .headlineSmall, .headlineSmallAction, .validation:
+        case .headlineSmall, .validation:
             return .caption
         case .bodyMedium, .body:
             return .callout
@@ -40,7 +67,7 @@ public enum TextStyle {
 
     public var textCase: SwiftUI.Text.Case? {
         switch self {
-        case .headlineSmall, .headlineSmallAction, .currency:
+        case .headlineSmall, .currency:
             return .uppercase
         default:
             return nil
@@ -51,12 +78,12 @@ public enum TextStyle {
         switch self {
         case .headlineBig:
             return .white // TODO: Adapt to DS
-        case .headlineSmall:
-            return .gray // TODO: Adapt to DS
-        case .headlineSmallAction:
-            return .blue // TODO: Adapt to DS
+        case .headlineSmall(let type):
+            return type.color
         case .validation:
             return .red.opacity(0.7) // TODO: Adapt to DS
+        case .body(let type):
+            return type.color
         default:
             return .basicPrimaryInverted
         }

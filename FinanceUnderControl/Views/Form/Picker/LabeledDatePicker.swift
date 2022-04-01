@@ -33,7 +33,7 @@ struct LabeledDatePicker: View {
 
     var body: some View {
         LabeledView("\(title):") {
-            Text(selectedDate.string(format: .medium), style: .headlineSmallAction)
+            Text(selectedDate.string(format: .medium), style: .body(.action))
                 .overlay(datePicker)
         }
     }

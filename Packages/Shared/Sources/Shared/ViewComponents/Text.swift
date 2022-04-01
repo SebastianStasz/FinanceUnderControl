@@ -12,7 +12,7 @@ public struct Text: View {
     private let text: String
     private let style: TextStyle
 
-    public init(_ text: String, style: TextStyle = .body) {
+    public init(_ text: String, style: TextStyle = .body()) {
         self.text = text
         self.style = style
     }

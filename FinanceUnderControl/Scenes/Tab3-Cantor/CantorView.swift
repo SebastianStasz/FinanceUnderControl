@@ -11,7 +11,7 @@ import SSUtils
 import SwiftUI
 import SSValidation
 
-struct CantorView: View {
+struct CantorView: BaseView {
 
     @FetchRequest(sortDescriptors: [CurrencyEntity.Sort.byCode(.forward).nsSortDescriptor]
     ) var currencies: FetchedResults<CurrencyEntity>
@@ -19,7 +19,7 @@ struct CantorView: View {
     @StateObject var viewModel = CantorVM()
     @State private var isInfoAlertPresented = false
 
-    var body: some View {
+    var baseBody: some View {
         FormView {
             sectorExchangeRate
             sectorConvert

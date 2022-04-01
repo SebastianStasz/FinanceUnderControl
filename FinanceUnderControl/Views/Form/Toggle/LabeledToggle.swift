@@ -27,9 +27,7 @@ struct LabeledToggle: View {
             Toggle(title, isOn: $isOn)
                 .labelsHidden()
         }
-        .padding(.medium)
-        .background(Color.backgroundSecondary)
-        .cornerRadius(.base)
+        .card()
     }
 }
 

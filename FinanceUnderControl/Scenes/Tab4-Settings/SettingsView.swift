@@ -25,8 +25,8 @@ struct SettingsView: View {
             }
 
             Sector(.common_currencies) {
-                LabeledPicker(.cantor_from, elements: currencies, selection: $viewModel.primaryCurrency)
-                LabeledPicker(.cantor_to, elements: currencies, selection: $viewModel.secondaryCurrency)
+                LabeledPicker(.common_primary, elements: currencies, selection: $viewModel.primaryCurrency)
+                LabeledPicker(.common_secondary, elements: currencies, selection: $viewModel.secondaryCurrency)
             }
 
             Sector("Debug") {
