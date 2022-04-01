@@ -7,6 +7,7 @@
 
 import FinanceCoreData
 import Foundation
+import Shared
 
 enum CashFlowSelection: String {
     case all

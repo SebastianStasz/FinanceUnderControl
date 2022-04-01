@@ -1,19 +1,23 @@
 //
 //  DateRangePicker.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 18/01/2022.
 //
 
 import SwiftUI
-import Shared
 
-struct DateRangePicker: View {
+public struct DateRangePicker: View {
 
     @Binding private var viewData: DateRangePickerViewData
     private let title: String
 
-    var body: some View {
+    public init(_ title: String, viewData: Binding<DateRangePickerViewData>) {
+        self.title = title
+        self._viewData = viewData
+    }
+
+    public var body: some View {
         VStack {
             LabeledToggle(title, isOn: $viewData.isOn.animation(.easeOut))
 
@@ -28,11 +32,6 @@ struct DateRangePicker: View {
         }
         .background(Color.backgroundSecondary)
         .cornerRadius(.base)
-    }
-
-    init(_ title: String, viewData: Binding<DateRangePickerViewData>) {
-        self.title = title
-        self._viewData = viewData
     }
 }
 

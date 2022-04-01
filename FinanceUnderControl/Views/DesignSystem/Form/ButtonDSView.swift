@@ -5,6 +5,7 @@
 //  Created by Sebastian Staszczyk on 21/01/2022.
 //
 
+import Shared
 import SwiftUI
 
 struct ButtonDSView: View {

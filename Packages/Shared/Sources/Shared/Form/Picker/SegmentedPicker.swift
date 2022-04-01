@@ -1,31 +1,31 @@
 //
 //  SegmentedPicker.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 17/01/2022.
 //
 
 import SwiftUI
 
-struct SegmentedPicker<T: Pickerable>: View {
+public struct SegmentedPicker<T: Pickerable>: View {
 
     @Binding private var selection: T
     private let title: String
     private let elements: [T]
 
-    var body: some View {
+    public init(_ title: String, selection: Binding<T>, elements: [T]) {
+        self.title = title
+        self._selection = selection
+        self.elements = elements
+    }
+
+    public var body: some View {
         Picker(title, selection: $selection.animation(.easeInOut(duration: 0.3))) {
             ForEach(elements) {
                 Text($0.valueName).tag($0)
             }
         }
         .pickerStyle(.segmented)
-    }
-
-    init(_ title: String, selection: Binding<T>, elements: [T]) {
-        self.title = title
-        self._selection = selection
-        self.elements = elements
     }
 }
 

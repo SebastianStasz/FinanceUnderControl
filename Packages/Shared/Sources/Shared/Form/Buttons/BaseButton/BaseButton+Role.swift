@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-extension BaseButton {
+public extension BaseButton {
 
     enum Role {
         case primary
         case secondary
 
-        var background: Color {
+        public var background: Color {
             switch self {
             case .primary:
                 return .blue

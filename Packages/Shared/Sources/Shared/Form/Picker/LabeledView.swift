@@ -1,6 +1,6 @@
 //
 //  LabeledView.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by sebastianstaszczyk on 29/03/2022.
 //
@@ -8,17 +8,17 @@
 import SSUtils
 import SwiftUI
 
-struct LabeledView<Content: View>: View {
+public struct LabeledView<Content: View>: View {
 
     private let title: String
     private let content: () -> Content
 
-    init(_ title: String, @ViewBuilder content: @escaping () -> Content) {
+    public init(_ title: String, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
         self.content = content
     }
 
-    var body: some View {
+    public var body: some View {
         HStack(spacing: .medium) {
             Text(title).lineLimit(1)
 

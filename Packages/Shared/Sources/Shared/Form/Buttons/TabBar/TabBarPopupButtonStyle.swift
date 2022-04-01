@@ -7,11 +7,15 @@
 
 import SwiftUI
 
-struct TabBarPopupButtonStyle: ButtonStyle {
+public struct TabBarPopupButtonStyle: ButtonStyle {
 
     let image: String
 
-    func makeBody(configuration: Configuration) -> some View {
+    public init(image: String) {
+        self.image = image
+    }
+
+    public func makeBody(configuration: Configuration) -> some View {
         ZStack {
             Circle()
                 .foregroundColor(.red)

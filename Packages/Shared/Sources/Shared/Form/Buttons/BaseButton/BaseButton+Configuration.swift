@@ -7,22 +7,22 @@
 
 import Foundation
 
-extension BaseButton {
+public extension BaseButton {
 
-    struct Configuration {
+    public struct Configuration {
         let title: String
         let role: Role
         let enabled: Bool
         let action: Action
 
-        init(_ title: String, role: Role, enabled: Bool = true, action: @escaping Action) {
+        public init(_ title: String, role: Role, enabled: Bool = true, action: @escaping Action) {
             self.title = title
             self.role = role
             self.enabled = enabled
             self.action = action
         }
 
-        init(_ title: String, role: Role, enabled: Bool = true, action: @autoclosure @escaping Action) {
+        public init(_ title: String, role: Role, enabled: Bool = true, action: @autoclosure @escaping Action) {
             self.init(title, role: role, enabled: enabled, action: action)
         }
     }

@@ -5,8 +5,9 @@
 //  Created by Sebastian Staszczyk on 22/10/2021.
 //
 
-import SwiftUI
 import FinanceCoreData
+import Shared
+import SwiftUI
 
 struct TabBarActionButton: View {
     typealias Popup = TabBarModel.Popup

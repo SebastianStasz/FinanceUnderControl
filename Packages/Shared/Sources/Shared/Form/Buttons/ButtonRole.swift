@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-enum ButtonRole {
+public enum ButtonRole {
     case action
     case cancel
 
-    var background: Color {
+    public var background: Color {
         switch self {
         case .action:
             return .blue

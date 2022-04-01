@@ -8,11 +8,16 @@
 import SSUtils
 import SwiftUI
 
-struct TabBarButtonStyle: ButtonStyle {
+public struct TabBarButtonStyle: ButtonStyle {
     var image: Image
     var isSelected: Bool
 
-    func makeBody(configuration: Configuration) -> some View {
+    public init(image: Image, isSelected: Bool) {
+        self.image = image
+        self.isSelected = isSelected
+    }
+
+    public func makeBody(configuration: Configuration) -> some View {
         image
             .scaledToFit(height: 18)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -20,13 +25,5 @@ struct TabBarButtonStyle: ButtonStyle {
             .scaleEffect(configuration.isPressed ? 1.05 : 1)
             .animation(.easeInOut, value: 0.1)
             .contentShape(Circle())
-    }
-}
-
-// MARK: - Initializers
-
-extension TabBarButtonStyle {
-    init(for tab: TabBarModel, isSelected: Bool) {
-        self.init(image: tab.icon.image, isSelected: isSelected)
     }
 }

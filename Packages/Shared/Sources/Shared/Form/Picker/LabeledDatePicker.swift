@@ -1,15 +1,14 @@
 //
 //  LabeledDatePicker.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by sebastianstaszczyk on 28/03/2022.
 //
 
-import Shared
 import SSUtils
 import SwiftUI
 
-struct LabeledDatePicker: View {
+public struct LabeledDatePicker: View {
 
     private let title: String
     private let components: DatePicker<Text>.Components
@@ -31,7 +30,7 @@ struct LabeledDatePicker: View {
         self.partialRangeThrough = partialRangeThrough
     }
 
-    var body: some View {
+    public var body: some View {
         LabeledView("\(title):") {
             Text(selectedDate.string(format: .medium), style: .body(.action))
                 .overlay(datePicker)
@@ -67,7 +66,7 @@ struct LabeledDatePicker_Previews: PreviewProvider {
 
 // MARK: - Initializers
 
-extension LabeledDatePicker {
+public extension LabeledDatePicker {
 
     init(_ title: String,
          selection: Binding<Date>,

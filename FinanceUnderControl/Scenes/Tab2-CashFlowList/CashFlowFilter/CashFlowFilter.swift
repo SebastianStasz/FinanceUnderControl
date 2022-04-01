@@ -7,6 +7,7 @@
 
 import FinanceCoreData
 import Foundation
+import Shared
 import SSValidation
 
 struct CashFlowFilter: Equatable {

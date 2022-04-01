@@ -5,6 +5,7 @@
 //  Created by Sebastian Staszczyk on 20/02/2022.
 //
 
+import FinanceCoreData
 import SwiftUI
 import SSUtils
 import Shared
@@ -23,7 +24,7 @@ extension CashFlowFilterView {
         Sector(.common_amount) {
             LabeledTextField(.cash_flow_filter_minimum_value, viewModel: viewModel.minValueInput)
             LabeledTextField(.cash_flow_filter_maximum_value, viewModel: viewModel.maxValueInput)
-            LabeledPicker(.create_cash_flow_currency, elements: currencies, selection: filter.currency)
+            LabeledPicker(.create_cash_flow_currency, elements: currenciesToSelect, selection: filter.currency)
         }
     }
 
@@ -31,5 +32,11 @@ extension CashFlowFilterView {
         Sector("Other") {
             DateRangePicker(.cash_flow_filter_date_range, viewData: filter.datePickerViewData)
         }
+    }
+
+    private var currenciesToSelect: [CurrencyEntity?] {
+        var currencies: [CurrencyEntity?] = currencies.map { $0 }
+        currencies.append(nil)
+        return currencies
     }
 }

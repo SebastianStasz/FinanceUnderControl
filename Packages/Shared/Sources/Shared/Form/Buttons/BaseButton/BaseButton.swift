@@ -8,19 +8,19 @@
 import SwiftUI
 import SSUtils
 
-struct BaseButton: View {
+public struct BaseButton: View {
 
     private let configuration: Configuration
 
-    init(configuration: Configuration) {
+    public init(configuration: Configuration) {
         self.configuration = configuration
     }
 
-    init(_ title: String, role: Role, enabled: Bool = true, action: @escaping Action) {
+    public init(_ title: String, role: Role, enabled: Bool = true, action: @escaping Action) {
         configuration = .init(title, role: role, enabled: enabled, action: action)
     }
 
-    var body: some View {
+    public var body: some View {
         Button(configuration.title, action: configuration.action)
             .buttonStyle(BaseButtonStyle(role: configuration.role))
             .disabled(!configuration.enabled)

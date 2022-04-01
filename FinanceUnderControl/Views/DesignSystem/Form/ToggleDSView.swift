@@ -5,6 +5,7 @@
 //  Created by Sebastian Staszczyk on 19/01/2022.
 //
 
+import Shared
 import SwiftUI
 
 struct ToggleDSView: View {

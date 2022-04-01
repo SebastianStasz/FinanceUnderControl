@@ -6,19 +6,18 @@
 //
 
 import SwiftUI
-import Shared
 
-struct LabeledToggle: View {
+public struct LabeledToggle: View {
 
     @Binding private var isOn: Bool
     private let title: String
 
-    init(_ title: String, isOn: Binding<Bool>) {
+    public init(_ title: String, isOn: Binding<Bool>) {
         self.title = title
         self._isOn = isOn
     }
 
-    var body: some View {
+    public var body: some View {
         HStack(spacing: .xlarge) {
             Text(title)
                 .lineLimit(1)
