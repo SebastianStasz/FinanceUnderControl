@@ -26,7 +26,7 @@ struct CashFlowCategoryFormView: BaseView {
         FormView {
             VStack(alignment: .center, spacing: .medium) {
                 CircleView(color: categoryModel.color.color, icon: categoryModel.icon, size: 95)
-                LabeledTextField("Name", viewModel: viewModel.nameInput, style: .secondary)
+                LabeledTextField(.create_cash_flow_name, viewModel: viewModel.nameInput, style: .secondary)
             }
             .card()
             .padding(.horizontal, .large)
@@ -37,7 +37,7 @@ struct CashFlowCategoryFormView: BaseView {
                         .selection($viewModel.formModel.color, element: color)
                 }
             }
-            .embedInSection("Color", style: .card)
+            .embedInSection(.common_color, style: .card)
 
             LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
                 ForEach(CashFlowCategoryIcon.allCases) { (icon: CashFlowCategoryIcon) in
@@ -45,7 +45,7 @@ struct CashFlowCategoryFormView: BaseView {
                         .selection($viewModel.formModel.icon, element: icon)
                 }
             }
-            .embedInSection("Icon", style: .card)
+            .embedInSection(.common_icon, style: .card)
         }
         .cashFlowGroupingForm(viewModel: viewModel, form: form)
     }

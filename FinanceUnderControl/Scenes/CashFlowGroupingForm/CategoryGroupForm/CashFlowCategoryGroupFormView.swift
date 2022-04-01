@@ -19,18 +19,18 @@ struct CashFlowCategoryGroupFormView: BaseView {
 
     var baseBody: some View {
         FormView {
-            Sector("Name") {
-                LabeledTextField("Name", viewModel: viewModel.nameInput)
+            Sector(.create_cash_flow_name) {
+                LabeledTextField(.create_cash_flow_name, viewModel: viewModel.nameInput)
             }
 
-            Sector("Include") {
+            Sector(.common_include) {
                 ForEach(viewModel.formModel.categories) { category in
                     CashFlowCategoryGroupItem(for: category, isOn: true, action: { uncheckCategory(category) })
                 }
             }
             .displayIf(viewModel.formModel.categories.isNotEmpty)
 
-            Sector("More") {
+            Sector(.create_cash_flow_more_label) {
                 ForEach(viewModel.otherCategories) { category in
                     CashFlowCategoryGroupItem(for: category, isOn: false, action: { checkCategory(category) })
                 }

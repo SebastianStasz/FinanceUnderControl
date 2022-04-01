@@ -36,7 +36,7 @@ public extension PersistenceController {
 private extension PersistenceController {
 
     static func createCurrencies(in context: NSManagedObjectContext) {
-        let decoder = JSONDecoder()
+//        let decoder = JSONDecoder()
 //        let symbolsReponse = try! decoder.decode(SymbolsReponse.self, from: DataFile.exchangerateSymbols.data) // swiftlint:disable:this force_try
 //        let latestRatesResponse = try! decoder.decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data) // swiftlint:disable:this force_try
 

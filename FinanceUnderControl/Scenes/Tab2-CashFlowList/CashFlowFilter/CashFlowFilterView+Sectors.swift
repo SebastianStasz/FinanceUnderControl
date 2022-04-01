@@ -29,7 +29,7 @@ extension CashFlowFilterView {
     }
 
     var otherSector: some View {
-        Sector("Other") {
+        Sector(.cash_flow_filter_other) {
             DateRangePicker(.cash_flow_filter_date_range, viewData: filter.datePickerViewData)
         }
     }

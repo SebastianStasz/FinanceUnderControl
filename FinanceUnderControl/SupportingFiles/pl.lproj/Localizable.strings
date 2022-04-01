@@ -26,9 +26,15 @@
 "common_secondary" = "Drugorzędna";
 "common_exchange_rate" = "Kurs wymiany";
 "common_category" = "Kategoria";
+"common_edit" = "Edytuj";
+"common_save" = "Zapisz";
+"common_color" = "Kolor";
+"common_icon" = "Ikona";
+"common_include" = "Uwzględnij";
 
 "cash_flow_filter_title" = "Filtruj";
 "cash_flow_filter_type" = "Typ przepływów";
+"cash_flow_filter_other" = "Inne";
 "cash_flow_filter_date_range" = "Zakres dat";
 "cash_flow_filter_date_start" = "Data początkowa";
 "cash_flow_filter_date_end" = "Data końcowa";
@@ -40,13 +46,21 @@
 "create_cash_flow_date" = "Data";
 "create_cash_flow_income" = "Przychód";
 "create_cash_flow_expense" = "Wydatek";
+"create_cash_flow_basic_label" = "Podstawowe";
+"create_cash_flow_more_label" = "Więcej";
 
 "cantor_from" = "Z";
 "cantor_to" = "Na";
 "cantor_converter" = "Przelicznik";
 "cantor_all_exchange_rates" = "Wszystkie kursy wymiany dla %@";
+"cantor_fill_in_form_error_message" = "Wypełnij formularz żeby zobaczyć kurs wymiany.";
 "cantor_exchange_rates_info_message" = "Kursy walut dostarczone przez: \"exchangerate.host\"";
 "cantor_load_exchange_rates_error_message" = "Nie udało się załadować kursu wymiany dla waluty \"%@\". Spróbuj ponownie później.";
+
+"settings_edit_group" = "Edytuj grupę";
+"settings_create_group" = "Utwórz grupę";
+"settings_create_category" = "Utwórz kategorię";
+"settings_select_action" = "Wybierz akcję";
 
 "cannot_delete_cash_flow_category_message" = "Nie możesz usunąć tej kategorii, ponieważ jest w użyciu.";
 

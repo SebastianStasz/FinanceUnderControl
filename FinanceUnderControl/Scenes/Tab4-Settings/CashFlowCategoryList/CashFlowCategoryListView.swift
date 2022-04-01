@@ -44,9 +44,9 @@ struct CashFlowCategoryListView: View {
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
         .sheet(item: $categoryGroupForm) { CashFlowCategoryGroupFormView(form: $0) }
         .sheet(item: $categoryForm) { CashFlowCategoryFormView(form: $0) }
-        .confirmationDialog("Select an action", isPresented: $isConfirmationDialogPresented) {
-            Button("Create group", action: presentCategoryGroupForm(.new(for: type)))
-            Button("Create category", action: presentCategoryForm(.new(for: type)))
+        .confirmationDialog(String.settings_select_action, isPresented: $isConfirmationDialogPresented) {
+            Button(.settings_create_group, action: presentCategoryGroupForm(.new(for: type)))
+            Button(.settings_create_category, action: presentCategoryForm(.new(for: type)))
         }
     }
 
@@ -59,7 +59,7 @@ struct CashFlowCategoryListView: View {
 
     private var sectors: [ListSector<CashFlowCategoryEntity>] {
         var sectors = categoryGroups.map { group -> ListSector<CashFlowCategoryEntity> in
-            let editAction = EditAction(title: "Edit group") {
+            let editAction = EditAction(title: .settings_edit_group) {
                 presentCategoryGroupForm(.edit(group))
             }
             return ListSector(group.name, elements: group.categories, editAction: editAction, visibleIfEmpty: true)

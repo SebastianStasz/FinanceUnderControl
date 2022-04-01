@@ -9,7 +9,7 @@ import Foundation
 
 public extension BaseButton {
 
-    public struct Configuration {
+    struct Configuration {
         let title: String
         let role: Role
         let enabled: Bool

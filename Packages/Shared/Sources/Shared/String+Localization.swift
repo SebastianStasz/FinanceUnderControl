@@ -46,11 +46,17 @@ public extension String {
     static let common_secondary = "common_secondary".localize()
     static let common_exchange_rate = "common_exchange_rate".localize()
     static let common_category = "common_category".localize()
+    static let common_edit = "common_edit".localize()
+    static let common_save = "common_save".localize()
+    static let common_color = "common_color".localize()
+    static let common_icon = "common_icon".localize()
+    static let common_include = "common_include".localize()
 
     // MARK: - Cash flow filter
 
     static let cash_flow_filter_title = "cash_flow_filter_title".localize()
     static let cash_flow_filter_type = "cash_flow_filter_type".localize()
+    static let cash_flow_filter_other = "cash_flow_filter_other".localize()
     static let cash_flow_filter_date_range = "cash_flow_filter_date_range".localize()
     static let cash_flow_filter_date_start = "cash_flow_filter_date_start".localize()
     static let cash_flow_filter_date_end = "cash_flow_filter_date_end".localize()
@@ -64,12 +70,15 @@ public extension String {
     static let create_cash_flow_date = "create_cash_flow_date".localize()
     static let create_cash_flow_income = "create_cash_flow_income".localize()
     static let create_cash_flow_expense = "create_cash_flow_expense".localize()
+    static let create_cash_flow_basic_label = "create_cash_flow_basic_label".localize()
+    static let create_cash_flow_more_label = "create_cash_flow_more_label".localize()
 
     // MARK: - Cantor
 
     static let cantor_from = "cantor_from".localize()
     static let cantor_to = "cantor_to".localize()
     static let cantor_converter = "cantor_converter".localize()
+    static let cantor_fill_in_form_error_message = "cantor_fill_in_form_error_message".localize()
     static let cantor_exchange_rates_info_message = "cantor_exchange_rates_info_message".localize()
 
     static func cantor_all_exchange_rates(forCurrency currency: String) -> String {
@@ -79,6 +88,13 @@ public extension String {
     static func cantor_load_exchange_rates_error_message(forCurrency currency: String) -> String {
         "cantor_load_exchange_rates_error_message".localize(parameter: currency)
     }
+
+    // MARK: - Settings
+
+    static let settings_edit_group = "settings_edit_group".localize()
+    static let settings_create_group = "settings_create_group".localize()
+    static let settings_create_category = "settings_create_category".localize()
+    static let settings_select_action = "settings_select_action".localize()
 
     static let cannot_delete_cash_flow_category_message = "cannot_delete_cash_flow_category_message".localize()
 

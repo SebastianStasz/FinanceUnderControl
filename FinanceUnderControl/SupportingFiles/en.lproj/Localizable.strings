@@ -26,9 +26,15 @@
 "common_secondary" = "Secondary";
 "common_exchange_rate" = "Exchange rate";
 "common_category" = "Category";
+"common_edit" = "Edit";
+"common_save" = "Save";
+"common_color" = "Color";
+"common_icon" = "Icon";
+"common_include" = "Include";
 
 "cash_flow_filter_title" = "Filter";
 "cash_flow_filter_type" = "Cash flow type";
+"cash_flow_filter_other" = "Other";
 "cash_flow_filter_date_range" = "Date range";
 "cash_flow_filter_date_start" = "Start date";
 "cash_flow_filter_date_end" = "End date";
@@ -40,13 +46,21 @@
 "create_cash_flow_date" = "Date";
 "create_cash_flow_income" = "Income";
 "create_cash_flow_expense" = "Expense";
+"create_cash_flow_basic_label" = "Basic";
+"create_cash_flow_more_label" = "More";
 
 "cantor_from" = "From";
 "cantor_to" = "To";
 "cantor_converter" = "Converter";
 "cantor_all_exchange_rates" = "All exchange rates for %@";
+"cantor_fill_in_form_error_message" = "Fill in the form to display the exchange rate.";
 "cantor_exchange_rates_info_message" = "Exchange rates data provided by: \"exchangerate.host\"";
 "cantor_load_exchange_rates_error_message" = "Failed to load exchange rates for \"%@\" currency. Please try again later.";
+
+"settings_edit_group" = "Edit group";
+"settings_create_group" = "Create group";
+"settings_create_category" = "Create category";
+"settings_select_action" = "Select an action";
 
 "cannot_delete_cash_flow_category_message" = "You can not delete this category, because it is in use.";
 

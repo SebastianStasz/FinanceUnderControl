@@ -26,7 +26,7 @@ enum CashFlowFormType<Entity: CashFlowFormSupport> {
         case .new:
             return .button_create
         case .edit:
-            return "Edit"
+            return .common_edit
         }
     }
 
@@ -35,7 +35,7 @@ enum CashFlowFormType<Entity: CashFlowFormSupport> {
         case .new:
             return .button_create
         case .edit:
-            return "Save"
+            return .common_save
         }
     }
 
