@@ -36,7 +36,7 @@ class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
 
         input.didTapConfirm
             .combineLatest($formModel)
-            .sink { [weak self] in self?.handleConfirmAction(form: $0.0, formModel: $0.1) }
+            .sink { [weak self] in self?.handleConfirmAction(form: $0.0) }
             .store(in: &cancellables)
     }
 
@@ -47,7 +47,7 @@ class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
         nameInput.assignResult(to: \.formModel.name, on: self)
     }
 
-    private func handleConfirmAction(form: FormType, formModel: Entity.FormModel) {
+    private func handleConfirmAction(form: FormType) {
         guard let model = formModel.model else { return }
         switch form {
         case .new:

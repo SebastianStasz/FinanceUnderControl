@@ -1,5 +1,5 @@
 //
-//  CashFlowCategoryGroupFormModel.swift
+//  CashFlowCategoryGroupEntity+FormModel.swift
 //  FinanceUnderControl
 //
 //  Created by sebastianstaszczyk on 14/03/2022.

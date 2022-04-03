@@ -20,6 +20,12 @@ protocol CashFlowFormSupport: Entity {
     @discardableResult func edit(model: Model) -> Bool
 }
 
+extension CashFlowFormSupport {
+    static func namesInUse(from context: NSManagedObjectContext) -> [String] {
+        []
+    }
+}
+
 // MARK: - Compatibility
 
 extension CashFlowCategoryEntity: CashFlowFormSupport {
@@ -39,5 +45,11 @@ extension CashFlowCategoryGroupEntity: CashFlowFormSupport {
 
     static func namesInUse(from context: NSManagedObjectContext) -> [String] {
         CashFlowCategoryGroupEntity.getAll(from: context).map { $0.name }
+    }
+}
+
+extension CashFlowEntity: CashFlowFormSupport {
+    var formModel: FormModel {
+        .init(date: date, name: name, value: value, currency: currency, category: category, type: category.type)
     }
 }

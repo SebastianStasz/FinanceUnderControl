@@ -12,12 +12,12 @@ struct CashFlowFormSheet: BaseView {
     @Environment(\.managedObjectContext) private var context
     @FetchRequest var currencies: FetchedResults<CurrencyEntity>
     @FetchRequest var categories: FetchedResults<CashFlowCategoryEntity>
-    let type: CashFlowType
+    let formType: CashFlowFormType<CashFlowEntity>
 
     @StateObject var viewModel = CashFlowFormVM()
 
     private var cashFlowData: CashFlowEntity.Model? {
-        viewModel.cashFlowModel.model
+        viewModel.formModel.model
     }
 
     var baseBody: some View {
@@ -25,29 +25,27 @@ struct CashFlowFormSheet: BaseView {
             sectorBasicInfo
             sectorMoreInfo
         }
-        .asSheet(title: type.name, askToDismiss: viewModel.formChanged, primaryButton: primaruButton)
+        .asSheet(title: formType.title, askToDismiss: viewModel.formChanged, primaryButton: primaruButton)
         .handleViewModelActions(viewModel)
     }
 
     private var primaruButton: HorizontalButtons.Configuration {
-        .init(.button_create, enabled: cashFlowData.notNil, action: createCashFlow)
+        .init(formType.confirmButtonTitle, enabled: cashFlowData.notNil, action: didTapConfirm)
     }
 
     func onAppear() {
-        let model = CashFlowFormModel(category: categories.first, type: type)
-        viewModel.initialCashFlowModel = model
-        viewModel.cashFlowModel = model
+        viewModel.onAppear(formType: formType)
     }
 
-    private func createCashFlow() {
-        viewModel.didTapCreate.send()
+    private func didTapConfirm() {
+        viewModel.didTapConfirm.send(formType)
     }
 
-    init(for type: CashFlowType) {
-        self.type = type
+    init(for formType: CashFlowFormType<CashFlowEntity>) {
+        self.formType = formType
         let currenciesSort = [CurrencyEntity.Sort.byCode(.forward).nsSortDescriptor]
         _currencies = FetchRequest<CurrencyEntity>(sortDescriptors: currenciesSort)
-        _categories = CashFlowCategoryEntity.fetchRequest(forType: type)
+        _categories = CashFlowCategoryEntity.fetchRequest(forType: formType.formModel.type ?? .income)
     }
 }
 
@@ -55,6 +53,6 @@ struct CashFlowFormSheet: BaseView {
 
 struct CashFlowFormView_Previews: PreviewProvider {
     static var previews: some View {
-        CashFlowFormSheet(for: .income)
+        CashFlowFormSheet(for: .new(for: .income))
     }
 }

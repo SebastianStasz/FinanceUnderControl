@@ -134,7 +134,7 @@ private extension PersistenceController {
         }
         let category = CashFlowCategoryEntity.createAndReturn(in: context, model: .init(name: categoryName, icon: categoryIcon, color: categoryColor, type: categoryType))
         for (name, value) in zip(names, values) {
-            CashFlowEntity.create(in: context, model: .init(name: name, date: date, value: value, currency: plnCurrency(in: context), category: category))
+            CashFlowEntity.createAndReturn(in: context, model: .init(name: name, date: date, value: value, currency: plnCurrency(in: context), category: category))
         }
         if let groupName = groupName {
             let request = CashFlowCategoryGroupEntity.nsFetchRequest(filteringBy: [.nameIs(groupName)])

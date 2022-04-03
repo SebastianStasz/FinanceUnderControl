@@ -25,7 +25,7 @@ extension CoreDataSteps {
 
     @discardableResult
     func createCashFlowEntity(data: CashFlowEntity.Model) -> CashFlowEntity {
-        CashFlowEntity.create(in: context, model: data)
+        CashFlowEntity.createAndReturn(in: context, model: data)
     }
 
     @discardableResult

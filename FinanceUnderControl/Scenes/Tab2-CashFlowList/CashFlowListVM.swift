@@ -11,10 +11,9 @@ import Foundation
 import SSUtils
 import SSValidation
 
-final class CashFlowListVM: ObservableObject, CombineHelper {
+final class CashFlowListVM: ViewModel {
     typealias Filter = CashFlowEntity.Filter
 
-    var cancellables: Set<AnyCancellable> = []
     let minValueInput = DoubleInputVM(validator: .alwaysValid())
     let maxValueInput = DoubleInputVM(validator: .alwaysValid())
 
@@ -22,7 +21,9 @@ final class CashFlowListVM: ObservableObject, CombineHelper {
     @Published var cashFlowFilter = CashFlowFilter()
     @Published var searchText = ""
 
-    init() {
+    override init() {
+        super.init()
+
         let searchPredicate = $searchText
             .map { $0.isEmpty ? nil : Filter.nameContains($0).nsPredicate }
 

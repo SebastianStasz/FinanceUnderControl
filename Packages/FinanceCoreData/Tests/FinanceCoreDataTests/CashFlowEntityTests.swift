@@ -72,13 +72,13 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
         let cashFlowEntity = createCashFlowEntity(data: cashFlowData)
 
         // Edit cash flow entity using cashFlowData2.
-        cashFlowEntity.edit(usingData: cashFlowData2)
+        cashFlowEntity.edit(model: cashFlowData2)
 
         // Verify that cash flow entity data is changed without category.
         try verifyCashFlowEntityData(in: cashFlowEntity, data: cashFlowData2, category: cashFlowCategoryEntity)
 
         // Edit cash flow entity using cashFlowData3.
-        cashFlowEntity.edit(usingData: cashFlowData3)
+        cashFlowEntity.edit(model: cashFlowData3)
 
         // Verify that cash flow entity data is changed.
         try verifyCashFlowEntityData(in: cashFlowEntity, data: cashFlowData3, category: cashFlowCategoryEntity3)

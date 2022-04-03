@@ -18,11 +18,13 @@ struct CashFlowListView: View {
     @State private var cashFlowToDelete: CashFlowEntity?
     @State private var isDeleteCashFlowShown = false
     @State private var isFilterViewShown = false
+    @State private var cashFlowFormType: CashFlowFormType<CashFlowEntity>?
 
     var body: some View {
         BaseList(.tab_cashFlow_title, sectors: cashFlowSectors) { cashFlow in
-            CashFlowPanelView(cashFlow: cashFlow)
+            CashFlowPanelView(for: cashFlow)
                 .contextMenu {
+                    Button.edit(editCashFlow(cashFlow))
                     Button.delete(showDeleteCashFlowConfirmation(for: cashFlow))
                 }
         }
@@ -32,6 +34,9 @@ struct CashFlowListView: View {
             .confirmationDialog(String.settings_select_action, isPresented: $isDeleteCashFlowShown) {
                 Button("Delete", role: .destructive, action: deleteCashFlow)
                 Button("Cancel", role: .cancel) { cashFlowToDelete = nil }
+            }
+            .sheet(item: $cashFlowFormType) {
+                CashFlowFormSheet(for: $0)
             }
             .sheet(isPresented: $isFilterViewShown) {
                 CashFlowFilterView(cashFlowFilter: $viewModel.cashFlowFilter)
@@ -55,6 +60,10 @@ struct CashFlowListView: View {
 
     private func showFilterView() {
         isFilterViewShown = true
+    }
+
+    private func editCashFlow(_ cashFlow: CashFlowEntity) {
+        cashFlowFormType = .edit(cashFlow)
     }
 
     private func showDeleteCashFlowConfirmation(for cashFlow: CashFlowEntity) {

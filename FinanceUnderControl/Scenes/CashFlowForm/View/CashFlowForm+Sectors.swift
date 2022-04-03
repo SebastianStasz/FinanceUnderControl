@@ -19,9 +19,9 @@ extension CashFlowFormSheet {
 
     var sectorMoreInfo: some View {
         Sector(.create_cash_flow_more_label) {
-            LabeledPicker(.create_cash_flow_currency, elements: currencies, selection: $viewModel.cashFlowModel.currency)
-            LabeledDatePicker(.create_cash_flow_date, selection: $viewModel.cashFlowModel.date)
-            LabeledPicker(.common_category, elements: categories, selection: $viewModel.cashFlowModel.category)
+            LabeledPicker(.create_cash_flow_currency, elements: currencies, selection: $viewModel.formModel.currency)
+            LabeledDatePicker(.create_cash_flow_date, selection: $viewModel.formModel.date)
+            LabeledPicker(.common_category, elements: categories, selection: $viewModel.formModel.category)
         }
     }
 }

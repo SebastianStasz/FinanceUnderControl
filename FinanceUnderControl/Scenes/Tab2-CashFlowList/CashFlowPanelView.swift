@@ -11,7 +11,11 @@ import SwiftUI
 
 struct CashFlowPanelView: View {
 
-    let cashFlow: CashFlowEntity
+    private let cashFlow: CashFlowEntity
+
+    init(for cashFlow: CashFlowEntity) {
+        self.cashFlow = cashFlow
+    }
 
     var body: some View {
         VStack(spacing: .large) {
@@ -47,8 +51,8 @@ struct CashFlowPanelView: View {
 struct CashFlowPanelView_Previews: PreviewProvider {
     static var previews: some View {
         let context = PersistenceController.previewEmpty.context
-        let cashFlow = CashFlowEntity.create(in: context, model: .sample(context: context))
-        CashFlowPanelView(cashFlow: cashFlow)
+        let cashFlow = CashFlowEntity.createAndReturn(in: context, model: .sample(context: context))
+        CashFlowPanelView(for: cashFlow)
             .previewLayout(.sizeThatFits)
             .padding()
             .background(Color.gray)

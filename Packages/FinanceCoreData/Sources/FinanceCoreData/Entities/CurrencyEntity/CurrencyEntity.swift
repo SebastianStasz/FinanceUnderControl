@@ -52,11 +52,12 @@ public extension CurrencyEntity {
     static func create(in context: NSManagedObjectContext, models: [Model]) {
         for model in models {
             guard let currency = CurrencyEntity.create(in: context, model: model) else { continue }
-            currency.addExchangeRates(in: context, SupportedCurrency.allCases.map { ExchangeRateEntity.Model(code: $0.code, rateValue: 0, baseCurrency: currency.code) })
+            currency.addExchangeRates(SupportedCurrency.allCases.map { ExchangeRateEntity.Model(code: $0.code, rateValue: 0, baseCurrency: currency.code) })
         }
     }
 
-    func addExchangeRates(in context: NSManagedObjectContext, _ exchangeRatesData: [ExchangeRateEntity.Model]) {
+    func addExchangeRates(_ exchangeRatesData: [ExchangeRateEntity.Model]) {
+        guard let context = getContext() else { return }
         let exchangeRatesData = exchangeRatesData.filter { $0.code != self.code }
         for exchangeRateData in exchangeRatesData {
             guard exchangeRateNotExist(withCode: exchangeRateData.code) else { continue }
@@ -126,7 +127,7 @@ public extension CurrencyEntity {
     static func sampleEUR(in context: NSManagedObjectContext) -> CurrencyEntity {
         let currency = CurrencyEntity.create(in: context, model: .eur)!
         let eurRatesData = try! JSONDecoder().decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data) // swiftlint:disable:this force_try
-        currency.addExchangeRates(in: context, eurRatesData.rates.map { $0.exchangeRateData(baseCurrency: currency.code) })
+        currency.addExchangeRates(eurRatesData.rates.map { $0.exchangeRateData(baseCurrency: currency.code) })
         return currency
     }
 }

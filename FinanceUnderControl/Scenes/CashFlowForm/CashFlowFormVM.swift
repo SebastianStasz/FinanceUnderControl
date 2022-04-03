@@ -12,34 +12,59 @@ import SSUtils
 import FinanceCoreData
 
 final class CashFlowFormVM: ViewModel {
-    private let currencySettings = CurrencySettings()
-    let didTapCreate = PassthroughSubject<Void, Never>()
-    var initialCashFlowModel: CashFlowFormModel!
-    let nameInput = TextInputVM(validator: .name())
-    let valueInput = DoubleInputVM(validator: .money())
+    typealias FormType = CashFlowFormType<CashFlowEntity>
 
-    @Published var cashFlowModel = CashFlowFormModel()
+    private let currencySettings = CurrencySettings()
+    let didTapConfirm = PassthroughSubject<FormType, Never>()
+//    var initialCashFlowModel: CashFlowFormModel!
+    var nameInput = TextInputVM()
+    var valueInput = DoubleInputVM()
+
+    @Published var formModel = CashFlowEntity.FormModel()
 
     var formChanged: Bool {
-        initialCashFlowModel != cashFlowModel
+//        initialCashFlowModel != cashFlowModel
+        true
     }
 
     override init() {
         super.init()
 
         currencySettings.result().primaryCurrency
-            .weakAssign(to: \.cashFlowModel.currency, on: self)
+            .weakAssign(to: \.formModel.currency, on: self)
 
-        nameInput.assignResult(to: \.cashFlowModel.name, on: self)
-        valueInput.assignResult(to: \.cashFlowModel.value, on: self)
-
-        CombineLatest(didTapCreate, $cashFlowModel.compactMap { $0.model })
-            .sink { [weak self] in self?.createCashFlow($0.1) }
+        CombineLatest(didTapConfirm, $formModel.compactMap { $0.model })
+            .sink { [weak self] in self?.handleConfirmAction(for: $0.0) }
             .store(in: &cancellables)
     }
 
-    private func createCashFlow(_ model: CashFlowEntity.Model) {
-        CashFlowEntity.create(in: AppVM.shared.context, model: model)
+    func onAppear(formType: FormType) {
+        formModel = formType.formModel
+        nameInput = TextInputVM(initialValue: formModel.name, validator: .name())
+        valueInput = DoubleInputVM(initialValue: formModel.value?.asString, validator: .money())
+        nameInput.assignResult(to: \.formModel.name, on: self)
+        valueInput.assignResult(to: \.formModel.value, on: self)
+    }
+
+    private func handleConfirmAction(for formType: FormType) {
+        guard let model = formModel.model else { return }
+        print(formType)
+        switch formType {
+        case .new:
+            createCashFlow(model)
+        case .edit:
+            editCashFlow(form: formType, model: model)
+        }
         baseAction.dismissView.send()
+    }
+
+    private func createCashFlow(_ model: CashFlowEntity.Model) {
+        CashFlowEntity.createAndReturn(in: AppVM.shared.context, model: model)
+        baseAction.dismissView.send()
+    }
+
+    private func editCashFlow(form: FormType, model: CashFlowEntity.Model) {
+        guard let entity = form.entity else { return }
+        _ = entity.edit(model: model)
     }
 }
