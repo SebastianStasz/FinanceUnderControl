@@ -15,13 +15,25 @@ struct CashFlowListView: View {
     ) private var cashFlows: FetchedResults<CashFlowEntity>
 
     @StateObject private var viewModel = CashFlowListVM()
-    @State private var isFilterViewPresented = false
+    @State private var cashFlowToDelete: CashFlowEntity?
+    @State private var isDeleteCashFlowShown = false
+    @State private var isFilterViewShown = false
 
     var body: some View {
-        BaseList(.tab_cashFlow_title, sectors: cashFlowSectors, rowView: CashFlowPanelView.init)
+        BaseList(.tab_cashFlow_title, sectors: cashFlowSectors) { cashFlow in
+            CashFlowPanelView(cashFlow: cashFlow)
+                .contextMenu {
+                    Button.delete(showDeleteCashFlowConfirmation(for: cashFlow))
+                }
+        }
+            .onDelete(perform: showDeleteCashFlowConfirmation)
             .searchable(text: $viewModel.searchText)
             .toolbar { toolbarContent }
-            .sheet(isPresented: $isFilterViewPresented) {
+            .confirmationDialog(String.settings_select_action, isPresented: $isDeleteCashFlowShown) {
+                Button("Delete", role: .destructive, action: deleteCashFlow)
+                Button("Cancel", role: .cancel) { cashFlowToDelete = nil }
+            }
+            .sheet(isPresented: $isFilterViewShown) {
                 CashFlowFilterView(cashFlowFilter: $viewModel.cashFlowFilter)
             }
             .onChange(of: viewModel.cashFlowPredicate) {
@@ -30,7 +42,7 @@ struct CashFlowListView: View {
     }
 
     private var toolbarContent: some ToolbarContent {
-        Toolbar.trailing(systemImage: SFSymbol.filter.name, action: presentFilterView)
+        Toolbar.trailing(systemImage: SFSymbol.filter.name, action: showFilterView)
     }
 
     private var cashFlowSectors: [ListSector<CashFlowEntity>] {
@@ -41,8 +53,17 @@ struct CashFlowListView: View {
 
     // MARK: - Interactions
 
-    private func presentFilterView() {
-        isFilterViewPresented = true
+    private func showFilterView() {
+        isFilterViewShown = true
+    }
+
+    private func showDeleteCashFlowConfirmation(for cashFlow: CashFlowEntity) {
+        cashFlowToDelete = cashFlow
+        isDeleteCashFlowShown = true
+    }
+
+    private func deleteCashFlow() {
+        _ = cashFlowToDelete?.delete()
     }
 }
 

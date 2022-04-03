@@ -78,11 +78,6 @@ struct CashFlowCategoryListView: View {
         categoryForm = form
     }
 
-    private func deleteCategory(at offsets: IndexSet) {
-        guard let index = offsets.first else { return }
-        deleteCategory(ungroupedCategories[index])
-    }
-
     private func deleteCategory(_ category: CashFlowCategoryEntity) {
         let wasDeleted = category.delete()
         if !wasDeleted { isAlertPresented = true }

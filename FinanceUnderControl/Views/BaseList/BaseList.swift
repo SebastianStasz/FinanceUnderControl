@@ -15,17 +15,17 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
     private let emptyMessage: String?
     private let sectors: [ListSector<T>]
     private let rowView: (T) -> RowView
-    var deleteElement: ((IndexSet) -> Void)?
+    var deleteElement: ((T) -> Void)?
 
     var body: some View {
         List {
             Group {
                 if isListWithoutSectors {
-                    listForElements(sectors.first!.elements)
+                    listForSector(sectors.first!)
                 } else {
                     ForEach(sectors) { sector in
                         Section(sector.header, shouldBePresented: sector.shouldBePresented) {
-                            listForElements(sector.elements)
+                            listForSector(sector)
                         }
                     }
                 }
@@ -43,9 +43,16 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
         .navigationTitle(title)
     }
 
-    private func listForElements(_ elements: [T]) -> some View {
-        ForEach(elements) { rowView($0) ; separator }
-            .onDelete(perform: deleteElement)
+    private func listForSector(_ sector: ListSector<T>) -> some View {
+        ForEach(sector.elements) { rowView($0) ; separator }
+            .onDelete { tryToDeleteElement(in: sector, at: $0) }
+    }
+
+    private func tryToDeleteElement(in sector: ListSector<T>, at indexSet: IndexSet) {
+        guard let index = indexSet.first,
+              let element = sector.elements[safe: index]
+        else { return }
+        deleteElement?(element)
     }
 
     private var separator: some View {
@@ -62,7 +69,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
         _ title: String,
         emptyMessage: String?,
         sectors: [ListSector<T>],
-        deleteElement: ((IndexSet) -> Void)?,
+        deleteElement: ((T) -> Void)?,
         @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
         self.title = title
@@ -104,7 +111,7 @@ extension BaseList {
 }
 
 extension BaseList {
-    func onDelete(perform action: ((IndexSet) -> Void)?) -> BaseList {
+    func onDelete(perform action: ((T) -> Void)?) -> BaseList {
         BaseList(title, emptyMessage: emptyMessage, sectors: sectors, deleteElement: action, rowView: rowView)
     }
 }
