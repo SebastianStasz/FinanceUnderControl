@@ -26,9 +26,9 @@ final class APIService {
         .eraseToAnyPublisher()
     }
 
-    func execute<Model: Decodable>(_ request: APIRequest, type: RequestType) async throws -> Model {
-        let request = request.getURLRequest(for: type, configuration: configuration)
-
+    func execute<Model: Decodable>(_ apiRequest: APIRequest, type: RequestType) async throws -> Model {
+        let request = apiRequest.getURLRequest(for: type, configuration: configuration)
+        printDebug(for: request)
         do {
             let (data, _) = try await URLSession.shared.data(for: request)
             do {
@@ -39,6 +39,15 @@ final class APIService {
         } catch let error {
             throw APIError.other(error)
         }
+    }
+
+    private func printDebug(for request: URLRequest) {
+        let method = request.httpMethod ?? "Unknown httpMethod"
+        let url = request.url?.absoluteString ?? "Unknown URL"
+        let requestInfo = "\n⬆️ \(method) -> \(url)"
+        let separators = Array(repeating: "-", count: requestInfo.count).joined()
+        print(requestInfo)
+        print(separators)
     }
 
     private func decode<Model: Decodable>(_ data: Data) throws -> Model {

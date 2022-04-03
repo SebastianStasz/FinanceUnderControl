@@ -65,10 +65,13 @@ public extension CurrencyEntity {
     }
 
     func updateExchangeRates(with exchageRatesData: [ExchangeRateEntity.Model]) {
-        self.updateDate = Date()
-        for exchangeRateData in exchageRatesData {
-            let exchageRate = self.exchangeRates.first(where: { $0.code == exchangeRateData.code })
-            exchageRate?.updateRateValue(to: exchangeRateData.rateValue)
+        guard let context = getContext() else { return }
+        context.performAndWait {
+            self.updateDate = Date()
+            for exchangeRateData in exchageRatesData {
+                let exchageRate = self.exchangeRates.first(where: { $0.code == exchangeRateData.code })
+                exchageRate?.updateRateValue(to: exchangeRateData.rateValue)
+            }
         }
     }
 
