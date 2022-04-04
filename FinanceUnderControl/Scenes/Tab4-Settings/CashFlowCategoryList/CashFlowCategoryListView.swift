@@ -16,7 +16,6 @@ struct CashFlowCategoryListView: View {
     @FetchRequest private var ungroupedCategories: FetchedResults<CashFlowCategoryEntity>
 
     @State private var isAlertPresented = false
-    @State private var isDeleteCategoryConfirmation = false
     @State private var chooseActionConfirmation = false
     @State private var categoryToDelete: CashFlowCategoryEntity?
     @State private var categoryForm: CashFlowFormType<CashFlowCategoryEntity>?
@@ -33,19 +32,15 @@ struct CashFlowCategoryListView: View {
         BaseList(type.namePlural, sectors: sectors) { category in
             CashFlowCategoryRow(for: category, editCategory: presentCategoryForm(.edit(category)))
                 .environment(\.editMode, editMode)
-                .contextMenu {
-                    Button.edit(presentCategoryForm(.edit(category)))
-                    Button.delete(tryDeleteCategory(category))
-                }
+                .actions(edit: presentCategoryForm(.edit(category)), delete: tryDeleteCategory(category))
         }
-        .onDelete(perform: tryDeleteCategory)
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
         .sheet(item: $categoryGroupForm) { CashFlowCategoryGroupFormView(form: $0) }
         .sheet(item: $categoryForm) { CashFlowCategoryFormView(form: $0) }
-        .confirmationDialog("Delete category", isPresented: $isDeleteCategoryConfirmation) {
-            Button.delete(deleteCategory())
-            Button("Cancel", role: .cancel) { categoryToDelete = nil }
+        .confirmationDialog("Delete category", item: $categoryToDelete) {
+            Button.delete(deleteCategory)
+            Button.cancel { categoryToDelete = nil }
         }
         .confirmationDialog(String.settings_select_action, isPresented: $chooseActionConfirmation) {
             Button(.settings_create_group, action: presentCategoryGroupForm(.new(for: type)))
@@ -87,12 +82,11 @@ struct CashFlowCategoryListView: View {
             return
         }
         categoryToDelete = category
-        isDeleteCategoryConfirmation = true
     }
 
     private func deleteCategory() {
-        categoryToDelete = nil
         _ = categoryToDelete?.delete()
+        categoryToDelete = nil
     }
 
     private func presentCategoryEditForm(for groupName: String) {

@@ -16,24 +16,19 @@ struct CashFlowListView: View {
 
     @StateObject private var viewModel = CashFlowListVM()
     @State private var cashFlowToDelete: CashFlowEntity?
-    @State private var isDeleteCashFlowShown = false
     @State private var isFilterViewShown = false
     @State private var cashFlowFormType: CashFlowFormType<CashFlowEntity>?
 
     var body: some View {
         BaseList(.tab_cashFlow_title, sectorIdMapper: dateToSectorTitle, sectors: cashFlows) { cashFlow in
             CashFlowPanelView(for: cashFlow)
-                .contextMenu {
-                    Button.edit(editCashFlow(cashFlow))
-                    Button.delete(showDeleteCashFlowConfirmation(for: cashFlow))
-            }
+                .actions(edit: editCashFlow(cashFlow), delete: showDeleteCashFlowConfirmation(for: cashFlow))
         }
-        .onDelete(perform: showDeleteCashFlowConfirmation)
         .searchable(text: $viewModel.searchText)
         .toolbar { toolbarContent }
-        .confirmationDialog(String.settings_select_action, isPresented: $isDeleteCashFlowShown) {
-            Button("Delete", role: .destructive, action: deleteCashFlow)
-            Button("Cancel", role: .cancel) { cashFlowToDelete = nil }
+        .confirmationDialog(.settings_select_action, item: $cashFlowToDelete) {
+            Button.delete(deleteCashFlow)
+            Button.cancel { cashFlowToDelete = nil }
         }
         .sheet(item: $cashFlowFormType) {
             CashFlowFormSheet(for: $0)
@@ -44,7 +39,6 @@ struct CashFlowListView: View {
         .onChange(of: viewModel.cashFlowPredicate) {
             cashFlows.nsPredicate = $0
         }
-        .overlay(ForEach(cashFlows) { _ in })
     }
 
     private var toolbarContent: some ToolbarContent {
@@ -67,12 +61,11 @@ struct CashFlowListView: View {
 
     private func showDeleteCashFlowConfirmation(for cashFlow: CashFlowEntity) {
         cashFlowToDelete = cashFlow
-        isDeleteCashFlowShown = true
     }
 
     private func deleteCashFlow() {
-        cashFlowToDelete = nil
         _ = cashFlowToDelete?.delete()
+        cashFlowToDelete = nil
     }
 }
 
