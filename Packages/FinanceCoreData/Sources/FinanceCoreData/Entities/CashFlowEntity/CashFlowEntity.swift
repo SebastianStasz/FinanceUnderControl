@@ -11,6 +11,7 @@ import Foundation
 @objc(CashFlowEntity)public class CashFlowEntity: NSManagedObject, Entity {
     @NSManaged public private(set) var name: String
     @NSManaged public private(set) var date: Date
+    @NSManaged public private(set) var monthAndYear: Date
     @NSManaged public private(set) var value: Double
     @NSManaged public private(set) var category: CashFlowCategoryEntity
     @NSManaged public private(set) var currency: CurrencyEntity?
@@ -24,6 +25,7 @@ public extension CashFlowEntity {
         let cashFlow = CashFlowEntity(context: context)
         cashFlow.name = model.name
         cashFlow.date = model.date
+        cashFlow.monthAndYear = model.monthAndYear
         cashFlow.value = model.value
         cashFlow.currency = model.currency
         cashFlow.category = model.category

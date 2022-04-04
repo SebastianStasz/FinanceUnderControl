@@ -108,6 +108,16 @@ extension BaseList {
     ) where T: Entity {
         self.init(title, emptyMessage: emptyMessage, elements: elements.map { $0 }, rowView: rowView)
     }
+
+    init<I>(_ title: String,
+            emptyMessage: String? = nil,
+            sectorIdMapper: (I) -> String,
+            sectors: SectionedFetchResults<I, T>,
+            @ViewBuilder rowView: @escaping (T) -> RowView
+    ) where T: Entity {
+        let sectors = sectors.map { ListSector(sectorIdMapper($0.id), elements: $0.map { $0 }) }
+        self.init(title, emptyMessage: emptyMessage, sectors: sectors, rowView: rowView)
+    }
 }
 
 extension BaseList {

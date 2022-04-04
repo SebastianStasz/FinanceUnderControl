@@ -12,12 +12,13 @@ import SwiftUI
 
 struct CashFlowCategoryListView: View {
     @Environment(\.editMode) private var editMode
-    @FetchRequest(sortDescriptors: [], predicate: nil) private var categories: FetchedResults<CashFlowCategoryEntity>
     @FetchRequest private var categoryGroups: FetchedResults<CashFlowCategoryGroupEntity>
     @FetchRequest private var ungroupedCategories: FetchedResults<CashFlowCategoryEntity>
 
     @State private var isAlertPresented = false
-    @State private var isConfirmationDialogPresented = false
+    @State private var isDeleteCategoryConfirmation = false
+    @State private var chooseActionConfirmation = false
+    @State private var categoryToDelete: CashFlowCategoryEntity?
     @State private var categoryForm: CashFlowFormType<CashFlowCategoryEntity>?
     @State private var categoryGroupForm: CashFlowFormType<CashFlowCategoryGroupEntity>?
     private let type: CashFlowType
@@ -29,22 +30,24 @@ struct CashFlowCategoryListView: View {
     }
 
     var body: some View {
-        ForEach(categories) { _ in } // Its needed to properly update categories fetched from groups after editing.
-
         BaseList(type.namePlural, sectors: sectors) { category in
             CashFlowCategoryRow(for: category, editCategory: presentCategoryForm(.edit(category)))
                 .environment(\.editMode, editMode)
                 .contextMenu {
                     Button.edit(presentCategoryForm(.edit(category)))
-                    Button.delete(deleteCategory(category))
+                    Button.delete(tryDeleteCategory(category))
                 }
         }
-        .onDelete(perform: deleteCategory)
+        .onDelete(perform: tryDeleteCategory)
         .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
         .sheet(item: $categoryGroupForm) { CashFlowCategoryGroupFormView(form: $0) }
         .sheet(item: $categoryForm) { CashFlowCategoryFormView(form: $0) }
-        .confirmationDialog(String.settings_select_action, isPresented: $isConfirmationDialogPresented) {
+        .confirmationDialog("Delete category", isPresented: $isDeleteCategoryConfirmation) {
+            Button.delete(deleteCategory())
+            Button("Cancel", role: .cancel) { categoryToDelete = nil }
+        }
+        .confirmationDialog(String.settings_select_action, isPresented: $chooseActionConfirmation) {
             Button(.settings_create_group, action: presentCategoryGroupForm(.new(for: type)))
             Button(.settings_create_category, action: presentCategoryForm(.new(for: type)))
         }
@@ -71,16 +74,25 @@ struct CashFlowCategoryListView: View {
     // MARK: - Interactions
 
    private func presentConfirmationDialog() {
-       isConfirmationDialogPresented = true
+       chooseActionConfirmation = true
    }
 
     private func presentCategoryForm(_ form: CashFlowFormType<CashFlowCategoryEntity>) {
         categoryForm = form
     }
 
-    private func deleteCategory(_ category: CashFlowCategoryEntity) {
-        let wasDeleted = category.delete()
-        if !wasDeleted { isAlertPresented = true }
+    private func tryDeleteCategory(_ category: CashFlowCategoryEntity) {
+        guard category.cashFlows.isEmpty else {
+            isAlertPresented = true
+            return
+        }
+        categoryToDelete = category
+        isDeleteCategoryConfirmation = true
+    }
+
+    private func deleteCategory() {
+        categoryToDelete = nil
+        _ = categoryToDelete?.delete()
     }
 
     private func presentCategoryEditForm(for groupName: String) {

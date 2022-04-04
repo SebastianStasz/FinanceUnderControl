@@ -9,11 +9,6 @@ import Foundation
 import SSUtils
 
 extension Date {
-    var monthAndYearComponents: Date {
-        let components = Calendar.current.dateComponents([.year, .month], from: self)
-        return Calendar.current.date(from: components)!
-    }
-
     func string(format: DateFormat) -> String {
         string(format: format.rawValue)
     }

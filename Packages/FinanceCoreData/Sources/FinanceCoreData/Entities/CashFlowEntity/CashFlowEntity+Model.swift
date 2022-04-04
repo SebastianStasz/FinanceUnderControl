@@ -7,6 +7,7 @@
 
 import CoreData
 import Foundation
+import SSUtils
 
 public extension CashFlowEntity {
 
@@ -16,6 +17,10 @@ public extension CashFlowEntity {
         public let value: Double
         public let currency: CurrencyEntity
         public let category: CashFlowCategoryEntity
+
+        public var monthAndYear: Date {
+            date.monthAndYear
+        }
 
         public init(name: String, date: Date, value: Double, currency: CurrencyEntity, category: CashFlowCategoryEntity) {
             self.name = name

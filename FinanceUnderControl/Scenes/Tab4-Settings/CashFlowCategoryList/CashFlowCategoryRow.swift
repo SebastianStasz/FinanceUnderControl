@@ -12,20 +12,24 @@ import SwiftUI
 struct CashFlowCategoryRow: View {
     @Environment(\.editMode) private var editMode
 
-    private let category: CashFlowCategoryEntity
+    private let name: String
+    private let icon: CashFlowCategoryIcon
+    private let color: Color
     private let editCategory: () -> Void
 
     init(for category: CashFlowCategoryEntity,
          editCategory: @autoclosure @escaping () -> Void
     ) {
-        self.category = category
+        name = category.name
+        icon = category.icon
+        color = category.color.color
         self.editCategory = editCategory
     }
 
     var body: some View {
         HStack(spacing: .medium) {
-            CircleView(color: category.color.color, icon: category.icon, size: 20)
-            Text(category.name)
+            CircleView(color: color, icon: icon, size: 20)
+            Text(name)
             Spacer()
             Button(action: {}) {
                 SFSymbol.infoCircle.image

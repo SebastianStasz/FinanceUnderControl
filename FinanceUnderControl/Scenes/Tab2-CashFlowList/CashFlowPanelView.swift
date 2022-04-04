@@ -11,38 +11,44 @@ import SwiftUI
 
 struct CashFlowPanelView: View {
 
-    private let cashFlow: CashFlowEntity
+    private let name: String
+    private let date: Date
+    private let categoryName: String
+    private let value: Double
+    private let currencyCode: String?
+    private let cashFlowType: CashFlowType
 
     init(for cashFlow: CashFlowEntity) {
-        self.cashFlow = cashFlow
+        name = cashFlow.name
+        date = cashFlow.date
+        categoryName = cashFlow.category.name
+        value = cashFlow.value
+        currencyCode = cashFlow.currency?.code
+        cashFlowType = cashFlow.category.type
     }
 
     var body: some View {
         VStack(spacing: .large) {
             HStack(alignment: .top, spacing: .small) {
-                Text(cashFlow.name, style: .bodyMedium)
+                Text(name, style: .bodyMedium)
                     .lineLimit(2)
                 Spacer()
-                Text(cashFlow.date.string(format: "d MMM YYYY"))
+                Text(date.string(format: "d MMM YYYY"))
             }
             HStack(alignment: .bottom) {
-                Text(cashFlow.category.name)
+                Text(categoryName)
                     .textCase(.uppercase)
                     .font(.caption2.weight(.light))
 
                 Spacer()
 
-                SwiftUI.Text("\(categoryType.symbol) \(cashFlow.value.asString) \(cashFlow.currency?.code ?? "")")
-                    .foregroundColor(categoryType.color)
+                SwiftUI.Text("\(cashFlowType.symbol) \(value.asString) \(currencyCode ?? "")")
+                    .foregroundColor(cashFlowType.color)
                     .font(.callout)
                     .fontWeight(.medium)
             }
         }
         .card()
-    }
-
-    private var categoryType: CashFlowType {
-        cashFlow.category.type
     }
 }
 
