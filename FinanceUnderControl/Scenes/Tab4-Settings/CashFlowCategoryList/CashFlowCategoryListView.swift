@@ -29,36 +29,36 @@ struct CashFlowCategoryListView: View {
     }
 
     var body: some View {
-        BaseList(type.namePlural, sectors: sectors) { category in
-            CashFlowCategoryRow(for: category, editCategory: presentCategoryForm(.edit(category)))
+        BaseList(type.namePlural, sectors: sectors) {
+            CashFlowCategoryRow(for: $0, editCategory: showCategoryForm(.edit($0)))
+                .actions(edit: showCategoryForm(.edit($0)), delete: showDeleteConfirmation($0))
                 .environment(\.editMode, editMode)
-                .actions(edit: presentCategoryForm(.edit(category)), delete: tryDeleteCategory(category))
         }
-        .toolbar { toolbarContent }
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
-        .sheet(item: $categoryGroupForm) { CashFlowCategoryGroupFormView(form: $0) }
-        .sheet(item: $categoryForm) { CashFlowCategoryFormView(form: $0) }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) { EditButton() }
+            Toolbar.trailing(systemImage: SFSymbol.plus.name) { showChooseActionConfirmation() }
+        }
+        .sheet(item: $categoryGroupForm) {
+            CashFlowCategoryGroupFormView(form: $0)
+        }
+        .sheet(item: $categoryForm) {
+            CashFlowCategoryFormView(form: $0)
+        }
         .confirmationDialog("Delete category", item: $categoryToDelete) {
             Button.delete(deleteCategory)
             Button.cancel { categoryToDelete = nil }
         }
         .confirmationDialog(String.settings_select_action, isPresented: $chooseActionConfirmation) {
-            Button(.settings_create_group, action: presentCategoryGroupForm(.new(for: type)))
-            Button(.settings_create_category, action: presentCategoryForm(.new(for: type)))
-        }
-    }
-
-    private var toolbarContent: some ToolbarContent {
-        Group {
-            ToolbarItem(placement: .navigationBarTrailing) { EditButton() }
-            Toolbar.trailing(systemImage: SFSymbol.plus.name) { presentConfirmationDialog() }
+            Button(.settings_create_group, action: showCategoryGroupForm(.new(for: type)))
+            Button(.settings_create_category, action: showCategoryForm(.new(for: type)))
         }
     }
 
     private var sectors: [ListSector<CashFlowCategoryEntity>] {
         var sectors = categoryGroups.map { group -> ListSector<CashFlowCategoryEntity> in
             let editAction = EditAction(title: .settings_edit_group) {
-                presentCategoryGroupForm(.edit(group))
+                showCategoryGroupForm(.edit(group))
             }
             return ListSector(group.name, elements: group.categories, editAction: editAction, visibleIfEmpty: true)
         }
@@ -68,15 +68,19 @@ struct CashFlowCategoryListView: View {
 
     // MARK: - Interactions
 
-   private func presentConfirmationDialog() {
-       chooseActionConfirmation = true
-   }
+    private func showChooseActionConfirmation() {
+        chooseActionConfirmation = true
+    }
 
-    private func presentCategoryForm(_ form: CashFlowFormType<CashFlowCategoryEntity>) {
+    private func showCategoryGroupForm(_ form: CashFlowFormType<CashFlowCategoryGroupEntity>) {
+        categoryGroupForm = form
+    }
+
+    private func showCategoryForm(_ form: CashFlowFormType<CashFlowCategoryEntity>) {
         categoryForm = form
     }
 
-    private func tryDeleteCategory(_ category: CashFlowCategoryEntity) {
+    private func showDeleteConfirmation(_ category: CashFlowCategoryEntity) {
         guard category.cashFlows.isEmpty else {
             isAlertPresented = true
             return
@@ -87,15 +91,6 @@ struct CashFlowCategoryListView: View {
     private func deleteCategory() {
         _ = categoryToDelete?.delete()
         categoryToDelete = nil
-    }
-
-    private func presentCategoryEditForm(for groupName: String) {
-        guard let group = categoryGroups.first(where: { $0.name == groupName }) else { return }
-        presentCategoryGroupForm(.edit(group))
-    }
-
-    private func presentCategoryGroupForm(_ form: CashFlowFormType<CashFlowCategoryGroupEntity>) {
-        categoryGroupForm = form
     }
 }
 

@@ -15,17 +15,19 @@ struct CashFlowListView: View {
     ) private var cashFlows: SectionedFetchResults<Date, CashFlowEntity>
 
     @StateObject private var viewModel = CashFlowListVM()
-    @State private var cashFlowToDelete: CashFlowEntity?
     @State private var isFilterViewShown = false
+    @State private var cashFlowToDelete: CashFlowEntity?
     @State private var cashFlowFormType: CashFlowFormType<CashFlowEntity>?
 
     var body: some View {
-        BaseList(.tab_cashFlow_title, sectorIdMapper: dateToSectorTitle, sectors: cashFlows) { cashFlow in
-            CashFlowPanelView(for: cashFlow)
-                .actions(edit: editCashFlow(cashFlow), delete: showDeleteCashFlowConfirmation(for: cashFlow))
+        BaseList(.tab_cashFlow_title, sectorIdMapper: { $0.string(format: .monthAndYear) }, sectors: cashFlows) {
+            CashFlowPanelView(for: $0)
+                .actions(edit: editCashFlow($0), delete: showDeleteCashFlowConfirmation(for: $0))
         }
         .searchable(text: $viewModel.searchText)
-        .toolbar { toolbarContent }
+        .toolbar {
+            Toolbar.trailing(systemImage: SFSymbol.filter.name, action: showFilterView)
+        }
         .confirmationDialog(.settings_select_action, item: $cashFlowToDelete) {
             Button.delete(deleteCashFlow)
             Button.cancel { cashFlowToDelete = nil }
@@ -39,14 +41,6 @@ struct CashFlowListView: View {
         .onChange(of: viewModel.cashFlowPredicate) {
             cashFlows.nsPredicate = $0
         }
-    }
-
-    private var toolbarContent: some ToolbarContent {
-        Toolbar.trailing(systemImage: SFSymbol.filter.name, action: showFilterView)
-    }
-
-    private func dateToSectorTitle(_ date: Date) -> String {
-        date.string(format: .monthAndYear)
     }
 
     // MARK: - Interactions
