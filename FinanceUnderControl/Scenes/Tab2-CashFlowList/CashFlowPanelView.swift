@@ -33,18 +33,18 @@ struct CashFlowPanelView: View {
                 Text(name, style: .bodyMedium)
                     .lineLimit(2)
                 Spacer()
-                Text(date.string(format: "d MMM YYYY"))
+                Text(date.string(format: "d MMM YYYY"), style: .headlineSmall())
             }
             HStack(alignment: .bottom) {
-                Text(categoryName)
+                SwiftUI.Text(categoryName)
                     .textCase(.uppercase)
-                    .font(.caption2.weight(.light))
+                    .font(.caption.weight(.light))
 
                 Spacer()
 
                 SwiftUI.Text("\(cashFlowType.symbol) \(value.asString) \(currencyCode ?? "")")
                     .foregroundColor(cashFlowType.color)
-                    .font(.callout)
+                    .font(.headline)
                     .fontWeight(.medium)
             }
         }
