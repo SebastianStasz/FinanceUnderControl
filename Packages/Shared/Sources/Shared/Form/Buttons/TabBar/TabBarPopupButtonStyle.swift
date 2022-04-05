@@ -18,7 +18,7 @@ public struct TabBarPopupButtonStyle: ButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         ZStack {
             Circle()
-                .foregroundColor(.red)
+                .foregroundColor(.blue)
 
             Image(systemName: image)
                 .foregroundColor(.white)

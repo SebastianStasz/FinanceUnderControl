@@ -15,21 +15,21 @@ public struct TabBarActionButtonStyle: ButtonStyle {
         self.isEnabled = isEnabled
     }
 
-    static private let linearGradient = Gradient(colors: [.white, .white, .red])
+    static private let linearGradient = Gradient(colors: [.basicPrimary, .basicPrimary, .blue])
     static private let actionBtnGradient = LinearGradient(gradient: Self.linearGradient, startPoint: .top, endPoint: .bottom)
 
     public func makeBody(configuration: Configuration) -> some View {
         ZStack {
             Circle()
                 .fill(Self.actionBtnGradient)
-                .scaleEffect(1.3)
+                .scaleEffect(1.2)
 
             Circle()
-                .foregroundColor(.red)
+                .foregroundColor(.blue)
 
-            Image(systemName: SFSymbol.plus.name)
+            SFSymbol.plus.image
                 .foregroundColor(.white)
-                .font(.system(size: 26, weight: .medium))
+                .font(.system(size: 24, weight: .medium))
                 .rotationEffect(isEnabled ? Angle(degrees: 45) : .zero)
         }
         .animation(.easeInOut(duration: 0.2))
