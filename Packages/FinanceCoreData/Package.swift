@@ -16,7 +16,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/SebastianStasz/SSUtils", from: "1.0.1"),
-//        .package(name: "Domain", path: "../Domain"),
+        .package(name: "Domain", path: "../Domain"),
         .package(name: "Shared", path: "../Shared")
     ],
     targets: [
@@ -24,7 +24,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "FinanceCoreData",
-            dependencies: ["SSUtils", "Shared"],
+            dependencies: ["SSUtils", "Shared", "Domain"],
             resources: [.copy("Data/ExchangerateSymbols.json"), .copy("Data/ExchangerateLatestEur.json")]),
         .testTarget(
             name: "FinanceCoreDataTests",

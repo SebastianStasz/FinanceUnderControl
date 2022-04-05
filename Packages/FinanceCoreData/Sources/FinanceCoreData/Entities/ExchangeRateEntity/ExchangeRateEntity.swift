@@ -42,4 +42,4 @@ public extension ExchangeRateEntity {
 
 // MARK: - Helpers
 
-extension ExchangeRateEntity: Removable {}
+extension ExchangeRateEntity: Deletable {}

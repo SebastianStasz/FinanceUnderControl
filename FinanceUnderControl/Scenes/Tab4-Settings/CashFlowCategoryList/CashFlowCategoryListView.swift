@@ -34,6 +34,7 @@ struct CashFlowCategoryListView: View {
                 .actions(edit: showCategoryForm(.edit($0)), delete: showDeleteConfirmation($0))
                 .environment(\.editMode, editMode)
         }
+        .onDelete(perform: showDeleteConfirmation)
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) { EditButton() }

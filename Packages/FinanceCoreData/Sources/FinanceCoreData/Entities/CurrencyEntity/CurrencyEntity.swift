@@ -132,4 +132,4 @@ public extension CurrencyEntity {
     }
 }
 
-extension CurrencyEntity: Removable {}
+extension CurrencyEntity: Deletable {}

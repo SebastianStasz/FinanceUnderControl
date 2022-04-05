@@ -15,6 +15,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
     private let emptyMessage: String?
     private let sectors: [ListSector<T>]
     private let rowView: (T) -> RowView
+    var deleteElement: ((T) -> Void)?
 
     var body: some View {
         List {
@@ -44,6 +45,14 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
     private func listForSector(_ sector: ListSector<T>) -> some View {
         ForEach(sector.elements) { rowView($0) ; separator }
+            .onDelete { tryToDeleteElement(in: sector, at: $0) }
+    }
+
+    private func tryToDeleteElement(in sector: ListSector<T>, at indexSet: IndexSet) {
+        guard let index = indexSet.first,
+              let element = sector.elements[safe: index]
+        else { return }
+        deleteElement?(element)
     }
 
     private var separator: some View {
@@ -56,15 +65,17 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
         sectors.count == 1 && sectors.first?.title == ListSector<T>.unvisibleSectorTitle
     }
 
-    init(
+    fileprivate init(
         _ title: String,
-        emptyMessage: String? = nil,
+        emptyMessage: String?,
         sectors: [ListSector<T>],
+        deleteElement: ((T) -> Void)?,
         @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
         self.title = title
         self.emptyMessage = emptyMessage
         self.sectors = sectors
+        self.deleteElement = deleteElement
         self.rowView = rowView
         UITableView.appearance().sectionFooterHeight = .small
         UITableView.appearance().sectionHeaderTopPadding = .large
@@ -77,10 +88,18 @@ extension BaseList {
 
     init(_ title: String,
          emptyMessage: String? = nil,
+         sectors: [ListSector<T>],
+         @ViewBuilder rowView: @escaping (T) -> RowView
+    ) {
+        self.init(title, emptyMessage: emptyMessage, sectors: sectors, deleteElement: nil, rowView: rowView)
+    }
+
+    init(_ title: String,
+         emptyMessage: String? = nil,
          elements: [T],
          @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
-        self.init(title, emptyMessage: emptyMessage, sectors: ListSector.unvisibleSector(elements), rowView: rowView)
+        self.init(title, emptyMessage: emptyMessage, sectors: ListSector.unvisibleSector(elements), deleteElement: nil, rowView: rowView)
     }
 
     init(_ title: String,
@@ -99,5 +118,11 @@ extension BaseList {
     ) where T: Entity {
         let sectors = sectors.map { ListSector(sectorIdMapper($0.id), elements: $0.map { $0 }) }
         self.init(title, emptyMessage: emptyMessage, sectors: sectors, rowView: rowView)
+    }
+}
+
+extension BaseList {
+    func onDelete(perform action: ((T) -> Void)?) -> BaseList {
+        BaseList(title, emptyMessage: emptyMessage, sectors: sectors, deleteElement: action, rowView: rowView)
     }
 }

@@ -17,7 +17,7 @@ public extension CashFlowCategoryGroupEntity {
         public init(name: String, type: CashFlowType, categories: [CashFlowCategoryEntity] = []) {
             self.name = name
             self.type = type
-            self.categories = categories
+            self.categories = categories.sorted(by: { $0.name < $1.name })
         }
     }
 }

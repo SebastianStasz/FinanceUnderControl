@@ -16,22 +16,26 @@ final class CashFlowFormVM: ViewModel {
 
     private let currencySettings = CurrencySettings()
     let didTapConfirm = PassthroughSubject<FormType, Never>()
-//    var initialCashFlowModel: CashFlowFormModel!
+    var initialFormModel: CashFlowEntity.FormModel!
     var nameInput = TextInputVM()
     var valueInput = DoubleInputVM()
 
     @Published var formModel = CashFlowEntity.FormModel()
 
     var formChanged: Bool {
-//        initialCashFlowModel != cashFlowModel
-        true
+        initialFormModel != formModel
     }
 
     override init() {
         super.init()
 
         currencySettings.result().primaryCurrency
-            .weakAssign(to: \.formModel.currency, on: self)
+            .filter { [unowned self] _ in self.formModel.currency.isNil }
+            .sink { [unowned self] in
+                self.initialFormModel.currency = $0
+                self.formModel.currency = $0
+            }
+            .store(in: &cancellables)
 
         CombineLatest(didTapConfirm, $formModel.compactMap { $0.model })
             .sink { [weak self] in self?.handleConfirmAction(for: $0.0) }
@@ -40,6 +44,7 @@ final class CashFlowFormVM: ViewModel {
 
     func onAppear(formType: FormType) {
         formModel = formType.formModel
+        initialFormModel = formModel
         nameInput = TextInputVM(initialValue: formModel.name, validator: .name())
         valueInput = DoubleInputVM(initialValue: formModel.value?.asString, validator: .money())
         nameInput.assignResult(to: \.formModel.name, on: self)
@@ -48,7 +53,6 @@ final class CashFlowFormVM: ViewModel {
 
     private func handleConfirmAction(for formType: FormType) {
         guard let model = formModel.model else { return }
-        print(formType)
         switch formType {
         case .new:
             createCashFlow(model)

@@ -19,6 +19,7 @@ final class CashFlowCategoryGroupFormVM: CashFlowGroupingFormVM<CashFlowCategory
         } else {
             otherCategories = CashFlowCategoryEntity.getAll(from: context, filteringBy: [.typeIs(formModel.type!)])
         }
+        otherCategories.sort(by: { $0.name < $1.name })
     }
 
     func checkCategory(_ category: CashFlowCategoryEntity) {

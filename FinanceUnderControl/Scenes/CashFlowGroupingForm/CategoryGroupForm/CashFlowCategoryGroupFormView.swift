@@ -6,16 +6,14 @@
 //
 
 import FinanceCoreData
-import SwiftUI
 import Shared
+import SwiftUI
 
 struct CashFlowCategoryGroupFormView: BaseView {
     @Environment(\.dismiss) private var dismiss
-
     @StateObject var viewModel = CashFlowCategoryGroupFormVM()
-    let form: CashFlowFormType<CashFlowCategoryGroupEntity>
 
-    @State private var includedCategories: [String] = []
+    let form: CashFlowFormType<CashFlowCategoryGroupEntity>
 
     var baseBody: some View {
         FormView {
@@ -24,15 +22,15 @@ struct CashFlowCategoryGroupFormView: BaseView {
             }
 
             Sector(.common_include) {
-                ForEach(viewModel.formModel.categories) { category in
-                    CashFlowCategoryGroupItem(for: category, isOn: true, action: { uncheckCategory(category) })
+                ForEach(viewModel.formModel.categories) {
+                    CashFlowCategoryGroupItem(for: $0, isOn: true, action: uncheckCategory($0))
                 }
             }
             .displayIf(viewModel.formModel.categories.isNotEmpty)
 
             Sector(.create_cash_flow_more_label) {
-                ForEach(viewModel.otherCategories) { category in
-                    CashFlowCategoryGroupItem(for: category, isOn: false, action: { checkCategory(category) })
+                ForEach(viewModel.otherCategories) {
+                    CashFlowCategoryGroupItem(for: $0, isOn: false, action: checkCategory($0))
                 }
             }
             .displayIf(viewModel.otherCategories.isNotEmpty)

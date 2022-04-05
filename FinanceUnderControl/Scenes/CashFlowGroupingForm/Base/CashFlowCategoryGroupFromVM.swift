@@ -15,6 +15,7 @@ class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
 
     struct Input {
         let didTapConfirm = PassthroughSubject<FormType, Never>()
+        let didTapDelete = PassthroughSubject<FormType, Never>()
     }
 
     let context: NSManagedObjectContext
@@ -37,6 +38,10 @@ class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
         input.didTapConfirm
             .combineLatest($formModel)
             .sink { [weak self] in self?.handleConfirmAction(form: $0.0) }
+            .store(in: &cancellables)
+
+        input.didTapDelete
+            .sink { [weak self] in self?.deleteCashFlowGroup($0.entity) }
             .store(in: &cancellables)
     }
 
@@ -64,5 +69,10 @@ class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
 
     private func editCashFlowCategoryGroup(form: FormType, model: Entity.Model) {
         form.entity?.edit(model: model)
+    }
+
+    private func deleteCashFlowGroup(_ cashFlowGroup: Entity?) {
+        baseAction.dismissView.send()
+        cashFlowGroup?.delete()
     }
 }

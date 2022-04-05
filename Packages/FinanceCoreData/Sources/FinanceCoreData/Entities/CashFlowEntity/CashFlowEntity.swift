@@ -56,4 +56,4 @@ public extension CashFlowEntity {
 
 // MARK: - Helpers
 
-extension CashFlowEntity: Removable {}
+extension CashFlowEntity: Deletable {}

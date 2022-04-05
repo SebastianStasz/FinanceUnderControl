@@ -14,7 +14,7 @@ struct CashFlowCategoryGroupItem: View {
     private let isOn: Bool
     private let action: Action
 
-    init(for category: CashFlowCategoryEntity, isOn: Bool, action: @escaping Action) {
+    init(for category: CashFlowCategoryEntity, isOn: Bool, action: @autoclosure @escaping Action) {
         self.category = category
         self.isOn = isOn
         self.action = action
@@ -34,8 +34,8 @@ struct CashFlowCategoryGroupItem_Previews: PreviewProvider {
     static var previews: some View {
         let category = CashFlowCategoryEntity.createAndReturn(in: PersistenceController.previewEmpty.context, model: .carExpense)
         Group {
-            CashFlowCategoryGroupItem(for: category, isOn: true, action: {})
-            CashFlowCategoryGroupItem(for: category, isOn: false, action: {})
+            CashFlowCategoryGroupItem(for: category, isOn: true, action: ())
+            CashFlowCategoryGroupItem(for: category, isOn: false, action: ())
         }
         .sizeThatFits()
     }

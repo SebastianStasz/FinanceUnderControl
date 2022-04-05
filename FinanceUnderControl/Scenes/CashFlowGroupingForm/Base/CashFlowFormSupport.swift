@@ -10,7 +10,7 @@ import Foundation
 import FinanceCoreData
 import SSValidation
 
-protocol CashFlowFormSupport: Entity {
+protocol CashFlowFormSupport: Entity, Deletable {
     associatedtype FormModel: CashFlowGroupingFormModel where FormModel.Ent == Self
 
     var formModel: FormModel { get }
