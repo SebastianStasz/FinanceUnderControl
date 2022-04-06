@@ -60,14 +60,6 @@ public extension CashFlowCategoryGroupEntity {
         return true
     }
 
-    /// Deletes cash flow category if context found.
-    /// - Returns: `true` if the entity has been deleted, `false` if the entity cannot be deleted.
-    func delete() -> Bool {
-        guard let context = self.getContext() else { return false }
-        context.delete(self)
-        return true
-    }
-
     /// Adds a cash flow category to a cash flow category group if the category is of the same type as the group.
     /// - Parameter category: Category to be added to the group.
     /// - Returns: `true` if the category has been added, `false` if the category cannot be added.
@@ -106,11 +98,9 @@ public extension CashFlowCategoryGroupEntity {
     }
 }
 
-// MARK: - Private methods
+// MARK: - Helpers
 
-private extension CashFlowCategoryGroupEntity {
-
-}
+extension CashFlowCategoryGroupEntity: Deletable {}
 
 // MARK: - Generated accessors for categories
 

@@ -44,14 +44,6 @@ public extension CashFlowEntity {
         category = model.category
         return true
     }
-
-    /// Deletes cash flow  if context found.
-    /// - Returns: `true` if the entity has been deleted, `false` if the entity cannot be deleted.
-    func delete() -> Bool {
-        guard let context = self.getContext() else { return false }
-        context.delete(self)
-        return true
-    }
 }
 
 // MARK: - Helpers
