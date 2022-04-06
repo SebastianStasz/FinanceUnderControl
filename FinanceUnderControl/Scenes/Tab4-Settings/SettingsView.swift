@@ -17,6 +17,8 @@ struct SettingsView: View {
 
     @StateObject private var viewModel = SettingsVM()
 
+    @State private var isExportDataViewShown = false
+
     var body: some View {
         FormView {
             Sector(.common_categories) {
@@ -29,10 +31,18 @@ struct SettingsView: View {
                 LabeledPicker(.common_secondary, elements: currencies, selection: $viewModel.secondaryCurrency)
             }
 
+            Sector("Data") {
+                Button(action: { isExportDataViewShown = true }) {
+                    Text("Export").card()
+                }
+                .buttonStyle(.plain)
+            }
+
             Sector("Debug") {
                 Navigation("Design system", leadsTo: DesignSystemView())
             }
         }
+        .sheet(isPresented: $isExportDataViewShown, content: ExportCashFlowDataView.init)
     }
 }
 

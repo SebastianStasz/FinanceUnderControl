@@ -14,19 +14,22 @@ public struct LabeledTextField<T>: View {
 
     private let title: String
     private let style: CardStyle
+    private let prompt: String?
 
     public init(_ title: String,
                 viewModel: InputVM<T>,
+                prompt: String? = nil,
                 style: CardStyle = .primary
     ) {
         self.title = title
         self.viewModel = viewModel
+        self.prompt = prompt
         self.style = style
     }
 
     public var body: some View {
         VStack(spacing: .micro) {
-            InputField(title, viewModel: viewModel, prompt: title).textStyle(.body())
+            InputField(title, viewModel: viewModel, prompt: prompt ?? title).textStyle(.body())
 
             if let message = viewModel.validationMessage {
                 Text(message, style: .validation)

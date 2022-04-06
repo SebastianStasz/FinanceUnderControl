@@ -11,6 +11,8 @@ import SSUtils
 
 class ViewModel: ObservableObject, CombineHelper {
 
+    @Published var isLoading = false
+
     class BaseAction {
         let dismissView = PassthroughSubject<Void, Never>()
 
