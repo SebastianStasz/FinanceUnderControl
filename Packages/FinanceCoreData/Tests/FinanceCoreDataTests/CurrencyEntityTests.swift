@@ -58,7 +58,7 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
         currencyEntity.addExchangeRates(exchangeRatesData)
 
         // Verify currency data is correct.
-        try verifyCurrencyData(in: currencyEntity, data: currencyData, wasUpdated: true, exchangeRates: exchangeRatesData)
+        try verifyCurrencyData(in: currencyEntity, data: currencyData, wasUpdated: false, exchangeRates: exchangeRatesData)
     }
 
     func test_update_exchange_rates() throws {
