@@ -39,7 +39,3 @@ public extension ExchangeRateEntity {
         self.rateValue = value
     }
 }
-
-// MARK: - Helpers
-
-extension ExchangeRateEntity: Deletable {}

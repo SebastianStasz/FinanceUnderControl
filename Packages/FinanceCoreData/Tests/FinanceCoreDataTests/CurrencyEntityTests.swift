@@ -84,6 +84,7 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
         try verifyCurrencyData(in: currencyEntity, data: currencyData, wasUpdated: true, exchangeRates: exchangeRatesData2)
     }
 
+    // Generally currency entity can not be deleted. Scanario is only checking relations between entities.
     func test_delete_currency_entity() throws {
         // Create currency entity using sample data.
         let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .pln))
@@ -101,7 +102,7 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
         currencyEntity.addExchangeRates(exchangeRatesData)
 
         // Delete currency entity.
-        currencyEntity.delete()
+        context.delete(currencyEntity)
 
         // Verify that currency entity was deleted.
         try fetchRequestShouldReturnElements(0, for: CurrencyEntity.self)
@@ -111,9 +112,6 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
 
         // Verify that cash flow entity was not deleted.
         try fetchRequestShouldReturnElements(1, for: CashFlowEntity.self)
-
-        // Save context.
-        try saveContext()
     }
 }
 

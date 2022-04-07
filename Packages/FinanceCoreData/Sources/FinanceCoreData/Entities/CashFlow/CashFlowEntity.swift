@@ -14,7 +14,7 @@ import Foundation
     @NSManaged public private(set) var monthAndYear: Date
     @NSManaged public private(set) var value: Double
     @NSManaged public private(set) var category: CashFlowCategoryEntity
-    @NSManaged public private(set) var currency: CurrencyEntity?
+    @NSManaged public private(set) var currency: CurrencyEntity
 }
 
 // MARK: - Methods

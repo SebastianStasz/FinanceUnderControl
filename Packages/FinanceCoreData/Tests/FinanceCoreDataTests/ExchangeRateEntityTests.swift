@@ -60,6 +60,7 @@ final class ExchangeRateEntityTests: XCTestCase, CoreDataSteps {
         try verifyExchangeRateData(in: exchangeRateEntity, data: exchangeRateData, baseCurrency: currencyEntity, rateValue: 2)
     }
 
+    // Generally exhchange rate entity can not be deleted. Scanario is only checking relations between entities.
     func test_delete_exchange_rate_entity() throws {
         // Create currency entity that will be used as base currency.
         let currencyEntity = try XCTUnwrap(createCurrencyEntity(data: .pln))
@@ -68,7 +69,7 @@ final class ExchangeRateEntityTests: XCTestCase, CoreDataSteps {
         let exchangeRateEntity = createExchangeRateEntity(model: .eurInPln, baseCurrency: currencyEntity)
 
         // Delete exchange rate entity.
-        exchangeRateEntity.delete()
+        context.delete(exchangeRateEntity)
 
         // Verify that exchange rate entity was deleted.
         try fetchRequestShouldReturnElements(0, for: ExchangeRateEntity.self)

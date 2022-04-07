@@ -131,5 +131,3 @@ public extension CurrencyEntity {
         return currency
     }
 }
-
-extension CurrencyEntity: Deletable {}

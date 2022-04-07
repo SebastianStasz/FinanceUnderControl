@@ -82,7 +82,7 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
         let cashFlowEntity = createCashFlowEntity(data: .sample1(currency: currency, category: category))
 
         // Try to delete cash flow category entity.
-        XCTAssertFalse(category.delete())
+        category.delete()
 
         // Verify that cash flow category entity was not deleted.
         try fetchRequestShouldReturnElements(1, for: CashFlowCategoryEntity.self)
@@ -94,7 +94,7 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
         try saveContext()
 
         // Delete cash flow category entity.
-        XCTAssertTrue(category.delete())
+        category.delete()
 
         // Verify that cash flow category entity was deleted.
         try fetchRequestShouldReturnElements(0, for: CashFlowCategoryEntity.self)

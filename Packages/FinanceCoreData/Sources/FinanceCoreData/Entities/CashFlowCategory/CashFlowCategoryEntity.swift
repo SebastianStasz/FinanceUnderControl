@@ -9,7 +9,7 @@ import CoreData
 import Foundation
 import SwiftUI
 
-@objc(CashFlowCategoryEntity) public class CashFlowCategoryEntity: NSManagedObject, Entity {
+@objc(CashFlowCategoryEntity) public class CashFlowCategoryEntity: NSManagedObject, Entity, Deletable {
     @NSManaged private var type_: String
     @NSManaged private var icon_: String
     @NSManaged private var color_: String
@@ -58,10 +58,10 @@ public extension CashFlowCategoryEntity {
         return true
     }
 
-    func delete() -> Bool {
-        guard let context = self.getContext(), self.cashFlows.isEmpty else { return false }
-        context.delete(self)
-        return true
+    func delete() {
+        CoreDataHelper.delete(self, canBeDeleted: {
+            self.cashFlows.isEmpty
+        })
     }
 
     static func fetchRequest(forType type: CashFlowType, group: Group? = nil) -> FetchRequest<CashFlowCategoryEntity> {

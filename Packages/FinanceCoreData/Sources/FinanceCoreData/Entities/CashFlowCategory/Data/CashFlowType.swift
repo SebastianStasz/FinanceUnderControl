@@ -10,7 +10,7 @@ import SSUtils
 import SwiftUI
 import Shared
 
-public enum CashFlowType: String {
+public enum CashFlowType: String, Encodable {
     case income
     case expense
     case unknown
