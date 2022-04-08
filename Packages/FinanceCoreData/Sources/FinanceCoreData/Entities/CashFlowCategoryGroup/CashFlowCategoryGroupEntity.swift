@@ -91,6 +91,11 @@ public extension CashFlowCategoryGroupEntity {
         CashFlowCategoryGroupEntity.fetchRequest(filteringBy: [.typeIs(type)], sortingBy: [.byName()])
     }
 
+    static func getAll(from context: NSManagedObjectContext) async -> [CashFlowCategoryGroupEntity.DataModel] {
+        let result = try? await context.asyncFetch(request: CashFlowCategoryGroupEntity.nsFetchRequest(sortingBy: [.byName()]))
+        return result ?? []
+    }
+
     static func getAll(from context: NSManagedObjectContext) -> [CashFlowCategoryGroupEntity] {
         let request = CashFlowCategoryGroupEntity.nsFetchRequest(sortingBy: [.byName()])
         let result = try? context.fetch(request)
@@ -109,4 +114,13 @@ private extension CashFlowCategoryGroupEntity {
     @objc(removeCategories_:)       @NSManaged func removeFromCategories_(entities: NSSet)
     @objc(addCategories_Object:)    @NSManaged func addToCategories_(entity: CashFlowCategoryEntity)
     @objc(addCategories_:)          @NSManaged func addToCategories_(entities: NSSet)
+}
+
+extension NSManagedObjectContext {
+    func asyncFetch<E, R>(request: NSFetchRequest<E>) async throws -> [R] where E: Storable, R == E.EntityDataModel {
+        try PersistenceController.preview.backgroundContext.performAndWait { [weak self] in
+            print("Thread: \(Thread.isMainThread)")
+            return try self?.fetch(request).compactMap { $0.dataModel } ?? []
+        }
+    }
 }

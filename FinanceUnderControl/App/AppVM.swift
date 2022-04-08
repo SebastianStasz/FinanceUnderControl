@@ -12,13 +12,16 @@ import CoreData
 final class AppVM {
     static let shared = AppVM()
 
-    private let currencyService: CurrencyService
-    let context: NSManagedObjectContext
+    private let currencyService = CurrencyService()
+    let controller: PersistenceController
+
+    var context: NSManagedObjectContext {
+        controller.context
+    }
 
     private init() {
-        let context = PersistenceController.preview.context
-        self.currencyService = CurrencyService()
-        self.context = context
+        let controller = PersistenceController.preview
+        self.controller = controller
     }
 
     func setupCurrencies() async {

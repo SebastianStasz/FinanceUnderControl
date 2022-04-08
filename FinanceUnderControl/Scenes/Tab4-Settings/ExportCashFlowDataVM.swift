@@ -6,6 +6,7 @@
 //
 
 import Combine
+import FinanceCoreData
 import Foundation
 import SSUtils
 import SSValidation
@@ -36,8 +37,7 @@ final class ExportCashFlowDataVM: ViewModel {
     }
 
     private func samplePrepareData() async -> String {
-        try! await Task.sleep(nanoseconds: 3000000000)
-        return "Prepare cash flow data here"
+        let model = await FinanceStorageModel.generate(from: AppVM.shared.context)
+        return String(data: try! JSONEncoder().encode(model), encoding: .utf8)!
     }
 }
-

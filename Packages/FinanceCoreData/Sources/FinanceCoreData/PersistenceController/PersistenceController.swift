@@ -17,8 +17,10 @@ public final class PersistenceController {
         container.viewContext
     }
 
+    public let backgroundContext: NSManagedObjectContext
+
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "FinanceCoreDataModel", managedObjectModel: getNSManagedObjectModel())
+        container = NSPersistentContainer(name: "FinanceCoreDataModel", managedObjectModel: Self.getNSManagedObjectModel())
 
         if inMemory { container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null") }
 
@@ -26,6 +28,7 @@ public final class PersistenceController {
             guard let error = error else { return }
             fatalError("Loading persistent stores error: \(error)")
         }
+        backgroundContext = container.newBackgroundContext()
     }
 
     public func save() {
@@ -36,14 +39,14 @@ public final class PersistenceController {
         }
     }
 
-    private func getModelURL() -> URL {
+    private static func getModelURL() -> URL {
         guard let url = Bundle.module.url(forResource: "FinanceCoreDataModel", withExtension: "momd") else {
             fatalError("Failed to find url for the resource FinanceCoreData.momd")
         }
         return url
     }
 
-    private func getNSManagedObjectModel() -> NSManagedObjectModel {
+    private static func getNSManagedObjectModel() -> NSManagedObjectModel {
         let modelURL = getModelURL()
         guard let model = NSManagedObjectModel(contentsOf: modelURL) else {
             fatalError("Failed to initialize managed object model from path: \(modelURL)")
