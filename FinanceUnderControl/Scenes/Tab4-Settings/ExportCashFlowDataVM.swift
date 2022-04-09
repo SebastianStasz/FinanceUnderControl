@@ -37,7 +37,7 @@ final class ExportCashFlowDataVM: ViewModel {
     }
 
     private func samplePrepareData() async -> String {
-        let model = await FinanceStorageModel.generate(from: AppVM.shared.context)
+        let model = await FinanceStorageModel.generate(from: AppVM.shared.controller)
         return String(data: try! JSONEncoder().encode(model), encoding: .utf8)!
     }
 }

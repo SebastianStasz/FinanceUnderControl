@@ -12,12 +12,8 @@ public final class PersistenceController {
     public static let shared = PersistenceController()
 
     private var container: NSPersistentContainer!
-
-    public var context: NSManagedObjectContext {
-        container.viewContext
-    }
-
     public let backgroundContext: NSManagedObjectContext
+    public let context: NSManagedObjectContext
 
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "FinanceCoreDataModel", managedObjectModel: Self.getNSManagedObjectModel())
@@ -28,6 +24,7 @@ public final class PersistenceController {
             guard let error = error else { return }
             fatalError("Loading persistent stores error: \(error)")
         }
+        context = container.viewContext
         backgroundContext = container.newBackgroundContext()
     }
 

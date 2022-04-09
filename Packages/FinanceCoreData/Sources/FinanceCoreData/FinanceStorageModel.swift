@@ -15,8 +15,8 @@ public struct FinanceStorageModel: Encodable {
 }
 
 public extension FinanceStorageModel {
-    static func generate(from context: NSManagedObjectContext) async -> FinanceStorageModel {
-        let groups = await CashFlowCategoryGroupEntity.getAll(from: context)
+    static func generate(from controller: PersistenceController) async -> FinanceStorageModel {
+        let groups = await CashFlowCategoryGroupEntity.getAll(from: controller)
         return .init(groups: groups, categories: [], cashFlows: [])
     }
 }

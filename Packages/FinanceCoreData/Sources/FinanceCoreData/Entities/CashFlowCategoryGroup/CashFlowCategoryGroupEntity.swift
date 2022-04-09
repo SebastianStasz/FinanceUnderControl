@@ -91,8 +91,8 @@ public extension CashFlowCategoryGroupEntity {
         CashFlowCategoryGroupEntity.fetchRequest(filteringBy: [.typeIs(type)], sortingBy: [.byName()])
     }
 
-    static func getAll(from context: NSManagedObjectContext) async -> [CashFlowCategoryGroupEntity.DataModel] {
-        let result = try? await context.asyncFetch(request: CashFlowCategoryGroupEntity.nsFetchRequest(sortingBy: [.byName()]))
+    static func getAll(from controller: PersistenceController) async -> [CashFlowCategoryGroupEntity.DataModel] {
+        let result = try? await controller.asyncFetch(request: CashFlowCategoryGroupEntity.nsFetchRequest(sortingBy: [.byName()]))
         return result ?? []
     }
 
@@ -116,11 +116,9 @@ private extension CashFlowCategoryGroupEntity {
     @objc(addCategories_:)          @NSManaged func addToCategories_(entities: NSSet)
 }
 
-extension NSManagedObjectContext {
+extension PersistenceController {
     func asyncFetch<E, R>(request: NSFetchRequest<E>) async throws -> [R] where E: Storable, R == E.EntityDataModel {
-        try PersistenceController.preview.backgroundContext.performAndWait { [weak self] in
-            print("Thread: \(Thread.isMainThread)")
-            return try self?.fetch(request).compactMap { $0.dataModel } ?? []
-        }
+        print("AsyncFetch - Is main thread: \(Thread.isMainThread)")
+        return try context.fetch(request).compactMap { $0.dataModel }
     }
 }
