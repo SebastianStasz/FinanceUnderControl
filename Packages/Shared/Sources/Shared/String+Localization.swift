@@ -39,6 +39,7 @@ public extension String {
     static let common_info = "common_info".localize()
     static let common_amount = "common_amount".localize()
     static let common_categories = "common_categories".localize()
+    static let common_groups = "common_groups".localize()
     static let common_currencies = "common_currencies".localize()
     static let common_expenses = "common_expenses".localize()
     static let common_incomes = "common_incomes".localize()
@@ -51,6 +52,9 @@ public extension String {
     static let common_color = "common_color".localize()
     static let common_icon = "common_icon".localize()
     static let common_include = "common_include".localize()
+    static let common_import = "common_import".localize()
+    static let common_export = "common_export".localize()
+    static let common_file_name = "common_file_name".localize()
 
     // MARK: - Cash flow filter
 
@@ -95,6 +99,7 @@ public extension String {
     static let settings_create_group = "settings_create_group".localize()
     static let settings_create_category = "settings_create_category".localize()
     static let settings_select_action = "settings_select_action".localize()
+    static let settings_your_finance_data = "settings_your_finance_data".localize()
 
     static let cannot_delete_cash_flow_category_message = "cannot_delete_cash_flow_category_message".localize()
 

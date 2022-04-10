@@ -32,14 +32,14 @@ struct SettingsView: View {
                 LabeledPicker(.common_secondary, elements: currencies, selection: $viewModel.secondaryCurrency)
             }
 
-            Sector("Data") {
+            Sector(.settings_your_finance_data) {
                 Button(action: { isExportDataViewShown = true }) {
-                    Text("Export").card()
+                    Text(.common_export).card()
                 }
                 .buttonStyle(.plain)
 
                 Button(action: { isImportDataViewShown = true }) {
-                    Text("Import").card()
+                    Text(.common_import).card()
                 }
                 .buttonStyle(.plain)
             }

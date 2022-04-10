@@ -5,6 +5,7 @@
 //  Created by sebastianstaszczyk on 10/04/2022.
 //
 
+import Shared
 import SwiftUI
 
 struct ImportFinanceDataView: View {
@@ -14,11 +15,11 @@ struct ImportFinanceDataView: View {
     var body: some View {
         Text("Content")
             .handleViewModelActions(viewModel)
-            .asSheet(title: "Import", primaryButton: primaryButton)
+            .asSheet(title: .common_import, primaryButton: primaryButton)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {
-        .init("Import", enabled: !viewModel.isLoading, action: viewModel.input.didTapExport.send)
+        .init(.common_import, enabled: !viewModel.isLoading, action: viewModel.input.didTapExport.send)
     }
 }
 

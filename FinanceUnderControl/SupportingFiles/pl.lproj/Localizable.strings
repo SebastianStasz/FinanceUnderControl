@@ -19,6 +19,7 @@
 "common_info" = "Informacja";
 "common_amount" = "Kwota";
 "common_categories" = "Kategorie";
+"common_groups" = "Grupy";
 "common_currencies" = "Waluty";
 "common_expenses" = "Wydatki";
 "common_incomes" = "Przychody";
@@ -31,6 +32,9 @@
 "common_color" = "Kolor";
 "common_icon" = "Ikona";
 "common_include" = "Uwzględnij";
+"common_import" = "Importuj";
+"common_export" = "Eksportuj";
+"common_file_name" = "Nazwa pliku";
 
 "cash_flow_filter_title" = "Filtruj";
 "cash_flow_filter_type" = "Typ przepływów";
@@ -61,6 +65,7 @@
 "settings_create_group" = "Utwórz grupę";
 "settings_create_category" = "Utwórz kategorię";
 "settings_select_action" = "Wybierz akcję";
+"settings_your_finance_data" = "Twoje dane finansowe";
 
 "cannot_delete_cash_flow_category_message" = "Nie możesz usunąć tej kategorii, ponieważ jest w użyciu.";
 

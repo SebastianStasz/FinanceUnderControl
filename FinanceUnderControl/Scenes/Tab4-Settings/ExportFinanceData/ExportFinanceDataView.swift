@@ -14,28 +14,28 @@ struct ExportFinanceDataView: View {
 
     var body: some View {
         FormView {
-            Sector("File name") {
-                LabeledTextField("File name", viewModel: viewModel.fileNameInput, prompt: viewModel.defaultFileName)
+            Sector(.common_file_name) {
+                LabeledTextField(.common_file_name, viewModel: viewModel.fileNameInput, prompt: viewModel.defaultFileName)
             }
 
             if let financeStorage = viewModel.financeStorage {
-                Sector("Finance data") {
+                Sector(.settings_your_finance_data) {
                     Group {
-                        Text("Groups: \(financeStorage.groups.count)")
-                        Text("Categories: \(financeStorage.categories.count)")
-                        Text("Cash flows: \(financeStorage.cashFlows.count)")
+                        Text("\(String.common_groups): \(financeStorage.groups.count)")
+                        Text("\(String.common_categories): \(financeStorage.categories.count)")
+                        Text("\(String.tab_cashFlow_title): \(financeStorage.cashFlows.count)")
                     }
                     .card()
                 }
             }
         }
         .handleViewModelActions(viewModel)
-        .asSheet(title: "Export data", primaryButton: primaryButton)
+        .asSheet(title: .common_export, primaryButton: primaryButton)
         .activitySheet($viewModel.activityAction)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {
-        .init("Export", enabled: !viewModel.isLoading, action: viewModel.input.didTapExport.send)
+        .init(.common_export, enabled: !viewModel.isLoading, action: viewModel.input.didTapExport.send)
     }
 }
 
