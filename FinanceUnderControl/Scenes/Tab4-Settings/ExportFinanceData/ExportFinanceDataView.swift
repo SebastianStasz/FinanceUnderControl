@@ -1,5 +1,5 @@
 //
-//  ExportCashFlowDataView.swift
+//  ExportFinanceDataView.swift
 //  FinanceUnderControl
 //
 //  Created by sebastianstaszczyk on 05/04/2022.
@@ -9,8 +9,8 @@ import Shared
 import SwiftUI
 import SSUtils
 
-struct ExportCashFlowDataView: View {
-    @StateObject private var viewModel = ExportCashFlowDataVM()
+struct ExportFinanceDataView: View {
+    @StateObject private var viewModel = ExportFinanceDataVM()
 
     var body: some View {
         FormView {
@@ -41,8 +41,8 @@ struct ExportCashFlowDataView: View {
 
 // MARK: - Preview
 
-struct ExportCashFlowDataView_Previews: PreviewProvider {
+struct ExportFinanceDataView_Previews: PreviewProvider {
     static var previews: some View {
-        ExportCashFlowDataView()
+        ExportFinanceDataView()
     }
 }

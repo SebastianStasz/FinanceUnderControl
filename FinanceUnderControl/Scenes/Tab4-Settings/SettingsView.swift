@@ -18,6 +18,7 @@ struct SettingsView: View {
     @StateObject private var viewModel = SettingsVM()
 
     @State private var isExportDataViewShown = false
+    @State private var isImportDataViewShown = false
 
     var body: some View {
         FormView {
@@ -36,13 +37,19 @@ struct SettingsView: View {
                     Text("Export").card()
                 }
                 .buttonStyle(.plain)
+
+                Button(action: { isImportDataViewShown = true }) {
+                    Text("Import").card()
+                }
+                .buttonStyle(.plain)
             }
 
             Sector("Debug") {
                 Navigation("Design system", leadsTo: DesignSystemView())
             }
         }
-        .sheet(isPresented: $isExportDataViewShown, content: ExportCashFlowDataView.init)
+        .sheet(isPresented: $isExportDataViewShown, content: ExportFinanceDataView.init)
+        .sheet(isPresented: $isImportDataViewShown, content: ImportFinanceDataView.init)
     }
 }
 
