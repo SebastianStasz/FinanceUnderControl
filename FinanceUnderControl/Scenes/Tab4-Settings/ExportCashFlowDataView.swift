@@ -20,9 +20,12 @@ struct ExportCashFlowDataView: View {
 
             if let financeStorage = viewModel.financeStorage {
                 Sector("Finance data") {
-                    Text("Groups: \(financeStorage.groups.count)")
-                    Text("Categories: \(financeStorage.categories.count)")
-                    Text("Cash flows: \(financeStorage.cashFlows.count)")
+                    Group {
+                        Text("Groups: \(financeStorage.groups.count)")
+                        Text("Categories: \(financeStorage.categories.count)")
+                        Text("Cash flows: \(financeStorage.cashFlows.count)")
+                    }
+                    .card()
                 }
             }
         }

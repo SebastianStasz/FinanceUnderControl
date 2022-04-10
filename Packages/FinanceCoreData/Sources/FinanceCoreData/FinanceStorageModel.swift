@@ -7,7 +7,6 @@
 
 import CoreData
 import Foundation
-import UIKit
 import SSUtils
 
 enum FinanceStorageError: Error {
@@ -22,10 +21,6 @@ public struct FinanceStorageModel: Codable {
 }
 
 public extension FinanceStorageModel {
-
-    static func toActivityAction(_ stringData: String) -> ActivityAction {
-        .init(items: stringData as Any, excludedTypes: Self.excludedTypes)
-    }
 
     func toJsonString() async throws -> String {
         try await Task {
@@ -45,11 +40,6 @@ public extension FinanceStorageModel {
         let cashFlows = await CashFlowEntity.getAll(from: controller)
         return .init(groups: groups, categories: categories, cashFlows: cashFlows)
     }
-// MARK: - Private
 
-private extension FinanceStorageModel {
-
-    static var excludedTypes: [UIActivity.ActivityType] {
-        [.addToReadingList, .assignToContact, .openInIBooks]
     }
 }
