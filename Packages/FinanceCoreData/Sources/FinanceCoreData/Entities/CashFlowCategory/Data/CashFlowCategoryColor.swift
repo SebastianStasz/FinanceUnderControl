@@ -53,7 +53,7 @@ public enum CashFlowCategoryColor: String {
 }
 
 extension CashFlowCategoryColor: CaseIterable {}
-extension CashFlowCategoryColor: Encodable {}
+extension CashFlowCategoryColor: Codable {}
 
 extension CashFlowCategoryColor: Identifiable {
     public var id: String { rawValue }

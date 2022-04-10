@@ -10,7 +10,7 @@ import Foundation
 extension CashFlowEntity: Storable {
     public typealias EntityDataModel = DataModel
 
-    public struct DataModel: Encodable {
+    public struct DataModel: Codable {
         let name: String
         let date: Date
         let value: Double
