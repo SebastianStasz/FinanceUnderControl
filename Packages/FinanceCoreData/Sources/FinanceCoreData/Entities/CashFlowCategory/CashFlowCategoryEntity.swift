@@ -72,6 +72,11 @@ public extension CashFlowCategoryEntity {
         return CashFlowCategoryEntity.fetchRequest(filteringBy: filters, sortingBy: [.byName()])
     }
 
+    static func getAll(from controller: PersistenceController) async -> [CashFlowCategoryEntity.DataModel] {
+        let result = try? await controller.asyncFetch(request: CashFlowCategoryEntity.nsFetchRequest(sortingBy: [.byName()]))
+        return result ?? []
+    }
+
     static func getAll(from context: NSManagedObjectContext, filteringBy filters: [Filter] = []) -> [CashFlowCategoryEntity] {
         let request = CashFlowCategoryEntity.nsFetchRequest(filteringBy: filters, sortingBy: [.byName(.forward)])
         let result = try? context.fetch(request)

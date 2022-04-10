@@ -44,6 +44,11 @@ public extension CashFlowEntity {
         category = model.category
         return true
     }
+
+    static func getAll(from controller: PersistenceController) async -> [CashFlowEntity.DataModel] {
+        let result = try? await controller.asyncFetch(request: CashFlowEntity.nsFetchRequest(sortingBy: [.byDate(.reverse)]))
+        return result ?? []
+    }
 }
 
 // MARK: - Helpers
