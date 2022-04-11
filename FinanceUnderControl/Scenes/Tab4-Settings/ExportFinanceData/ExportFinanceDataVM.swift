@@ -22,7 +22,7 @@ final class ExportFinanceDataVM: ViewModel {
     let defaultFileName: String
     let input = Input()
     @Published var activityAction: ActivityAction?
-    @Published private(set) var financeStorage: FinanceStorageModel?
+    @Published private(set) var financeStorage: FinanceStorage?
 
     init(controller: PersistenceController = AppVM.shared.controller) {
         let defaultFileName = "Finance Under Control - \(Date().string(format: .medium))".replacingOccurrences(of: "/", with: ".")
@@ -33,7 +33,7 @@ final class ExportFinanceDataVM: ViewModel {
 
         input.didTapExport.first()
             .startLoading(on: self)
-            .asyncMap { await FinanceStorageModel.generate(from: controller) }
+            .asyncMap { await FinanceStorage.generate(from: controller) }
             .receive(on: DispatchQueue.main)
             .assign(to: &$financeStorage)
 

@@ -47,7 +47,7 @@ class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
 
     func onAppear(formType: FormType) {
         self.formModel = formType.formModel
-        let namesInUse = Entity.namesInUse(from: context).filter { $0 != formModel.name }
+        let namesInUse = Entity.namesInUse(from: context, forType: formModel.type!).filter { $0 != formModel.name }
         nameInput = TextInputVM(initialValue: formModel.name, validator: .name(withoutRepeating: namesInUse))
         nameInput.assignResult(to: \.formModel.name, on: self)
     }

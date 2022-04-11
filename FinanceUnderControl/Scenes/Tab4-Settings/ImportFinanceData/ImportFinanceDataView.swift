@@ -15,20 +15,19 @@ struct ImportFinanceDataView: View {
 
     var body: some View {
         FormView {
-            Text("Możesz zaimportować zapisane wcześniej dane finansowe włączajc w to przepływy pieniężne, kategorie i grupy. Wybierz plik i wskaż, które dane mają zostać zapisane.", style: .footnote(.info))
+            Text("W tym miejscu możesz zaimportować zapisane wcześniej dane finansowe włączając w to przepływy pieniężne, kategorie i grupy. Wybierz plik i przejrzyj potencjalne zmiany.", style: .footnote(.info))
                 .padding(.horizontal, .medium)
 
             if let selectedFile = viewModel.selectedFile {
                 Sector("Imported data") {
-                    Text(selectedFile).card(style: .primary)
-                    Navigation("Customize", leadsTo: Text("Customize"))
+                    Text(selectedFile.lastPathComponent).card(style: .primary)
+                    Navigation("See result", leadsTo: ImportFinanceDataResultView(viewModel: viewModel))
                 }
             }
         }
         .handleViewModelActions(viewModel)
         .asSheet(title: .common_import, primaryButton: primaryButton)
         .fileImporter(isPresented: $isFileImporterShown, allowedContentTypes: [.json]) {
-            viewModel.isLoading = true
             viewModel.input.didSelectFile.send($0)
         }
     }

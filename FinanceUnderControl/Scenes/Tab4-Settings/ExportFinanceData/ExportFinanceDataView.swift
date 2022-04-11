@@ -14,7 +14,7 @@ struct ExportFinanceDataView: View {
 
     var body: some View {
         FormView {
-            Text("Tutaj możesz wyeksportować swoje dane finansowe - przepływy pieniężne, grupy i kategorie. Kliknij eksportuj i wybierz miejsce docelowe.", style: .footnote(.info))
+            Text("W tym miejscu możesz wyeksportować swoje dane finansowe - przepływy pieniężne, grupy i kategorie. Kliknij eksportuj i wybierz miejsce docelowe.", style: .footnote(.info))
                 .padding(.horizontal, .medium)
 
             Sector(.common_file_name) {

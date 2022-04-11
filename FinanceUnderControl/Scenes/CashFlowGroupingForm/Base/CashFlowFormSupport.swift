@@ -15,13 +15,13 @@ protocol CashFlowFormSupport: Entity, Deletable {
 
     var formModel: FormModel { get }
 
-    static func namesInUse(from context: NSManagedObjectContext) -> [String]
+    static func namesInUse(from context: NSManagedObjectContext, forType type: CashFlowType) -> [String]
     static func create(in context: NSManagedObjectContext, model: Model)
     @discardableResult func edit(model: Model) -> Bool
 }
 
 extension CashFlowFormSupport {
-    static func namesInUse(from context: NSManagedObjectContext) -> [String] {
+    static func namesInUse(from context: NSManagedObjectContext, forType type: CashFlowType) -> [String] {
         []
     }
 }
@@ -33,8 +33,8 @@ extension CashFlowCategoryEntity: CashFlowFormSupport {
         .init(name: name, type: type, icon: icon, color: color)
     }
 
-    static func namesInUse(from context: NSManagedObjectContext) -> [String] {
-        CashFlowCategoryEntity.getAll(from: context).map { $0.name }
+    static func namesInUse(from context: NSManagedObjectContext, forType type: CashFlowType) -> [String] {
+        CashFlowCategoryEntity.getAll(from: context, filteringBy: [.typeIs(type)]).map { $0.name }
     }
 }
 
@@ -43,8 +43,8 @@ extension CashFlowCategoryGroupEntity: CashFlowFormSupport {
         .init(name: name, type: type, categories: categories)
     }
 
-    static func namesInUse(from context: NSManagedObjectContext) -> [String] {
-        CashFlowCategoryGroupEntity.getAll(from: context).map { $0.name }
+    static func namesInUse(from context: NSManagedObjectContext, forType type: CashFlowType) -> [String] {
+        CashFlowCategoryGroupEntity.getAll(from: context, filterBy: [.typeIs(type)]).map { $0.name }
     }
 }
 
