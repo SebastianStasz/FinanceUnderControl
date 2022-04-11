@@ -14,18 +14,18 @@ struct ExportFinanceDataView: View {
 
     var body: some View {
         FormView {
+            Text("Tutaj możesz wyeksportować swoje dane finansowe - przepływy pieniężne, grupy i kategorie. Kliknij eksportuj i wybierz miejsce docelowe.", style: .footnote(.info))
+                .padding(.horizontal, .medium)
+
             Sector(.common_file_name) {
                 LabeledTextField(.common_file_name, viewModel: viewModel.fileNameInput, prompt: viewModel.defaultFileName)
             }
 
             if let financeStorage = viewModel.financeStorage {
-                Sector(.settings_your_finance_data) {
-                    Group {
-                        Text("\(String.common_groups): \(financeStorage.groups.count)")
-                        Text("\(String.common_categories): \(financeStorage.categories.count)")
-                        Text("\(String.tab_cashFlow_title): \(financeStorage.cashFlows.count)")
-                    }
-                    .card()
+                Sector(.settings_your_finance_data, style: .card) {
+                    Text("\(String.common_groups): \(financeStorage.groups.count)")
+                    Text("\(String.common_categories): \(financeStorage.categories.count)")
+                    Text("\(String.tab_cashFlow_title): \(financeStorage.cashFlows.count)")
                 }
             }
         }

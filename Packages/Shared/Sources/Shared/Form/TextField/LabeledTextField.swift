@@ -32,7 +32,7 @@ public struct LabeledTextField<T>: View {
             InputField(title, viewModel: viewModel, prompt: prompt ?? title).textStyle(.body())
 
             if let message = viewModel.validationMessage {
-                Text(message, style: .validation)
+                Text(message, style: .footnote(.validation))
             }
         }
         .card(style: style)

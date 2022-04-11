@@ -25,7 +25,8 @@ final class ExportFinanceDataVM: ViewModel {
     @Published private(set) var financeStorage: FinanceStorageModel?
 
     init(controller: PersistenceController = AppVM.shared.controller) {
-        defaultFileName = "Finance Under Control - \(Date().string(format: .medium))".replacingOccurrences(of: "/", with: ".")
+        let defaultFileName = "Finance Under Control - \(Date().string(format: .medium))".replacingOccurrences(of: "/", with: ".")
+        self.defaultFileName = defaultFileName
         super.init()
 
         let errorTracker = PassthroughSubject<Error, Never>()
@@ -42,7 +43,7 @@ final class ExportFinanceDataVM: ViewModel {
             .flatMap {
                 Just($0)
                     .await { try await $0.toJsonString() }
-                    .tryMap { [weak self] in try self?.getTemporaryUrl(forContent: $0) }
+                    .tryMap { try FileHelper.getTemporaryURL(forContent: $0, fileName: defaultFileName, fileExtension: .json) }
                     .map { ActivityAction(items: $0 as Any, excludedTypes: Self.excludedTypes) }
                     .stopLoading(on: self)
                     .catch { error -> AnyPublisher<ActivityAction?, Never> in
@@ -57,12 +58,6 @@ final class ExportFinanceDataVM: ViewModel {
                 print(error)
             }
             .store(in: &cancellables)
-    }
-
-    private func getTemporaryUrl(forContent content: String) throws -> URL {
-        let tempDirectory = FileManager.temporaryURL(fileName: defaultFileName, fileExtension: .json)
-        do { try content.write(to: tempDirectory, atomically: true, encoding: .utf8) }
-        return tempDirectory
     }
 
     static var excludedTypes: [UIActivity.ActivityType] {
