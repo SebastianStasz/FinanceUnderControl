@@ -11,15 +11,34 @@ import SwiftUI
 struct ImportFinanceDataView: View {
 
     @StateObject private var viewModel = ImportFinanceDataVM()
+    @State private var isFileImporterShown = false
 
     var body: some View {
-        Text("Content")
-            .handleViewModelActions(viewModel)
-            .asSheet(title: .common_import, primaryButton: primaryButton)
+        FormView {
+            Text("Możesz zaimportować zapisane wcześniej dane finansowe włączajc w to przepływy pieniężne, kategorie i grupy. Wybierz plik i wskaż, które dane mają zostać zapisane.", style: .footnote(.info))
+                .padding(.horizontal, .medium)
+
+            if let selectedFile = viewModel.selectedFile {
+                Sector("Imported data") {
+                    Text(selectedFile).card(style: .primary)
+                    Navigation("Customize", leadsTo: Text("Customize"))
+                }
+            }
+        }
+        .handleViewModelActions(viewModel)
+        .asSheet(title: .common_import, primaryButton: primaryButton)
+        .fileImporter(isPresented: $isFileImporterShown, allowedContentTypes: [.json]) {
+            viewModel.isLoading = true
+            viewModel.input.didSelectFile.send($0)
+        }
     }
 
     private var primaryButton: HorizontalButtons.Configuration {
-        .init(.common_import, enabled: !viewModel.isLoading, action: viewModel.input.didTapExport.send)
+        .init("Select file", enabled: !viewModel.isLoading, action: selectFile)
+    }
+
+    private func selectFile() {
+        isFileImporterShown = true
     }
 }
 
