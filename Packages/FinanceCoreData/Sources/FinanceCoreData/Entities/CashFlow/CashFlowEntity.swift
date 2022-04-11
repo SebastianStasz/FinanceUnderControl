@@ -36,6 +36,18 @@ public extension CashFlowEntity {
         createAndReturn(in: context, model: model)
     }
 
+    static func create(in controller: PersistenceController, model: Model) async {
+        await controller.backgroundContext.perform {
+            let cashFlow = CashFlowEntity(context: controller.backgroundContext)
+            cashFlow.name = model.name
+            cashFlow.date = model.date
+            cashFlow.monthAndYear = model.monthAndYear
+            cashFlow.value = model.value
+            cashFlow.currency = model.currency
+            cashFlow.category = model.category
+        }
+    }
+
     func edit(model: Model) -> Bool {
         guard category.type == model.category.type else { return false }
         name = model.name
@@ -45,8 +57,8 @@ public extension CashFlowEntity {
         return true
     }
 
-    static func getAll(from controller: PersistenceController) async -> [CashFlowEntity.DataModel] {
-        let result = try? await controller.asyncFetch(request: CashFlowEntity.nsFetchRequest(sortingBy: [.byDate(.reverse)]))
+    static func getAll(from controller: PersistenceController) async -> [CashFlowEntity] {
+        let result = try? await CashFlowEntity.asyncFetch(from: controller, sorting: [.byName()])
         return result ?? []
     }
 }

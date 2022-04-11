@@ -20,6 +20,7 @@ final class ImportFinanceDataVM: ViewModel {
 
     let input = Input()
     @Published private(set) var selectedFile: URL?
+    @Published private(set) var financeStorage: FinanceStorage?
     @Published private(set) var importResult: FinanceStorage.ImportResult?
 
     init(controller: PersistenceController = AppVM.shared.controller) {
@@ -42,8 +43,11 @@ final class ImportFinanceDataVM: ViewModel {
             .compactMap { $0.1 }
             .removeDuplicates()
             .startLoading(on: self)
-            .await { url -> FinanceStorage.ImportResult in
+            .await { [weak self] url -> FinanceStorage.ImportResult in
                 let storage: FinanceStorage = try await FileHelper.getModelFrom(url)
+                DispatchQueue.main.async { [weak self] in
+                    self?.financeStorage = storage
+                }
                 return await storage.getImportResult(for: controller)
             }
             .stopLoading(on: self)
@@ -54,11 +58,19 @@ final class ImportFinanceDataVM: ViewModel {
             }
             .store(in: &cancellables)
 
-        CombineLatest(input.didConfirmImporting, $importResult)
+        CombineLatest(input.didConfirmImporting, $financeStorage)
             .compactMap { $0.1 }
             .startLoading(on: self)
-            .await { importResult in
-                
+            .await { await $0.create(in: controller) }
+            .stopLoading(on: self)
+            .sink { error in
+                print(error)
+//                errorTracker.send(error)
+            } receiveValue: { [weak self] in
+                try? controller.backgroundContext.save()
+                self?.baseAction.dismissView.send()
+                print("success")
             }
+            .store(in: &cancellables)
     }
 }

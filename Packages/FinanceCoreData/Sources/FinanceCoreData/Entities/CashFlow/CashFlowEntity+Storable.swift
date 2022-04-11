@@ -13,6 +13,7 @@ extension CashFlowEntity: Storable {
     public struct DataModel: Codable {
         let name: String
         let date: Date
+        let type: CashFlowType
         let value: Double
         let categoryName: String
         let currencyCode: String
@@ -21,6 +22,7 @@ extension CashFlowEntity: Storable {
     public var dataModel: DataModel {
         DataModel(name: name,
                   date: date,
+                  type: category.type,
                   value: value,
                   categoryName: category.name,
                   currencyCode: currency.code

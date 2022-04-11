@@ -14,17 +14,20 @@ public extension CashFlowCategoryEntity {
         public let icon: CashFlowCategoryIcon
         public let color: CashFlowCategoryColor
         public let type: CashFlowType
+        public let group: CashFlowCategoryGroupEntity?
 
         public init(
             name: String,
             icon: CashFlowCategoryIcon,
             color: CashFlowCategoryColor,
-            type: CashFlowType
+            type: CashFlowType,
+            group: CashFlowCategoryGroupEntity? = nil
         ) {
             self.name = name
             self.icon = icon
             self.color = color
             self.type = type
+            self.group = group
         }
     }
 }

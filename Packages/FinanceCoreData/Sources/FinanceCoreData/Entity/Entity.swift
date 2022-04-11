@@ -17,6 +17,15 @@ public protocol Entity: NSManagedObject, Identifiable {
 }
 
 public extension Entity where Sort.Entity == Self {
+
+    static func asyncFetch(from controller: PersistenceController, filtering: [Filter] = [], sorting: [Sort] = []) async throws -> [Self] {
+        try await Task {
+            let request = nsFetchRequest(filteringBy: filtering, sortingBy: sorting)
+            return try controller.backgroundContext.fetch(request)
+        }
+        .value
+    }
+
     static func fetchRequest(filteringBy filters: [Filter]? = nil, sortingBy sorts: [Sort] = []) -> FetchRequest<Self> {
         let request = nsFetchRequest(filteringBy: filters, sortingBy: sorts)
         return FetchRequest(fetchRequest: request)

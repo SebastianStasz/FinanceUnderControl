@@ -46,6 +46,14 @@ public extension CashFlowCategoryGroupEntity {
         createAndReturn(in: context, model: model)
     }
 
+    static func create(in controller: PersistenceController, model: Model) async {
+        await controller.backgroundContext.perform {
+            let group = CashFlowCategoryGroupEntity(context: controller.backgroundContext)
+            group.type = model.type
+            group.edit(model: model)
+        }
+    }
+
     /// Edists a cash flow category group using the model provided if the model is of the same type as the group.
     /// - Parameter model: Model that will be used to edit the entity.
     /// - Returns: `true` if the entity has been edited `false` if the entity cannot be edited.
@@ -91,8 +99,8 @@ public extension CashFlowCategoryGroupEntity {
         CashFlowCategoryGroupEntity.fetchRequest(filteringBy: [.typeIs(type)], sortingBy: [.byName()])
     }
 
-    static func getAll(from controller: PersistenceController) async -> [CashFlowCategoryGroupEntity.DataModel] {
-        let result = try? await controller.asyncFetch(request: CashFlowCategoryGroupEntity.nsFetchRequest(sortingBy: [.byName()]))
+    static func getAll(from controller: PersistenceController) async -> [CashFlowCategoryGroupEntity] {
+        let result = try? await CashFlowCategoryGroupEntity.asyncFetch(from: controller, sorting: [.byName()])
         return result ?? []
     }
 
@@ -114,11 +122,4 @@ private extension CashFlowCategoryGroupEntity {
     @objc(removeCategories_:)       @NSManaged func removeFromCategories_(entities: NSSet)
     @objc(addCategories_Object:)    @NSManaged func addToCategories_(entity: CashFlowCategoryEntity)
     @objc(addCategories_:)          @NSManaged func addToCategories_(entities: NSSet)
-}
-
-extension PersistenceController {
-    func asyncFetch<E, R>(request: NSFetchRequest<E>) async throws -> [R] where E: Storable, R == E.EntityDataModel {
-        print("AsyncFetch - Is main thread: \(Thread.isMainThread)")
-        return try context.fetch(request).compactMap { $0.dataModel }
-    }
 }
