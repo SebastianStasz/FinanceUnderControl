@@ -8,15 +8,24 @@
 import Foundation
 
 extension CashFlowEntity: Storable {
-    public typealias EntityDataModel = DataModel
 
-    public struct DataModel: Codable {
+    public struct DataModel: EntityDataModel {
+        public typealias E = CashFlowEntity
+
         let name: String
         let date: Date
         let type: CashFlowType
         let value: Double
         let categoryName: String
         let currencyCode: String
+
+        public func getModel(from controller: PersistenceController) async -> CashFlowEntity.Model {
+            let categories = await CashFlowCategoryEntity.getAll(from: controller)
+            let currencies = await CurrencyEntity.getAll(from: controller)
+            let currency = currencies.first(where: { currencyCode == $0.code })! // TODO: Handle force unwrap
+            let category = categories.first(where: { categoryName == $0.name && type == $0.type })! // TODO: Handle force unwrap
+            return .init(name: name, date: date, value: value, currency: currency, category: category)
+        }
     }
 
     public var dataModel: DataModel {

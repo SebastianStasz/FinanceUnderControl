@@ -7,8 +7,14 @@
 
 import Foundation
 
-public protocol Storable: Entity {
-    associatedtype EntityDataModel: Encodable
+public protocol EntityDataModel: Codable, Equatable {
+    associatedtype E: Entity
 
-    var dataModel: EntityDataModel { get }
+    func getModel(from controller: PersistenceController) async -> E.Model
+}
+
+public protocol Storable: Entity {
+    associatedtype EntDataModel: EntityDataModel
+
+    var dataModel: EntDataModel { get }
 }
