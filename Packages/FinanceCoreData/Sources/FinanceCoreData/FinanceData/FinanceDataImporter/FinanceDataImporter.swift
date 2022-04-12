@@ -70,5 +70,7 @@ public struct FinanceDataImporter {
         for model in cashFlowModels {
             await CashFlowEntity.create(in: controller, model: model)
         }
+
+        try? controller.backgroundContext.save()
     }
 }

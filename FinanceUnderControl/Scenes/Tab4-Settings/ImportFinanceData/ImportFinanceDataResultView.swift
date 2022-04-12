@@ -9,7 +9,6 @@ import Shared
 import SwiftUI
 
 struct ImportFinanceDataResultView: View {
-
     @ObservedObject var viewModel: ImportFinanceDataVM
 
     var body: some View {
@@ -30,12 +29,12 @@ struct ImportFinanceDataResultView: View {
                 }
             }
         }
-        .handleViewModelActions(viewModel)
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
                 HorizontalButtons(primaryButton: primaryButton)
             }
         }
+        .handleViewModelActions(viewModel)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {

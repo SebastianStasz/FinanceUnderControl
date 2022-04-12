@@ -9,7 +9,7 @@ import Shared
 import SwiftUI
 
 struct ImportFinanceDataView: View {
-
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = ImportFinanceDataVM()
     @State private var isFileImporterShown = false
 
@@ -17,7 +17,6 @@ struct ImportFinanceDataView: View {
         FormView {
             Description(.settings_import_finance_data_description)
         }
-        .handleViewModelActions(viewModel)
         .navigation(item: $viewModel.importer, destination: { _ in
             ImportFinanceDataResultView(viewModel: viewModel)
         })
@@ -25,6 +24,8 @@ struct ImportFinanceDataView: View {
         .fileImporter(isPresented: $isFileImporterShown, allowedContentTypes: [.json]) {
             viewModel.input.didSelectFile.send($0)
         }
+        .onReceive(viewModel.dismissView, perform: dismiss.callAsFunction)
+        .handleViewModelActions(viewModel)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {
@@ -40,6 +41,9 @@ struct ImportFinanceDataView: View {
 
 struct ImportFinanceDataView_Previews: PreviewProvider {
     static var previews: some View {
-        ImportFinanceDataView()
+        Group {
+            ImportFinanceDataView()
+            ImportFinanceDataView().darkScheme()
+        }
     }
 }

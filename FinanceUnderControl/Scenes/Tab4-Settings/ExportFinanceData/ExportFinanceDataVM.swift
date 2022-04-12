@@ -66,6 +66,7 @@ final class ExportFinanceDataVM: ViewModel {
             .sink { [weak self] result in
                 switch result {
                 case .success:
+                    self?.baseAction.dismissView.send()
                     print("Success")
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription

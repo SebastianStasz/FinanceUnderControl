@@ -18,6 +18,7 @@ final class ImportFinanceDataVM: ViewModel {
     }
 
     let input = Input()
+    let dismissView = DriverSubject<Void>()
     @Published var importer: FinanceDataImporter?
 
     init(controller: PersistenceController = AppVM.shared.controller) {
@@ -54,7 +55,10 @@ final class ImportFinanceDataVM: ViewModel {
             .startLoading(on: self)
             .asyncMap { await $0.create() }
             .stopLoading(on: self)
-            .sink { print("success") }
+            .sink { [weak self] in
+                self?.dismissView.send()
+                print("success")
+            }
             .store(in: &cancellables)
     }
 }

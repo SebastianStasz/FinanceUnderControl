@@ -30,6 +30,7 @@ public final class PersistenceController {
 
     public func save() {
         do {
+            try backgroundContext.save()
             try context.save()
         } catch let error {
             fatalError("Saving context error: \(error)")

@@ -14,7 +14,7 @@ struct FinanceUnderControlApp: App {
         WindowGroup {
             TabBarView()
                 .environment(\.managedObjectContext, AppVM.shared.context)
-                .task { await AppVM.shared.setupCurrencies() }
+//                .task { await AppVM.shared.setupCurrencies() }
         }
     }
 }

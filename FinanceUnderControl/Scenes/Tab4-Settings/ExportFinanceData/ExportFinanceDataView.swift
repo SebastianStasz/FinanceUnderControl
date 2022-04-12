@@ -21,7 +21,6 @@ struct ExportFinanceDataView: View {
                 LabeledTextField(.common_file_name, viewModel: viewModel.fileNameInput, prompt: viewModel.defaultFileName)
             }
         }
-        .handleViewModelActions(viewModel)
         .asSheet(title: .common_export, primaryButton: primaryButton)
         .alert(item: $viewModel.errorMessage, content: { message in
             // TODO: - Handling info
@@ -30,6 +29,7 @@ struct ExportFinanceDataView: View {
         .fileExporter(isPresented: $viewModel.isExporterShown, document: viewModel.financeDataFile, contentType: .json) {
             viewModel.input.exportResult.send($0)
         }
+        .handleViewModelActions(viewModel)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {
