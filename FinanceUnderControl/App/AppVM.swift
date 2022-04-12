@@ -27,7 +27,7 @@ final class AppVM {
     }
 
     private init() {
-        let controller = PersistenceController.preview
+        let controller = PersistenceController.shared
         self.controller = controller
     }
 
