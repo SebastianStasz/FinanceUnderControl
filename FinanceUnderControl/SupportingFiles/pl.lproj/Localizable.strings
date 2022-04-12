@@ -66,6 +66,9 @@
 "settings_create_category" = "Utwórz kategorię";
 "settings_select_action" = "Wybierz akcję";
 "settings_your_finance_data" = "Twoje dane finansowe";
+"settings_import_finance_data_description" = "W tym miejscu możesz zaimportować zapisane wcześniej dane finansowe włączając w to przepływy pieniężne, kategorie i grupy. Wybierz plik i przejrzyj potencjalne zmiany.";
+"settings_import_finance_data_result_description" = "Oto zaimportowane dane. Zajdziesz tutaj informacje, które element zostaną utworzone, a które już istnieją w aplikacji. Jeżeli wszystko się zgadza kliknij \"Zatwierdź\".";
+"settings_export_finance_data_description" = "W tym miejscu możesz wyeksportować swoje dane finansowe - przepływy pieniężne, grupy i kategorie. Kliknij eksportuj i wybierz miejsce docelowe.";
 
 "cannot_delete_cash_flow_category_message" = "Nie możesz usunąć tej kategorii, ponieważ jest w użyciu.";
 

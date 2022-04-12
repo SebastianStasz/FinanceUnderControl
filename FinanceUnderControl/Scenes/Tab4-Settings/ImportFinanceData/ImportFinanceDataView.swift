@@ -15,8 +15,7 @@ struct ImportFinanceDataView: View {
 
     var body: some View {
         FormView {
-            Text("W tym miejscu możesz zaimportować zapisane wcześniej dane finansowe włączając w to przepływy pieniężne, kategorie i grupy. Wybierz plik i przejrzyj potencjalne zmiany.", style: .footnote(.info))
-                .padding(.horizontal, .medium)
+            Description(.settings_import_finance_data_description)
         }
         .handleViewModelActions(viewModel)
         .navigation(item: $viewModel.importer, destination: { _ in

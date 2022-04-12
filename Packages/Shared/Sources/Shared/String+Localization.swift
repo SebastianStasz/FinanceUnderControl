@@ -100,6 +100,9 @@ public extension String {
     static let settings_create_category = "settings_create_category".localize()
     static let settings_select_action = "settings_select_action".localize()
     static let settings_your_finance_data = "settings_your_finance_data".localize()
+    static let settings_import_finance_data_description = "settings_import_finance_data_description".localize()
+    static let settings_import_finance_data_result_description = "settings_import_finance_data_result_description".localize()
+    static let settings_export_finance_data_description = "settings_export_finance_data_description".localize()
 
     static let cannot_delete_cash_flow_category_message = "cannot_delete_cash_flow_category_message".localize()
 

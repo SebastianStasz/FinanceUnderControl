@@ -15,9 +15,7 @@ struct ImportFinanceDataResultView: View {
     var body: some View {
         FormView {
             if let result = viewModel.importer?.importResult {
-                Text("Oto zaimportowane dane. Zajdziesz tutaj informacje, które element zostaną utworzone, a które już istnieją w aplikacji. Jeżeli wszystko się zgadza kliknij \"Zatwierdź\".", style: .footnote(.info)
-                )
-                .padding(.horizontal, .medium)
+                Description(.settings_import_finance_data_result_description)
 
                 Sector("Imported data") {
                     Navigation("New groups: \(result.groups.countNew)") {

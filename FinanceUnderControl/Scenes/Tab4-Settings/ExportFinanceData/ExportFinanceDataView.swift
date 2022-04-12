@@ -15,19 +15,10 @@ struct ExportFinanceDataView: View {
 
     var body: some View {
         FormView {
-            Text("W tym miejscu możesz wyeksportować swoje dane finansowe - przepływy pieniężne, grupy i kategorie. Kliknij eksportuj i wybierz miejsce docelowe.", style: .footnote(.info))
-                .padding(.horizontal, .medium)
+            Description(.settings_export_finance_data_description)
 
             Sector(.common_file_name) {
                 LabeledTextField(.common_file_name, viewModel: viewModel.fileNameInput, prompt: viewModel.defaultFileName)
-            }
-
-            if let financeStorage = viewModel.financeData {
-                Sector(.settings_your_finance_data, style: .card) {
-                    Text("\(String.common_groups): \(financeStorage.groups.count)")
-                    Text("\(String.common_categories): \(financeStorage.categories.count)")
-                    Text("\(String.tab_cashFlow_title): \(financeStorage.cashFlows.count)")
-                }
             }
         }
         .handleViewModelActions(viewModel)
@@ -36,7 +27,9 @@ struct ExportFinanceDataView: View {
             // TODO: - Handling info
                 .init(title: SwiftUI.Text("Info"), message: SwiftUI.Text(message), dismissButton: .default(SwiftUI.Text("OK"), action: { dismiss.callAsFunction() }))
         })
-        .activitySheet($viewModel.activityAction)
+        .fileExporter(isPresented: $viewModel.isExporterShown, document: viewModel.financeDataFile, contentType: .json) {
+            viewModel.input.exportResult.send($0)
+        }
     }
 
     private var primaryButton: HorizontalButtons.Configuration {
@@ -48,6 +41,9 @@ struct ExportFinanceDataView: View {
 
 struct ExportFinanceDataView_Previews: PreviewProvider {
     static var previews: some View {
-        ExportFinanceDataView()
+        Group {
+            ExportFinanceDataView()
+            ExportFinanceDataView().darkScheme()
+        }
     }
 }

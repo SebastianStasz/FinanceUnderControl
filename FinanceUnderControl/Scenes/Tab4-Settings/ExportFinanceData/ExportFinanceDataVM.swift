@@ -8,7 +8,6 @@
 import Combine
 import FinanceCoreData
 import Foundation
-import UIKit
 import SSUtils
 import SSValidation
 
@@ -16,10 +15,11 @@ final class ExportFinanceDataVM: ViewModel {
 
     struct Input {
         let didTapExport = DriverSubject<Void>()
+        let exportResult = DriverSubject<Result<URL, Error>>()
     }
 
-    @Published private(set) var financeData: FinanceData?
-    @Published var activityAction: ActivityAction?
+    @Published var financeDataFile: FinanceDataFile?
+    @Published var isExporterShown = false
     @Published var errorMessage: String?
 
     let fileNameInput = TextInputVM(validator: .alwaysValid())
@@ -31,54 +31,50 @@ final class ExportFinanceDataVM: ViewModel {
         self.defaultFileName = defaultFileName
         super.init()
 
-        let errorTracker = PassthroughSubject<Error, Never>()
-
-        let financeData = input.didTapExport.first()
+        let fetchFinanceData = input.didTapExport.first()
             .startLoading(on: self)
             .asyncMap { await FinanceData(from: controller) }
             .stopLoading(on: self)
 
-        financeData
+        let financeData = fetchFinanceData
+            .filter { $0.isNotEmpty }.map { $0 }
+
+        let fileName = fileNameInput.result()
+            .map { $0 ?? defaultFileName }
+
+        let financeDataFile = CombineLatest(financeData, fileName)
+            .map { FinanceDataFile(data: $0.0, fileName: $0.1) }
+
+        let exportTrigger = Publishers.Merge(
+            input.didTapExport.withLatestFrom(financeDataFile),
+            CombineLatest(input.didTapExport, financeDataFile).map { $0.1 }.first()
+        )
+
+        exportTrigger
+            .sink { [weak self] in
+                self?.financeDataFile = $0
+                self?.isExporterShown = true
+            }
+            .store(in: &cancellables)
+
+        fetchFinanceData
             .filter { $0.isEmpty }
             .map { _ in "There is no finance data." }
             .assign(to: &$errorMessage)
 
-        financeData
-            .filter { $0.isNotEmpty }
-            .map { $0 }
-            .assign(to: &$financeData)
-
-        CombineLatest(input.didTapExport, $financeData)
-            .compactMap { $0.1 }
-            .startLoading(on: self)
-            .flatMap {
-                Just($0)
-                    .await { try await FileHelper.toJsonString($0) }
-                    .tryMap { [weak self] in
-                        let fileName = self?.fileNameInput.resultValue ?? defaultFileName
-                        return try FileHelper.getTemporaryURL(forContent: $0, fileName: fileName, fileExtension: .json)
-                    }
-                    .map { ActivityAction(items: $0 as Any, excludedTypes: Self.excludedTypes) }
-                    .stopLoading(on: self)
-                    .catch { error -> AnyPublisher<ActivityAction?, Never> in
-                        errorTracker.send(error)
-                        return Just(nil).compactMap { $0 }.eraseToAnyPublisher()
-                    }
-            }
-            .assign(to: &$activityAction)
-
-        errorTracker
-            .sink { error in
-                print(error)
+        input.exportResult
+            .sink { [weak self] result in
+                switch result {
+                case .success:
+                    print("Success")
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
             }
             .store(in: &cancellables)
     }
 
-    static var defaultFileName: String {
+    static private var defaultFileName: String {
         "Finance Under Control - \(Date().string(format: .medium))".replacingOccurrences(of: "/", with: ".")
-    }
-
-    static var excludedTypes: [UIActivity.ActivityType] {
-        [.addToReadingList, .assignToContact, .openInIBooks]
     }
 }
