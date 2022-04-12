@@ -12,6 +12,7 @@ struct FileHelper {
 
     enum Error: Swift.Error {
         case accessDenied
+        case convertingJsonDataToString
     }
 
     static func getTemporaryURL(forContent content: String, fileName: String, fileExtension: FileExtension) throws -> URL {
@@ -31,5 +32,17 @@ struct FileHelper {
             return model
         }
         .value
+    }
+
+    static func toJsonString<T: Encodable>(_ object: T) async throws -> String {
+        try await Task {
+            do {
+                let data = try JSONEncoder().encode(object)
+                guard let jsonString = String(data: data, encoding: .utf8) else {
+                    throw Error.convertingJsonDataToString
+                }
+                return jsonString
+            }
+        }.value
     }
 }

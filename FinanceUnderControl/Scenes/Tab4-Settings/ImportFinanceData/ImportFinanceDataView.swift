@@ -17,15 +17,11 @@ struct ImportFinanceDataView: View {
         FormView {
             Text("W tym miejscu możesz zaimportować zapisane wcześniej dane finansowe włączając w to przepływy pieniężne, kategorie i grupy. Wybierz plik i przejrzyj potencjalne zmiany.", style: .footnote(.info))
                 .padding(.horizontal, .medium)
-
-            if let selectedFile = viewModel.selectedFile {
-                Sector("Imported data") {
-                    Text(selectedFile.lastPathComponent).card(style: .primary)
-                    Navigation("See result", leadsTo: ImportFinanceDataResultView(viewModel: viewModel))
-                }
-            }
         }
         .handleViewModelActions(viewModel)
+        .navigation(item: $viewModel.importer, destination: { _ in
+            ImportFinanceDataResultView(viewModel: viewModel)
+        })
         .asSheet(title: .common_import, primaryButton: primaryButton)
         .fileImporter(isPresented: $isFileImporterShown, allowedContentTypes: [.json]) {
             viewModel.input.didSelectFile.send($0)

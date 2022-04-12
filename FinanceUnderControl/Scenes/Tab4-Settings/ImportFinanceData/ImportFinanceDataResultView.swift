@@ -14,7 +14,7 @@ struct ImportFinanceDataResultView: View {
 
     var body: some View {
         FormView {
-            if let result = viewModel.importResult {
+            if let result = viewModel.importer?.importResult {
                 Text("Oto zaimportowane dane. Zajdziesz tutaj informacje, które element zostaną utworzone, a które już istnieją w aplikacji. Jeżeli wszystko się zgadza kliknij \"Zatwierdź\".", style: .footnote(.info)
                 )
                 .padding(.horizontal, .medium)
@@ -33,7 +33,6 @@ struct ImportFinanceDataResultView: View {
             }
         }
         .handleViewModelActions(viewModel)
-        .task { viewModel.input.didEnterCustomizeView.send() }
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
                 HorizontalButtons(primaryButton: primaryButton)

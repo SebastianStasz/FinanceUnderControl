@@ -10,6 +10,7 @@ import SwiftUI
 import SSUtils
 
 struct ExportFinanceDataView: View {
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = ExportFinanceDataVM()
 
     var body: some View {
@@ -21,7 +22,7 @@ struct ExportFinanceDataView: View {
                 LabeledTextField(.common_file_name, viewModel: viewModel.fileNameInput, prompt: viewModel.defaultFileName)
             }
 
-            if let financeStorage = viewModel.financeStorage {
+            if let financeStorage = viewModel.financeData {
                 Sector(.settings_your_finance_data, style: .card) {
                     Text("\(String.common_groups): \(financeStorage.groups.count)")
                     Text("\(String.common_categories): \(financeStorage.categories.count)")
@@ -31,6 +32,10 @@ struct ExportFinanceDataView: View {
         }
         .handleViewModelActions(viewModel)
         .asSheet(title: .common_export, primaryButton: primaryButton)
+        .alert(item: $viewModel.errorMessage, content: { message in
+            // TODO: - Handling info
+                .init(title: SwiftUI.Text("Info"), message: SwiftUI.Text(message), dismissButton: .default(SwiftUI.Text("OK"), action: { dismiss.callAsFunction() }))
+        })
         .activitySheet($viewModel.activityAction)
     }
 

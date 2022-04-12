@@ -14,63 +14,47 @@ final class ImportFinanceDataVM: ViewModel {
 
     struct Input {
         let didSelectFile = DriverSubject<Result<URL, Error>>()
-        let didEnterCustomizeView = DriverSubject<Void>()
         let didConfirmImporting = DriverSubject<Void>()
     }
 
     let input = Input()
-    @Published private(set) var selectedFile: URL?
-    @Published private(set) var financeStorage: FinanceStorage?
-    @Published private(set) var importResult: FinanceStorage.ImportResult?
+    @Published var importer: FinanceDataImporter?
 
     init(controller: PersistenceController = AppVM.shared.controller) {
         super.init()
 
-        let errorTracker = PassthroughSubject<Error, Never>()
+        let errorTracker = DriverSubject<Error>()
+        let selectedFile = DriverSubject<URL>()
 
         input.didSelectFile
-            .sink { [weak self] result in
+            .sink { result in
                 switch result {
                 case let .success(url):
-                    self?.selectedFile = url
+                    selectedFile.send(url)
                 case let .failure(error):
                     errorTracker.send(error)
                 }
             }
             .store(in: &cancellables)
 
-        CombineLatest(input.didEnterCustomizeView, $selectedFile)
-            .compactMap { $0.1 }
-            .removeDuplicates()
+        selectedFile
             .startLoading(on: self)
-            .await { [weak self] url -> FinanceStorage.ImportResult in
-                let storage: FinanceStorage = try await FileHelper.getModelFrom(url)
-                DispatchQueue.main.async { [weak self] in
-                    self?.financeStorage = storage
-                }
-                return await storage.getImportResult(for: controller)
-            }
+            .await { try await FileHelper.getModelFrom($0) }
+            .asyncMap { await FinanceDataImporter(from: controller, financeData: $0) }
             .stopLoading(on: self)
             .sink { completion in
                 print(completion)
-            } receiveValue: { [weak self] importResult in
-                self?.importResult = importResult
+            } receiveValue: { [weak self] in
+                self?.importer = $0
             }
             .store(in: &cancellables)
 
-        CombineLatest(input.didConfirmImporting, $financeStorage)
-            .compactMap { $0.1 }
+        input.didConfirmImporting
+            .compactMap { [weak self] in self?.importer }
             .startLoading(on: self)
-            .await { await $0.create(in: controller) }
+            .asyncMap { await $0.create() }
             .stopLoading(on: self)
-            .sink { error in
-                print(error)
-//                errorTracker.send(error)
-            } receiveValue: { [weak self] in
-                try? controller.backgroundContext.save()
-                self?.baseAction.dismissView.send()
-                print("success")
-            }
+            .sink { print("success") }
             .store(in: &cancellables)
     }
 }

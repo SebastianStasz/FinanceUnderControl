@@ -12,9 +12,9 @@ import SwiftUI
 struct ImportFinanceResultList: View {
 
     private let title: String
-    private let items: [FinanceStorage.ImportResult.Item]
+    private let items: [FinanceDataImporter.ResultItem]
 
-    init(_ title: String, items: [FinanceStorage.ImportResult.Item]) {
+    init(_ title: String, items: [FinanceDataImporter.ResultItem]) {
         self.title = title
         self.items = items
     }
@@ -26,7 +26,7 @@ struct ImportFinanceResultList: View {
                     HStack {
                         Text(item.name)
                         Spacer()
-                        Text(item.alreadyExists ? "Already exists" : "Will be created")
+                        Text(item.willBeCreated ? "Will be created" : "Already exists")
                     }
                     .card()
                 }
@@ -39,16 +39,10 @@ struct ImportFinanceResultList: View {
 
 struct ImportFinanceResultList_Previews: PreviewProvider {
     static var previews: some View {
-        FormView {
-            Sector("test") {
-                Navigation("Test", leadsTo: ImportFinanceResultList("Title", items: FinanceStorage.ImportResult.sampleItems))
-            }
+        Group {
+            ImportFinanceResultList("Title", items: FinanceDataImporter.Result.sampleItems)
+            ImportFinanceResultList("Title", items: FinanceDataImporter.Result.sampleItems).darkScheme()
         }
-        .asSheet(title: "Test")
-//        Group {
-//            ImportFinanceResultList("Title", items: FinanceStorage.ImportResult.sampleItems)
-//            ImportFinanceResultList("Title", items: FinanceStorage.ImportResult.sampleItems).darkScheme()
-//        }
-//        .sizeThatFits(spacing: false)
+        .sizeThatFits(spacing: false)
     }
 }
