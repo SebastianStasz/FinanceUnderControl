@@ -9,12 +9,16 @@ import SwiftUI
 
 @main
 struct FinanceUnderControlApp: App {
+    @Environment(\.scenePhase) private var scenePhase
+
+    private let viewModel = AppVM.shared
 
     var body: some Scene {
         WindowGroup {
             TabBarView()
-                .environment(\.managedObjectContext, AppVM.shared.context)
+                .environment(\.managedObjectContext, viewModel.context)
 //                .task { await AppVM.shared.setupCurrencies() }
+                .onChange(of: scenePhase) { viewModel.didChangeScenePhase(to: $0) }
         }
     }
 }

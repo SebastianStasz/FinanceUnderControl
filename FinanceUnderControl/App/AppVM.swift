@@ -8,6 +8,7 @@
 import FinanceCoreData
 import Foundation
 import CoreData
+import SwiftUI
 
 final class AppVM {
     static let shared = AppVM()
@@ -26,5 +27,11 @@ final class AppVM {
 
     func setupCurrencies() async {
         await currencyService.setupCurrencies(in: context)
+    }
+
+    func didChangeScenePhase(to scenePhase: ScenePhase) {
+        if case .background = scenePhase {
+            controller.save()
+        }
     }
 }
