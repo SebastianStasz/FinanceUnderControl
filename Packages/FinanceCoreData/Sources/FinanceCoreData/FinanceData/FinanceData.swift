@@ -19,7 +19,6 @@ public struct FinanceData: Codable {
 public extension FinanceData {
 
     init(from controller: PersistenceController) async {
-        controller.save() // TODO: Is saving context needed?
         let groups = await CashFlowCategoryGroupEntity.getAll(from: controller).map { $0.dataModel }
         let categories = await CashFlowCategoryEntity.getAll(from: controller).map { $0.dataModel }
         let cashFlows = await CashFlowEntity.getAll(from: controller).map { $0.dataModel }

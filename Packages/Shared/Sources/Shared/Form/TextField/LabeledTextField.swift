@@ -28,7 +28,7 @@ public struct LabeledTextField<T>: View {
     }
 
     public var body: some View {
-        VStack(spacing: .micro) {
+        VStack(alignment: .leading, spacing: .micro) {
             InputField(title, viewModel: viewModel, prompt: prompt ?? title).textStyle(.body())
 
             if let message = viewModel.validationMessage {
