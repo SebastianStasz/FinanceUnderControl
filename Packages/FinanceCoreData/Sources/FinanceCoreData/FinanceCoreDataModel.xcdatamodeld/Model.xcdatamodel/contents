@@ -19,7 +19,7 @@
         <attribute name="name" attributeType="String"/>
         <attribute name="value" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="CashFlowCategoryEntity" inverseName="cashFlows" inverseEntity="CashFlowCategoryEntity"/>
-        <relationship name="currency" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyEntity" inverseName="cashFlows" inverseEntity="CurrencyEntity"/>
+        <relationship name="currency" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyEntity" inverseName="cashFlows" inverseEntity="CurrencyEntity"/>
     </entity>
     <entity name="CurrencyEntity" representedClassName="CurrencyEntity" syncable="YES">
         <attribute name="code" attributeType="String"/>

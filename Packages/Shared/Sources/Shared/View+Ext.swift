@@ -14,8 +14,8 @@ public extension View {
         self.preferredColorScheme(.dark)
     }
 
-    func sizeThatFits(backgroundColor: Color = .backgroundPrimary) -> some View {
-        self.padding(.large)
+    func sizeThatFits(backgroundColor: Color = .backgroundPrimary, spacing: Bool = true) -> some View {
+        self.padding(spacing ? .large : 0)
             .background(backgroundColor)
             .previewLayout(.sizeThatFits)
     }

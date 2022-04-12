@@ -18,6 +18,11 @@ public struct Navigation<Destination: View>: View {
         self.destination = destination
     }
 
+    public init(_ title: String, @ViewBuilder leadsTo destination: @escaping () -> Destination) {
+        self.title = title
+        self.destination = destination
+    }
+
     public var body: some View {
         Text(title).lineLimit(1)
             .trailingAction(.forward(action: goForward))

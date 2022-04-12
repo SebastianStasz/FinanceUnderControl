@@ -54,6 +54,7 @@ public enum CashFlowCategoryIcon: String {
 }
 
 extension CashFlowCategoryIcon: CaseIterable {}
+extension CashFlowCategoryIcon: Codable {}
 
 extension CashFlowCategoryIcon: Identifiable {
     public var id: String { rawValue }

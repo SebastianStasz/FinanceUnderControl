@@ -82,6 +82,11 @@ public extension CurrencyEntity {
         return result ?? []
     }
 
+    static func getAll(from controller: PersistenceController) async -> [CurrencyEntity] {
+        let result = try? await CurrencyEntity.asyncFetch(from: controller, sorting: [.byCode()])
+        return result ?? []
+    }
+
     static func get(withCode code: String, from context: NSManagedObjectContext) -> CurrencyEntity? {
         let request = CurrencyEntity.nsFetchRequest(filteringBy: [.codeIs(code)])
         let currency = try? context.fetch(request).first
@@ -131,5 +136,3 @@ public extension CurrencyEntity {
         return currency
     }
 }
-
-extension CurrencyEntity: Deletable {}

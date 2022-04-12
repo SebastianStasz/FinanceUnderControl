@@ -35,22 +35,36 @@ public enum BodyTextType {
     }
 }
 
+public enum FootnoteTextType {
+    case info
+    case validation
+
+    var color: Color {
+        switch self {
+        case .info:
+            return .gray // TODO: Adapt to DS
+        case .validation:
+            return .red.opacity(0.7) // TODO: Adapt to DS
+        }
+    }
+}
+
 public enum TextStyle {
     case headlineBig
     case headlineSmall(HeadlineSmallTextType = .normal)
     case bodyMedium
     case body(BodyTextType = .normal)
-    case validation
+    case footnote(FootnoteTextType = .info)
     case currency
 
     public var font: Font.TextStyle {
         switch self {
         case .headlineBig:
             return .title3
-        case .headlineSmall, .validation:
-            return .caption
+        case .headlineSmall, .footnote:
+            return .footnote
         case .bodyMedium, .body:
-            return .callout
+            return .subheadline
         case .currency:
             return .body
         }
@@ -80,8 +94,8 @@ public enum TextStyle {
             return .white // TODO: Adapt to DS
         case .headlineSmall(let type):
             return type.color
-        case .validation:
-            return .red.opacity(0.7) // TODO: Adapt to DS
+        case .footnote(let type):
+            return type.color
         case .body(let type):
             return type.color
         default:

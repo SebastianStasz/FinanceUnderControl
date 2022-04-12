@@ -140,7 +140,7 @@ final class CashFlowCategoryGroupEntityTests: XCTestCase, CoreDataSteps {
         XCTAssert(group.addToCategories(category))
 
         // Delete created cash flow category group entity.
-        XCTAssert(group.delete())
+        group.delete()
 
         // Verify that cash flow category group entity was deleted.
         try fetchRequestShouldReturnElements(0, for: CashFlowCategoryGroupEntity.self)

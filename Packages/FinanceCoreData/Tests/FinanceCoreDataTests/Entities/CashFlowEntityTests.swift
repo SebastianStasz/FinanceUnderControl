@@ -125,7 +125,7 @@ private extension CashFlowEntityTests {
                                   category: CashFlowCategoryEntity? = nil
     ) throws {
         XCTAssertEqual(cashFlowEntity.name, data.name)
-        XCTAssertEqual(cashFlowEntity.date, data.date)
+        XCTAssertEqual(cashFlowEntity.date.description, data.date.description)
         XCTAssertEqual(cashFlowEntity.value, data.value)
         XCTAssertEqual(cashFlowEntity.category, category ?? data.category)
     }

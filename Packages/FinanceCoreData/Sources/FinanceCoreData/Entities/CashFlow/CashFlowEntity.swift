@@ -14,7 +14,7 @@ import Foundation
     @NSManaged public private(set) var monthAndYear: Date
     @NSManaged public private(set) var value: Double
     @NSManaged public private(set) var category: CashFlowCategoryEntity
-    @NSManaged public private(set) var currency: CurrencyEntity?
+    @NSManaged public private(set) var currency: CurrencyEntity
 }
 
 // MARK: - Methods
@@ -36,6 +36,18 @@ public extension CashFlowEntity {
         createAndReturn(in: context, model: model)
     }
 
+    static func create(in controller: PersistenceController, model: Model) async {
+        await controller.backgroundContext.perform {
+            let cashFlow = CashFlowEntity(context: controller.backgroundContext)
+            cashFlow.name = model.name
+            cashFlow.date = model.date
+            cashFlow.monthAndYear = model.monthAndYear
+            cashFlow.value = model.value
+            cashFlow.currency = model.currency
+            cashFlow.category = model.category
+        }
+    }
+
     func edit(model: Model) -> Bool {
         guard category.type == model.category.type else { return false }
         name = model.name
@@ -45,12 +57,9 @@ public extension CashFlowEntity {
         return true
     }
 
-    /// Deletes cash flow  if context found.
-    /// - Returns: `true` if the entity has been deleted, `false` if the entity cannot be deleted.
-    func delete() -> Bool {
-        guard let context = self.getContext() else { return false }
-        context.delete(self)
-        return true
+    static func getAll(from controller: PersistenceController) async -> [CashFlowEntity] {
+        let result = try? await CashFlowEntity.asyncFetch(from: controller, sorting: [.byName()])
+        return result ?? []
     }
 }
 

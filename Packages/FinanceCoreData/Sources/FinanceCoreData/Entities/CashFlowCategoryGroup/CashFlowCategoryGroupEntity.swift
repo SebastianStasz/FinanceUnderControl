@@ -46,6 +46,14 @@ public extension CashFlowCategoryGroupEntity {
         createAndReturn(in: context, model: model)
     }
 
+    static func create(in controller: PersistenceController, model: Model) async {
+        await controller.backgroundContext.perform {
+            let group = CashFlowCategoryGroupEntity(context: controller.backgroundContext)
+            group.type = model.type
+            group.edit(model: model)
+        }
+    }
+
     /// Edists a cash flow category group using the model provided if the model is of the same type as the group.
     /// - Parameter model: Model that will be used to edit the entity.
     /// - Returns: `true` if the entity has been edited `false` if the entity cannot be edited.
@@ -57,14 +65,6 @@ public extension CashFlowCategoryGroupEntity {
         name = model.name
         removeFromCategories_(entities: NSSet(array: categoriesToRemove))
         addToCategories(categoriesToAdd)
-        return true
-    }
-
-    /// Deletes cash flow category if context found.
-    /// - Returns: `true` if the entity has been deleted, `false` if the entity cannot be deleted.
-    func delete() -> Bool {
-        guard let context = self.getContext() else { return false }
-        context.delete(self)
         return true
     }
 
@@ -99,18 +99,21 @@ public extension CashFlowCategoryGroupEntity {
         CashFlowCategoryGroupEntity.fetchRequest(filteringBy: [.typeIs(type)], sortingBy: [.byName()])
     }
 
-    static func getAll(from context: NSManagedObjectContext) -> [CashFlowCategoryGroupEntity] {
-        let request = CashFlowCategoryGroupEntity.nsFetchRequest(sortingBy: [.byName()])
+    static func getAll(from controller: PersistenceController) async -> [CashFlowCategoryGroupEntity] {
+        let result = try? await CashFlowCategoryGroupEntity.asyncFetch(from: controller, sorting: [.byName()])
+        return result ?? []
+    }
+
+    static func getAll(from context: NSManagedObjectContext, filterBy filter: [Filter] = []) -> [CashFlowCategoryGroupEntity] {
+        let request = CashFlowCategoryGroupEntity.nsFetchRequest(filteringBy: filter, sortingBy: [.byName()])
         let result = try? context.fetch(request)
         return result ?? []
     }
 }
 
-// MARK: - Private methods
+// MARK: - Helpers
 
-private extension CashFlowCategoryGroupEntity {
-
-}
+extension CashFlowCategoryGroupEntity: Deletable {}
 
 // MARK: - Generated accessors for categories
 

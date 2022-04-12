@@ -14,6 +14,8 @@ private struct ViewModelActionsModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+            .allowsHitTesting(!viewModel.isLoading)
+            .overlay(LoadingIndicator(isLoading: viewModel.isLoading))
             .onReceive(viewModel.baseAction.dismissView, perform: dismiss.callAsFunction)
     }
 }

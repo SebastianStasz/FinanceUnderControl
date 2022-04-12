@@ -22,3 +22,12 @@ extension BaseView {
 
     func onAppear() {}
 }
+
+struct LoadingIndicator: View {
+
+    let isLoading: Bool
+
+    var body: some View {
+        if isLoading { ProgressView() }
+    }
+}

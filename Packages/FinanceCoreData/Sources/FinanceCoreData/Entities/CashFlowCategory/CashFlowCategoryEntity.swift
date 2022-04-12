@@ -9,7 +9,7 @@ import CoreData
 import Foundation
 import SwiftUI
 
-@objc(CashFlowCategoryEntity) public class CashFlowCategoryEntity: NSManagedObject, Entity {
+@objc(CashFlowCategoryEntity) public class CashFlowCategoryEntity: NSManagedObject, Entity, Deletable {
     @NSManaged private var type_: String
     @NSManaged private var icon_: String
     @NSManaged private var color_: String
@@ -49,6 +49,15 @@ public extension CashFlowCategoryEntity {
         createAndReturn(in: context, model: model)
     }
 
+    static func create(in controller: PersistenceController, model: Model) async {
+        await controller.backgroundContext.perform {
+            let category = CashFlowCategoryEntity(context: controller.backgroundContext)
+            category.type = model.type
+            category.group = model.group
+            category.edit(model: model)
+        }
+    }
+
     @discardableResult
     func edit(model: Model) -> Bool {
         guard type == model.type else { return false }
@@ -58,10 +67,10 @@ public extension CashFlowCategoryEntity {
         return true
     }
 
-    func delete() -> Bool {
-        guard let context = self.getContext(), self.cashFlows.isEmpty else { return false }
-        context.delete(self)
-        return true
+    func delete() {
+        CoreDataHelper.delete(self, canBeDeleted: {
+            self.cashFlows.isEmpty
+        })
     }
 
     static func fetchRequest(forType type: CashFlowType, group: Group? = nil) -> FetchRequest<CashFlowCategoryEntity> {
@@ -70,6 +79,11 @@ public extension CashFlowCategoryEntity {
             filters.append(.group(group))
         }
         return CashFlowCategoryEntity.fetchRequest(filteringBy: filters, sortingBy: [.byName()])
+    }
+
+    static func getAll(from controller: PersistenceController) async -> [CashFlowCategoryEntity] {
+        let result = try? await CashFlowCategoryEntity.asyncFetch(from: controller, sorting: [.byName()])
+        return result ?? []
     }
 
     static func getAll(from context: NSManagedObjectContext, filteringBy filters: [Filter] = []) -> [CashFlowCategoryEntity] {

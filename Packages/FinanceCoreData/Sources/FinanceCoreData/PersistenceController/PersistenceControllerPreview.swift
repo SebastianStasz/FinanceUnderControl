@@ -22,7 +22,7 @@ public extension PersistenceController {
         let persistenceController = PersistenceController(inMemory: true)
         let context = persistenceController.context
         createSampleData(in: context)
-//        persistenceController.save()
+        persistenceController.save()
         return persistenceController
     }
 
@@ -36,14 +36,7 @@ public extension PersistenceController {
 private extension PersistenceController {
 
     static func createCurrencies(in context: NSManagedObjectContext) {
-//        let decoder = JSONDecoder()
-//        let symbolsReponse = try! decoder.decode(SymbolsReponse.self, from: DataFile.exchangerateSymbols.data) // swiftlint:disable:this force_try
-//        let latestRatesResponse = try! decoder.decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data) // swiftlint:disable:this force_try
-
         CurrencyEntity.create(in: context, models: SupportedCurrency.currencyEntityModels)
-
-//        let eurCurrency = CurrencyEntity.getAll(from: context).first(where: { $0.code == "EUR" })!
-//        eurCurrency.addExchangeRates(latestRatesResponse.rates.map { $0.exchangeRateData(baseCurrency: "EUR") })
     }
 
     // MARK: - Expenses
