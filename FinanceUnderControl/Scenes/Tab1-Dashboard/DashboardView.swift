@@ -9,10 +9,15 @@ import Shared
 import SwiftUI
 
 struct DashboardView: View {
+
+    @StateObject private var viewModel = DashboardVM()
+
     var body: some View {
-        Text("Dashboard")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.backgroundPrimary)
+        FormView {
+            MonthBalanceWidgetView()
+                .padding(.horizontal, .medium)
+        }
+        .navigationBarHidden(true)
     }
 }
 
@@ -20,7 +25,9 @@ struct DashboardView: View {
 
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
-        DashboardView()
-            .inTabBarPreview()
+        Group {
+            DashboardView().inTabBarPreview()
+            DashboardView().inTabBarPreview().darkScheme()
+        }
     }
 }
