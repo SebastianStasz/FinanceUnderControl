@@ -32,6 +32,8 @@ struct CashFlowFormSheet: BaseView {
 
             Sector(.create_cash_flow_more_label) {
                 LabeledPicker(.create_cash_flow_currency, elements: currencies, selection: $viewModel.formModel.currency)
+                    .opacity(0.5)
+                    .disabled(true)
                 LabeledDatePicker(.create_cash_flow_date, selection: $viewModel.formModel.date)
                 LabeledPicker(.common_category, elements: categories, selection: $viewModel.formModel.category)
             }

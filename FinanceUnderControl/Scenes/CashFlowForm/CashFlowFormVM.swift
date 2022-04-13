@@ -29,13 +29,13 @@ final class CashFlowFormVM: ViewModel {
     override init() {
         super.init()
 
-        currencySettings.result().primaryCurrency
-            .filter { [unowned self] _ in self.formModel.currency.isNil }
-            .sink { [unowned self] in
-                self.initialFormModel.currency = $0
-                self.formModel.currency = $0
-            }
-            .store(in: &cancellables)
+//        currencySettings.result().primaryCurrency
+//            .filter { [unowned self] _ in self.formModel.currency.isNil }
+//            .sink { [unowned self] in
+//                self.initialFormModel.currency = $0
+//                self.formModel.currency = $0
+//            }
+//            .store(in: &cancellables)
 
         CombineLatest(didTapConfirm, $formModel.compactMap { $0.model })
             .sink { [weak self] in self?.handleConfirmAction(for: $0.0) }
@@ -44,6 +44,7 @@ final class CashFlowFormVM: ViewModel {
 
     func onAppear(formType: FormType) {
         formModel = formType.formModel
+        formModel.currency = CurrencyEntity.get(withCode: "PLN", from: AppVM.shared.context)!
         initialFormModel = formModel
         nameInput = TextInputVM(initialValue: formModel.name, validator: .name())
         valueInput = DoubleInputVM(initialValue: formModel.value?.asString, validator: .money())
