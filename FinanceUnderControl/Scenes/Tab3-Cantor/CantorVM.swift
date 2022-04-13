@@ -54,7 +54,7 @@ final class CantorVM: ObservableObject {
             .map { values -> String? in
                 guard let primary = values.0.primaryCurrency,
                       let secondary = values.0.secondaryCurrency,
-                      let rateValue = values.1
+                      let rateValue = values.1, rateValue > 0
                 else { return nil }
                 return "1 \(primary.code) = \(rateValue.asString(roundToDecimalPlaces: 2)) \(secondary.code)"
             }
