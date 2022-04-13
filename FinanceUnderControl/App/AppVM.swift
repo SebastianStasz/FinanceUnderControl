@@ -9,12 +9,18 @@ import FinanceCoreData
 import Foundation
 import CoreData
 import SwiftUI
+import SSUtils
 
 final class AppVM {
     static let shared = AppVM()
 
+    struct Events {
+        let cashFlowsChanged = DriverSubject<Void>()
+    }
+
     private let currencyService = CurrencyService()
     let controller: PersistenceController
+    let events = Events()
 
     var context: NSManagedObjectContext {
         controller.context

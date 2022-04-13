@@ -60,6 +60,8 @@ final class CashFlowFormVM: ViewModel {
         case .edit:
             editCashFlow(form: formType, model: model)
         }
+        try? AppVM.shared.context.save()
+        AppVM.shared.events.cashFlowsChanged.send()
         baseAction.dismissView.send()
     }
 
