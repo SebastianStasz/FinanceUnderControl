@@ -14,8 +14,9 @@ struct DashboardView: View {
 
     var body: some View {
         FormView {
-            MonthBalanceWidgetView()
-                .padding(.horizontal, .medium)
+            Sector("Current month balance") {
+                MonthBalanceWidgetView()
+            }
         }
         .navigationBarHidden(true)
     }

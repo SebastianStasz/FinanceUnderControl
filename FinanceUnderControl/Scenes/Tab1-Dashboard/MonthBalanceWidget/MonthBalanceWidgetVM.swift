@@ -20,7 +20,7 @@ final class MonthBalanceWidgetVM: ViewModel {
         let controller = AppVM.shared.controller
         let dateFilter = CashFlowEntity.Filter.monthAndYear(from: .now)
 
-        Just(())
+        Publishers.Merge(Just(()), AppVM.shared.cashFlowsChanged)
             .startLoading(on: self)
             .asyncMap { _ async -> MonthBalance in
                 let incomeValue = await CashFlowEntity.getAll(from: controller, filter: [.byType(.income), dateFilter]).map { $0.value }.reduce(0, +)

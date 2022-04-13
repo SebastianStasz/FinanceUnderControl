@@ -9,6 +9,7 @@ import SwiftUI
 import FinanceCoreData
 
 struct BalanceIndicatorView: View {
+    private let lineWidth: CGFloat = 6
 
     let incomesValue: Double
     let expensesValue: Double
@@ -18,13 +19,18 @@ struct BalanceIndicatorView: View {
     }
 
     var body: some View {
-        Circle()
-            .stroke(lineWidth: 8)
-            .opacity(0.3)
-            .foregroundColor(Color.gray)
-            .overlay(circleIndicator(for: .expense))
-            .overlay(circleIndicator(for: .income))
-            .aspectRatio(contentMode: .fit)
+        Group {
+            if total == 0 {
+                Circle()
+                    .stroke(lineWidth: lineWidth)
+                    .opacity(0.3)
+                    .foregroundColor(Color.gray)
+            } else {
+                circleIndicator(for: .expense)
+                    .overlay(circleIndicator(for: .income))
+            }
+        }
+        .aspectRatio(contentMode: .fit)
     }
 
     @ViewBuilder
@@ -37,7 +43,7 @@ struct BalanceIndicatorView: View {
 
         Circle()
             .trim(from: 0.0, to: trimValue)
-            .stroke(lineWidth: 8)
+            .stroke(lineWidth: lineWidth)
             .foregroundColor(type.color)
             .rotationEffect(.degrees(rotation))
             .rotation3DEffect(.degrees(rotation3D), axis: (x: axis, y: axis, z: 0))
@@ -49,6 +55,7 @@ struct BalanceIndicatorView: View {
 struct BalanceIndicatorView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
+            BalanceIndicatorView(incomesValue: 0, expensesValue: 0)
             BalanceIndicatorView(incomesValue: 78, expensesValue: 22)
             BalanceIndicatorView(incomesValue: 24.25, expensesValue: 75.75).darkScheme()
         }
