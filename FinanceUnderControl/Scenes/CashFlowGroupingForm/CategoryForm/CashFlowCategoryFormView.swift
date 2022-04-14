@@ -32,14 +32,6 @@ struct CashFlowCategoryFormView: BaseView {
             .padding(.horizontal, .large)
 
             LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
-                ForEach(CashFlowCategoryColor.allCases) { color in
-                    CircleView(color: color.color)
-                        .selection($viewModel.formModel.color, element: color)
-                }
-            }
-            .embedInSection(.common_color, style: .card)
-
-            LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
                 ForEach(CashFlowCategoryIcon.allCases) { (icon: CashFlowCategoryIcon) in
                     CircleView(color: .basicSecondary, icon: icon)
                         .selection($viewModel.formModel.icon, element: icon)

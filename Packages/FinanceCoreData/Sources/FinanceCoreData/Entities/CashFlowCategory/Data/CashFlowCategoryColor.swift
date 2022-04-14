@@ -50,6 +50,10 @@ public enum CashFlowCategoryColor: String {
             return .yellow
         }
     }
+
+    public static var `default`: CashFlowCategoryColor {
+        .gray
+    }
 }
 
 extension CashFlowCategoryColor: CaseIterable {}

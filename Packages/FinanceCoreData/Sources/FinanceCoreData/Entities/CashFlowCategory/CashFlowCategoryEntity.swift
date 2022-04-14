@@ -25,6 +25,10 @@ import SwiftUI
         get { .getCase(for: type_) }
         set { type_ = newValue.rawValue }
     }
+
+    public var color: CashFlowCategoryColor {
+        group?.color ?? .default
+    }
 }
 
 // MARK: - Public methods

@@ -15,11 +15,23 @@ struct CashFlowCategoryGroupFormView: BaseView {
 
     let form: CashFlowFormType<CashFlowCategoryGroupEntity>
 
+    private var grid: [GridItem] {
+        Array(repeating: .init(.flexible(), spacing: .micro), count: 6)
+    }
+
     var baseBody: some View {
         FormView {
             Sector(.create_cash_flow_name) {
                 LabeledTextField(.create_cash_flow_name, viewModel: viewModel.nameInput)
             }
+
+            LazyVGrid(columns: grid, alignment: .center, spacing: .micro) {
+                ForEach(CashFlowCategoryColor.allCases) { color in
+                    CircleView(color: color.color)
+                        .selection($viewModel.formModel.color, element: color)
+                }
+            }
+            .embedInSection(.common_color, style: .card)
 
             Sector(.common_include) {
                 ForEach(viewModel.formModel.categories) {

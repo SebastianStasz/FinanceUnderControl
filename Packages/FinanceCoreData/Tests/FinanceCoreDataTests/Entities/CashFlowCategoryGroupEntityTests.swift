@@ -160,6 +160,7 @@ private extension CashFlowCategoryGroupEntityTests {
     func verifyCashFlowCategoryGroupData(in group: CashFlowCategoryGroupEntity, model: Model) {
         XCTAssertEqual(group.type, model.type)
         XCTAssertEqual(group.name, model.name)
+        XCTAssertEqual(group.color, model.color)
         verifyGroupContainsCategories(group, categories: model.categories)
     }
 

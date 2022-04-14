@@ -22,7 +22,7 @@ struct CashFlowCategoryRow: View {
     ) {
         name = category.name
         icon = category.icon
-        color = category.color.color
+        color = category.group?.color.color ?? .gray
         self.editCategory = editCategory
     }
 

@@ -136,7 +136,6 @@ private extension CashFlowCategoryEntityTests {
     ) {
         XCTAssertEqual(cashFlowCategoryEntity.name, data.name)
         XCTAssertEqual(cashFlowCategoryEntity.icon, data.icon)
-        XCTAssertEqual(cashFlowCategoryEntity.color, data.color)
         XCTAssertEqual(cashFlowCategoryEntity.type, data.type)
         XCTAssertEqual(cashFlowCategoryEntity.cashFlows.count, numOfCashFlows)
     }

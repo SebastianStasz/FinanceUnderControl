@@ -17,11 +17,11 @@ extension CashFlowCategoryEntity {
         var name: String?
         var type: CashFlowType?
         var icon: CashFlowCategoryIcon = .houseFill
-        var color: CashFlowCategoryColor = .blue
+        var color: CashFlowCategoryColor = .default
 
         var model: Model? {
             guard let name = name, let type = type else { return nil }
-            return .init(name: name, icon: icon, color: color, type: type)
+            return .init(name: name, icon: icon, type: type)
         }
     }
 }

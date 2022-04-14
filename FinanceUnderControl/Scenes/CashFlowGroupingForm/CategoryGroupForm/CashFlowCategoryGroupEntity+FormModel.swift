@@ -16,11 +16,12 @@ extension CashFlowCategoryGroupEntity {
 
         var name: String?
         var type: CashFlowType?
+        var color: CashFlowCategoryColor = .blue
         var categories: [CashFlowCategoryEntity] = []
 
         var model: Model? {
             guard let name = name, let type = type else { return nil }
-            return CashFlowCategoryGroupEntity.Model(name: name, type: type, categories: categories)
+            return CashFlowCategoryGroupEntity.Model(name: name, type: type, color: color, categories: categories)
         }
     }
 }

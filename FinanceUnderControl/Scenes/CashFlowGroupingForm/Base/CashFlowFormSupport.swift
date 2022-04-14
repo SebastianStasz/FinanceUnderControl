@@ -40,7 +40,7 @@ extension CashFlowCategoryEntity: CashFlowFormSupport {
 
 extension CashFlowCategoryGroupEntity: CashFlowFormSupport {
     var formModel: FormModel {
-        .init(name: name, type: type, categories: categories)
+        .init(name: name, type: type, color: color, categories: categories)
     }
 
     static func namesInUse(from context: NSManagedObjectContext, forType type: CashFlowType) -> [String] {
