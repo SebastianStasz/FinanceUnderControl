@@ -12,7 +12,6 @@ import SwiftUI
 @objc(CashFlowCategoryEntity) public class CashFlowCategoryEntity: NSManagedObject, Entity, Deletable {
     @NSManaged private var type_: String
     @NSManaged private var icon_: String
-    @NSManaged private var color_: String
     @NSManaged public private(set) var name: String
     @NSManaged public private(set) var group: CashFlowCategoryGroupEntity?
     @NSManaged public private(set) var cashFlows: Set<CashFlowEntity>
@@ -20,11 +19,6 @@ import SwiftUI
     public private(set) var icon: CashFlowCategoryIcon {
         get { .getCase(for: icon_) }
         set { icon_ = newValue.rawValue }
-    }
-
-    public private(set) var color: CashFlowCategoryColor {
-        get { .getCase(for: color_) }
-        set { color_ = newValue.rawValue }
     }
 
     public private(set) var type: CashFlowType {
@@ -63,7 +57,6 @@ public extension CashFlowCategoryEntity {
         guard type == model.type else { return false }
         name = model.name
         icon = model.icon
-        color = model.color
         return true
     }
 

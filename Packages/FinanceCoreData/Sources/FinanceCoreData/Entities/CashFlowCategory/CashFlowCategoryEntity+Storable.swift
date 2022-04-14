@@ -15,13 +15,12 @@ extension CashFlowCategoryEntity: Storable {
         let name: String
         let type: CashFlowType
         let icon: CashFlowCategoryIcon
-        let color: CashFlowCategoryColor
         let groupName: String?
 
         public func getModel(from controller: PersistenceController) async -> E.Model {
             let groups = await CashFlowCategoryGroupEntity.getAll(from: controller)
             let group = groups.first(where: { $0.name == groupName })
-            return .init(name: name, icon: icon, color: color, type: type, group: group)
+            return .init(name: name, icon: icon, type: type, group: group)
         }
     }
 
@@ -29,7 +28,6 @@ extension CashFlowCategoryEntity: Storable {
         DataModel(name: name,
                   type: type,
                   icon: icon,
-                  color: color,
                   groupName: group?.name
         )
     }

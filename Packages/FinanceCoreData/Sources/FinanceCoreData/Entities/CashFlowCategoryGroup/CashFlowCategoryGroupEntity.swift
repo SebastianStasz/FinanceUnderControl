@@ -12,8 +12,14 @@ import SwiftUI
 
 @objc(CashFlowCategoryGroupEntity) public class CashFlowCategoryGroupEntity: NSManagedObject, Entity {
     @NSManaged private var type_: String
+    @NSManaged private var color_: String
     @NSManaged private var categories_: NSSet
     @NSManaged public private(set) var name: String
+
+    public private(set) var color: CashFlowCategoryColor {
+        get { .getCase(for: color_) }
+        set { color_ = newValue.rawValue }
+    }
 
     public var categories: [CashFlowCategoryEntity] {
         categories_.compactMap { $0 as? CashFlowCategoryEntity }
@@ -63,6 +69,7 @@ public extension CashFlowCategoryGroupEntity {
         let categoriesToRemove = categories.filter { model.categories.notContains($0) }
         let categoriesToAdd = model.categories.filter { categories.notContains($0) }
         name = model.name
+        color = model.color
         removeFromCategories_(entities: NSSet(array: categoriesToRemove))
         addToCategories(categoriesToAdd)
         return true

@@ -14,9 +14,10 @@ extension CashFlowCategoryGroupEntity: Storable {
 
         let name: String
         let type: CashFlowType
+        let color: CashFlowCategoryColor
 
         public var model: CashFlowCategoryGroupEntity.Model {
-            .init(name: name, type: type)
+            .init(name: name, type: type, color: color)
         }
 
         public func getModel(from controller: PersistenceController) async -> CashFlowCategoryGroupEntity.Model {
@@ -25,6 +26,6 @@ extension CashFlowCategoryGroupEntity: Storable {
     }
 
     public var dataModel: DataModel {
-        DataModel(name: name, type: type)
+        DataModel(name: name, type: type, color: color)
     }
 }
