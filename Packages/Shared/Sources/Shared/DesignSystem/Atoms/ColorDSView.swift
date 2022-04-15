@@ -1,5 +1,5 @@
 //
-//  ColorsPreview.swift
+//  ColorDSView.swift
 //  Shared
 //
 //  Created by Sebastian Staszczyk on 22/10/2021.
@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct ColorsPreview: View {
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 10) {
-                ForEach(ColorDesign.groups, content: colorList)
-            }
-        }
+public struct ColorDSView: View {
+
+    public init() {}
+
+    public var body: some View {
+        ForEach(ColorDesign.groups, content: colorList)
+            .navigationTitle("Color")
     }
 
     private func colorList(for group: ColorDesign) -> some View {
@@ -41,6 +41,9 @@ struct ColorsPreview: View {
 
 struct ColorsPreview_Previews: PreviewProvider {
     static var previews: some View {
-        ColorsPreview()
+        Group {
+            ColorDSView()
+            ColorDSView().darkScheme()
+        }
     }
 }

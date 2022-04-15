@@ -1,15 +1,16 @@
 //
 //  ButtonDSView.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 21/01/2022.
 //
 
-import Shared
 import SwiftUI
 
-struct ButtonDSView: View {
-    var body: some View {
+public struct ButtonDSView: View {
+    public init() {}
+
+    public var body: some View {
         Group {
             BaseButton("Button title", role: .primary, action: {})
                 .designSystemComponent("Base Button - action")
@@ -25,6 +26,9 @@ struct ButtonDSView: View {
 
 struct ButtonDSView_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonDSView().embedInNavigationView()
+        Group {
+            ButtonDSView()
+            ButtonDSView().darkScheme()
+        }
     }
 }

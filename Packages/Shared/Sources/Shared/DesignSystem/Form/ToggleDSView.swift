@@ -1,18 +1,19 @@
 //
 //  ToggleDSView.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 19/01/2022.
 //
 
-import Shared
 import SwiftUI
 
-struct ToggleDSView: View {
+public struct ToggleDSView: View {
+
+    public init() {}
 
     @State private var toggle1 = false
 
-    var body: some View {
+    public var body: some View {
         Group {
             LabeledToggle("Toggle title", isOn: $toggle1)
                 .designSystemComponent("Labeled Toggle")
@@ -25,6 +26,9 @@ struct ToggleDSView: View {
 
 struct ToggleDSView_Previews: PreviewProvider {
     static var previews: some View {
-        ToggleDSView().embedInNavigationView()
+        Group {
+            ToggleDSView()
+            ToggleDSView().darkScheme()
+        }
     }
 }

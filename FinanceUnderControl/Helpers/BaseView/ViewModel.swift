@@ -14,7 +14,7 @@ class ViewModel: ObservableObject, CombineHelper {
     @Published var isLoading = false
 
     class BaseAction {
-        let dismissView = PassthroughSubject<Void, Never>()
+        let dismissView = DriverSubject<Void>()
 
         init() {}
     }

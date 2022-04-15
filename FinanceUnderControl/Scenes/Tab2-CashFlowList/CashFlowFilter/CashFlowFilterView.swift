@@ -6,6 +6,7 @@
 //
 
 import FinanceCoreData
+import Shared
 import SwiftUI
 
 struct CashFlowFilterView: BaseView {

@@ -7,19 +7,18 @@
 
 import SwiftUI
 import SSUtils
-import Shared
 
-struct FormView<Content: View>: View {
+public struct FormView<Content: View>: View {
 
-    let content: Content
+    private let content: Content
 
-    init(@ViewBuilder _ content: @escaping () -> Content) {
+    public init(@ViewBuilder _ content: @escaping () -> Content) {
         self.content = content()
     }
 
-    var body: some View {
+    public var body: some View {
         ScrollView {
-            VStack(spacing: .xxlarge) { content }
+            VStack(alignment: .leading, spacing: .xxlarge) { content }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, .large)
         }
@@ -39,6 +38,9 @@ struct FormView<Content: View>: View {
 
 struct FormView_Previews: PreviewProvider {
     static var previews: some View {
-        FormView { Text("Content") }
+        Group {
+            FormView { Text("Content") }
+            FormView { Text("Content") }.darkScheme()
+        }
     }
 }

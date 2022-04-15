@@ -7,48 +7,6 @@
 
 import SwiftUI
 
-public enum HeadlineSmallTextType {
-    case normal
-    case action
-
-    var color: Color {
-        switch self {
-        case .normal:
-            return .gray // TODO: Adapt to DS
-        case .action:
-            return .blue // TODO: Adapt to DS
-        }
-    }
-}
-
-public enum BodyTextType {
-    case normal
-    case action
-
-    var color: Color {
-        switch self {
-        case .normal:
-            return .basicPrimaryInverted
-        case .action:
-            return .blue // TODO: Adapt to DS
-        }
-    }
-}
-
-public enum FootnoteTextType {
-    case info
-    case validation
-
-    var color: Color {
-        switch self {
-        case .info:
-            return .gray // TODO: Adapt to DS
-        case .validation:
-            return .red.opacity(0.7) // TODO: Adapt to DS
-        }
-    }
-}
-
 public enum TextStyle {
     case headlineBig
     case headlineSmall(HeadlineSmallTextType = .normal)

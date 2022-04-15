@@ -1,6 +1,6 @@
 //
 //  SectorDSView.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 06/03/2022.
 //
@@ -10,7 +10,7 @@ import SwiftUI
 struct SectorDSView: View {
     var body: some View {
         FormView {
-            Sector("Clear style", style: .clear) { text }   
+            Sector("Clear style", style: .clear) { text }
             Sector("Card style", style: .card) { text }
         }
     }
@@ -25,5 +25,6 @@ struct SectorDSView: View {
 struct SectorDSView_Previews: PreviewProvider {
     static var previews: some View {
         SectorDSView()
+        SectorDSView().darkScheme()
     }
 }

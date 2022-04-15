@@ -17,13 +17,24 @@ public struct Text: View {
         self.style = style
     }
 
+    public init?(_ text: String?, style: TextStyle = .body()) {
+        guard let text = text else { return nil }
+        self.init(text, style: style)
+    }
+
     public var body: some View {
         SwiftUI.Text(text).textStyle(style)
     }
 }
 
+// MARK: - Preview
+
 struct Text_Previews: PreviewProvider {
     static var previews: some View {
-        Text("Text body")
+        Group {
+            Text("Text body")
+            Text("Text body").darkScheme()
+        }
+        .sizeThatFits()
     }
 }

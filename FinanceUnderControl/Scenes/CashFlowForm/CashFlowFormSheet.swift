@@ -38,8 +38,8 @@ struct CashFlowFormSheet: BaseView {
                 LabeledPicker(.common_category, elements: categories, selection: $viewModel.formModel.category)
             }
         }
-        .asSheet(title: formType.title, askToDismiss: viewModel.formChanged, primaryButton: primaruButton)
         .handleViewModelActions(viewModel)
+        .asSheet(title: formType.title, askToDismiss: viewModel.formChanged, primaryButton: primaruButton)
     }
 
     private var primaruButton: HorizontalButtons.Configuration {

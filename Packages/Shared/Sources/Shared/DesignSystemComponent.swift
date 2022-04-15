@@ -1,6 +1,6 @@
 //
 //  DesignSystemComponent.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 19/01/2022.
 //
@@ -21,7 +21,7 @@ private struct DesignSystemComponent: ViewModifier {
     }
 }
 
-extension View {
+public extension View {
     func designSystemComponent(_ name: String) -> some View {
         modifier(DesignSystemComponent(name: name))
     }

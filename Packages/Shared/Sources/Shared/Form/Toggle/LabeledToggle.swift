@@ -36,7 +36,7 @@ struct LabeledToggle_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             LabeledToggle("Labeled toggle", isOn: .constant(true))
-            LabeledToggle("Labeled toggle", isOn: .constant(true))
+            LabeledToggle("Labeled toggle", isOn: .constant(true)).darkScheme()
         }
         .sizeThatFits()
     }

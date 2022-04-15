@@ -12,9 +12,25 @@ import Shared
 struct DesignSystemView: View {
 
     var body: some View {
-        BaseList("Design system", sectors: DesignSystem.sectors) {
-            Navigation($0.rawValue, leadsTo: $0.body)
+        FormView {
+            Sector("Atoms") {
+                Navigation("Texts", leadsTo: TextDSView.init)
+                Navigation("Colors", leadsTo: ColorDSView.init)
+            }
+
+            Sector("Form") {
+                Navigation("Buttons", leadsTo: ButtonDSView.init)
+                Navigation("Toggles", leadsTo: ToggleDSView.init)
+                Navigation("Pickers", leadsTo: PickerDSView.init)
+                Navigation("Text Fields", leadsTo: TextFieldDSView.init)
+            }
+
+            Sector("Other") {
+                Navigation("Sector", leadsTo: SectorDSView.init)
+                Navigation("Circle View", leadsTo: CircleViewDSView.init)
+            }
         }
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

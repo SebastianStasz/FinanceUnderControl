@@ -49,11 +49,3 @@ extension View {
         Sector(title, style: style) { self }
     }
 }
-
-// MARK: - Preview
-
-struct Sector_Previews: PreviewProvider {
-    static var previews: some View {
-        SectorDSView()
-    }
-}

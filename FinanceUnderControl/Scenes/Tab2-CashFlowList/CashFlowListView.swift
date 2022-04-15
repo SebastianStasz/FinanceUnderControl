@@ -60,6 +60,8 @@ struct CashFlowListView: View {
     private func deleteCashFlow() {
         _ = cashFlowToDelete?.delete()
         cashFlowToDelete = nil
+        try? AppVM.shared.context.save()
+        AppVM.shared.events.cashFlowsChanged.send()
     }
 }
 
@@ -67,7 +69,10 @@ struct CashFlowListView: View {
 
 struct CashFlowListView_Previews: PreviewProvider {
     static var previews: some View {
-        CashFlowListView()
-            .environment(\.managedObjectContext, PersistenceController.preview.context)
+        Group {
+            CashFlowListView()
+            CashFlowListView().darkScheme()
+        }
+        .environment(\.managedObjectContext, PersistenceController.preview.context)
     }
 }

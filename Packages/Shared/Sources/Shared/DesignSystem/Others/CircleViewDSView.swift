@@ -1,6 +1,6 @@
 //
 //  CircleViewDSView.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 06/03/2022.
 //
@@ -13,10 +13,10 @@ struct CircleViewDSView: View {
             CircleView(color: .blue, size: 50)
                 .designSystemComponent("Colored circle")
 
-            CircleView(color: .red, icon: .bagFill, size: 50)
+            CircleView(color: .blue, image: SFSymbol.close.rawValue, size: 50)
                 .designSystemComponent("Circle with image")
 
-            CircleView(color: .blue, size: 50)
+            CircleView(color: .blue, image: SFSymbol.close.rawValue, size: 50)
                 .selection(.constant("O"), element: "O")
                 .designSystemComponent("Selected circle")
         }
@@ -29,5 +29,6 @@ struct CircleViewDSView: View {
 struct CircleViewDSView_Previews: PreviewProvider {
     static var previews: some View {
         CircleViewDSView()
+        CircleViewDSView().darkScheme()
     }
 }

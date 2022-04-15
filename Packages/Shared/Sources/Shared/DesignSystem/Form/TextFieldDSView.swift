@@ -5,16 +5,16 @@
 //  Created by Sebastian Staszczyk on 19/01/2022.
 //
 
-import SwiftUI
 import SSValidation
-import Shared
+import SwiftUI
 
-struct TextFieldDSView: View {
+public struct TextFieldDSView: View {
+    public init() {}
 
     @State private var textInput = TextInputVM(validator: .notEmpty().and(.lengthBetween(3...9)))
     @State private var numberInput = DoubleInputVM(validator: .notEmpty().andDouble(.valueBetween(3...9)))
 
-    var body: some View {
+    public var body: some View {
         Group {
             LabeledTextField("Enter number", viewModel: numberInput)
                 .designSystemComponent("Labeled text field")
@@ -27,6 +27,9 @@ struct TextFieldDSView: View {
 
 struct TextFieldDSView_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldDSView().embedInNavigationView()
+        Group {
+            TextFieldDSView()
+            TextFieldDSView().darkScheme()
+        }
     }
 }
