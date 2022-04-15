@@ -1,17 +1,18 @@
 //
 //  DesignSystemView.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 19/01/2022.
 //
 
-import SwiftUI
 import SSUtils
-import Shared
+import SwiftUI
 
-struct DesignSystemView: View {
+public struct DesignSystemView: View {
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         FormView {
             Sector("Atoms") {
                 Navigation("Texts", leadsTo: TextDSView.init)
@@ -21,7 +22,7 @@ struct DesignSystemView: View {
             Sector("Form") {
                 Navigation("Buttons", leadsTo: ButtonDSView.init)
                 Navigation("Toggles", leadsTo: ToggleDSView.init)
-                Navigation("Pickers", leadsTo: PickerDSView.init)
+//                Navigation("Pickers", leadsTo: PickerDSView.init)
                 Navigation("Text Fields", leadsTo: TextFieldDSView.init)
             }
 
@@ -39,6 +40,6 @@ struct DesignSystemView: View {
 struct DesignSystemView_Previews: PreviewProvider {
     static var previews: some View {
         DesignSystemView()
-            .embedInNavigationView()
+        DesignSystemView().darkScheme()
     }
 }

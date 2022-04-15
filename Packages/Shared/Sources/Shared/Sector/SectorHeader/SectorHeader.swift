@@ -5,15 +5,14 @@
 //  Created by sebastianstaszczyk on 18/03/2022.
 //
 
-import Shared
 import SSUtils
 import SwiftUI
 
-struct SectorHeader: View {
+public struct SectorHeader: View {
     @Environment(\.editMode) private var editMode
     private let viewData: SectorHeaderVD
 
-    var body: some View {
+    public var body: some View {
         HStack {
             Text(viewData.title, style: .headlineSmall())
             Spacer()
@@ -33,11 +32,11 @@ struct SectorHeader: View {
 
     // MARK: - Initializers
 
-    init(_ viewData: SectorHeaderVD) {
+    public init(_ viewData: SectorHeaderVD) {
         self.viewData = viewData
     }
 
-    init?(_ viewData: SectorHeaderVD?) {
+    public init?(_ viewData: SectorHeaderVD?) {
         guard let viewData = viewData else { return nil }
         self.viewData = viewData
     }

@@ -7,11 +7,9 @@
 
 import SwiftUI
 
-public struct ColorDSView: View {
+struct ColorDSView: View {
 
-    public init() {}
-
-    public var body: some View {
+    var body: some View {
         ForEach(ColorDesign.groups, content: colorList)
             .navigationTitle("Color")
     }
@@ -41,9 +39,7 @@ public struct ColorDSView: View {
 
 struct ColorsPreview_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            ColorDSView()
-            ColorDSView().darkScheme()
-        }
+        ColorDSView()
+        ColorDSView().darkScheme()
     }
 }

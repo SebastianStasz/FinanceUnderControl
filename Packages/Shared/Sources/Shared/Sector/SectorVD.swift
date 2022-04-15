@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct SectorVD<Content: View> {
-    let header: SectorHeaderVD?
-    let style: SectorStyle
-    let content: Content
+public struct SectorVD<Content: View> {
+    public let header: SectorHeaderVD?
+    public let style: SectorStyle
+    public let content: Content
 
-    init(_ title: String? = nil,
+    public init(_ title: String? = nil,
          style: SectorStyle = .clear,
          editAction: EditAction? = nil,
          @ViewBuilder content: @escaping () -> Content

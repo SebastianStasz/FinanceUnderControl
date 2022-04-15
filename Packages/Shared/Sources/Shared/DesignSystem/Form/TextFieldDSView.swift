@@ -1,6 +1,6 @@
 //
 //  TextFieldDSView.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 19/01/2022.
 //
@@ -8,13 +8,12 @@
 import SSValidation
 import SwiftUI
 
-public struct TextFieldDSView: View {
-    public init() {}
+struct TextFieldDSView: View {
 
     @State private var textInput = TextInputVM(validator: .notEmpty().and(.lengthBetween(3...9)))
     @State private var numberInput = DoubleInputVM(validator: .notEmpty().andDouble(.valueBetween(3...9)))
 
-    public var body: some View {
+    var body: some View {
         Group {
             LabeledTextField("Enter number", viewModel: numberInput)
                 .designSystemComponent("Labeled text field")
@@ -27,9 +26,7 @@ public struct TextFieldDSView: View {
 
 struct TextFieldDSView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            TextFieldDSView()
-            TextFieldDSView().darkScheme()
-        }
+        TextFieldDSView()
+        TextFieldDSView().darkScheme()
     }
 }

@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-public struct ButtonDSView: View {
-    public init() {}
+struct ButtonDSView: View {
 
-    public var body: some View {
+    var body: some View {
         Group {
             BaseButton("Button title", role: .primary, action: {})
                 .designSystemComponent("Base Button - action")
@@ -26,9 +25,7 @@ public struct ButtonDSView: View {
 
 struct ButtonDSView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            ButtonDSView()
-            ButtonDSView().darkScheme()
-        }
+        ButtonDSView()
+        ButtonDSView().darkScheme()
     }
 }

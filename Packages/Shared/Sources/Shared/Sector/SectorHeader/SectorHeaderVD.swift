@@ -7,16 +7,17 @@
 
 import Foundation
 
-struct SectorHeaderVD {
-    let title: String
-    let editAction: EditAction?
+public struct SectorHeaderVD {
 
-    init(_ title: String, editAction: EditAction? = nil) {
+    public let title: String
+    public let editAction: EditAction?
+
+    public init(_ title: String, editAction: EditAction? = nil) {
         self.title = title
         self.editAction = editAction
     }
 
-    init?(_ title: String?, editAction: EditAction?) {
+    public init?(_ title: String?, editAction: EditAction?) {
         guard let title = title else { return nil }
         self.init(title, editAction: editAction)
     }

@@ -1,6 +1,6 @@
 //
 //  LabeledTextField.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 07/12/2021.
 //

@@ -1,6 +1,6 @@
 //
 //  LabeledToggle.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 18/01/2022.
 //

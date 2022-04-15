@@ -1,6 +1,6 @@
 //
 //  BaseButton+Role.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 19/02/2022.
 //

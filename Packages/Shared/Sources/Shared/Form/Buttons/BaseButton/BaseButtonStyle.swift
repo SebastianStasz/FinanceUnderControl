@@ -1,6 +1,6 @@
 //
 //  BaseButtonStyle.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 27/12/2021.
 //

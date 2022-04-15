@@ -7,13 +7,11 @@
 
 import SwiftUI
 
-public struct ToggleDSView: View {
-
-    public init() {}
+struct ToggleDSView: View {
 
     @State private var toggle1 = false
 
-    public var body: some View {
+    var body: some View {
         Group {
             LabeledToggle("Toggle title", isOn: $toggle1)
                 .designSystemComponent("Labeled Toggle")
@@ -26,9 +24,7 @@ public struct ToggleDSView: View {
 
 struct ToggleDSView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            ToggleDSView()
-            ToggleDSView().darkScheme()
-        }
+        ToggleDSView()
+        ToggleDSView().darkScheme()
     }
 }

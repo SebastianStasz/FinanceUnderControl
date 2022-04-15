@@ -23,7 +23,7 @@ private struct DesignSystemViewModifier: ViewModifier {
     }
 }
 
-public extension View {
+extension View {
     func designSystemView(_ title: String) -> some View {
         modifier(DesignSystemViewModifier(title: title))
     }

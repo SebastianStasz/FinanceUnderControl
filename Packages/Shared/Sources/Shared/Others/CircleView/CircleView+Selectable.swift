@@ -1,6 +1,6 @@
 //
 //  CircleView+Selectable.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 06/03/2022.
 //
@@ -35,7 +35,7 @@ private struct CircleViewSelecting<T: Equatable>: ViewModifier {
     }
 }
 
-extension CircleView {
+public extension CircleView {
     func selection<T: Equatable>(_ selection: Binding<T>, element: T) -> some View {
         self.modifier(CircleViewSelecting(selection: selection, element: element))
     }

@@ -1,5 +1,5 @@
 //
-//  CircleImage.swift
+//  CircleView+FinanceCoreData.swift
 //  FinanceUnderControl
 //
 //  Created by Sebastian Staszczyk on 05/03/2022.

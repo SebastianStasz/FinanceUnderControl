@@ -1,18 +1,17 @@
 //
 //  Sector.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 14/02/2022.
 //
 
-import Shared
 import SwiftUI
 
-struct Sector<Content: View>: View {
+public struct Sector<Content: View>: View {
 
     private let viewData: SectorVD<Content>
 
-    var body: some View {
+    public var body: some View {
         VStack {
             SectorHeader(viewData.header)
                 .padding(.horizontal, .large)
@@ -31,11 +30,11 @@ struct Sector<Content: View>: View {
 
     // MARK: - Initializers
 
-    init(_ viewData: SectorVD<Content>) {
+    public init(_ viewData: SectorVD<Content>) {
         self.viewData = viewData
     }
 
-    init(_ title: String,
+    public init(_ title: String,
          style: SectorStyle = .clear,
          editAction: EditAction? = nil,
          @ViewBuilder content: @escaping () -> Content
@@ -44,7 +43,7 @@ struct Sector<Content: View>: View {
     }
 }
 
-extension View {
+public extension View {
     func embedInSection(_ title: String, style: SectorStyle = .clear) -> some View {
         Sector(title, style: style) { self }
     }

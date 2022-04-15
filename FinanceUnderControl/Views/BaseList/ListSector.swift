@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Shared
 
 struct ListSector<T: Identifiable> {
     let title: String

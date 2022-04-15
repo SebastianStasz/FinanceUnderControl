@@ -1,25 +1,24 @@
 //
 //  PickerDSView.swift
-//  FinanceUnderControl
+//  Shared
 //
 //  Created by Sebastian Staszczyk on 19/01/2022.
 //
 
-import Shared
 import SwiftUI
 
 struct PickerDSView: View {
 
-    @State private var labeledPickerSelection: CashFlowSelection? = .all
-    @State private var segmentedPickerSelection: CashFlowSelection = .all
+    @State private var labeledPickerSelection: PickerDSType? = .firstOption
+    @State private var segmentedPickerSelection: PickerDSType = .firstOption
     @State private var dateRangePickerViewData = DateRangePickerViewData()
 
     var body: some View {
         Group {
-            LabeledPicker("Title", elements: CashFlowSelection.allCases, selection: $labeledPickerSelection)
+            LabeledPicker("Title", elements: PickerDSType.allCases, selection: $labeledPickerSelection)
                 .designSystemComponent("Labeled Picker")
 
-            SegmentedPicker("Title", selection: $segmentedPickerSelection, elements: CashFlowSelection.allCases)
+            SegmentedPicker("Title", selection: $segmentedPickerSelection, elements: PickerDSType.allCases)
                 .designSystemComponent("Segmented Picker")
 
             DateRangePicker("Title", viewData: $dateRangePickerViewData)
@@ -33,6 +32,15 @@ struct PickerDSView: View {
 
 struct PickerDSView_Previews: PreviewProvider {
     static var previews: some View {
-        PickerDSView().embedInNavigationView()
+        PickerDSView()
+        PickerDSView().darkScheme()
     }
+}
+
+private enum PickerDSType: String, Pickerable, CaseIterable {
+    case firstOption
+    case secondOption
+    case thirdOption
+
+    var valueName: String { rawValue }
 }

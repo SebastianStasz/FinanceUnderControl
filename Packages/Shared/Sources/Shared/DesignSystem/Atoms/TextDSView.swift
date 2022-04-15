@@ -7,11 +7,9 @@
 
 import SwiftUI
 
-public struct TextDSView: View {
+struct TextDSView: View {
 
-    public init() {}
-
-    public var body: some View {
+    var body: some View {
         Group {
             Text("Headline big", style: .headlineBig)
 
@@ -36,10 +34,7 @@ public struct TextDSView: View {
 
 struct TextDSView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            TextDSView()
-            TextDSView().darkScheme()
-        }
-        .sizeThatFits()
+        TextDSView()
+        TextDSView().darkScheme()
     }
 }

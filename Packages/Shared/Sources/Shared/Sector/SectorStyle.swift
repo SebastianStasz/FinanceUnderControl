@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import Shared
 
-enum SectorStyle {
+public enum SectorStyle {
     case clear
     case card
 }
