@@ -52,6 +52,7 @@ public extension CashFlowEntity {
         guard category.type == model.category.type else { return false }
         name = model.name
         date = model.date
+        monthAndYear = model.monthAndYear
         value = model.value
         category = model.category
         return true

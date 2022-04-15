@@ -40,7 +40,7 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
         try fetchRequestShouldReturnElements(1, for: CashFlowEntity.self)
 
         // Verify that cash flow category entity data is correct.
-        try verifyCashFlowEntityData(in: cashFlowEntity, data: cashFlowData)
+        try verifyCashFlowEntityData(in: cashFlowEntity, model: cashFlowData)
 
         // Save context.
         try saveContext()
@@ -63,10 +63,10 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
         let cashFlowData = Model.sample1(currency: currencyEntity, category: cashFlowCategoryEntity)
 
         // Define cash flow data 2.
-        let cashFlowData2 = Model.sample1(currency: currencyEntity, category: cashFlowCategoryEntity2)
+        let cashFlowData2 = Model.sample2(currency: currencyEntity, category: cashFlowCategoryEntity2)
 
         // Define cash flow data 3.
-        let cashFlowData3 = Model.sample1(currency: currencyEntity, category: cashFlowCategoryEntity3)
+        let cashFlowData3 = Model.sample3(currency: currencyEntity, category: cashFlowCategoryEntity3)
 
         // Create cash flow entity.
         let cashFlowEntity = createCashFlowEntity(data: cashFlowData)
@@ -74,14 +74,14 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
         // Edit cash flow entity using cashFlowData2.
         cashFlowEntity.edit(model: cashFlowData2)
 
-        // Verify that cash flow entity data is changed without category.
-        try verifyCashFlowEntityData(in: cashFlowEntity, data: cashFlowData2, category: cashFlowCategoryEntity)
+        // Verify that cash flow entity data did not change.
+        try verifyCashFlowEntityData(in: cashFlowEntity, model: cashFlowData, category: cashFlowCategoryEntity)
 
         // Edit cash flow entity using cashFlowData3.
         cashFlowEntity.edit(model: cashFlowData3)
 
         // Verify that cash flow entity data is changed.
-        try verifyCashFlowEntityData(in: cashFlowEntity, data: cashFlowData3, category: cashFlowCategoryEntity3)
+        try verifyCashFlowEntityData(in: cashFlowEntity, model: cashFlowData3, category: cashFlowCategoryEntity3)
 
         // Save context.
         try saveContext()
@@ -120,13 +120,11 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
 // MARK: - Steps
 
 private extension CashFlowEntityTests {
-    func verifyCashFlowEntityData(in cashFlowEntity: CashFlowEntity,
-                                  data: Model,
-                                  category: CashFlowCategoryEntity? = nil
-    ) throws {
-        XCTAssertEqual(cashFlowEntity.name, data.name)
-        XCTAssertEqual(cashFlowEntity.date.description, data.date.description)
-        XCTAssertEqual(cashFlowEntity.value, data.value)
-        XCTAssertEqual(cashFlowEntity.category, category ?? data.category)
+    func verifyCashFlowEntityData(in cashFlowEntity: CashFlowEntity, model: Model, category: CashFlowCategoryEntity? = nil) throws {
+        XCTAssertEqual(cashFlowEntity.name, model.name)
+        XCTAssertEqual(cashFlowEntity.date.description, model.date.description)
+        XCTAssertEqual(cashFlowEntity.monthAndYear, model.monthAndYear)
+        XCTAssertEqual(cashFlowEntity.value, model.value)
+        XCTAssertEqual(cashFlowEntity.category, category ?? model.category)
     }
 }
