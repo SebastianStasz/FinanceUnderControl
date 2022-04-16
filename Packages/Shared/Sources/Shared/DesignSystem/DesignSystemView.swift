@@ -15,20 +15,24 @@ public struct DesignSystemView: View {
     public var body: some View {
         FormView {
             Sector("Atoms") {
-                Navigation("Texts", leadsTo: TextDSView.init)
-                Navigation("Colors", leadsTo: ColorDSView.init)
+                Navigation("Text", leadsTo: TextDSView.init)
+                Navigation("Color", leadsTo: ColorDSView.init)
+                Navigation("SF symbol", leadsTo: SFSymbolDSView.init)
+                Navigation("Spacing", leadsTo: SpacingDSView.init)
+                Navigation("Corner radius", leadsTo: CornerRadiusDSView.init)
             }
 
             Sector("Form") {
-                Navigation("Buttons", leadsTo: ButtonDSView.init)
-                Navigation("Toggles", leadsTo: ToggleDSView.init)
-//                Navigation("Pickers", leadsTo: PickerDSView.init)
-                Navigation("Text Fields", leadsTo: TextFieldDSView.init)
+                Navigation("Button", leadsTo: ButtonDSView.init)
+                Navigation("Toggle", leadsTo: ToggleDSView.init)
+                Navigation("Picker", leadsTo: PickerDSView.init)
+                Navigation("Text Field", leadsTo: TextFieldDSView.init)
             }
 
             Sector("Other") {
                 Navigation("Sector", leadsTo: SectorDSView.init)
-                Navigation("Circle View", leadsTo: CircleViewDSView.init)
+                Navigation("Description", leadsTo: DescriptionDSView.init)
+                Navigation("Circle view", leadsTo: CircleViewDSView.init)
             }
         }
         .navigationBarTitleDisplayMode(.inline)

@@ -13,10 +13,11 @@ struct SectorDSView: View {
             Sector("Clear style", style: .clear) { text }
             Sector("Card style", style: .card) { text }
         }
+        .navigationTitle("Sector")
     }
 
     private var text: some View {
-        Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec feugiat laoreet nisl, a cursus lacus vehicula vitae. Nam tempus placerat leo, malesuada dapibus libero convallis a.")
+        Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec feugiat laoreet nisl, a cursus lacus vehicula vitae. Nam tempus placerat leo, malesuada dapibus libero convallis.")
     }
 }
 

@@ -12,12 +12,14 @@ private struct DesignSystemViewModifier: ViewModifier {
     let title: String
 
     func body(content: Content) -> some View {
-        VStack(alignment: .leading, spacing: .xxlarge) {
-            content
+        ScrollView {
+            VStack(alignment: .leading, spacing: .xxlarge) {
+                content
+            }
+            .padding(.vertical, .large)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
         .padding(.horizontal, .large)
-        .padding(.top, .large)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(Color.backgroundPrimary)
         .navigationTitle(title)
     }

@@ -5,7 +5,6 @@
 //  Created by Sebastian Staszczyk on 21/10/2021.
 //
 
-import Foundation
 import SwiftUI
 
 public enum SFSymbol: String {
@@ -39,4 +38,8 @@ public extension SFSymbol {
     var image: Image {
         Image(systemName: rawValue)
     }
+}
+
+extension SFSymbol: Identifiable, CaseIterable {
+    public var id: String { rawValue }
 }
