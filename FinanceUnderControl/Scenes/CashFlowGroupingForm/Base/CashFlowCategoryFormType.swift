@@ -23,10 +23,22 @@ enum CashFlowFormType<Entity: CashFlowFormSupport> {
 
     var title: String {
         switch self {
-        case .new:
-            return .button_create
-        case .edit:
-            return .common_edit
+        case .new(let type):
+            if Entity.self == CashFlowEntity.self {
+                return type == .income ? .cash_flow_add_income : .cash_flow_add_expense
+            } else if Entity.self == CashFlowCategoryGroupEntity.self {
+                return .settings_create_group
+            } else {
+                return .settings_create_category
+            }
+        case .edit(let entity):
+            if Entity.self == CashFlowEntity.self {
+                return entity.formModel.type! == .income ? .cash_flow_edit_income : .cash_flow_edit_expense
+            } else if Entity.self == CashFlowCategoryGroupEntity.self {
+                return .settings_edit_group
+            } else {
+                return .settings_edit_category
+            }
         }
     }
 

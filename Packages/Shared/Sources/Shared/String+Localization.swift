@@ -69,6 +69,10 @@ public extension String {
 
     // MARK: - Create cash flow
 
+    static let cash_flow_add_income = "cash_flow_add_income".localize()
+    static let cash_flow_add_expense = "cash_flow_add_expense".localize()
+    static let cash_flow_edit_income = "cash_flow_edit_income".localize()
+    static let cash_flow_edit_expense = "cash_flow_edit_expense".localize()
     static let create_cash_flow_name = "create_cash_flow_name".localize()
     static let create_cash_flow_currency = "create_cash_flow_currency".localize()
     static let create_cash_flow_date = "create_cash_flow_date".localize()
@@ -95,9 +99,10 @@ public extension String {
 
     // MARK: - Settings
 
-    static let settings_edit_group = "settings_edit_group".localize()
     static let settings_create_group = "settings_create_group".localize()
     static let settings_create_category = "settings_create_category".localize()
+    static let settings_edit_group = "settings_edit_group".localize()
+    static let settings_edit_category = "settings_edit_category".localize()
     static let settings_select_action = "settings_select_action".localize()
     static let settings_your_finance_data = "settings_your_finance_data".localize()
     static let settings_import_finance_data_description = "settings_import_finance_data_description".localize()

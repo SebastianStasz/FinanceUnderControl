@@ -45,6 +45,10 @@
 "cash_flow_filter_minimum_value" = "Wartość minimalna";
 "cash_flow_filter_maximum_value" = "Wartość maksymalna";
 
+"cash_flow_add_income" = "Dodaj przychód";
+"cash_flow_add_expense" = "Dodaj wydatek";
+"cash_flow_edit_income" = "Edytuj dochoód";
+"cash_flow_edit_expense" = "Edytuj wydatek";
 "create_cash_flow_name" = "Nazwa";
 "create_cash_flow_currency" = "Waluta";
 "create_cash_flow_date" = "Data";
@@ -61,9 +65,10 @@
 "cantor_exchange_rates_info_message" = "Kursy walut dostarczone przez: \"exchangerate.host\"";
 "cantor_load_exchange_rates_error_message" = "Nie udało się załadować kursu wymiany dla waluty \"%@\". Spróbuj ponownie później.";
 
-"settings_edit_group" = "Edytuj grupę";
 "settings_create_group" = "Utwórz grupę";
 "settings_create_category" = "Utwórz kategorię";
+"settings_edit_group" = "Edytuj grupę";
+"settings_edit_category" = "Edytuj kategorię";
 "settings_select_action" = "Wybierz akcję";
 "settings_your_finance_data" = "Twoje dane finansowe";
 "settings_import_finance_data_description" = "W tym miejscu możesz zaimportować zapisane wcześniej dane finansowe włączając w to przepływy pieniężne, kategorie i grupy. Wybierz plik i przejrzyj potencjalne zmiany.";
