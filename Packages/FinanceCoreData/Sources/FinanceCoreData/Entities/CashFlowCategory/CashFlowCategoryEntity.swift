@@ -6,7 +6,7 @@
 //
 
 import CoreData
-import Foundation
+import Shared
 import SwiftUI
 
 @objc(CashFlowCategoryEntity) public class CashFlowCategoryEntity: NSManagedObject, Entity, Deletable {
@@ -22,7 +22,7 @@ import SwiftUI
     }
 
     public private(set) var type: CashFlowType {
-        get { .getCase(for: type_) }
+        get { CashFlowType(rawValue: type_) ?? .expense }
         set { type_ = newValue.rawValue }
     }
 

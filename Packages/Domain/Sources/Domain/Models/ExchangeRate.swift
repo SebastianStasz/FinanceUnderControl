@@ -9,7 +9,7 @@ import Foundation
 
 public struct ExchangeRate {
     public let code: String
-    public let rate: Double
+    public let rate: Decimal
 }
 
 extension ExchangeRate: Equatable {}

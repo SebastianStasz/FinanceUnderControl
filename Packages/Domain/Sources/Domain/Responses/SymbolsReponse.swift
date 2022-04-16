@@ -8,12 +8,12 @@
 import Foundation
 
 public struct SymbolsReponse: Decodable {
-    public private(set) var currencies: [Currency]
+    public private(set) var currencies: [CurrencyData]
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let symbols = try container.decode([String: Symbol].self, forKey: .symbols)
-        currencies = symbols.map { Currency(code: $1.code, name: $1.description) }
+        currencies = symbols.map { CurrencyData(code: $1.code, name: $1.description) }
     }
 
     private enum CodingKeys: CodingKey {
@@ -29,7 +29,7 @@ public struct SymbolsReponse: Decodable {
 extension SymbolsReponse: Equatable {}
 
 extension SymbolsReponse {
-    init(currencies: [Currency]) {
+    init(currencies: [CurrencyData]) {
         self.currencies = currencies
     }
 

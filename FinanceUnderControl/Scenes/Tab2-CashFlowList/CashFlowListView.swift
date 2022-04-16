@@ -21,7 +21,7 @@ struct CashFlowListView: View {
 
     var body: some View {
         BaseList(.tab_cashFlow_title, sectorIdMapper: { $0.string(format: .monthAndYear) }, sectors: cashFlows) {
-            CashFlowPanelView(for: $0)
+            CashFlowCardView($0)
                 .actions(edit: editCashFlow($0), delete: showDeleteCashFlowConfirmation(for: $0))
         }
         .searchable(text: $viewModel.searchText)

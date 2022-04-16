@@ -6,7 +6,7 @@
 //
 
 import CoreData
-import Foundation
+import Shared
 
 @objc(CashFlowEntity)public class CashFlowEntity: NSManagedObject, Entity {
     @NSManaged private var value_: NSDecimalNumber
@@ -21,7 +21,7 @@ import Foundation
         set { value_ = newValue as NSDecimalNumber }
     }
 
-    var money: Money {
+    public var money: Money {
         Money(value, currency: currency_.currency)
     }
 }

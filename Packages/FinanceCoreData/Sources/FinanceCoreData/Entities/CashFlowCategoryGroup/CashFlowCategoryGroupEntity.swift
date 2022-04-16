@@ -7,8 +7,9 @@
 //
 import CoreData
 import Foundation
-import SSUtils
+import Shared
 import SwiftUI
+import SSUtils
 
 @objc(CashFlowCategoryGroupEntity) public class CashFlowCategoryGroupEntity: NSManagedObject, Entity {
     @NSManaged private var type_: String
@@ -26,7 +27,7 @@ import SwiftUI
     }
 
     public private(set) var type: CashFlowType {
-        get { .getCase(for: type_) }
+        get { CashFlowType(rawValue: type_) ?? .expense }
         set { type_ = newValue.rawValue }
     }
 }

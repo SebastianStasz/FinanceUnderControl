@@ -14,31 +14,16 @@ struct MonthBalanceWidgetView: View {
     @ObservedObject private var iO = Inject.observer
     @StateObject private var viewModel = MonthBalanceWidgetVM()
 
-    private var incomeValue: String {
-        "+ \(viewModel.monthBalance.incomesValue.asString) \(viewModel.monthBalance.currencyCode)"
-    }
-
-    private var expenseValue: String {
-        "- \(viewModel.monthBalance.expensesValue.asString) \(viewModel.monthBalance.currencyCode)"
-    }
-
     var body: some View {
         HStack(spacing: .medium) {
-            BalanceIndicatorView(incomesValue: viewModel.monthBalance.incomesValue,
-                                 expensesValue: viewModel.monthBalance.expensesValue)
+            BalanceIndicatorView(incomesValue: viewModel.monthBalance.income.value,
+                                 expensesValue: viewModel.monthBalance.expense.value)
             .frame(width: 80, height: 80)
             .padding(4)
 
             VStack(spacing: .medium) {
-                SwiftUI.Text(incomeValue)
-                    .foregroundColor(.green)
-                    .font(.headline)
-                    .fontWeight(.medium)
-
-                SwiftUI.Text(expenseValue)
-                    .foregroundColor(.red)
-                    .font(.headline)
-                    .fontWeight(.medium)
+                MoneyView(from: viewModel.monthBalance.income, type: .income)
+                MoneyView(from: viewModel.monthBalance.expense, type: .expense)
             }
             .infiniteWidth()
         }

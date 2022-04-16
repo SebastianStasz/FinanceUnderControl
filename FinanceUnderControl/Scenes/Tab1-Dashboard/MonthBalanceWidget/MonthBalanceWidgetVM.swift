@@ -25,7 +25,7 @@ final class MonthBalanceWidgetVM: ViewModel {
             .asyncMap { _ async -> MonthBalance in
                 let incomeValue = await CashFlowEntity.getAll(from: controller, filter: [.type(.income), dateFilter]).map { $0.value }.reduce(0, +)
                 let expenseValue = await CashFlowEntity.getAll(from: controller, filter: [.type(.expense), dateFilter]).map { $0.value }.reduce(0, +)
-                return MonthBalance(incomesValue: incomeValue, expensesValue: expenseValue, currencyCode: "PLN")
+                return MonthBalance(income: .init(incomeValue, currency: .PLN), expense: .init(expenseValue, currency: .PLN))
             }
             .stopLoading(on: self)
             .assign(to: &$monthBalance)

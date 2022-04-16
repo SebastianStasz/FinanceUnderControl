@@ -6,14 +6,15 @@
 //
 
 import Foundation
+import Shared
 
 public extension CashFlowEntity {
 
     enum Filter: EntityFilter {
         case nameContains(String)
-        case byType(CashFlowType)
-        case byCategory(CashFlowCategoryEntity)
-        case byDateBetween(startDate: Date, endDate: Date)
+        case type(CashFlowType)
+        case category(CashFlowCategoryEntity)
+        case dateBetween(startDate: Date, endDate: Date)
         case minimumValue(Double)
         case maximumValue(Double)
         case currencyIs(CurrencyEntity)
@@ -23,11 +24,11 @@ public extension CashFlowEntity {
             switch self {
             case let .nameContains(text):
                 return predicateForNameContains(text)
-            case let .byType(type):
+            case let .type(type):
                 return predicateForCategoryType(type)
-            case let .byCategory(category):
+            case let .category(category):
                 return predicateForCategory(category)
-            case let .byDateBetween(startDate: startDate, endDate: endDate):
+            case let .dateBetween(startDate: startDate, endDate: endDate):
                 return predicateForDateBetween(startDate, and: endDate)
             case let .minimumValue(value):
                 return predicateForMinimumValue(value)
@@ -44,38 +45,38 @@ public extension CashFlowEntity {
 
 // MARK: - Predicates
 
-extension CashFlowEntity {
-    static private func predicateForNameContains(_ text: String) -> NSPredicate {
+private extension CashFlowEntity {
+    static func predicateForNameContains(_ text: String) -> NSPredicate {
         NSPredicate(format: "name CONTAINS[cd] %@", text)
     }
 
-    static private func predicateForCategoryType(_ type: CashFlowType) -> NSPredicate {
+    static func predicateForCategoryType(_ type: CashFlowType) -> NSPredicate {
         NSPredicate(format: "category.type_ == %@", type.rawValue)
     }
 
-    static private func predicateForCategory(_ category: CashFlowCategoryEntity) -> NSPredicate {
+    static func predicateForCategory(_ category: CashFlowCategoryEntity) -> NSPredicate {
         NSPredicate(format: "category == %@", category)
     }
 
-    static private func predicateForDateBetween(_ startDate: Date, and endDate: Date) -> NSPredicate {
+    static func predicateForDateBetween(_ startDate: Date, and endDate: Date) -> NSPredicate {
         let startDatePredicate = NSPredicate(format: "date >= %@", startDate as CVarArg)
         let endDatePredicate = NSPredicate(format: "date <= %@", endDate as CVarArg)
         return NSCompoundPredicate(type: .and, subpredicates: [startDatePredicate, endDatePredicate])
     }
 
-    static private func predicateForMinimumValue(_ value: Double) -> NSPredicate {
-        NSPredicate(format: "value >= %f", value)
+    static func predicateForMinimumValue(_ value: Double) -> NSPredicate {
+        NSPredicate(format: "value_ >= %f", value)
     }
 
-    static private func predicateForMaximumValue(_ value: Double) -> NSPredicate {
-        NSPredicate(format: "value <= %f", value)
+    static func predicateForMaximumValue(_ value: Double) -> NSPredicate {
+        NSPredicate(format: "value_ <= %f", value)
     }
 
-    static private func predicateForCurrency(_ currency: CurrencyEntity) -> NSPredicate {
-        NSPredicate(format: "currency == %@", currency)
+    static func predicateForCurrency(_ currency: CurrencyEntity) -> NSPredicate {
+        NSPredicate(format: "currency_ == %@", currency)
     }
 
-    static private func predicateForMonthAndYear(_ date: Date) -> NSPredicate {
+    static func predicateForMonthAndYear(_ date: Date) -> NSPredicate {
         NSPredicate(format: "monthAndYear == %@", date.monthAndYear as CVarArg)
     }
 }

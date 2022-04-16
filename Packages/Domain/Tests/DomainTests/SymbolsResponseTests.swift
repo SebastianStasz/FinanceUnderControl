@@ -45,11 +45,11 @@ final class SymbolsReponseTests: XCTestCase {
         """
     }
 
-    static private var currencies: [Currency] {
+    static private var currencies: [CurrencyData] {
         [
-            Currency(code: "AED", name: "United Arab Emirates Dirham"),
-            Currency(code: "AFN", name: "Afghan Afghani"),
-            Currency(code: "ALL", name: "Albanian Lek")
+            CurrencyData(code: "AED", name: "United Arab Emirates Dirham"),
+            CurrencyData(code: "AFN", name: "Afghan Afghani"),
+            CurrencyData(code: "ALL", name: "Albanian Lek")
         ]
     }
 }

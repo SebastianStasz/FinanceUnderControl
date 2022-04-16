@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import Shared
 
 struct MonthBalance {
-    let incomesValue: Decimal
-    let expensesValue: Decimal
-    let currencyCode: String
+    let income: Money
+    let expense: Money
 
     static var empty: MonthBalance {
-        .init(incomesValue: 0, expensesValue: 0, currencyCode: "")
+        let empty = Money(0, currency: .PLN)
+        return .init(income: empty, expense: empty)
     }
 }
