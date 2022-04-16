@@ -32,7 +32,7 @@ public struct CashFlowCardView: View {
 
             VStack(spacing: .micro) {
                 Text(title, style: .bodyMedium)
-                Text(date.string(format: .long), style: .headlineSmall())
+                Text(date.string(format: .long), style: .footnote())
             }
 
             Spacer()
