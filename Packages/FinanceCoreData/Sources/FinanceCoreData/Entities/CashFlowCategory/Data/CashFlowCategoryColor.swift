@@ -62,9 +62,3 @@ extension CashFlowCategoryColor: Codable {}
 extension CashFlowCategoryColor: Identifiable {
     public var id: String { rawValue }
 }
-
-extension CashFlowCategoryColor: UnknownValueSupport {
-    public static var unknownCase: CashFlowCategoryColor {
-        return .gray
-    }
-}

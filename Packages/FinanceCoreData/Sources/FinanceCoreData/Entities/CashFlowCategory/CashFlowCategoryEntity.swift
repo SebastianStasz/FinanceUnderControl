@@ -17,7 +17,7 @@ import SwiftUI
     @NSManaged public private(set) var cashFlows: Set<CashFlowEntity>
 
     public private(set) var icon: CashFlowCategoryIcon {
-        get { .getCase(for: icon_) }
+        get { CashFlowCategoryIcon(rawValue: icon_) ?? .default }
         set { icon_ = newValue.rawValue }
     }
 

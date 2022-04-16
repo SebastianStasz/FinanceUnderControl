@@ -18,7 +18,7 @@ import SSUtils
     @NSManaged public private(set) var name: String
 
     public private(set) var color: CashFlowCategoryColor {
-        get { .getCase(for: color_) }
+        get { CashFlowCategoryColor(rawValue: color_) ?? .default }
         set { color_ = newValue.rawValue }
     }
 
