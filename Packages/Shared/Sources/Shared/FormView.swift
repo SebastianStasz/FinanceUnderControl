@@ -21,6 +21,12 @@ public struct FormView<Content: View>: View {
             VStack(alignment: .leading, spacing: .xxlarge) { content }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, .large)
+                .toolbar {
+                    Toolbar.keyboard {
+                        Button(systemImage: "keyboard.chevron.compact.down", action: hideKeyboard)
+                            .infiniteWidth(alignment: .trailing)
+                    }
+                }
         }
         .background(Color.backgroundPrimary)
     }
