@@ -58,10 +58,9 @@ extension CashFlowCategoryIcon: Codable {}
 
 extension CashFlowCategoryIcon: Identifiable {
     public var id: String { rawValue }
-}
 
-extension CashFlowCategoryIcon: UnknownValueSupport {
-    public static var unknownCase: CashFlowCategoryIcon {
-        return .bagFill
+    public static var `default`: CashFlowCategoryIcon {
+        .circleFill
     }
 }
+
