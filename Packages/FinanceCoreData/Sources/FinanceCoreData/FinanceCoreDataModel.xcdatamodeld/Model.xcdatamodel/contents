@@ -17,20 +17,20 @@
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="monthAndYear" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
-        <attribute name="value" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="value_" attributeType="Decimal" defaultValueString="0.0"/>
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="CashFlowCategoryEntity" inverseName="cashFlows" inverseEntity="CashFlowCategoryEntity"/>
-        <relationship name="currency" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyEntity" inverseName="cashFlows" inverseEntity="CurrencyEntity"/>
+        <relationship name="currency_" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyEntity" inverseName="cashFlows" inverseEntity="CurrencyEntity"/>
     </entity>
     <entity name="CurrencyEntity" representedClassName="CurrencyEntity" syncable="YES">
         <attribute name="code" attributeType="String"/>
         <attribute name="nameKey" attributeType="String"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="cashFlows" toMany="YES" deletionRule="Nullify" destinationEntity="CashFlowEntity" inverseName="currency" inverseEntity="CashFlowEntity"/>
+        <relationship name="cashFlows" toMany="YES" deletionRule="Nullify" destinationEntity="CashFlowEntity" inverseName="currency_" inverseEntity="CashFlowEntity"/>
         <relationship name="exchangeRates" toMany="YES" deletionRule="Cascade" destinationEntity="ExchangeRateEntity" inverseName="baseCurrency" inverseEntity="ExchangeRateEntity"/>
     </entity>
     <entity name="ExchangeRateEntity" representedClassName="ExchangeRateEntity" syncable="YES">
         <attribute name="code" attributeType="String"/>
-        <attribute name="rateValue" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="rateValue_" attributeType="Decimal" defaultValueString="0.0"/>
         <relationship name="baseCurrency" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyEntity" inverseName="exchangeRates" inverseEntity="CurrencyEntity"/>
     </entity>
     <elements>

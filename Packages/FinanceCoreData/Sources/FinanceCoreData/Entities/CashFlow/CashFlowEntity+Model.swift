@@ -14,7 +14,7 @@ public extension CashFlowEntity {
     struct Model {
         public let name: String
         public let date: Date
-        public let value: Double
+        public let value: Decimal
         public let currency: CurrencyEntity
         public let category: CashFlowCategoryEntity
 
@@ -22,7 +22,7 @@ public extension CashFlowEntity {
             date.monthAndYear
         }
 
-        public init(name: String, date: Date, value: Double, currency: CurrencyEntity, category: CashFlowCategoryEntity) {
+        public init(name: String, date: Date, value: Decimal, currency: CurrencyEntity, category: CashFlowCategoryEntity) {
             self.name = name
             self.date = date
             self.value = value

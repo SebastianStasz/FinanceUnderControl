@@ -11,10 +11,10 @@ import Foundation
 public extension ExchangeRateEntity {
     struct Model {
         public let code: String
-        public let rateValue: Double
+        public let rateValue: Decimal
         public let baseCurrency: String
 
-        public init(code: String, rateValue: Double, baseCurrency: String) {
+        public init(code: String, rateValue: Decimal, baseCurrency: String) {
             self.code = code
             self.rateValue = rateValue
             self.baseCurrency = baseCurrency

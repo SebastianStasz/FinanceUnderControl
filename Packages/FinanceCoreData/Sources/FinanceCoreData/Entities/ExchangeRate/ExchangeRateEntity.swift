@@ -11,12 +11,17 @@ import Foundation
 import SSUtils
 
 @objc(ExchangeRateEntity) public class ExchangeRateEntity: NSManagedObject, Entity {
+    @NSManaged private var rateValue_: NSDecimalNumber
     @NSManaged public private(set) var code: String
-    @NSManaged public private(set) var rateValue: Double
     @NSManaged public private(set) var baseCurrency: CurrencyEntity
 
+    public private(set) var rateValue: Decimal {
+        get { rateValue_ as Decimal }
+        set { rateValue_ = newValue as NSDecimalNumber }
+    }
+
     public var rateValueRounded: String {
-        rateValue.asString(roundToDecimalPlaces: 2)
+        String(describing: rateValue)
     }
 }
 
@@ -35,7 +40,7 @@ public extension ExchangeRateEntity {
         return exchangeRate
     }
 
-    func updateRateValue(to value: Double) {
+    func updateRateValue(to value: Decimal) {
         self.rateValue = value
     }
 }

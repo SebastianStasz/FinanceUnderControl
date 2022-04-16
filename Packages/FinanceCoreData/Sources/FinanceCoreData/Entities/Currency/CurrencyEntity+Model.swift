@@ -21,13 +21,13 @@ public extension CurrencyEntity {
     }
 }
 
-public extension SupportedCurrency {
+public extension Currency {
     var currencyEntityModel: CurrencyEntity.Model {
         .init(code: code, name: name)
     }
 
     static var currencyEntityModels: [CurrencyEntity.Model] {
-        SupportedCurrency.allCases.map { $0.currencyEntityModel }
+        Currency.allCases.map { $0.currencyEntityModel }
     }
 }
 

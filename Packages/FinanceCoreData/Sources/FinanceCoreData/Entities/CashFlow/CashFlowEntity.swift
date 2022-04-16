@@ -9,12 +9,21 @@ import CoreData
 import Foundation
 
 @objc(CashFlowEntity)public class CashFlowEntity: NSManagedObject, Entity {
+    @NSManaged private var value_: NSDecimalNumber
     @NSManaged public private(set) var name: String
     @NSManaged public private(set) var date: Date
     @NSManaged public private(set) var monthAndYear: Date
-    @NSManaged public private(set) var value: Double
     @NSManaged public private(set) var category: CashFlowCategoryEntity
-    @NSManaged public private(set) var currency: CurrencyEntity
+    @NSManaged public private(set) var currency_: CurrencyEntity
+
+    public private(set) var value: Decimal {
+        get { value_ as Decimal }
+        set { value_ = newValue as NSDecimalNumber }
+    }
+
+    var money: Money {
+        Money(value, currency: currency_.currency)
+    }
 }
 
 // MARK: - Methods
@@ -27,7 +36,7 @@ public extension CashFlowEntity {
         cashFlow.date = model.date
         cashFlow.monthAndYear = model.monthAndYear
         cashFlow.value = model.value
-        cashFlow.currency = model.currency
+        cashFlow.currency_ = model.currency
         cashFlow.category = model.category
         return cashFlow
     }
@@ -43,7 +52,7 @@ public extension CashFlowEntity {
             cashFlow.date = model.date
             cashFlow.monthAndYear = model.monthAndYear
             cashFlow.value = model.value
-            cashFlow.currency = model.currency
+            cashFlow.currency_ = model.currency
             cashFlow.category = model.category
         }
     }

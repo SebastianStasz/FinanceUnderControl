@@ -34,6 +34,10 @@ public extension CurrencyEntity {
     var exchangeRatesArray: [ExchangeRateEntity] {
         exchangeRates.sorted { $0.code < $1.code }
     }
+
+    var currency: Currency {
+        Currency(rawValue: code)!
+    }
 }
 
 // MARK: - Methods
@@ -52,7 +56,7 @@ public extension CurrencyEntity {
     static func create(in context: NSManagedObjectContext, models: [Model]) {
         for model in models {
             guard let currency = CurrencyEntity.create(in: context, model: model) else { continue }
-            currency.addExchangeRates(SupportedCurrency.allCases.map { ExchangeRateEntity.Model(code: $0.code, rateValue: 0, baseCurrency: currency.code) })
+            currency.addExchangeRates(Currency.allCases.map { ExchangeRateEntity.Model(code: $0.code, rateValue: 0, baseCurrency: currency.code) })
         }
     }
 

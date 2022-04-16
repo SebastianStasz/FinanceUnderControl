@@ -15,7 +15,7 @@ extension CashFlowEntity: Storable {
         let name: String
         let date: Date
         let type: CashFlowType
-        let value: Double
+        let value: Decimal
         let categoryName: String
         let currencyCode: String
 
@@ -34,7 +34,7 @@ extension CashFlowEntity: Storable {
                   type: category.type,
                   value: value,
                   categoryName: category.name,
-                  currencyCode: currency.code
+                  currencyCode: currency_.code
         )
     }
 }

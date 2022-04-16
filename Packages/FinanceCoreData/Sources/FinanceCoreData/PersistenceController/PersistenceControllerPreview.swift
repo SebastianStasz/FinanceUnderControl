@@ -36,7 +36,7 @@ public extension PersistenceController {
 private extension PersistenceController {
 
     static func createCurrencies(in context: NSManagedObjectContext) {
-        CurrencyEntity.create(in: context, models: SupportedCurrency.currencyEntityModels)
+        CurrencyEntity.create(in: context, models: Currency.currencyEntityModels)
     }
 
     // MARK: - Expenses
@@ -115,7 +115,7 @@ private extension PersistenceController {
 
     static func createCashFlows(in context: NSManagedObjectContext,
                                 names: [String],
-                                values: [Double],
+                                values: [Decimal],
                                 categoryName: String,
                                 categoryIcon: CashFlowCategoryIcon,
                                 categoryType: CashFlowType,

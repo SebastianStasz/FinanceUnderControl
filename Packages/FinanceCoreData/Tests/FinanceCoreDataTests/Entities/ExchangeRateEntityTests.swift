@@ -92,7 +92,7 @@ private extension ExchangeRateEntityTests {
     func verifyExchangeRateData(in entity: ExchangeRateEntity,
                                 data: ExchangeRateEntity.Model,
                                 baseCurrency: CurrencyEntity,
-                                rateValue: Double? = nil
+                                rateValue: Decimal? = nil
     ) throws {
         XCTAssertEqual(entity.code, data.code)
         XCTAssertEqual(entity.rateValue, rateValue ?? data.rateValue)
