@@ -22,8 +22,6 @@ public enum SFSymbol: String {
 
     case trash = "trash.fill"
 
-    case dismissKeyboard = "keyboard.chevron.compact.down"
-
     case radioUnchecked = "circle"
     case radioChecked = "circle.inset.filled"
 

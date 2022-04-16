@@ -29,7 +29,7 @@ struct CashFlowListView: View {
             Toolbar.trailing(systemImage: SFSymbol.filter.name, action: showFilterView)
         }
         .confirmationDialog(.settings_select_action, item: $cashFlowToDelete) {
-            Button.delete(deleteCashFlow)
+            Button.delete(action: deleteCashFlow)
             Button.cancel { cashFlowToDelete = nil }
         }
         .sheet(item: $cashFlowFormType) {

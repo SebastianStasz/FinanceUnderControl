@@ -11,6 +11,15 @@ struct ButtonDSView: View {
 
     var body: some View {
         Group {
+            Button.edit {}
+                .designSystemComponent("Button - edit")
+
+            Button.cancel {}
+                .designSystemComponent("Button - cancel")
+
+            Button.delete {}
+                .designSystemComponent("Button - delete")
+            
             BaseButton("Button title", role: .primary, action: {})
                 .designSystemComponent("Base Button - action")
 

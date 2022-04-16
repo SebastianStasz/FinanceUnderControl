@@ -11,7 +11,9 @@ import SwiftUI
 
 struct CashFlowCategoryGroupFormView: BaseView {
     @Environment(\.dismiss) private var dismiss
+
     @StateObject var viewModel = CashFlowCategoryGroupFormVM()
+    @State private var isDeleteGroupConfirmationShown = false
 
     let form: CashFlowFormType<CashFlowCategoryGroupEntity>
 
@@ -47,14 +49,38 @@ struct CashFlowCategoryGroupFormView: BaseView {
             }
             .displayIf(viewModel.otherCategories.isNotEmpty)
         }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button.delete(titleOnly: true, action: showDeleteConfirmation)
+                    .displayIf(isEditForm)
+            }
+        }
+        .confirmationDialog("Delete cash flow group", isPresented: $isDeleteGroupConfirmationShown) {
+            Button.delete(action: deleteCashFlowGroup)
+        }
         .cashFlowGroupingForm(viewModel: viewModel, form: form)
     }
 
-    func uncheckCategory(_ category: CashFlowCategoryEntity) {
+    private var isEditForm: Bool {
+        guard case .edit = form else { return false }
+        return true
+    }
+
+    // MARK: - Interactions
+
+    private func showDeleteConfirmation() {
+        isDeleteGroupConfirmationShown = true
+    }
+
+    private func deleteCashFlowGroup() {
+        viewModel.input.didTapDelete.send(form)
+    }
+
+    private func uncheckCategory(_ category: CashFlowCategoryEntity) {
         withAnimation(.easeInOut) { viewModel.uncheckCategory(category) }
     }
 
-    func checkCategory(_ category: CashFlowCategoryEntity) {
+    private func checkCategory(_ category: CashFlowCategoryEntity) {
         withAnimation(.easeInOut) { viewModel.checkCategory(category) }
     }
 }

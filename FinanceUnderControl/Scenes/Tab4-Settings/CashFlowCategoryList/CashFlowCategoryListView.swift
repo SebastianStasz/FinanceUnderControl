@@ -37,7 +37,9 @@ struct CashFlowCategoryListView: View {
         .onDelete(perform: showDeleteConfirmation)
         .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) { EditButton() }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                EditButton().displayIf(!isListEmpty)
+            }
             Toolbar.trailing(systemImage: SFSymbol.plus.name) { showChooseActionConfirmation() }
         }
         .sheet(item: $categoryGroupForm) {
@@ -47,7 +49,7 @@ struct CashFlowCategoryListView: View {
             CashFlowCategoryFormView(form: $0)
         }
         .confirmationDialog("Delete category", item: $categoryToDelete) {
-            Button.delete(deleteCategory)
+            Button.delete(action: deleteCategory)
             Button.cancel { categoryToDelete = nil }
         }
         .confirmationDialog(String.settings_select_action, isPresented: $chooseActionConfirmation) {
@@ -65,6 +67,10 @@ struct CashFlowCategoryListView: View {
         }
         sectors.append(ListSector("Ungrouped", elements: ungroupedCategories.map { $0 }))
         return sectors
+    }
+
+    private var isListEmpty: Bool {
+        categoryGroups.isEmpty && ungroupedCategories.isEmpty
     }
 
     // MARK: - Interactions
