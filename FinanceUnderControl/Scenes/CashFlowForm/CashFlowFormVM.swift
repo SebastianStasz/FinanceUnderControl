@@ -47,7 +47,7 @@ final class CashFlowFormVM: ViewModel {
         formModel.currency = CurrencyEntity.get(withCode: "PLN", from: AppVM.shared.context)!
         initialFormModel = formModel
         nameInput = TextInputVM(initialValue: formModel.name, validator: .name())
-        valueInput = DecimalInputVM(initialValue: "formModel.value?.asString", validator: .money())
+        valueInput = DecimalInputVM(initialValue: formModel.value?.asString, validator: .money())
         nameInput.assignResult(to: \.formModel.name, on: self)
         valueInput.assignResult(to: \.formModel.value, on: self)
     }

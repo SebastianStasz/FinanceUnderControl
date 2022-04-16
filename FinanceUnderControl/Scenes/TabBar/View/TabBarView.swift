@@ -57,7 +57,7 @@ struct TabBarView: View {
         .onReceive(NotificationCenter.keyboardWillShow) { _ in isKeyboardPresented = true }
         .onReceive(NotificationCenter.keyboardDidHide) { _ in isKeyboardPresented = false }
         .sheet(item: $viewModel.cashFlowCategoryType) { type in
-            CashFlowFormSheet(for: .new(for: type))
+            CashFlowFormView(for: .new(for: type))
         }
     }
 

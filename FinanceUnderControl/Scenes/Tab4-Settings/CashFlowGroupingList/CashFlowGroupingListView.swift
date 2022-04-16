@@ -1,5 +1,5 @@
 //
-//  CashFlowCategoryListView.swift
+//  CashFlowGroupingListView.swift
 //  FinanceUnderControl
 //
 //  Created by Sebastian Staszczyk on 25/12/2021.
@@ -10,7 +10,7 @@ import Shared
 import SSUtils
 import SwiftUI
 
-struct CashFlowCategoryListView: View {
+struct CashFlowGroupingListView: View {
     @Environment(\.editMode) private var editMode
     @FetchRequest(sortDescriptors: []) private var categories: FetchedResults<CashFlowCategoryEntity>
     @FetchRequest private var categoryGroups: FetchedResults<CashFlowCategoryGroupEntity>
@@ -112,8 +112,8 @@ struct CashFlowCategoryListView: View {
 struct CashFlowCategoryListView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            CashFlowCategoryListView(type: .expense)
-            CashFlowCategoryListView(type: .expense)
+            CashFlowGroupingListView(type: .expense)
+            CashFlowGroupingListView(type: .expense)
         }
         .environment(\.managedObjectContext, PersistenceController.preview.context)
     }

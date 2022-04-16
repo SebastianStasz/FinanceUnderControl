@@ -23,8 +23,8 @@ struct SettingsView: View {
     var body: some View {
         FormView {
             Sector(.common_categories) {
-                Navigation(.common_expenses, leadsTo: CashFlowCategoryListView(type: .expense))
-                Navigation(.common_incomes, leadsTo: CashFlowCategoryListView(type: .income))
+                Navigation(.common_expenses, leadsTo: CashFlowGroupingListView(type: .expense))
+                Navigation(.common_incomes, leadsTo: CashFlowGroupingListView(type: .income))
             }
 
             Sector(.common_currencies) {

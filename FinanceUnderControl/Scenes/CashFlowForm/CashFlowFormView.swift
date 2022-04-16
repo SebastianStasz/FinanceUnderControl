@@ -1,5 +1,5 @@
 //
-//  CashFlowFormSheet.swift
+//  CashFlowFormView.swift
 //  FinanceUnderControl
 //
 //  Created by Sebastian Staszczyk on 20/02/2022.
@@ -9,8 +9,9 @@ import FinanceCoreData
 import Shared
 import SwiftUI
 
-struct CashFlowFormSheet: BaseView {
+struct CashFlowFormView: BaseView {
     @Environment(\.managedObjectContext) private var context
+
     @FetchRequest private var currencies: FetchedResults<CurrencyEntity>
     @FetchRequest private var categories: FetchedResults<CashFlowCategoryEntity>
     @StateObject private var viewModel = CashFlowFormVM()
@@ -38,8 +39,8 @@ struct CashFlowFormSheet: BaseView {
                 LabeledPicker(.common_category, elements: categories, selection: $viewModel.formModel.category)
             }
         }
-        .handleViewModelActions(viewModel)
         .asSheet(title: formType.title, askToDismiss: viewModel.formChanged, primaryButton: primaruButton)
+        .handleViewModelActions(viewModel)
     }
 
     private var primaruButton: HorizontalButtons.Configuration {
@@ -59,6 +60,7 @@ struct CashFlowFormSheet: BaseView {
 
 struct CashFlowFormView_Previews: PreviewProvider {
     static var previews: some View {
-        CashFlowFormSheet(for: .new(for: .income))
+        CashFlowFormView(for: .new(for: .income))
+        CashFlowFormView(for: .new(for: .income)).darkScheme()
     }
 }

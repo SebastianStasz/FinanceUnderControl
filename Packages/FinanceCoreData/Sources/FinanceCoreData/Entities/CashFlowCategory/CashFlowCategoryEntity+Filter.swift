@@ -32,7 +32,7 @@ public extension CashFlowCategoryEntity {
         var nsPredicate: NSPredicate {
             switch self {
             case let .isNotWithName(groupName):
-                return NSPredicate(format: "group.name != %@", groupName)
+                return NSPredicate(format: "group.name != %@ OR group = nil", groupName)
             case let .is(group):
                 return NSPredicate(format: "group == %@", group)
             case .ungrouped:

@@ -16,7 +16,6 @@ final class CashFlowCategoryGroupFormVM: CashFlowGroupingFormVM<CashFlowCategory
         super.onAppear(formType: formType)
         if let name = formModel.name {
             otherCategories = CashFlowCategoryEntity.getAll(from: context, filteringBy: [.typeIs(formModel.type!), .group(.isNotWithName(name))])
-            otherCategories.append(contentsOf: CashFlowCategoryEntity.getAll(from: context, filteringBy: [.group(.ungrouped)]))
         } else {
             otherCategories = CashFlowCategoryEntity.getAll(from: context, filteringBy: [.typeIs(formModel.type!)])
         }
