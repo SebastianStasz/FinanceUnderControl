@@ -5,8 +5,8 @@
 //  Created by sebastianstaszczyk on 13/03/2022.
 //
 
-import Foundation
 import FinanceCoreData
+import Shared
 
 protocol CashFlowGroupingFormModel: Equatable {
     associatedtype Ent: Entity

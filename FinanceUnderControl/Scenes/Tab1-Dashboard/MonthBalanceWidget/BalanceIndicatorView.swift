@@ -5,14 +5,20 @@
 //  Created by sebastianstaszczyk on 13/04/2022.
 //
 
-import SwiftUI
 import FinanceCoreData
+import Shared
+import SwiftUI
 
 struct BalanceIndicatorView: View {
-    private let lineWidth: CGFloat = 6
 
-    let incomesValue: Double
-    let expensesValue: Double
+    private let lineWidth: CGFloat = 6
+    private let incomesValue: Double
+    private let expensesValue: Double
+
+    init(incomesValue: Decimal, expensesValue: Decimal) {
+        self.incomesValue = incomesValue.asDouble
+        self.expensesValue = expensesValue.asDouble
+    }
 
     private var total: Double {
         incomesValue + expensesValue

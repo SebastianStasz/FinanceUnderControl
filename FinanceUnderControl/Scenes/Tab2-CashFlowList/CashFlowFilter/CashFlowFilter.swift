@@ -24,13 +24,13 @@ struct CashFlowFilter: Equatable {
         var predicates: [Filter] = []
 
         if cashFlowSelection != .all, let type = cashFlowSelection.type {
-            predicates.append(Filter.byType(type))
+            predicates.append(Filter.type(type))
         }
         if datePickerViewData.isOn {
             predicates.append(dateBetweenPredicate)
         }
         if let cashFlowCategory = cashFlowCategory {
-            predicates.append(Filter.byCategory(cashFlowCategory))
+            predicates.append(Filter.category(cashFlowCategory))
         }
         if let minValue = minimumValue {
             predicates.append(Filter.minimumValue(minValue))
@@ -58,6 +58,6 @@ extension CashFlowFilter {
     typealias Filter = CashFlowEntity.Filter
 
     private var dateBetweenPredicate: Filter {
-        .byDateBetween(startDate: datePickerViewData.startDate, endDate: datePickerViewData.endDate)
+        .dateBetween(startDate: datePickerViewData.startDate, endDate: datePickerViewData.endDate)
     }
 }

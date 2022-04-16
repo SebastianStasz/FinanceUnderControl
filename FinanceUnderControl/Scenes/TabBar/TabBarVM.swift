@@ -7,6 +7,7 @@
 
 import Foundation
 import FinanceCoreData
+import Shared
 
 final class TabBarVM: ObservableObject {
     typealias Tab = TabBarModel

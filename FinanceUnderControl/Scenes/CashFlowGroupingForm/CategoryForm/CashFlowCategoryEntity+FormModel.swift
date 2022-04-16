@@ -7,6 +7,7 @@
 
 import Foundation
 import FinanceCoreData
+import Shared
 import SSValidation
 
 extension CashFlowCategoryEntity {

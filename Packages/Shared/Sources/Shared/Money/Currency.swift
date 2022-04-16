@@ -1,5 +1,5 @@
 //
-//  SupportedCurrency.swift
+//  Currency.swift
 //  Shared
 //
 //  Created by sebastianstaszczyk on 27/03/2022.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum SupportedCurrency: String, CaseIterable {
+public enum Currency: String, CaseIterable {
     case BYN
     case EUR
     case GBP
@@ -17,7 +17,8 @@ public enum SupportedCurrency: String, CaseIterable {
     case USD
 }
 
-public extension SupportedCurrency {
+public extension Currency {
+
     var code: String {
         rawValue
     }
@@ -38,6 +39,25 @@ public extension SupportedCurrency {
             return "currency_UAH"
         case .USD:
             return "currency_USD"
+        }
+    }
+
+    var symbol: String {
+        switch self {
+        case .BYN:
+            return "Br"
+        case .EUR:
+            return "€"
+        case .GBP:
+            return "£"
+        case .PLN:
+            return "zł"
+        case .RUB:
+            return "₽"
+        case .UAH:
+            return "₴"
+        case .USD:
+            return "$"
         }
     }
 }

@@ -23,8 +23,8 @@ final class MonthBalanceWidgetVM: ViewModel {
         Publishers.Merge(Just(()), AppVM.shared.events.cashFlowsChanged)
             .startLoading(on: self)
             .asyncMap { _ async -> MonthBalance in
-                let incomeValue = await CashFlowEntity.getAll(from: controller, filter: [.byType(.income), dateFilter]).map { $0.value }.reduce(0, +)
-                let expenseValue = await CashFlowEntity.getAll(from: controller, filter: [.byType(.expense), dateFilter]).map { $0.value }.reduce(0, +)
+                let incomeValue = await CashFlowEntity.getAll(from: controller, filter: [.type(.income), dateFilter]).map { $0.value }.reduce(0, +)
+                let expenseValue = await CashFlowEntity.getAll(from: controller, filter: [.type(.expense), dateFilter]).map { $0.value }.reduce(0, +)
                 return MonthBalance(incomesValue: incomeValue, expensesValue: expenseValue, currencyCode: "PLN")
             }
             .stopLoading(on: self)

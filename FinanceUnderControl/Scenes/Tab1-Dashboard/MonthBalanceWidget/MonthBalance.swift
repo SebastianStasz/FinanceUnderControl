@@ -8,8 +8,8 @@
 import Foundation
 
 struct MonthBalance {
-    let incomesValue: Double
-    let expensesValue: Double
+    let incomesValue: Decimal
+    let expensesValue: Decimal
     let currencyCode: String
 
     static var empty: MonthBalance {

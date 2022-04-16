@@ -5,8 +5,9 @@
 //  Created by sebastianstaszczyk on 03/04/2022.
 //
 
-import Foundation
 import FinanceCoreData
+import Foundation
+import Shared
 
 extension CashFlowEntity {
 
@@ -15,7 +16,7 @@ extension CashFlowEntity {
 
         var date = Date()
         var name: String?
-        var value: Double?
+        var value: Decimal?
         var currency: CurrencyEntity?
         var category: CashFlowCategoryEntity?
         var type: CashFlowType?

@@ -5,8 +5,8 @@
 //  Created by Sebastian Staszczyk on 08/03/2022.
 //
 
-import Foundation
 import FinanceCoreData
+import Shared
 
 enum CashFlowFormType<Entity: CashFlowFormSupport> {
     case new(for: CashFlowType)

@@ -15,11 +15,11 @@ struct MonthBalanceWidgetView: View {
     @StateObject private var viewModel = MonthBalanceWidgetVM()
 
     private var incomeValue: String {
-        "+ \(viewModel.monthBalance.incomesValue.asString(roundToDecimalPlaces: 2)) \(viewModel.monthBalance.currencyCode)"
+        "+ \(viewModel.monthBalance.incomesValue.asString) \(viewModel.monthBalance.currencyCode)"
     }
 
     private var expenseValue: String {
-        "- \(viewModel.monthBalance.expensesValue.asString(roundToDecimalPlaces: 2)) \(viewModel.monthBalance.currencyCode)"
+        "- \(viewModel.monthBalance.expensesValue.asString) \(viewModel.monthBalance.currencyCode)"
     }
 
     var body: some View {

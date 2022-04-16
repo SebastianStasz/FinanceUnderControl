@@ -14,7 +14,7 @@ struct CashFlowPanelView: View {
     private let name: String
     private let date: Date
     private let categoryName: String
-    private let value: Double
+    private let value: Decimal
     private let currencyCode: String
     private let cashFlowType: CashFlowType
 
@@ -23,7 +23,7 @@ struct CashFlowPanelView: View {
         date = cashFlow.date
         categoryName = cashFlow.category.name
         value = cashFlow.value
-        currencyCode = cashFlow.currency.code
+        currencyCode = cashFlow.currency_.code
         cashFlowType = cashFlow.category.type
     }
 
@@ -42,7 +42,7 @@ struct CashFlowPanelView: View {
 
                 Spacer()
 
-                SwiftUI.Text("\(cashFlowType.symbol) \(value.asString) \(currencyCode)")
+                SwiftUI.Text("\(cashFlowType.symbol) \(String(describing: value)) \(currencyCode)")
                     .foregroundColor(cashFlowType.color)
                     .font(.headline)
                     .fontWeight(.medium)

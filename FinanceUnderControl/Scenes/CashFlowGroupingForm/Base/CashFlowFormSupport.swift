@@ -6,8 +6,8 @@
 //
 
 import CoreData
-import Foundation
 import FinanceCoreData
+import Shared
 import SSValidation
 
 protocol CashFlowFormSupport: Entity, Deletable {
@@ -50,6 +50,6 @@ extension CashFlowCategoryGroupEntity: CashFlowFormSupport {
 
 extension CashFlowEntity: CashFlowFormSupport {
     var formModel: FormModel {
-        .init(date: date, name: name, value: value, currency: currency, category: category, type: category.type)
+        .init(date: date, name: name, value: value, currency: currency_, category: category, type: category.type)
     }
 }

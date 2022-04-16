@@ -40,7 +40,7 @@ final class CurrencyService {
     private func getCurrencies(from context: NSManagedObjectContext) -> [CurrencyEntity] {
         let currencies = CurrencyEntity.getAll(from: context)
 
-        let nonExistingSupportedCurrencies = SupportedCurrency.currencyEntityModels
+        let nonExistingSupportedCurrencies = Currency.currencyEntityModels
             .filter { currency in currencies.notContains(where: { $0.code == currency.code }) }
 
         guard nonExistingSupportedCurrencies.isEmpty else {

@@ -16,7 +16,7 @@ final class CantorVM: ObservableObject {
     private let currencySettings = CurrencySettings()
 
     @Published var currencySelector = CurrencySelector<CurrencyEntity?>()
-    let amountOfMoneyInput = DoubleInputVM(validator: .alwaysValid())
+    let amountOfMoneyInput = DecimalInputVM(validator: .alwaysValid())
     @Published private(set) var exchangeRateValue: String?
     @Published private(set) var exchangedMoney: String?
 
@@ -42,7 +42,7 @@ final class CantorVM: ObservableObject {
             .store(in: &cancellables)
 
         let exchangeRateValue = $currencySelector
-            .map { selector -> Double? in
+            .map { selector -> Decimal? in
                 guard let primary = selector.primaryCurrency, let secondary = selector.secondaryCurrency else { return nil }
                 guard let exchangeRateValue = primary.getExchangeRate(for: secondary.code)?.rateValue else {
                     return nil
@@ -56,7 +56,7 @@ final class CantorVM: ObservableObject {
                       let secondary = values.0.secondaryCurrency,
                       let rateValue = values.1, rateValue > 0
                 else { return nil }
-                return "1 \(primary.code) = \(rateValue.asString(roundToDecimalPlaces: 2)) \(secondary.code)"
+                return "1 \(primary.code) = \(rateValue.asString) \(secondary.code)"
             }
             .assign(to: &$exchangeRateValue)
 
@@ -68,7 +68,7 @@ final class CantorVM: ObservableObject {
                       let amount = values.1,
                       amount != 0
                 else { return nil }
-                let result = (rateValue * amount).asString(roundToDecimalPlaces: 2)
+                let result = (rateValue * amount).asString
                 return "\(amount.asString) \(primary.code) = \(result) \(secondary.code)"
             }
             .sink { [weak self] value in
