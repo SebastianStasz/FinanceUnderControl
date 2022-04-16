@@ -12,6 +12,7 @@ import SwiftUI
 
 struct CashFlowCategoryListView: View {
     @Environment(\.editMode) private var editMode
+    @FetchRequest(sortDescriptors: []) private var categories: FetchedResults<CashFlowCategoryEntity>
     @FetchRequest private var categoryGroups: FetchedResults<CashFlowCategoryGroupEntity>
     @FetchRequest private var ungroupedCategories: FetchedResults<CashFlowCategoryEntity>
 
@@ -29,6 +30,8 @@ struct CashFlowCategoryListView: View {
     }
 
     var body: some View {
+        ForEach(categories) { _ in } // Needed for updating changes after edit category.
+
         BaseList(type.namePlural, sectors: sectors) {
             CashFlowCategoryRow(for: $0, editCategory: showCategoryForm(.edit($0)))
                 .actions(edit: showCategoryForm(.edit($0)), delete: showDeleteConfirmation($0))
@@ -63,7 +66,10 @@ struct CashFlowCategoryListView: View {
             let editAction = EditAction(title: .settings_edit_group) {
                 showCategoryGroupForm(.edit(group))
             }
-            return ListSector(group.name, elements: group.categories, editAction: editAction, visibleIfEmpty: true)
+            let categories = group.categories.sorted(by: {
+                $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
+            })
+            return ListSector(group.name, elements: categories, editAction: editAction, visibleIfEmpty: true)
         }
         sectors.append(ListSector("Ungrouped", elements: ungroupedCategories.map { $0 }))
         return sectors

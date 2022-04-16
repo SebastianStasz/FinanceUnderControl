@@ -71,10 +71,9 @@
 "settings_edit_category" = "Edit category";
 "settings_select_action" = "Select an action";
 "settings_your_finance_data" = "Your finance data";
-"settings_import_finance_data_description" = "W tym miejscu możesz zaimportować zapisane wcześniej dane finansowe włączając w to przepływy pieniężne, kategorie i grupy. Wybierz plik i przejrzyj potencjalne zmiany.";
-"settings_import_finance_data_result_description" = "Oto zaimportowane dane. Zajdziesz tutaj informacje, które element zostaną utworzone, a które już istnieją w aplikacji. Jeżeli wszystko się zgadza kliknij \"Zatwierdź\".";
-"settings_export_finance_data_description" = "W tym miejscu możesz wyeksportować swoje dane finansowe - przepływy pieniężne, grupy i kategorie. Kliknij eksportuj i wybierz miejsce docelowe.";
-
+"settings_import_finance_data_description" = "Here you can import previously saved financial data including cash flows, group and categories. Select a file and see potential changes.";
+"settings_import_finance_data_result_description" = "Here is the imported data. Below you will find information about which items will be created and which ones already exist. If everything is correct, click \"Confirm\".";
+"settings_export_finance_data_description" = "Here you can export your financial data - cash flows, groups and categories. Click on export and select a destination.";
 "cannot_delete_cash_flow_category_message" = "You can not delete this category, because it is in use.";
 
 "currency_BYN" = "Belarusian Ruble";

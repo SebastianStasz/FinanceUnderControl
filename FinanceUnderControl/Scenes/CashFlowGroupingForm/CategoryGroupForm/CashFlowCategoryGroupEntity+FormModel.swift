@@ -21,6 +21,9 @@ extension CashFlowCategoryGroupEntity {
 
         var model: Model? {
             guard let name = name, let type = type else { return nil }
+            let categories = categories.sorted(by: {
+                $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
+            })
             return CashFlowCategoryGroupEntity.Model(name: name, type: type, color: color, categories: categories)
         }
     }

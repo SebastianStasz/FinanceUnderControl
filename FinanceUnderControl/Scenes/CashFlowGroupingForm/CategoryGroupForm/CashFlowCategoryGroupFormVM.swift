@@ -16,22 +16,29 @@ final class CashFlowCategoryGroupFormVM: CashFlowGroupingFormVM<CashFlowCategory
         super.onAppear(formType: formType)
         if let name = formModel.name {
             otherCategories = CashFlowCategoryEntity.getAll(from: context, filteringBy: [.typeIs(formModel.type!), .group(.isNotWithName(name))])
+            otherCategories.append(contentsOf: CashFlowCategoryEntity.getAll(from: context, filteringBy: [.group(.ungrouped)]))
         } else {
             otherCategories = CashFlowCategoryEntity.getAll(from: context, filteringBy: [.typeIs(formModel.type!)])
         }
-        otherCategories.sort(by: { $0.name < $1.name })
+        sortOtherCategories()
     }
 
     func checkCategory(_ category: CashFlowCategoryEntity) {
         otherCategories.remove(element: category)
         formModel.categories.append(category)
-        formModel.categories.sort(by: { $0.name < $1.name })
+        formModel.categories.sort(by: {
+            $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
+        })
     }
 
     func uncheckCategory(_ category: CashFlowCategoryEntity) {
         formModel.categories.remove(element: category)
         otherCategories.append(category)
-        otherCategories.sort(by: { $0.name < $1.name })
+        sortOtherCategories()
+    }
+
+    private func sortOtherCategories() {
+        otherCategories.sort(by: { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending })
     }
 }
 
