@@ -6,6 +6,7 @@
 //
 
 import FinanceCoreData
+import Shared
 import SwiftUI
 
 struct BaseListFetchRequest<T: Entity, Content: View>: View {
@@ -13,19 +14,19 @@ struct BaseListFetchRequest<T: Entity, Content: View>: View {
     @FetchRequest private var items: FetchedResults<T>
     private let title: String
     private let titleDisplayMode: NavigationBarItem.TitleDisplayMode
-    private let emptyMessage: String?
+    private let emptyStateVD: EmptyStateVD
     private let rowView: (T) -> Content
 
     init(items: FetchRequest<T>,
          title: String,
          titleDisplayMode: NavigationBarItem.TitleDisplayMode = .automatic,
-         emptyMessage: String? = nil,
+         emptyStateVD: EmptyStateVD,
          @ViewBuilder rowView: @escaping (T) -> Content
     ) {
         self._items = items
         self.title = title
         self.titleDisplayMode = titleDisplayMode
-        self.emptyMessage = emptyMessage
+        self.emptyStateVD = emptyStateVD
         self.rowView = rowView
     }
 
@@ -34,6 +35,6 @@ struct BaseListFetchRequest<T: Entity, Content: View>: View {
     }
 
     var body: some View {
-        BaseList(title, elements: itemsArray, rowView: rowView)
+        BaseList(title, emptyStateVD: emptyStateVD, elements: itemsArray, rowView: rowView)
     }
 }

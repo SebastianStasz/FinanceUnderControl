@@ -29,10 +29,15 @@ struct CashFlowGroupingListView: View {
         _ungroupedCategories = CashFlowCategoryEntity.fetchRequest(forType: type, filters: [.ungrouped])
     }
 
+    private var emptyStateVD: EmptyStateVD {
+        EmptyStateVD(title: "No elements yet",
+                     description: "Groups and categories will appear here after you create it")
+    }
+
     var body: some View {
         ForEach(categories) { _ in } // Needed for updating changes after edit category.
 
-        BaseList(type.namePlural, sectors: sectors) {
+        BaseList(type.namePlural, emptyStateVD: emptyStateVD, sectors: sectors) {
             CashFlowCategoryRow(for: $0, editCategory: showCategoryForm(.edit($0)))
                 .actions(edit: showCategoryForm(.edit($0)), delete: showDeleteConfirmation($0))
                 .environment(\.editMode, editMode)
@@ -71,7 +76,9 @@ struct CashFlowGroupingListView: View {
             })
             return ListSector(group.name, elements: categories, editAction: editAction, visibleIfEmpty: true)
         }
-        sectors.append(ListSector("Ungrouped", elements: ungroupedCategories.map { $0 }))
+        if ungroupedCategories.isNotEmpty {
+            sectors.append(ListSector("Ungrouped", elements: ungroupedCategories.map { $0 }))
+        }
         return sectors
     }
 

@@ -19,12 +19,17 @@ struct CashFlowListView: View {
     @State private var cashFlowToDelete: CashFlowEntity?
     @State private var cashFlowFormType: CashFlowFormType<CashFlowEntity>?
 
+    private var emptyStateVD: EmptyStateVD {
+        EmptyStateVD(title: "No cash flows yet",
+                     description: "Cash flows will appear here after you create it")
+    }
+
     var body: some View {
-        BaseList(.tab_cashFlow_title, sectorIdMapper: { $0.string(format: .monthAndYear) }, sectors: cashFlows) {
+        BaseList(.tab_cashFlow_title, emptyStateVD: emptyStateVD, sectorIdMapper: { $0.string(format: .monthAndYear) }, sectors: cashFlows) {
             CashFlowCardView($0)
                 .actions(edit: editCashFlow($0), delete: showDeleteCashFlowConfirmation(for: $0))
         }
-        .searchable(text: $viewModel.searchText)
+        .searchable(by: $viewModel.searchText, isPresented: cashFlows.isNotEmpty)
         .toolbar {
             Toolbar.trailing(systemImage: SFSymbol.filter.name, action: showFilterView)
         }

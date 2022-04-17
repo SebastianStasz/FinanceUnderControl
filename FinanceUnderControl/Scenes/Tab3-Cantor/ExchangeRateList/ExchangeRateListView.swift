@@ -11,11 +11,12 @@ import SwiftUI
 import SSUtils
 
 struct ExchangeRateListView: View {
+    private let emptyStateVD = EmptyStateVD(title: "No exchange rates", description: "There is no exchange rates for selected currency.")
 
     @ObservedObject var viewModel: ExchangeRateListVM
 
     var body: some View {
-        BaseList(title, elements: viewModel.exchangeRates) { exchageRate in
+        BaseList(title, emptyStateVD: emptyStateVD, elements: viewModel.exchangeRates) { exchageRate in
             HStack(spacing: .medium) {
                 Text(exchageRate.code, style: .currency)
                 Text(exchageRate.rateValueRounded)

@@ -6,13 +6,14 @@
 //
 
 import FinanceCoreData
+import Shared
 import SwiftUI
 import SSUtils
 
 struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
     private let title: String
-    private let emptyMessage: String?
+    private let emptyStateVD: EmptyStateVD
     private let sectors: [ListSector<T>]
     private let rowView: (T) -> RowView
     var deleteElement: ((T) -> Void)?
@@ -39,7 +40,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
         .background(Color.backgroundPrimary)
         .environment(\.defaultMinListRowHeight, 1)
         .environment(\.defaultMinListHeaderHeight, 1)
-        .emptyState(isEmpty: sectors.isEmpty, message: emptyMessage)
+        .emptyState(isEmpty: sectors.isEmpty, viewData: emptyStateVD)
         .navigationTitle(title)
     }
 
@@ -67,13 +68,13 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
     fileprivate init(
         _ title: String,
-        emptyMessage: String?,
+        emptyStateVD: EmptyStateVD,
         sectors: [ListSector<T>],
         deleteElement: ((T) -> Void)?,
         @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
         self.title = title
-        self.emptyMessage = emptyMessage
+        self.emptyStateVD = emptyStateVD
         self.sectors = sectors
         self.deleteElement = deleteElement
         self.rowView = rowView
@@ -87,42 +88,42 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 extension BaseList {
 
     init(_ title: String,
-         emptyMessage: String? = nil,
+         emptyStateVD: EmptyStateVD,
          sectors: [ListSector<T>],
          @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
-        self.init(title, emptyMessage: emptyMessage, sectors: sectors, deleteElement: nil, rowView: rowView)
+        self.init(title, emptyStateVD: emptyStateVD, sectors: sectors, deleteElement: nil, rowView: rowView)
     }
 
     init(_ title: String,
-         emptyMessage: String? = nil,
+         emptyStateVD: EmptyStateVD,
          elements: [T],
          @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
-        self.init(title, emptyMessage: emptyMessage, sectors: ListSector.unvisibleSector(elements), deleteElement: nil, rowView: rowView)
+        self.init(title, emptyStateVD: emptyStateVD, sectors: ListSector.unvisibleSector(elements), deleteElement: nil, rowView: rowView)
     }
 
     init(_ title: String,
-         emptyMessage: String? = nil,
+         emptyStateVD: EmptyStateVD,
          elements: FetchedResults<T>,
          @ViewBuilder rowView: @escaping (T) -> RowView
     ) where T: Entity {
-        self.init(title, emptyMessage: emptyMessage, elements: elements.map { $0 }, rowView: rowView)
+        self.init(title, emptyStateVD: emptyStateVD, elements: elements.map { $0 }, rowView: rowView)
     }
 
     init<I>(_ title: String,
-            emptyMessage: String? = nil,
+            emptyStateVD: EmptyStateVD,
             sectorIdMapper: (I) -> String,
             sectors: SectionedFetchResults<I, T>,
             @ViewBuilder rowView: @escaping (T) -> RowView
     ) where T: Entity {
         let sectors = sectors.map { ListSector(sectorIdMapper($0.id), elements: $0.map { $0 }) }
-        self.init(title, emptyMessage: emptyMessage, sectors: sectors, rowView: rowView)
+        self.init(title, emptyStateVD: emptyStateVD, sectors: sectors, rowView: rowView)
     }
 }
 
 extension BaseList {
     func onDelete(perform action: ((T) -> Void)?) -> BaseList {
-        BaseList(title, emptyMessage: emptyMessage, sectors: sectors, deleteElement: action, rowView: rowView)
+        BaseList(title, emptyStateVD: emptyStateVD, sectors: sectors, deleteElement: action, rowView: rowView)
     }
 }
