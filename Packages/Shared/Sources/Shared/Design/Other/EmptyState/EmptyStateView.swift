@@ -18,12 +18,12 @@ struct EmptyStateView: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: .xxlarge) {
-            Image.emptyState1
+            viewData.imageToDisplay.image
 
             VStack(alignment: .center, spacing: .small) {
-                Text(viewData.title, style: .headlineBig)
+                Text(viewData.titleToDisplay, style: .headlineBig)
 
-                Text(viewData.description, style: .body())
+                Text(viewData.descriptionToDisplay, style: .body())
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, .xxlarge * 2)
             }

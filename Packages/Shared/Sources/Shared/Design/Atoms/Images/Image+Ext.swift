@@ -9,4 +9,5 @@ import SwiftUI
 
 public extension Image {
     static let emptyState1 = ImageDesign.empty_state_1.image
+    static let emptyStateSearch = ImageDesign.empty_state_search.image
 }

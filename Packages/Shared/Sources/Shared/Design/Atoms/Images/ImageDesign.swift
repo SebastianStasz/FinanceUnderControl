@@ -9,5 +9,6 @@ import Foundation
 
 enum ImageDesign: String, ImageAsset {
     case empty_state_1
+    case empty_state_search
 }
 

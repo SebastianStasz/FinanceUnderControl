@@ -42,31 +42,23 @@ public extension Entity where Sort.Entity == Self {
 }
 
 public extension Array where Element == EntityFilter? {
-    var orNSPredicate: NSPredicate {
+    var orNSPredicate: NSPredicate? {
         map { $0?.nsPredicate }.orNSPredicate
     }
 
-    var andNSPredicate: NSPredicate {
+    var andNSPredicate: NSPredicate? {
         map { $0?.nsPredicate }.andNSPredicate
     }
 }
 
 public extension Array where Element == NSPredicate? {
-    var orNSPredicate: NSPredicate {
-        compactMap { $0 }.orNSPredicate
+    var orNSPredicate: NSPredicate? {
+        let predicates = self.compactMap { $0 }
+        return predicates.isEmpty ? nil : NSCompoundPredicate(type: .or, subpredicates: predicates)
     }
 
-    var andNSPredicate: NSPredicate {
-        compactMap { $0 }.andNSPredicate
-    }
-}
-
-public extension Array where Element == NSPredicate {
-    var orNSPredicate: NSPredicate {
-        NSCompoundPredicate(type: .or, subpredicates: self)
-    }
-
-    var andNSPredicate: NSPredicate {
-        NSCompoundPredicate(type: .and, subpredicates: self)
+    var andNSPredicate: NSPredicate? {
+        let predicates = self.compactMap { $0 }
+        return predicates.isEmpty ? nil : NSCompoundPredicate(type: .and, subpredicates: predicates)
     }
 }

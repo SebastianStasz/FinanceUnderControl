@@ -20,7 +20,7 @@ struct CashFlowFilter: Equatable {
     var maximumValue: Double?
     var currency: CurrencyEntity?
 
-    var nsPredicate: NSPredicate {
+    var nsPredicate: NSPredicate? {
         var predicates: [Filter] = []
 
         if cashFlowSelection != .all, let type = cashFlowSelection.type {

@@ -19,9 +19,14 @@ struct CashFlowListView: View {
     @State private var cashFlowToDelete: CashFlowEntity?
     @State private var cashFlowFormType: CashFlowFormType<CashFlowEntity>?
 
+    private var isSearching: Bool {
+        viewModel.cashFlowPredicate.notNil
+    }
+
     private var emptyStateVD: EmptyStateVD {
         EmptyStateVD(title: "No cash flows yet",
-                     description: "Cash flows will appear here after you create it")
+                     description: "Cash flows will appear here after you create it",
+                     isSearching: isSearching)
     }
 
     var body: some View {
@@ -31,7 +36,7 @@ struct CashFlowListView: View {
         }
         .searchable(text: $viewModel.searchText)
         .toolbar {
-            Toolbar.trailing(systemImage: SFSymbol.filter.name, disabled: cashFlows.isEmpty, action: showFilterView)
+            Toolbar.trailing(systemImage: SFSymbol.filter.name, disabled: cashFlows.isEmpty && !isSearching, action: showFilterView)
         }
         .confirmationDialog(.settings_select_action, item: $cashFlowToDelete) {
             Button.delete(action: deleteCashFlow)
