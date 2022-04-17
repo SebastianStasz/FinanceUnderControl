@@ -17,19 +17,18 @@ struct EmptyStateView: View {
     }
 
     var body: some View {
-        VStack(alignment: .center, spacing: .xxlarge) {
+        VStack(alignment: .center, spacing: .xlarge) {
             viewData.imageToDisplay.image
 
             VStack(alignment: .center, spacing: .small) {
-                Text(viewData.titleToDisplay, style: .headlineBig)
+                Text(viewData.titleToDisplay, style: .body())
 
-                Text(viewData.descriptionToDisplay, style: .body())
+                Text(viewData.descriptionToDisplay, style: .footnote())
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, .xxlarge * 2)
             }
         }
-        .padding(.bottom, 80)
-        .infiniteSize()
+        .padding(.bottom, .xxlarge)
     }
 }
 

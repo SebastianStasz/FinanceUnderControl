@@ -36,7 +36,15 @@ struct CashFlowListView: View {
         }
         .searchable(text: $viewModel.searchText)
         .toolbar {
-            Toolbar.trailing(systemImage: SFSymbol.filter.name, disabled: cashFlows.isEmpty && !isSearching, action: showFilterView)
+            ToolbarItemGroup(placement: .navigationBarLeading) {
+                if viewModel.cashFlowFilter.filterCount != 0 {
+                    Button(.button_reset, action: resetFilters)
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: showFilterView) { filterIcon }
+                    .disabled(cashFlows.isEmpty && !isSearching)
+            }
         }
         .confirmationDialog(.settings_select_action, item: $cashFlowToDelete) {
             Button.delete(action: deleteCashFlow)
@@ -53,10 +61,25 @@ struct CashFlowListView: View {
         }
     }
 
+    @ViewBuilder
+    private var filterIcon: some View {
+        let filterCount = viewModel.cashFlowFilter.filterCount
+        if filterCount == 0 {
+            Image(systemName: SFSymbol.filter.name)
+        } else {
+            Label("(\(filterCount.asString))", systemImage: SFSymbol.filter.name)
+                .labelStyle(.titleAndIcon)
+        }
+    }
+
     // MARK: - Interactions
 
     private func showFilterView() {
         isFilterViewShown = true
+    }
+
+    private func resetFilters() {
+        viewModel.cashFlowFilter.resetToDefaultValues()
     }
 
     private func editCashFlow(_ cashFlow: CashFlowEntity) {

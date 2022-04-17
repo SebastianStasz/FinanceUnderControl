@@ -11,14 +11,25 @@ import Shared
 import SSValidation
 
 struct CashFlowFilter: Equatable {
-    var cashFlowSelection: CashFlowSelection = .all {
-        didSet { cashFlowCategory = nil }
-    }
-    var cashFlowCategory: CashFlowCategoryEntity?
-    var datePickerViewData: DateRangePickerViewData = .init()
+//    private(set) var filterCount = 0
+
     var minimumValue: Double?
     var maximumValue: Double?
     var currency: CurrencyEntity?
+    var cashFlowCategory: CashFlowCategoryEntity?
+    var datePickerViewData: DateRangePickerViewData = .init()
+    var cashFlowSelection: CashFlowSelection = .all {
+        didSet { cashFlowCategory = nil }
+    }
+
+    var filterCount: Int {
+        var count = [minimumValue, maximumValue].map { $0.isNil ? 0 : 1 }.reduce(0, +)
+        count += currency.isNil ? 0 : 1
+        count += cashFlowCategory.isNil ? 0 : 1
+        count += datePickerViewData.isOn ? 1 : 0
+        count += cashFlowSelection != .all ? 1 : 0
+        return count
+    }
 
     var nsPredicate: NSPredicate? {
         var predicates: [Filter] = []
