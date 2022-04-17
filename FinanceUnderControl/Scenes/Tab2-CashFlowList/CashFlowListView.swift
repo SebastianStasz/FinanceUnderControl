@@ -29,9 +29,9 @@ struct CashFlowListView: View {
             CashFlowCardView($0)
                 .actions(edit: editCashFlow($0), delete: showDeleteCashFlowConfirmation(for: $0))
         }
-        .searchable(by: $viewModel.searchText, isPresented: cashFlows.isNotEmpty)
+        .searchable(text: $viewModel.searchText)
         .toolbar {
-            Toolbar.trailing(systemImage: SFSymbol.filter.name, action: showFilterView)
+            Toolbar.trailing(systemImage: SFSymbol.filter.name, disabled: cashFlows.isEmpty, action: showFilterView)
         }
         .confirmationDialog(.settings_select_action, item: $cashFlowToDelete) {
             Button.delete(action: deleteCashFlow)

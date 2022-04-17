@@ -12,7 +12,6 @@ import SSUtils
 struct TabBarView: View {
 
     @StateObject private var viewModel = TabBarVM()
-    @State private var isKeyboardPresented = false
     private let testView: AnyView?
 
     init() {
@@ -51,11 +50,9 @@ struct TabBarView: View {
             }
             .infiniteWidth(maxHeight: 49)
             .background(tabBarBackground)
-            .displayIf(!isKeyboardPresented)
         }
         .background(Color.backgroundPrimary)
-        .onReceive(NotificationCenter.keyboardWillShow) { _ in isKeyboardPresented = true }
-        .onReceive(NotificationCenter.keyboardDidHide) { _ in isKeyboardPresented = false }
+        .ignoresSafeArea(.keyboard)
         .sheet(item: $viewModel.cashFlowCategoryType) { type in
             CashFlowFormView(for: .new(for: type))
         }
@@ -97,5 +94,6 @@ struct TabBarView: View {
 struct TabBarView_Previews: PreviewProvider {
     static var previews: some View {
         TabBarView()
+        TabBarView().darkScheme()
     }
 }
