@@ -104,7 +104,7 @@ public extension CashFlowCategoryGroupEntity {
     /// - Parameter type: Type of cash flow.
     /// - Returns: `FetchRequest` with `CashFlowCategoryGroupEntity`.
     static func fetchRequest(forType type: CashFlowType) -> FetchRequest<CashFlowCategoryGroupEntity> {
-        CashFlowCategoryGroupEntity.fetchRequest(filteringBy: [.typeIs(type)], sortingBy: [.byName()])
+        CashFlowCategoryGroupEntity.fetchRequest(filteringBy: [.type(type)], sortingBy: [.byName()])
     }
 
     static func getAll(from controller: PersistenceController) async -> [CashFlowCategoryGroupEntity] {
@@ -112,7 +112,7 @@ public extension CashFlowCategoryGroupEntity {
         return result ?? []
     }
 
-    static func getAll(from context: NSManagedObjectContext, filterBy filter: [Filter] = []) -> [CashFlowCategoryGroupEntity] {
+    static func getAll(from context: NSManagedObjectContext, filterBy filter: Filter...) -> [CashFlowCategoryGroupEntity] {
         let request = CashFlowCategoryGroupEntity.nsFetchRequest(filteringBy: filter, sortingBy: [.byName()])
         let result = try? context.fetch(request)
         return result ?? []

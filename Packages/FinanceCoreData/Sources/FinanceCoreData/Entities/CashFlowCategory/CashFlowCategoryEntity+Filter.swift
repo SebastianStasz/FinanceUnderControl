@@ -11,33 +11,34 @@ import Shared
 public extension CashFlowCategoryEntity {
 
     enum Filter: EntityFilter {
-        case typeIs(CashFlowType)
-        case group(Group)
+        case type(CashFlowType)
+        case groupNameIsNot(String)
+        case ungrouped
 
         public var nsPredicate: NSPredicate {
             switch self {
-            case let .typeIs(type):
-                return NSPredicate(format: "type_ == %@", type.rawValue)
-            case let .group(groupType):
-                return groupType.nsPredicate
+            case let .type(type):
+                return predicateForType(type)
+            case let .groupNameIsNot(name):
+                return predicateGroupNameIsNot(name)
+            case .ungrouped:
+                return predicateForUngrouped()
             }
         }
     }
+}
 
-    enum Group {
-        case isNotWithName(String)
-        case `is`(CashFlowCategoryGroupEntity)
-        case ungrouped
+private extension CashFlowCategoryEntity {
 
-        var nsPredicate: NSPredicate {
-            switch self {
-            case let .isNotWithName(groupName):
-                return NSPredicate(format: "group.name != %@ OR group = nil", groupName)
-            case let .is(group):
-                return NSPredicate(format: "group == %@", group)
-            case .ungrouped:
-                return NSPredicate(format: "group = nil")
-            }
-        }
+    static func predicateForType(_ type: CashFlowType) -> NSPredicate {
+        NSPredicate(format: "type_ == %@", type.rawValue)
+    }
+
+    static func predicateGroupNameIsNot(_ name: String) -> NSPredicate {
+        NSPredicate(format: "group.name != %@ OR group = nil", name)
+    }
+
+    static func predicateForUngrouped() -> NSPredicate {
+        NSPredicate(format: "group = nil")
     }
 }

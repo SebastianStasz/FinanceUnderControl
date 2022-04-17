@@ -130,7 +130,7 @@ private extension PersistenceController {
             CashFlowEntity.createAndReturn(in: context, model: .init(name: name, date: date, value: value, currency: plnCurrency(in: context), category: category))
         }
         if let groupName = groupName {
-            let request = CashFlowCategoryGroupEntity.nsFetchRequest(filteringBy: [.nameIs(groupName)])
+            let request = CashFlowCategoryGroupEntity.nsFetchRequest(filteringBy: [.name(groupName)])
             let result = try! context.fetch(request) // swiftlint:disable:this force_try
             if result.isEmpty {
                 let group = CashFlowCategoryGroupEntity.createAndReturn(in: context, model: .init(name: groupName, type: categoryType, color: groupColor))

@@ -10,13 +10,22 @@ import Foundation
 public extension ExchangeRateEntity {
 
     enum Filter: EntityFilter {
-        case byCode(String)
+        case code(String)
 
         public var nsPredicate: NSPredicate {
             switch self {
-            case let .byCode(code):
-                return NSPredicate(format: "code == %@", code)
+            case let .code(code):
+                return predicateForCode(code)
             }
         }
+    }
+}
+
+// MARK: - Predicates
+
+private extension ExchangeRateEntity {
+
+    static func predicateForCode(_ code: String) -> NSPredicate {
+        NSPredicate(format: "code == %@", code)
     }
 }

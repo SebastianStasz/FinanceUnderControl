@@ -44,7 +44,7 @@ public extension CurrencyEntity {
 
 public extension CurrencyEntity {
 
-    @discardableResult static func create(in context: NSManagedObjectContext, model: Model) -> CurrencyEntity? {
+    @discardableResult static func createAndReturn(in context: NSManagedObjectContext, model: Model) -> CurrencyEntity? {
         guard currencyNotExist(withCode: model.code, in: context) else { return nil }
         let currency = CurrencyEntity(context: context)
         currency.code = model.code
@@ -55,7 +55,7 @@ public extension CurrencyEntity {
 
     static func create(in context: NSManagedObjectContext, models: [Model]) {
         for model in models {
-            guard let currency = CurrencyEntity.create(in: context, model: model) else { continue }
+            guard let currency = CurrencyEntity.createAndReturn(in: context, model: model) else { continue }
             currency.addExchangeRates(Currency.allCases.map { ExchangeRateEntity.Model(code: $0.code, rateValue: 0, baseCurrency: currency.code) })
         }
     }
@@ -80,8 +80,8 @@ public extension CurrencyEntity {
         }
     }
 
-    static func getAll(from context: NSManagedObjectContext) -> [CurrencyEntity] {
-        let request = CurrencyEntity.nsFetchRequest(sortingBy: [.byCode(.forward)])
+    static func getAll(from context: NSManagedObjectContext, filters: Filter...) -> [CurrencyEntity] {
+        let request = CurrencyEntity.nsFetchRequest(filteringBy: filters, sortingBy: [.byCode(.forward)])
         let result = try? context.fetch(request)
         return result ?? []
     }
@@ -92,7 +92,7 @@ public extension CurrencyEntity {
     }
 
     static func get(withCode code: String, from context: NSManagedObjectContext) -> CurrencyEntity? {
-        let request = CurrencyEntity.nsFetchRequest(filteringBy: [.codeIs(code)])
+        let request = CurrencyEntity.nsFetchRequest(filteringBy: [.code(code)])
         let currency = try? context.fetch(request).first
         return currency
     }
@@ -134,7 +134,7 @@ private extension CurrencyEntity {
 
 public extension CurrencyEntity {
     static func sampleEUR(in context: NSManagedObjectContext) -> CurrencyEntity {
-        let currency = CurrencyEntity.create(in: context, model: .eur)!
+        let currency = CurrencyEntity.createAndReturn(in: context, model: .eur)!
         let eurRatesData = try! JSONDecoder().decode(LatestRatesResponse.self, from: DataFile.exchangerateLatestEur.data) // swiftlint:disable:this force_try
         currency.addExchangeRates(eurRatesData.rates.map { $0.exchangeRateData(baseCurrency: currency.code) })
         return currency
