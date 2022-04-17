@@ -13,5 +13,7 @@ protocol ColorAsset {
 }
 
 extension ColorAsset {
-    var color: Color { Color(self.rawValue, bundle: .module) }
+    var color: Color {
+        Color(self.rawValue, bundle: .module)
+    }
 }
