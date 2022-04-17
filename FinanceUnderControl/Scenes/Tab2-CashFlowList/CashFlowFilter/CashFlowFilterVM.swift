@@ -35,7 +35,7 @@ final class CashFlowFilterVM: ViewModel {
                 guard filter.cashFlowSelection != .all,
                       let cashFlowType = filter.cashFlowSelection.type
                 else { return nil }
-                return CashFlowCategoryEntity.Filter.typeIs(cashFlowType).nsPredicate
+                return CashFlowCategoryEntity.Filter.type(cashFlowType).nsPredicate
             }
             .assign(to: &$cashFlowCategoriesPredicate)
 

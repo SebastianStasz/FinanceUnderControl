@@ -1,5 +1,5 @@
 //
-//  CashFlowCategoryGroupEntityTests.swift
+//  CashFlowCategoryGroupTests.swift
 //  FinanceCoreData
 //
 //  Created by Sebastian Staszczyk on 09/03/2022.
@@ -9,7 +9,7 @@ import Foundation
 import XCTest
 @testable import FinanceCoreData
 
-final class CashFlowCategoryGroupEntityTests: XCTestCase, CoreDataSteps {
+final class CashFlowCategoryGroupTests: XCTestCase, CoreDataSteps {
     typealias Model = CashFlowCategoryGroupEntity.Model
 
     var context = PersistenceController.previewEmpty.context
@@ -155,7 +155,7 @@ final class CashFlowCategoryGroupEntityTests: XCTestCase, CoreDataSteps {
 
 // MARK: - Steps
 
-private extension CashFlowCategoryGroupEntityTests {
+private extension CashFlowCategoryGroupTests {
 
     func verifyCashFlowCategoryGroupData(in group: CashFlowCategoryGroupEntity, model: Model) {
         XCTAssertEqual(group.type, model.type)

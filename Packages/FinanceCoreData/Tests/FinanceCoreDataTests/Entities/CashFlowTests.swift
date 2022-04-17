@@ -1,5 +1,5 @@
 //
-//  CashFlowEntityTests.swift
+//  CashFlowTests.swift
 //  FinanceCoreDataTests
 //
 //  Created by Sebastian Staszczyk on 25/12/2021.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import FinanceCoreData
 
-final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
+final class CashFlowTests: XCTestCase, CoreDataSteps {
     typealias Model = CashFlowEntity.Model
 
     var context = PersistenceController.previewEmpty.context
@@ -119,7 +119,7 @@ final class CashFlowEntityTests: XCTestCase, CoreDataSteps {
 
 // MARK: - Steps
 
-private extension CashFlowEntityTests {
+private extension CashFlowTests {
     func verifyCashFlowEntityData(in cashFlowEntity: CashFlowEntity, model: Model, category: CashFlowCategoryEntity? = nil) throws {
         XCTAssertEqual(cashFlowEntity.name, model.name)
         XCTAssertEqual(cashFlowEntity.date.description, model.date.description)

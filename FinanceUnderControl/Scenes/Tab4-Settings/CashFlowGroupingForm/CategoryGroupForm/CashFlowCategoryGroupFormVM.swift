@@ -15,9 +15,9 @@ final class CashFlowCategoryGroupFormVM: CashFlowGroupingFormVM<CashFlowCategory
     override func onAppear(formType: FormType) {
         super.onAppear(formType: formType)
         if let name = formModel.name {
-            otherCategories = CashFlowCategoryEntity.getAll(from: context, filteringBy: [.typeIs(formModel.type!), .group(.isNotWithName(name))])
+            otherCategories = CashFlowCategoryEntity.getAll(from: context, filters: .type(formModel.type!), .groupNameIsNot(name))
         } else {
-            otherCategories = CashFlowCategoryEntity.getAll(from: context, filteringBy: [.typeIs(formModel.type!)])
+            otherCategories = CashFlowCategoryEntity.getAll(from: context, filters: .type(formModel.type!))
         }
         sortOtherCategories()
     }

@@ -1,5 +1,5 @@
 //
-//  ExchangeRateEntityTests.swift
+//  ExchangeRateTests.swift
 //  FinanceCoreDataTests
 //
 //  Created by Sebastian Staszczyk on 14/11/2021.
@@ -9,7 +9,7 @@ import Domain
 import XCTest
 @testable import FinanceCoreData
 
-final class ExchangeRateEntityTests: XCTestCase, CoreDataSteps {
+final class ExchangeRateTests: XCTestCase, CoreDataSteps {
 
     var context = PersistenceController.previewEmpty.context
 
@@ -84,7 +84,7 @@ final class ExchangeRateEntityTests: XCTestCase, CoreDataSteps {
 
 // MARK: - Steps
 
-private extension ExchangeRateEntityTests {
+private extension ExchangeRateTests {
     func createExchangeRateEntity(model: ExchangeRateEntity.Model, baseCurrency: CurrencyEntity) -> ExchangeRateEntity {
         ExchangeRateEntity.create(in: context, model: model, baseCurrency: baseCurrency)
     }

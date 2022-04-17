@@ -34,7 +34,7 @@ extension CashFlowCategoryEntity: CashFlowFormSupport {
     }
 
     static func namesInUse(from context: NSManagedObjectContext, forType type: CashFlowType) -> [String] {
-        CashFlowCategoryEntity.getAll(from: context, filteringBy: [.typeIs(type)]).map { $0.name }
+        CashFlowCategoryEntity.getAll(from: context, filters: .type(type)).map { $0.name }
     }
 }
 
@@ -44,7 +44,7 @@ extension CashFlowCategoryGroupEntity: CashFlowFormSupport {
     }
 
     static func namesInUse(from context: NSManagedObjectContext, forType type: CashFlowType) -> [String] {
-        CashFlowCategoryGroupEntity.getAll(from: context, filterBy: [.typeIs(type)]).map { $0.name }
+        CashFlowCategoryGroupEntity.getAll(from: context, filterBy: .type(type)).map { $0.name }
     }
 }
 

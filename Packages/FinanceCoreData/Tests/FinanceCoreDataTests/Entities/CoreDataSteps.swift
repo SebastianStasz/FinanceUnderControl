@@ -20,7 +20,7 @@ extension CoreDataSteps {
 
     @discardableResult
     func createCurrencyEntity(data: CurrencyEntity.Model) -> CurrencyEntity? {
-        CurrencyEntity.create(in: context, model: data)
+        CurrencyEntity.createAndReturn(in: context, model: data)
     }
 
     @discardableResult

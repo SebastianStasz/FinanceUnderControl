@@ -1,5 +1,5 @@
 //
-//  CurrencyEntityTests.swift
+//  CurrencyTests.swift
 //  FinanceCoreDataTests
 //
 //  Created by Sebastian Staszczyk on 14/11/2021.
@@ -9,7 +9,7 @@ import Domain
 import XCTest
 @testable import FinanceCoreData
 
-final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
+final class CurrencyTests: XCTestCase, CoreDataSteps {
     typealias Model = CurrencyEntity.Model
 
     var context = PersistenceController.previewEmpty.context
@@ -117,7 +117,7 @@ final class CurrencyEntityTests: XCTestCase, CoreDataSteps {
 
 // MARK: - Steps
 
-private extension CurrencyEntityTests {
+private extension CurrencyTests {
 
     func verifyCurrencyData(in entity: CurrencyEntity,
                             data: Model,

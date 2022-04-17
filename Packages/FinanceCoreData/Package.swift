@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "FinanceCoreData",
-    platforms: [.iOS("15.0")],
+    platforms: [.iOS(.v15)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -15,7 +15,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url: "https://github.com/SebastianStasz/SSUtils", from: "1.0.1"),
+        .package(url: "https://github.com/SebastianStasz/SSUtils", from: "1.0.0"),
         .package(name: "Domain", path: "../Domain"),
         .package(name: "Shared", path: "../Shared")
     ],
@@ -24,8 +24,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "FinanceCoreData",
-            dependencies: ["SSUtils", "Shared", "Domain"],
-            resources: [.copy("Data/ExchangerateSymbols.json"), .copy("Data/ExchangerateLatestEur.json")]),
+            dependencies: ["SSUtils", "Shared", "Domain"]
+//            resources: [.copy("Data/ExchangerateSymbols.json"), .copy("Data/ExchangerateLatestEur.json")]
+        ),
         .testTarget(
             name: "FinanceCoreDataTests",
             dependencies: ["FinanceCoreData"]),

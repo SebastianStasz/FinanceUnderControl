@@ -26,7 +26,7 @@ struct CashFlowGroupingListView: View {
     init(type: CashFlowType) {
         self.type = type
         _categoryGroups = CashFlowCategoryGroupEntity.fetchRequest(forType: type)
-        _ungroupedCategories = CashFlowCategoryEntity.fetchRequest(forType: type, group: .ungrouped)
+        _ungroupedCategories = CashFlowCategoryEntity.fetchRequest(forType: type, filters: [.ungrouped])
     }
 
     var body: some View {

@@ -1,5 +1,5 @@
 //
-//  CashFlowCategoryEntityTests.swift
+//  CashFlowCategoryTests.swift
 //  FinanceCoreDataTests
 //
 //  Created by Sebastian Staszczyk on 25/12/2021.
@@ -10,7 +10,7 @@ import Domain
 import XCTest
 @testable import FinanceCoreData
 
-final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
+final class CashFlowCategoryTests: XCTestCase, CoreDataSteps {
     typealias Model = CashFlowCategoryEntity.Model
 
     var context = PersistenceController.previewEmpty.context
@@ -128,7 +128,7 @@ final class CashFlowCategoryEntityTests: XCTestCase, CoreDataSteps {
 
 // MARK: - Steps
 
-private extension CashFlowCategoryEntityTests {
+private extension CashFlowCategoryTests {
 
     func verifyCashFlowCategoryData(in cashFlowCategoryEntity: CashFlowCategoryEntity,
                                     data: Model,
@@ -141,7 +141,7 @@ private extension CashFlowCategoryEntityTests {
     }
 
     func verifyUngroupedCategories(_ categories: [CashFlowCategoryEntity]) {
-        let request = CashFlowCategoryEntity.nsFetchRequest(filteringBy: [.group(.ungrouped)])
+        let request = CashFlowCategoryEntity.nsFetchRequest(filteringBy: [.ungrouped])
         let ungroupedCategories = try! context.fetch(request) // swiftlint:disable:this force_try
         XCTAssertEqual(ungroupedCategories.count, categories.count)
         for category in ungroupedCategories {

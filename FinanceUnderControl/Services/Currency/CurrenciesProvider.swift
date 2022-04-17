@@ -24,7 +24,7 @@ final class CurrenciesProvider {
             .map { text in
                 text.isEmpty
                     ? CurrencyEntity.fetchRequest(sortingBy: [.byCode(.forward)])
-                    : CurrencyEntity.fetchRequest(filteringBy: [.codeContains(text), .nameContains(text)], sortingBy: [.byCode(.forward)])
+                    : CurrencyEntity.fetchRequest(filteringBy: [.codeContains(text)], sortingBy: [.byCode(.forward)])
             }
 
         return Output(
