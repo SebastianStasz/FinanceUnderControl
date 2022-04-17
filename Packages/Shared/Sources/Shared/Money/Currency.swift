@@ -60,4 +60,26 @@ public extension Currency {
             return "$"
         }
     }
+
+    var localeID: String? {
+        switch self {
+        case .BYN:
+            return "by"
+        case .GBP:
+            return "gb"
+        case .PLN:
+            return "pl"
+        case .RUB:
+            return "re"
+        case .UAH:
+            return "ua"
+        default:
+            return nil
+        }
+    }
+
+    var locale: Locale? {
+        guard let id = localeID else { return nil }
+        return Locale(identifier: id)
+    }
 }

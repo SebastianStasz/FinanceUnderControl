@@ -27,7 +27,7 @@ public struct MoneyView: View {
 struct MoneyView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            let money = Money(2720.63, currency: .USD)
+            let money = Money(2720.63, currency: .PLN)
 
             VStack(spacing: .medium) {
                 MoneyView(from: money)

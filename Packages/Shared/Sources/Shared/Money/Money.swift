@@ -28,6 +28,7 @@ public extension Money {
     var asString: String {
         let formatter = Money.formatter
         formatter.currencyCode = currency.code
+        formatter.locale = currency.locale ?? .current
         return formatter.string(for: value)!
     }
 }

@@ -9,9 +9,9 @@ import SwiftUI
 
 struct HStack<Content: View>: View {
 
-    let spacing: CGFloat
-    let alignment: VerticalAlignment
-    let content: Content
+    private let spacing: CGFloat
+    private let alignment: VerticalAlignment
+    private let content: Content
 
     init(alignment: VerticalAlignment = .center,
          spacing: CGFloat = 0,

@@ -9,14 +9,14 @@ import SwiftUI
 
 public extension Button where Label == SwiftUI.Label<SwiftUI.Text, Image> {
 
-    static func cancel(action: @escaping () -> Void) -> some View {
+    static func cancel(action: @escaping Action) -> some View {
         Button(role: .cancel, action: action) {
             Label("Cancel", systemImage: SFSymbol.close.name)
         }
     }
 
     @ViewBuilder
-    static func delete(titleOnly: Bool = false, action: @escaping () -> Void) -> some View {
+    static func delete(titleOnly: Bool = false, action: @escaping Action) -> some View {
         if titleOnly {
             deleteBtn(action: action).labelStyle(.titleOnly)
         } else {
@@ -24,7 +24,7 @@ public extension Button where Label == SwiftUI.Label<SwiftUI.Text, Image> {
         }
     }
 
-    static func edit(action: @escaping () -> Void) -> some View {
+    static func edit(action: @escaping Action) -> some View {
         Button(action: action) {
             Label("Edit", systemImage: SFSymbol.infoCircle.name)
         }
@@ -33,7 +33,7 @@ public extension Button where Label == SwiftUI.Label<SwiftUI.Text, Image> {
 
     // MARK: - Helper
 
-    private static func deleteBtn(action: @escaping () -> Void) -> some View {
+    private static func deleteBtn(action: @escaping Action) -> some View {
         Button(role: .destructive, action: action) {
             Label("Delete", systemImage: SFSymbol.trash.name)
         }
