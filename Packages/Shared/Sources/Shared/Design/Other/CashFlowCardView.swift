@@ -27,8 +27,7 @@ public struct CashFlowCardView: View {
 
     public var body: some View {
         HStack(spacing: .medium) {
-            CircleView(color: iconColor, image: icon)
-                .padding(.micro)
+            SquareView(icon: icon, color: iconColor)
 
             VStack(spacing: .micro) {
                 Text(title, style: .bodyMedium)

@@ -16,7 +16,7 @@ public struct Sector<Content: View>: View {
             SectorHeader(viewData.header)
                 .padding(.horizontal, .large)
 
-            VStack(spacing: .small) {
+            VStack(spacing: .medium) {
                 Group {
                     if case .card = viewData.style {
                         viewData.content.card(style: .primary)

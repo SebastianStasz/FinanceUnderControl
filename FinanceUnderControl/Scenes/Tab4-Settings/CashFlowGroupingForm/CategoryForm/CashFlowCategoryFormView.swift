@@ -25,7 +25,7 @@ struct CashFlowCategoryFormView: BaseView {
     var baseBody: some View {
         FormView {
             VStack(alignment: .center, spacing: .medium) {
-                CircleView(color: categoryModel.color.color, icon: categoryModel.icon, size: 95)
+                SquareView(icon: categoryModel.icon.rawValue, color: categoryModel.color.color, size: 95)
                 LabeledTextField(.create_cash_flow_name, viewModel: viewModel.nameInput, style: .secondary)
             }
             .card()

@@ -58,7 +58,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
     private var separator: some View {
         Color.backgroundPrimary
-            .frame(height: .small)
+            .frame(height: .medium)
             .deleteDisabled(true)
     }
 
