@@ -28,7 +28,7 @@ struct CashFlowCategoryRow: View {
 
     var body: some View {
         HStack(spacing: .medium) {
-            CircleView(color: color, icon: icon, size: 20)
+            SquareView(icon: icon.rawValue, color: color, size: 18)
             Text(name)
             Spacer()
             Button(action: {}) {
@@ -54,6 +54,6 @@ struct CashFlowCategoryRow_Previews: PreviewProvider {
             CashFlowCategoryRow(for: .carExpense, editCategory: {}())
                 .environment(\.editMode, .constant(.active))
         }
-        .previewLayout(.sizeThatFits)
+        .sizeThatFits()
     }
 }

@@ -27,7 +27,7 @@ public struct SquareView: View {
                 .fill(color.opacity(0.2))
                 .aspectRatio(contentMode: .fit)
                 .frame(width: size, height: size)
-                .cornerRadius(.base)
+                .cornerRadius(squareSize * 0.24)
         }
         .overlay(image)
     }
@@ -37,14 +37,15 @@ public struct SquareView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .foregroundColor(color)
-            .padding(demandSize)
+            .padding(iconPadding)
     }
 
-    private var demandSize: CGFloat {
-        if let size = size {
-            return size * 0.3
-        }
-        return imageSize.height * 0.3
+    private var iconPadding: CGFloat {
+        squareSize * 0.3
+    }
+
+    private var squareSize: CGFloat {
+        size ?? imageSize.height
     }
 }
 
