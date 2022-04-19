@@ -36,6 +36,7 @@ struct MonthBalanceWidgetView: View {
     private var loadingIndicator: some View {
         if viewModel.isLoading {
             Color.backgroundSecondary.overlay(ProgressView())
+                .cornerRadius(.base)
         }
     }
 }

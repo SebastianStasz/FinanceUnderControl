@@ -18,13 +18,12 @@ final class MonthBalanceWidgetVM: ViewModel {
         super.init()
 
         let controller = AppVM.shared.controller
-        let dateFilter = CashFlowEntity.Filter.monthAndYear(from: .now)
-
+        
         Publishers.Merge(Just(()), AppVM.shared.events.cashFlowsChanged)
             .startLoading(on: self)
             .asyncMap { _ async -> MonthBalance in
-                let incomeValue = await CashFlowEntity.getAll(from: controller, filter: [.type(.income), dateFilter]).map { $0.value }.reduce(0, +)
-                let expenseValue = await CashFlowEntity.getAll(from: controller, filter: [.type(.expense), dateFilter]).map { $0.value }.reduce(0, +)
+                let incomeValue = await CashFlowEntity.getAll(from: controller, filter: .type(.income), .monthAndYear(from: .now)).map { $0.value }.reduce(0, +)
+                let expenseValue = await CashFlowEntity.getAll(from: controller, filter: .type(.expense), .monthAndYear(from: .now)).map { $0.value }.reduce(0, +)
                 return MonthBalance(income: .init(incomeValue, currency: .PLN), expense: .init(expenseValue, currency: .PLN))
             }
             .stopLoading(on: self)

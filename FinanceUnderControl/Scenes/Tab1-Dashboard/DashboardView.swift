@@ -17,8 +17,22 @@ struct DashboardView: View {
             Sector("Current month balance") {
                 MonthBalanceWidgetView()
             }
+
+            Sector("Top expenses") {
+                HorizontalBarView(viewData: viewModel.topExpenses)
+                    .overlay(topExpensesLoadingState)
+            }
         }
         .navigationBarHidden(true)
+        .task { await viewModel.loadData() }
+    }
+
+    @ViewBuilder
+    private var topExpensesLoadingState: some View {
+        if viewModel.topExpenses == .emptyFor(numberOfBars: 3) {
+            Color.backgroundSecondary.overlay(ProgressView())
+                .cornerRadius(.base)
+        }
     }
 }
 
