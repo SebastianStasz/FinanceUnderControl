@@ -31,13 +31,20 @@ struct CashFlowCategoryFormView: BaseView {
             .card()
             .padding(.horizontal, .large)
 
-            LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
-                ForEach(CashFlowCategoryIcon.allCases) { (icon: CashFlowCategoryIcon) in
-                    CircleView(color: .basicSecondary, icon: icon)
-                        .selection($viewModel.formModel.icon, element: icon)
+            Sector(.common_icon) {
+                VStack(spacing: .small) {
+                    ForEach(CashFlowCategoryIcon.groups) { group in
+                        LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
+                            ForEach(group.icons) { icon in
+                                CircleView(color: .basicSecondary, icon: icon)
+                                    .selection($viewModel.formModel.icon, element: icon)
+                            }
+                        }
+                        Divider().displayIf(!group.isLast)
+                    }
                 }
+                .card()
             }
-            .embedInSection(.common_icon, style: .card)
         }
         .cashFlowGroupingForm(viewModel: viewModel, form: form)
     }
@@ -52,5 +59,6 @@ struct CashFlowCategoryFormView: BaseView {
 struct CashFlowCategoryFormView_Previews: PreviewProvider {
     static var previews: some View {
         CashFlowCategoryFormView(form: .new(for: .expense))
+        CashFlowCategoryFormView(form: .new(for: .expense)).darkScheme()
     }
 }

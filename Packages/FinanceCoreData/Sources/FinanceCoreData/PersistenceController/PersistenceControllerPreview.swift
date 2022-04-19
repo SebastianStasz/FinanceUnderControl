@@ -129,10 +129,10 @@ private extension PersistenceController {
         // MARK: Incomes
 
         let cryptoCat = CashFlowCategoryEntity.createAndReturn(in: context, model: .init(name: "Kryptowaluty", icon: .circleGrid2x2Fill, type: .income))
-        let stockCat = CashFlowCategoryEntity.createAndReturn(in: context, model: .init(name: "Giełda", icon: .chartBarXaxis, type: .income))
+        let stockCat = CashFlowCategoryEntity.createAndReturn(in: context, model: .init(name: "Giełda", icon: .archiveboxFill, type: .income))
         CashFlowCategoryGroupEntity.create(in: context, model: .init(name: "Inwestycje", type: .income, color: .blue, categories: [cryptoCat, stockCat]))
 
-        let paymentCat = CashFlowCategoryEntity.createAndReturn(in: context, model: .init(name: "Wypłata", icon: .suitcaseFill, type: .income))
+        let paymentCat = CashFlowCategoryEntity.createAndReturn(in: context, model: .init(name: "Wypłata", icon: .briefcaseFill, type: .income))
         let bonusCat = CashFlowCategoryEntity.createAndReturn(in: context, model: .init(name: "Premia", icon: .flameFill, type: .income))
         CashFlowCategoryGroupEntity.create(in: context, model: .init(name: "Praca", type: .income, color: .green, categories: [paymentCat, bonusCat]))
 
