@@ -49,7 +49,7 @@ public enum TextStyle {
     public var color: Color {
         switch self {
         case .headlineBig:
-            return .primary // TODO: Adapt to DS
+            return .white // TODO: Adapt to DS
         case .headlineSmall(let type):
             return type.color
         case .footnote(let type):

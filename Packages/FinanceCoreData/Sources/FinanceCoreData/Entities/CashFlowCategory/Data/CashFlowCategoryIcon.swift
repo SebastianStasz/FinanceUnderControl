@@ -94,7 +94,7 @@ public enum CashFlowCategoryIcon: String {
 
     // MARK: Generic
 
-    case circleFrid2x2Fill = "circle.grid.2x2.fill"
+    case circleGrid2x2Fill = "circle.grid.2x2.fill"
     case archiveboxFill = "archivebox.fill"
     case bookmarkFill = "bookmark.fill"
     case folderFill = "folder.fill"
