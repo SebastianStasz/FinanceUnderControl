@@ -18,9 +18,12 @@ public protocol Entity: NSManagedObject, Identifiable {
 
 public extension Entity where Sort.Entity == Self {
 
-    static func asyncFetch(from controller: PersistenceController, filtering: [Filter] = [], sorting: [Sort] = []) async throws -> [Self] {
+    static func asyncFetch(from controller: PersistenceController, limit: Int? = nil, filtering: [Filter] = [], sorting: [Sort] = []) async throws -> [Self] {
         try await Task {
             let request = nsFetchRequest(filteringBy: filtering, sortingBy: sorting)
+            if let limit = limit {
+                request.fetchLimit = limit
+            }
             return try controller.backgroundContext.fetch(request)
         }
         .value

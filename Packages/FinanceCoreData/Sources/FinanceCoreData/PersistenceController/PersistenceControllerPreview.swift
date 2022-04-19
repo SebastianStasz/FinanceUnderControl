@@ -46,7 +46,7 @@ private extension PersistenceController {
         CashFlowCategoryGroupEntity.create(in: context, model: .init(name: "Outfit", type: .expense, color: .cyan, categories: [clothes, shoes]))
 
         let petrolCat = CashFlowCategoryEntity.createAndReturn(in: context, model: .init(name: "Paliwo", icon: .fuelpumpFill, type: .expense))
-        let carRepairAndParts = CashFlowCategoryEntity.createAndReturn(in: context, model: .init(name: "Naprawa i modyfikacja", icon: .carFill, type: .expense))
+        let carRepairAndParts = CashFlowCategoryEntity.createAndReturn(in: context, model: .init(name: "Samochód naprawa i modyfikacja", icon: .carFill, type: .expense))
         CashFlowCategoryGroupEntity.create(in: context, model: .init(name: "Samochód", type: .expense, color: .indigo, categories: [petrolCat, carRepairAndParts]))
 
         let spotify = CashFlowCategoryEntity.createAndReturn(in: context, model: .init(name: "Spotify", icon: .headphones, type: .expense))

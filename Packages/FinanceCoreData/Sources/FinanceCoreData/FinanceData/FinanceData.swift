@@ -20,7 +20,7 @@ public extension FinanceData {
 
     init(from controller: PersistenceController) async {
         let groups = await CashFlowCategoryGroupEntity.getAll(from: controller).map { $0.dataModel }
-        let categories = await CashFlowCategoryEntity.getAll(from: controller).map { $0.dataModel }
+        let categories = await CashFlowCategoryEntity.get(from: controller).map { $0.dataModel }
         let cashFlows = await CashFlowEntity.getAll(from: controller).map { $0.dataModel }
         self.init(groups: groups, categories: categories, cashFlows: cashFlows)
     }

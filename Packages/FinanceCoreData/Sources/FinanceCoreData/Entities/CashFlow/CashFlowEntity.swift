@@ -67,7 +67,7 @@ public extension CashFlowEntity {
         return true
     }
 
-    static func getAll(from controller: PersistenceController, filter: [Filter] = []) async -> [CashFlowEntity] {
+    static func getAll(from controller: PersistenceController, filter: Filter...) async -> [CashFlowEntity] {
         let result = try? await CashFlowEntity.asyncFetch(from: controller, filtering: filter, sorting: [.byName()])
         return result ?? []
     }

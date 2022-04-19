@@ -20,7 +20,7 @@ public struct FinanceDataImporter {
         self.controller = controller
 
         let existingGroups = await CashFlowCategoryGroupEntity.getAll(from: controller)
-        let existingCategories = await CashFlowCategoryEntity.getAll(from: controller)
+        let existingCategories = await CashFlowCategoryEntity.get(from: controller)
         let existingCashFlows = await CashFlowEntity.getAll(from: controller)
 
         let groupsToCreate = financeData.groups.filter { group in

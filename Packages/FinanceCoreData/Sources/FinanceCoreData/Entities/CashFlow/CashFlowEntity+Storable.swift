@@ -21,7 +21,7 @@ extension CashFlowEntity: Storable {
         let currencyCode: String
 
         public func getModel(from controller: PersistenceController) async -> CashFlowEntity.Model {
-            let categories = await CashFlowCategoryEntity.getAll(from: controller)
+            let categories = await CashFlowCategoryEntity.get(from: controller)
             let currencies = await CurrencyEntity.getAll(from: controller)
             let currency = currencies.first(where: { currencyCode == $0.code })! // TODO: Handle force unwrap
             let category = categories.first(where: { categoryName == $0.name && type == $0.type })! // TODO: Handle force unwrap

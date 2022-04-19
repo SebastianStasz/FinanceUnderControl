@@ -76,8 +76,8 @@ public extension CashFlowCategoryEntity {
         return CashFlowCategoryEntity.fetchRequest(filteringBy: filterList, sortingBy: [.byName()])
     }
 
-    static func getAll(from controller: PersistenceController) async -> [CashFlowCategoryEntity] {
-        let result = try? await CashFlowCategoryEntity.asyncFetch(from: controller, sorting: [.byName()])
+    static func get(count: Int? = nil, from controller: PersistenceController, filters: Filter...) async -> [CashFlowCategoryEntity] {
+        let result = try? await CashFlowCategoryEntity.asyncFetch(from: controller, limit: count, filtering: filters, sorting: [.byName()])
         return result ?? []
     }
 
