@@ -61,6 +61,7 @@ class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
             editCashFlowCategoryGroup(form: form, model: model)
         }
         baseAction.dismissView.send()
+        AppVM.shared.events.groupingChanged.send()
     }
 
     private func createCashFlowCategoryGroup(model: Entity.Model) {

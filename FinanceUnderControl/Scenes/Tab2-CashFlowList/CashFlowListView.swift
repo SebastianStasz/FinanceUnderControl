@@ -54,6 +54,10 @@ struct CashFlowListView: View {
         .onChange(of: viewModel.cashFlowPredicate) {
             cashFlows.nsPredicate = $0
         }
+        .onReceive(AppVM.shared.events.groupingChanged) {
+            cashFlows.nsPredicate = NSPredicate(format: "name == %@", "")
+            cashFlows.nsPredicate = viewModel.cashFlowPredicate
+        }
     }
 
     @ViewBuilder

@@ -61,10 +61,10 @@ private extension PersistenceController {
         CashFlowEntity.create(in: context, model: .init(name: "Czynsz 3", date: date(day: 9, monthOffset: -1), value: .rentalValue, currency: pln, category: rentCat))
         CashFlowEntity.create(in: context, model: .init(name: "Czynsz 4", date: date(day: 11, monthOffset: 0), value: .rentalValue, currency: pln, category: rentCat))
 
-        CashFlowEntity.create(in: context, model: .init(name: "Pizzeria Flamenco", date: date(day: 8, monthOffset: -3), value: 55, currency: pln, category: restaurantsAndDeliveryCat))
+        CashFlowEntity.create(in: context, model: .init(name: "Bahra kebab", date: date(day: 8, monthOffset: -3), value: 21, currency: pln, category: restaurantsAndDeliveryCat))
         CashFlowEntity.create(in: context, model: .init(name: "NYP Department", date: date(day: 15, monthOffset: -2), value: 23, currency: pln, category: restaurantsAndDeliveryCat))
         CashFlowEntity.create(in: context, model: .init(name: "Good Lood", date: date(day: 17, monthOffset: -1), value: 8, currency: pln, category: restaurantsAndDeliveryCat))
-        CashFlowEntity.create(in: context, model: .init(name: "Bahra kebab", date: date(day: 27, monthOffset: 0), value: 21, currency: pln, category: restaurantsAndDeliveryCat))
+        CashFlowEntity.create(in: context, model: .init(name: "Pizzeria Flamenco", date: date(day: 27, monthOffset: 0), value: 55, currency: pln, category: restaurantsAndDeliveryCat))
 
         let shopNames = ["Biedronka", "Lidl", "Żabka", "Lewiatan", "Auchan"]
         (1...9).forEach { _ in
@@ -90,7 +90,7 @@ private extension PersistenceController {
         CashFlowEntity.create(in: context, model: .init(name: "Adidas", date: date(day: 11, monthOffset: -1), value: .clothesValue, currency: pln, category: clothes))
 
         CashFlowEntity.create(in: context, model: .init(name: "Eobuwie", date: date(day: 9, monthOffset: -1), value: .clothesValue, currency: pln, category: shoes))
-        CashFlowEntity.create(in: context, model: .init(name: "Puma", date: date(day: 11, monthOffset: -0), value: .clothesValue, currency: pln, category: shoes))
+        CashFlowEntity.create(in: context, model: .init(name: "Buty Puma", date: date(day: 11, monthOffset: -0), value: .clothesValue, currency: pln, category: shoes))
 
         CashFlowEntity.create(in: context, model: .init(name: "Orlen", date: date(day: 1, monthOffset: -3), value: .petrolValue, currency: pln, category: petrolCat))
         CashFlowEntity.create(in: context, model: .init(name: "Orlen", date: date(day: 6, monthOffset: -2), value: .petrolValue, currency: pln, category: petrolCat))

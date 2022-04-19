@@ -16,6 +16,7 @@ final class AppVM {
 
     struct Events {
         let cashFlowsChanged = DriverSubject<Void>()
+        let groupingChanged = DriverSubject<Void>()
     }
 
     private let currencyService = CurrencyService()
@@ -27,7 +28,7 @@ final class AppVM {
     }
 
     private init() {
-        let controller = PersistenceController.shared
+        let controller = PersistenceController.preview
         self.controller = controller
     }
 
