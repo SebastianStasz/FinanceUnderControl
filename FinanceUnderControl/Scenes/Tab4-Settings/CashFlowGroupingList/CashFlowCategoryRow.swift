@@ -33,6 +33,7 @@ struct CashFlowCategoryRow: View {
             Spacer()
             Button(action: {}) {
                 SFSymbol.infoCircle.image
+                    .frame(width: 18, height: 18)
             }
             .onTapGesture { editCategory() }
             .displayIf(isEditing, withTransition: .scale)
