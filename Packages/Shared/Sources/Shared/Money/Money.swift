@@ -16,19 +16,25 @@ public struct Money {
         self.currency = currency
     }
 
-    private static var formatter: NumberFormatter {
+    public var asString: String {
+        value.formatted(for: currency, withSymbol: true)
+    }
+
+    fileprivate static var formatter: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         return formatter
     }
 }
 
-public extension Money {
-
-    var asString: String {
+public extension Decimal {
+    func formatted(for currency: Currency, withSymbol: Bool = false) -> String {
         let formatter = Money.formatter
         formatter.currencyCode = currency.code
         formatter.locale = currency.locale ?? .current
-        return formatter.string(for: value)!
+        if !withSymbol {
+            formatter.currencySymbol = ""
+        }
+        return formatter.string(for: self)!
     }
 }

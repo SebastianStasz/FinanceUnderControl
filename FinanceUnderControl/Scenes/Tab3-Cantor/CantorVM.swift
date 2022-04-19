@@ -7,9 +7,10 @@
 
 import Combine
 import FinanceCoreData
-import SSValidation
-import SSUtils
+import Shared
 import SwiftUI
+import SSUtils
+import SSValidation
 
 final class CantorVM: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
@@ -68,7 +69,7 @@ final class CantorVM: ObservableObject {
                       let amount = values.1,
                       amount != 0
                 else { return nil }
-                let result = (rateValue * amount).asString
+                let result = (rateValue * amount).formatted(for: Currency(rawValue: secondary.code)!)
                 return "\(amount.asString) \(primary.code) = \(result) \(secondary.code)"
             }
             .sink { [weak self] value in

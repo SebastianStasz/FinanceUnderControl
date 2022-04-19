@@ -19,7 +19,7 @@ struct ExchangeRateListView: View {
         BaseList(title, emptyStateVD: emptyStateVD, elements: viewModel.exchangeRates) { exchageRate in
             HStack(spacing: .medium) {
                 Text(exchageRate.code, style: .currency)
-                Text(exchageRate.rateValueRounded)
+                Text(exchageRate.rateValue.formatted(for: exchageRate.currency))
             }
             .card()
         }

@@ -11,7 +11,7 @@ import Shared
 import SSUtils
 
 struct CashFlowListView: View {
-    @SectionedFetchRequest(sectionIdentifier: \.monthAndYear, sortDescriptors: [CashFlowEntity.Sort.byDate(.reverse).nsSortDescriptor]
+    @SectionedFetchRequest(sectionIdentifier: \.monthAndYear, sortDescriptors: [CashFlowEntity.Sort.byDate(.reverse).nsSortDescriptor], animation: .easeInOut
     ) private var cashFlows: SectionedFetchResults<Date, CashFlowEntity>
 
     @StateObject private var viewModel = CashFlowListVM()
@@ -36,11 +36,6 @@ struct CashFlowListView: View {
         }
         .searchable(text: $viewModel.searchText)
         .toolbar {
-            ToolbarItemGroup(placement: .navigationBarLeading) {
-                if viewModel.cashFlowFilter.filterCount != 0 {
-                    Button(.button_reset, action: resetFilters)
-                }
-            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: showFilterView) { filterIcon }
                     .disabled(cashFlows.isEmpty && !isSearching)
@@ -63,12 +58,15 @@ struct CashFlowListView: View {
 
     @ViewBuilder
     private var filterIcon: some View {
-        let filterCount = viewModel.cashFlowFilter.filterCount
-        if filterCount == 0 {
+        if viewModel.cashFlowPredicate.isNil {
             Image(systemName: SFSymbol.filter.name)
         } else {
-            Label("(\(filterCount.asString))", systemImage: SFSymbol.filter.name)
-                .labelStyle(.titleAndIcon)
+            HStack(alignment: .top, spacing: .micro) {
+                Circle()
+                    .frame(width: .small, height: .small)
+                    .padding(.top, 3)
+                Image(systemName: SFSymbol.filter.name)
+            }
         }
     }
 
@@ -106,6 +104,7 @@ struct CashFlowListView_Previews: PreviewProvider {
             CashFlowListView()
             CashFlowListView().darkScheme()
         }
+        .embedInNavigationView()
         .environment(\.managedObjectContext, PersistenceController.preview.context)
     }
 }

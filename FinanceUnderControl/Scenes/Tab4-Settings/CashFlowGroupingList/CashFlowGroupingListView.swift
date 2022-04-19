@@ -12,7 +12,7 @@ import SwiftUI
 
 struct CashFlowGroupingListView: View {
     @Environment(\.editMode) private var editMode
-    @FetchRequest(sortDescriptors: []) private var categories: FetchedResults<CashFlowCategoryEntity>
+    @FetchRequest(sortDescriptors: [], animation: .easeInOut) private var categories: FetchedResults<CashFlowCategoryEntity>
     @FetchRequest private var categoryGroups: FetchedResults<CashFlowCategoryGroupEntity>
     @FetchRequest private var ungroupedCategories: FetchedResults<CashFlowCategoryEntity>
 

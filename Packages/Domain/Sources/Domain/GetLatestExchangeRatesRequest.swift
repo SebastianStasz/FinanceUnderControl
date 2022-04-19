@@ -25,6 +25,7 @@ public extension GetLatestExchangeRatesRequest {
 
     var queryParams: [String: String] {
         ["base": currency,
+         "places": "2",
          "symbols": Currency.allCases.map { $0.code }.joined(separator: ",") ]
     }
 }

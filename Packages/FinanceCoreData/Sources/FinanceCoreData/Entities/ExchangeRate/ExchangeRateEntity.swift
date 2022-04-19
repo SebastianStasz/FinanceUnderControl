@@ -8,6 +8,7 @@
 
 import CoreData
 import Foundation
+import Shared
 import SSUtils
 
 @objc(ExchangeRateEntity) public class ExchangeRateEntity: NSManagedObject, Entity {
@@ -20,8 +21,8 @@ import SSUtils
         set { rateValue_ = newValue as NSDecimalNumber }
     }
 
-    public var rateValueRounded: String {
-        String(describing: rateValue)
+    public var currency: Currency {
+        Currency(rawValue: code)!
     }
 }
 

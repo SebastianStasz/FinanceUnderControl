@@ -18,7 +18,7 @@ public enum SFSymbol: String {
     case chevronUp      = "chevron.up"
     case close          = "xmark"
     case infoCircle     = "info.circle"
-    case filter         = "line.3.horizontal.decrease.circle"
+    case filter         = "slider.horizontal.3"
 
     case trash = "trash.fill"
 
