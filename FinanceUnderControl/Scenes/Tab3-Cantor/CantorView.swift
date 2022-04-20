@@ -24,6 +24,7 @@ struct CantorView: BaseView {
             sectorExchangeRate
             sectorConvert
             sectorMore
+                .displayIf(viewModel.exchangeRateValue.notNil)
         }
         .toolbar { toolbarContent }
         .infoAlert(.common_info, isPresented: $isInfoAlertPresented, message: .cantor_exchange_rates_info_message)

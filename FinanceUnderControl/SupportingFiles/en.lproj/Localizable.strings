@@ -35,6 +35,7 @@
 "common_import" = "Import";
 "common_export" = "Export";
 "common_file_name" = "File name";
+"common_more" = "More";
 
 "cash_flow_filter_title" = "Filter";
 "cash_flow_filter_type" = "Cash flow type";
@@ -60,6 +61,7 @@
 "cantor_from" = "From";
 "cantor_to" = "To";
 "cantor_converter" = "Converter";
+"cantor_base_currency" = "Base currency";
 "cantor_all_exchange_rates" = "All exchange rates for %@";
 "cantor_fill_in_form_error_message" = "Fill in the form to display the exchange rate.";
 "cantor_exchange_rates_info_message" = "Exchange rates data provided by: \"exchangerate.host\"";
@@ -83,3 +85,6 @@
 "currency_RUB" = "Russian Ruble";
 "currency_UAH" = "Ukrainian Hryvnia";
 "currency_USD" = "United States Dollar";
+
+"empty_state_search_title" = "No items found";
+"empty_state_search_description" = "We can't find any item matching your search";

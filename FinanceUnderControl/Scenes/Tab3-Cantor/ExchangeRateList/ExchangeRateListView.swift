@@ -27,7 +27,7 @@ struct ExchangeRateListView: View {
     }
 
     private var title: String {
-        "Base: \(viewModel.baseCurrencyCode)"
+        "\(String.cantor_base_currency): \(viewModel.baseCurrencyCode)"
     }
 }
 

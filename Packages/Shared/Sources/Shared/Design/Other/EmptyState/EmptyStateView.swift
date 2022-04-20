@@ -29,6 +29,8 @@ struct EmptyStateView: View {
             }
         }
         .padding(.bottom, .xxlarge)
+        .infiniteSize()
+        .background(Color.backgroundPrimary)
     }
 }
 

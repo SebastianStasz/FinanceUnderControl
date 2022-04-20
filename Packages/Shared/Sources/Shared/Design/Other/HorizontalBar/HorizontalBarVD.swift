@@ -27,13 +27,11 @@ public struct HorizontalBarVD: Equatable {
             self.color = color
         }
 
-        static let empty = Bar(title: "", value: 0, color: .gray)
-
         public var id: String { title }
     }
 
     public static func emptyFor(numberOfBars: Int) -> HorizontalBarVD {
-        HorizontalBarVD(bars: .init(repeating: .empty, count: numberOfBars), total: 0)
+        HorizontalBarVD(bars: (0..<numberOfBars).map { .init(title: $0.asString, value: 0, color: .gray) }, total: 0)
     }
 }
 

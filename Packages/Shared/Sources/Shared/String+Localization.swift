@@ -55,6 +55,7 @@ public extension String {
     static let common_import = "common_import".localize()
     static let common_export = "common_export".localize()
     static let common_file_name = "common_file_name".localize()
+    static let common_more = "common_more".localize()
 
     // MARK: - Cash flow filter
 
@@ -86,6 +87,7 @@ public extension String {
     static let cantor_from = "cantor_from".localize()
     static let cantor_to = "cantor_to".localize()
     static let cantor_converter = "cantor_converter".localize()
+    static let cantor_base_currency = "cantor_base_currency".localize()
     static let cantor_fill_in_form_error_message = "cantor_fill_in_form_error_message".localize()
     static let cantor_exchange_rates_info_message = "cantor_exchange_rates_info_message".localize()
 
@@ -120,4 +122,9 @@ public extension String {
     static let currency_RUB = "currency_RUB".localize()
     static let currency_UAH = "currency_UAH".localize()
     static let currency_USD = "currency_USD".localize()
+
+    // MARK: - Empty state
+
+    static let empty_state_search_title = "empty_state_search_title".localize()
+    static let empty_state_search_description = "empty_state_search_description".localize()
 }

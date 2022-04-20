@@ -53,7 +53,7 @@ public struct EmptyStateVD {
         let description: String
         let isSearching: Bool
 
-        init(title: String = "No items found", desc: String = "We can't find any item matching your search", isSearching: Bool = false) {
+        init(title: String = .empty_state_search_title, desc: String = .empty_state_search_description, isSearching: Bool = false) {
             self.title = title
             self.description = desc
             self.isSearching = isSearching

@@ -35,6 +35,7 @@
 "common_import" = "Importuj";
 "common_export" = "Eksportuj";
 "common_file_name" = "Nazwa pliku";
+"common_more" = "Więcej";
 
 "cash_flow_filter_title" = "Filtruj";
 "cash_flow_filter_type" = "Typ przepływów";
@@ -60,6 +61,7 @@
 "cantor_from" = "Z";
 "cantor_to" = "Na";
 "cantor_converter" = "Przelicznik";
+"cantor_base_currency" = "Waluta bazowa";
 "cantor_all_exchange_rates" = "Wszystkie kursy wymiany dla %@";
 "cantor_fill_in_form_error_message" = "Wypełnij formularz żeby zobaczyć kurs wymiany.";
 "cantor_exchange_rates_info_message" = "Kursy walut dostarczone przez: \"exchangerate.host\"";
@@ -84,3 +86,6 @@
 "currency_RUB" = "Rubel rosyjski ";
 "currency_UAH" = "Hrywna";
 "currency_USD" = "Dolar amerykański ";
+
+"empty_state_search_title" = "Nic nie znaleziono";
+"empty_state_search_description" = "Nie udało się znaleźć pasujących elementów";
