@@ -12,7 +12,7 @@ import Shared
 final class DashboardVM: ViewModel {
 
     private let controller: PersistenceController
-    @Published private(set) var topExpenses: HorizontalBarVD = .emptyFor(numberOfBars: 3)
+    @Published private(set) var topExpenses: HorizontalBarVD?
 
     init(controller: PersistenceController = AppVM.shared.controller) {
         self.controller = controller
@@ -30,7 +30,9 @@ final class DashboardVM: ViewModel {
             .prefix(3)
 
         DispatchQueue.main.async { [weak self] in
-            self?.topExpenses = .init(bars: Array(expenseBars), total: totalExpenses)
+            if expenseBars.isNotEmpty {
+                self?.topExpenses = .init(bars: Array(expenseBars), total: totalExpenses)
+            }
         }
     }
 }

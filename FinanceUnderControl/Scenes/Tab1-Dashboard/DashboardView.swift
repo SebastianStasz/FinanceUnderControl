@@ -18,21 +18,13 @@ struct DashboardView: View {
                 MonthBalanceWidgetView()
             }
 
-            Sector("Top expenses") {
-                HorizontalBarView(viewData: viewModel.topExpenses)
-                    .overlay(topExpensesLoadingState)
+            if let topExpenses = viewModel.topExpenses {
+                HorizontalBarView(viewData: topExpenses)
+                    .embedInSection("Top expenses")
             }
         }
         .navigationBarHidden(true)
         .task { await viewModel.loadData() }
-    }
-
-    @ViewBuilder
-    private var topExpensesLoadingState: some View {
-        if viewModel.topExpenses == .emptyFor(numberOfBars: 3) {
-            Color.backgroundSecondary.overlay(ProgressView())
-                .cornerRadius(.base)
-        }
     }
 }
 

@@ -29,10 +29,6 @@ public struct HorizontalBarVD: Equatable {
 
         public var id: String { title }
     }
-
-    public static func emptyFor(numberOfBars: Int) -> HorizontalBarVD {
-        HorizontalBarVD(bars: (0..<numberOfBars).map { .init(title: $0.asString, value: 0, color: .gray) }, total: 0)
-    }
 }
 
 // MARK: - Sample data
