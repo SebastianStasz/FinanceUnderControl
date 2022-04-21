@@ -127,4 +127,8 @@ public extension String {
 
     static let empty_state_search_title = "empty_state_search_title".localize()
     static let empty_state_search_description = "empty_state_search_description".localize()
+
+    // MARK: - Validation
+
+    static let validation_no_elements_available = "validation_no_elements_available".localize()
 }

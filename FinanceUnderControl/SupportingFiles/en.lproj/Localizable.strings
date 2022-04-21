@@ -88,3 +88,5 @@
 
 "empty_state_search_title" = "No items found";
 "empty_state_search_description" = "We can't find any item matching your search";
+
+"validation_no_elements_available" = "No elements available.";

@@ -13,9 +13,10 @@ public struct LabeledPicker<T: Pickerable>: View {
     @Binding private var selection: T?
     private let elements: [T?]
     private let title: String
+    private let validationMessage: String
 
     public var body: some View {
-        LabeledView("\(title):") {
+        LabeledView("\(title):", validationMessage: elements.isEmpty ? validationMessage : nil) {
             Menu {
                 Picker(title, selection: $selection) {
                     ForEach(elements, id: \.self) {
@@ -31,14 +32,16 @@ public struct LabeledPicker<T: Pickerable>: View {
 }
 
 public extension LabeledPicker {
-    init(_ title: String, elements: [T?], selection: Binding<T?>) {
+    init(_ title: String, validationMessage: String = .validation_no_elements_available, elements: [T?], selection: Binding<T?>) {
         self.title = title
+        self.validationMessage = validationMessage
         self.elements = elements
         self._selection = selection
     }
 
-    init(_ title: String, elements: FetchedResults<T>, selection: Binding<T?>) where T: NSFetchRequestResult {
+    init(_ title: String, validationMessage: String = .validation_no_elements_available, elements: FetchedResults<T>, selection: Binding<T?>) where T: NSFetchRequestResult {
         self.title = title
+        self.validationMessage = validationMessage
         self.elements = elements.map { $0 }
         self._selection = selection
     }

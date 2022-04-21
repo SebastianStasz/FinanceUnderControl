@@ -11,20 +11,28 @@ import SwiftUI
 public struct LabeledView<Content: View>: View {
 
     private let title: String
+    private let validationMessage: String?
     private let content: () -> Content
 
-    public init(_ title: String, @ViewBuilder content: @escaping () -> Content) {
+    public init(_ title: String, validationMessage: String? = nil, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
+        self.validationMessage = validationMessage
         self.content = content
     }
 
     public var body: some View {
-        HStack(spacing: .medium) {
-            Text(title).lineLimit(1)
+        VStack(alignment: .leading, spacing: .micro) {
+            HStack(spacing: .medium) {
+                Text(title).lineLimit(1)
 
-            Spacer()
+                Spacer()
 
-            content().infiniteWidth(alignment: .trailing)
+                content().infiniteWidth(alignment: .trailing)
+            }
+            
+            if let message = validationMessage {
+                Text(message, style: .footnote(.validation))
+            }
         }
         .card()
     }
