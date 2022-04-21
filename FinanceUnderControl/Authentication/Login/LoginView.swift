@@ -29,7 +29,7 @@ struct LoginView: View {
                     .padding(.horizontal, .medium)
             }
         }
-        .embedInNavigationView(title: "Finance Under Control")
+        .embedInNavigationView(title: "Finance Under Control", displayMode: .large)
         .sheet(isPresented: $isRegisterViewShown, content: RegisterView.init)
     }
 

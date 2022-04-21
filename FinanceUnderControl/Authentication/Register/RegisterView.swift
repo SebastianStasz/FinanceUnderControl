@@ -8,11 +8,11 @@
 import Shared
 import SwiftUI
 
-struct RegisterView: View {
+struct RegisterView: BaseView {
 
     @StateObject private var viewModel = RegisterVM()
 
-    var body: some View {
+    var baseBody: some View {
         FormView {
             LabeledTextField("Email", viewModel: viewModel.emailInput)
                 .embedInSection("Email")
@@ -21,10 +21,17 @@ struct RegisterView: View {
                 .embedInSection("Password")
         }
         .asSheet(title: "Register", primaryButton: primaryButton)
+        .handleViewModelActions(viewModel)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {
-        .init("Register", action: viewModel.register)
+        .init("Register", action: register)
+    }
+
+    // MARK: - Interactions
+
+    private func register() {
+        viewModel.input.didTapRegister.send()
     }
 }
 
