@@ -15,10 +15,12 @@ struct FinanceUnderControlApp: App {
 
     var body: some Scene {
         WindowGroup {
-            TabBarView()
-                .environment(\.managedObjectContext, viewModel.context)
-                .task { await AppVM.shared.setupCurrencies() }
-                .onChange(of: scenePhase) { viewModel.didChangeScenePhase(to: $0) }
+            LoginView()
+
+//            TabBarView()
+//                .environment(\.managedObjectContext, viewModel.context)
+//                .task { await AppVM.shared.setupCurrencies() }
+//                .onChange(of: scenePhase) { viewModel.didChangeScenePhase(to: $0) }
         }
     }
 }
