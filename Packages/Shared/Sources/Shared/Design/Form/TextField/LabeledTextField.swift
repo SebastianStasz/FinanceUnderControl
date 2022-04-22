@@ -15,23 +15,29 @@ public struct LabeledTextField<T>: View {
     private let title: String
     private let style: CardStyle
     private let prompt: String?
+    private let validationMessage: String?
+    private let keyboardType: UIKeyboardType?
 
     public init(_ title: String,
                 viewModel: InputVM<T>,
                 prompt: String? = nil,
+                validationMessage: String? = nil,
+                keyboardType: UIKeyboardType? = nil,
                 style: CardStyle = .primary
     ) {
         self.title = title
         self.viewModel = viewModel
         self.prompt = prompt
+        self.validationMessage = validationMessage
+        self.keyboardType = keyboardType
         self.style = style
     }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: .micro) {
-            InputField(title, viewModel: viewModel, prompt: prompt ?? title).textStyle(.body())
+            InputField(title, viewModel: viewModel, prompt: prompt ?? title, keyboardType: keyboardType).textStyle(.body())
 
-            if let message = viewModel.validationMessage {
+            if let message = viewModel.validationMessage ?? validationMessage {
                 Text(message, style: .footnote(.validation))
             }
         }

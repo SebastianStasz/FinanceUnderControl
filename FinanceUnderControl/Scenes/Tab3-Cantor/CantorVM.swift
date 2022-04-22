@@ -17,7 +17,7 @@ final class CantorVM: ObservableObject {
     private let currencySettings = CurrencySettings()
 
     @Published var currencySelector = CurrencySelector<CurrencyEntity?>()
-    let amountOfMoneyInput = DecimalInputVM(validator: .alwaysValid())
+    let amountOfMoneyInput = DecimalInputVM(validator: .alwaysValid)
     @Published private(set) var exchangeRateValue: String?
     @Published private(set) var exchangedMoney: String?
 

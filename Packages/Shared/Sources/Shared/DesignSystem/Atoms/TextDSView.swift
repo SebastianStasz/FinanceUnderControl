@@ -11,7 +11,7 @@ struct TextDSView: View {
 
     var body: some View {
         Group {
-            Text("Headline big", style: .headlineBig)
+            Text("Headline big", style: .headlineLarge)
 
             Text("Headline small - normal", style: .headlineSmall(.normal))
             Text("Headline small - action", style: .headlineSmall(.action))

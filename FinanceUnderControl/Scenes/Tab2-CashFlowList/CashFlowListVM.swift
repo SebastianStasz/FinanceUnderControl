@@ -14,8 +14,8 @@ import SSValidation
 final class CashFlowListVM: ViewModel {
     typealias Filter = CashFlowEntity.Filter
 
-    let minValueInput = DoubleInputVM(validator: .alwaysValid())
-    let maxValueInput = DoubleInputVM(validator: .alwaysValid())
+    let minValueInput = DoubleInputVM(validator: .alwaysValid)
+    let maxValueInput = DoubleInputVM(validator: .alwaysValid)
 
     @Published private(set ) var cashFlowPredicate: NSPredicate?
     @Published var cashFlowFilter = CashFlowFilter()

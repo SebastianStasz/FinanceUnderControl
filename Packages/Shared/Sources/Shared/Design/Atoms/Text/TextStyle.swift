@@ -8,7 +8,7 @@
 import SwiftUI
 
 public enum TextStyle {
-    case headlineBig
+    case headlineLarge
     case headlineSmall(HeadlineSmallTextType = .normal)
     case bodyMedium
     case body(BodyTextType = .normal)
@@ -17,7 +17,7 @@ public enum TextStyle {
 
     public var font: Font.TextStyle {
         switch self {
-        case .headlineBig:
+        case .headlineLarge:
             return .title3
         case .headlineSmall, .footnote:
             return .footnote
@@ -30,7 +30,7 @@ public enum TextStyle {
 
     public var weight: Font.Weight {
         switch self {
-        case .headlineBig, .bodyMedium, .currency:
+        case .headlineLarge, .bodyMedium, .currency:
             return .medium
         default:
             return .regular
@@ -48,7 +48,7 @@ public enum TextStyle {
 
     public var color: Color {
         switch self {
-        case .headlineBig:
+        case .headlineLarge:
             return .white // TODO: Adapt to DS
         case .headlineSmall(let type):
             return type.color
