@@ -12,6 +12,7 @@ import SSUtils
 struct LoginView: View {
 
     @StateObject private var viewModel = LoginVM()
+    @State private var isRegisterViewPresented = false
 
     var body: some View {
         ScrollViewIfNeeded {
@@ -30,14 +31,26 @@ struct LoginView: View {
                 }
 
                 VStack(spacing: .xxlarge) {
-                    VStack(spacing: .large) {
-                        LabeledTextField("Email", viewModel: viewModel.emailInput, keyboardType: .emailAddress)
-                        LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true)
+                    VStack(spacing: .xxlarge) {
+                        VStack(spacing: .large) {
+                            LabeledTextField("Email", viewModel: viewModel.emailInput, keyboardType: .emailAddress)
+                            LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true)
+                        }
+                        BaseButton("Sign in", role: .primary, action: {})
+                            .disabled(true)
                     }
-                    BaseButton("Sign in", role: .primary, action: {})
-                        .opacity(0.3)
+                    .padding(.horizontal, .medium)
+
+                    HStack(spacing: .small) {
+                        Rectangle().frame(height: 1).foregroundColor(.gray).opacity(0.2)
+                        Text("or", style: .footnote()).opacity(0.6)
+                        Rectangle().frame(height: 1).foregroundColor(.gray).opacity(0.2)
+                    }
+                        .padding(.horizontal, .xxlarge)
+
+                    BaseButton("Sign up", role: .secondary) { isRegisterViewPresented = true }
+                        .padding(.horizontal, .medium)
                 }
-                .padding(.horizontal, .medium)
 
                 Spacer()
 
@@ -45,6 +58,7 @@ struct LoginView: View {
         }
         .background(Color.backgroundPrimary)
         .embedInNavigationView(title: "", displayMode: .inline)
+        .fullScreenCover(isPresented: $isRegisterViewPresented, content: RegisterView.init)
     }
 }
 
