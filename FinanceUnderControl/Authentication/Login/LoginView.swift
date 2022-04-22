@@ -7,34 +7,44 @@
 
 import Shared
 import SwiftUI
+import SSUtils
 
 struct LoginView: View {
 
     @StateObject private var viewModel = LoginVM()
-    @State private var isRegisterViewShown = false
 
     var body: some View {
-        FormView {
-            LabeledTextField("Email", viewModel: viewModel.emailInput)
-                .embedInSection("Email")
+        ScrollViewIfNeeded {
+            VStack(alignment: .center, spacing: 62) {
 
-            LabeledTextField("Password", viewModel: viewModel.passwordInput)
-                .embedInSection("Password")
+                VStack(alignment: .center, spacing: .large) {
+                    SwiftUI.Text("Hello!")
+                        .fontWeight(.semibold)
+                        .font(.largeTitle)
 
-            VStack(spacing: .medium) {
-                BaseButton("Login", role: .primary, action: viewModel.login)
-                    .padding(.horizontal, .medium)
+                    SwiftUI.Text("Sign in and start managing your finances just now!")
+                        .fontWeight(.thin)
+                        .font(.title3)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, .xxlarge)
+                }
 
-                BaseButton("Register", role: .secondary, action: showRegisterView)
-                    .padding(.horizontal, .medium)
+                VStack(spacing: .xxlarge) {
+                    VStack(spacing: .large) {
+                        LabeledTextField("Email", viewModel: viewModel.emailInput, keyboardType: .emailAddress)
+                        LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true)
+                    }
+                    BaseButton("Sign in", role: .primary, action: {})
+                        .opacity(0.3)
+                }
+                .padding(.horizontal, .medium)
+
+                Spacer()
+
             }
         }
-        .embedInNavigationView(title: "Finance Under Control", displayMode: .large)
-        .sheet(isPresented: $isRegisterViewShown, content: RegisterView.init)
-    }
-
-    private func showRegisterView() {
-        isRegisterViewShown = true
+        .background(Color.backgroundPrimary)
+        .embedInNavigationView(title: "", displayMode: .inline)
     }
 }
 
@@ -43,5 +53,6 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
+        LoginView().darkScheme()
     }
 }
