@@ -45,13 +45,18 @@ struct LoginView: BaseView {
             }
             .padding(.horizontal, .xxlarge)
 
-            BaseButton("Sign up", role: .secondary) { isRegisterViewPresented = true }
+            BaseButton("Sign up", role: .secondary, action: didTapSignUp)
         }
         .doubleTitle(title: "Hello!", subtitle: "Sign in and start managing your finances just now!")
         .onTapGesture { focusedField = nil }
         .embedInNavigationView(title: "", displayMode: .inline)
-        .fullScreenCover(isPresented: $isRegisterViewPresented, content: RegisterView.init)
+        .fullScreenCover(isPresented: $isRegisterViewPresented, content: RegisterEmailView.init)
         .handleViewModelActions(viewModel)
+    }
+
+    private func didTapSignUp() {
+        focusedField = nil
+        isRegisterViewPresented = true
     }
 
     private func didSubmit() {
@@ -59,7 +64,7 @@ struct LoginView: BaseView {
             focusedField = .password
         } else {
             focusedField = nil
-            viewModel.login()
+//            viewModel.login()
         }
     }
 }
