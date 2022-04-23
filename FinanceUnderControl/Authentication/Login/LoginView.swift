@@ -15,48 +15,27 @@ struct LoginView: View {
     @State private var isRegisterViewPresented = false
 
     var body: some View {
-        ScrollViewIfNeeded {
-            VStack(alignment: .center, spacing: 62) {
+        VStack(alignment: .center, spacing: .xxlarge) {
 
-                VStack(alignment: .center, spacing: .large) {
-                    SwiftUI.Text("Hello!")
-                        .fontWeight(.semibold)
-                        .font(.largeTitle)
-
-                    SwiftUI.Text("Sign in and start managing your finances just now!")
-                        .fontWeight(.thin)
-                        .font(.title3)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, .xxlarge)
+            VStack(spacing: .xxlarge) {
+                VStack(spacing: .large) {
+                    LabeledTextField("Email", viewModel: viewModel.emailInput, keyboardType: .emailAddress)
+                    LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true)
                 }
-
-                VStack(spacing: .xxlarge) {
-                    VStack(spacing: .xxlarge) {
-                        VStack(spacing: .large) {
-                            LabeledTextField("Email", viewModel: viewModel.emailInput, keyboardType: .emailAddress)
-                            LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true)
-                        }
-                        BaseButton("Sign in", role: .primary, action: {})
-                            .disabled(true)
-                    }
-                    .padding(.horizontal, .medium)
-
-                    HStack(spacing: .small) {
-                        Rectangle().frame(height: 1).foregroundColor(.gray).opacity(0.2)
-                        Text("or", style: .footnote()).opacity(0.6)
-                        Rectangle().frame(height: 1).foregroundColor(.gray).opacity(0.2)
-                    }
-                        .padding(.horizontal, .xxlarge)
-
-                    BaseButton("Sign up", role: .secondary) { isRegisterViewPresented = true }
-                        .padding(.horizontal, .medium)
-                }
-
-                Spacer()
-
+                BaseButton("Sign in", role: .primary, action: {})
+                    .disabled(true)
             }
+
+            HStack(spacing: .small) {
+                Rectangle().frame(height: 1).foregroundColor(.gray).opacity(0.2)
+                Text("or", style: .footnote()).opacity(0.6)
+                Rectangle().frame(height: 1).foregroundColor(.gray).opacity(0.2)
+            }
+                .padding(.horizontal, .xxlarge)
+
+            BaseButton("Sign up", role: .secondary) { isRegisterViewPresented = true }
         }
-        .background(Color.backgroundPrimary)
+        .doubleTitle(title: "Hello!", subtitle: "Sign in and start managing your finances just now!")
         .embedInNavigationView(title: "", displayMode: .inline)
         .fullScreenCover(isPresented: $isRegisterViewPresented, content: RegisterView.init)
     }

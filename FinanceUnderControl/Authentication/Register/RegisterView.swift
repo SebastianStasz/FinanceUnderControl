@@ -7,25 +7,26 @@
 
 import Shared
 import SwiftUI
+import SSUtils
 
 struct RegisterView: BaseView {
-
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = RegisterVM()
 
     var baseBody: some View {
-        FormView {
-            LabeledTextField("Email", viewModel: viewModel.emailInput)
-                .embedInSection("Email")
-
-            LabeledTextField("Password", viewModel: viewModel.passwordInput)
-                .embedInSection("Password")
+        VStack {
+            VStack(spacing: .xxlarge) {
+                VStack(spacing: .large) {
+                    LabeledTextField("Email", viewModel: viewModel.emailInput, keyboardType: .emailAddress)
+                    LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true)
+                }
+                BaseButton("Sign in", role: .primary, action: {})
+                    .disabled(true)
+            }
         }
-        .asSheet(title: "Register", primaryButton: primaryButton)
-        .handleViewModelActions(viewModel)
-    }
-
-    private var primaryButton: HorizontalButtons.Configuration {
-        .init("Register", action: register)
+        .toolbar { Toolbar.trailing(systemImage: SFSymbol.close.rawValue) { dismiss.callAsFunction() } }
+        .doubleTitle(title: "Sign up", subtitle: "First enter your email adress, that will be used to create your account.")
+        .embedInNavigationView(title: "", displayMode: .inline)
     }
 
     // MARK: - Interactions
