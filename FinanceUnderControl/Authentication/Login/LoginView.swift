@@ -9,21 +9,33 @@ import Shared
 import SwiftUI
 import SSUtils
 
-struct LoginView: View {
+struct LoginView: BaseView {
+
+    private enum Field {
+        case email, password
+    }
 
     @StateObject private var viewModel = LoginVM()
+    @FocusState private var focusedField: Field?
     @State private var isRegisterViewPresented = false
 
-    var body: some View {
+    var baseBody: some View {
         VStack(alignment: .center, spacing: .xxlarge) {
 
             VStack(spacing: .xxlarge) {
                 VStack(spacing: .large) {
                     LabeledTextField("Email", viewModel: viewModel.emailInput, keyboardType: .emailAddress)
+                        .focused($focusedField, equals: .email)
+                        .onTapGesture { focusedField = .email }
+
                     LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true)
+                        .focused($focusedField, equals: .password)
+                        .onTapGesture { focusedField = .password }
                 }
+                .onSubmit(didSubmit)
+
                 BaseButton("Sign in", role: .primary, action: {})
-                    .disabled(true)
+                    .disabled(!viewModel.isFormValid)
             }
 
             HStack(spacing: .small) {
@@ -31,13 +43,24 @@ struct LoginView: View {
                 Text("or", style: .footnote()).opacity(0.6)
                 Rectangle().frame(height: 1).foregroundColor(.gray).opacity(0.2)
             }
-                .padding(.horizontal, .xxlarge)
+            .padding(.horizontal, .xxlarge)
 
             BaseButton("Sign up", role: .secondary) { isRegisterViewPresented = true }
         }
         .doubleTitle(title: "Hello!", subtitle: "Sign in and start managing your finances just now!")
+        .onTapGesture { focusedField = nil }
         .embedInNavigationView(title: "", displayMode: .inline)
         .fullScreenCover(isPresented: $isRegisterViewPresented, content: RegisterView.init)
+        .handleViewModelActions(viewModel)
+    }
+
+    private func didSubmit() {
+        if focusedField == .email {
+            focusedField = .password
+        } else {
+            focusedField = nil
+            viewModel.login()
+        }
     }
 }
 
