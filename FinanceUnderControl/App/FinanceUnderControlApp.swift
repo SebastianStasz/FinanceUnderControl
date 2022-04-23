@@ -5,11 +5,16 @@
 //  Created by Sebastian Staszczyk on 21/10/2021.
 //
 
+import Shared
 import SwiftUI
 
 @main
 struct FinanceUnderControlApp: App {
     @Environment(\.scenePhase) private var scenePhase
+
+    init() {
+        AppFonts.register()
+    }
 
     private let viewModel = AppVM.shared
 
