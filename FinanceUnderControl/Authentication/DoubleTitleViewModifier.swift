@@ -16,15 +16,10 @@ private struct DoubleTitleViewModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         ScrollViewIfNeeded(bottomPaddingOnScroll: .large) {
-            VStack(spacing: .xxlarge) {
+            VStack(spacing: .huge) {
                 VStack(spacing: .micro) {
-                    SwiftUI.Text(title)
-                        .fontWeight(.semibold)
-                        .font(.largeTitle)
-
-                    SwiftUI.Text(subtitle)
-                        .fontWeight(.semibold)
-                        .font(.headline)
+                    Text(title, style: .title)
+                    Text(subtitle, style: .subtitle)
                 }
 
                 content.infiniteSize(alignment: .top)

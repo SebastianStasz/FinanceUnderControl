@@ -26,4 +26,7 @@ public extension CGFloat {
 
     /// Spacing of 32
     static let xxlarge = Spacing.xxlarge.rawValue
+
+    /// Spacing of 42
+    static let huge = Spacing.huge.rawValue
 }
