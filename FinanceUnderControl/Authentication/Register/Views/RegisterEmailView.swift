@@ -15,7 +15,7 @@ struct RegisterEmailView: BaseView {
 
     var baseBody: some View {
         NavigationView {
-            LabeledTextField("Email", viewModel: viewModel.emailInput, keyboardType: .emailAddress)
+            LabeledTextField("Email", viewModel: viewModel.emailInput, showValidation: false, keyboardType: .emailAddress)
                 .asRegisterView(for: .email)
                 .toolbar {
                     Toolbar.trailing(systemImage: SFSymbol.close.rawValue) { dismiss.callAsFunction() }

@@ -24,12 +24,24 @@ private struct RegisterViewModifier: ViewModifier {
             BaseButton("Confirm", role: .primary) {
                 isNextViewPresented = true
             }
+            .disabled(!isConfirmEnabled)
             .padding(.horizontal, .medium)
             .padding(.bottom, isFieldFocused ? .medium : 0)
         }
         .background(Color.backgroundPrimary)
         .onAppearFocus($isFieldFocused)
         .navigation(isActive: $isNextViewPresented) { type.nextView }
+    }
+
+    private var isConfirmEnabled: Bool {
+        switch type {
+        case .email:
+            return viewModel.viewData.isEmailValid
+        case .password:
+            return viewModel.viewData.isPasswordValid
+        case .passwordConfirmation:
+            return viewModel.viewData.isConfirmPasswordValid
+        }
     }
 }
 

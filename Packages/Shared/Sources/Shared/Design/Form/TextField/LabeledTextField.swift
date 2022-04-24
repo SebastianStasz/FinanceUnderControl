@@ -15,6 +15,7 @@ public struct LabeledTextField<T>: View {
     private let title: String
     private let style: CardStyle
     private let prompt: String?
+    private let showValidation: Bool
     private let isSecure: Bool
     private let validationMessage: String?
     private let keyboardType: UIKeyboardType?
@@ -22,6 +23,7 @@ public struct LabeledTextField<T>: View {
     public init(_ title: String,
                 viewModel: InputVM<T>,
                 prompt: String? = nil,
+                showValidation: Bool = true,
                 isSecure: Bool = false,
                 validationMessage: String? = nil,
                 keyboardType: UIKeyboardType? = nil,
@@ -30,6 +32,7 @@ public struct LabeledTextField<T>: View {
         self.title = title
         self.viewModel = viewModel
         self.prompt = prompt
+        self.showValidation = showValidation
         self.isSecure = isSecure
         self.validationMessage = validationMessage
         self.keyboardType = keyboardType
@@ -41,7 +44,7 @@ public struct LabeledTextField<T>: View {
             InputField(title, viewModel: viewModel, prompt: prompt ?? title, isSecure: isSecure, keyboardType: keyboardType).textStyle(.body())
                 .card(style: style)
 
-            if let message = viewModel.validationMessage ?? validationMessage {
+            if showValidation, let message = viewModel.validationMessage ?? validationMessage {
                 Text(message, style: .footnote(.validation))
                     .padding(.leading, .micro)
             }

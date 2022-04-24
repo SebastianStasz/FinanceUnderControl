@@ -8,6 +8,7 @@
 import Combine
 import Foundation
 import FirebaseAuth
+import Shared
 import SSUtils
 import SSValidation
 
@@ -17,10 +18,10 @@ final class RegisterVM: ViewModel {
         let didTapRegister = DriverSubject<Void>()
     }
 
-    @Published private(set) var emailMessage: String?
+    @Published private(set) var viewData = RegisterViewData.initialState
 
     let input = Input()
-    let emailInput = TextInputVM(validator: .email(errorMessage: "invalid"))
+    let emailInput = TextInputVM(validator: .email(errorMessage: .validation_invalid_email))
     let passwordInput = TextInputVM(validator: .alwaysValid)
     let confirmPasswordInput = TextInputVM(validator: .alwaysValid)
 
@@ -29,6 +30,10 @@ final class RegisterVM: ViewModel {
 
         let loginInput = CombineLatest(emailInput.result(), passwordInput.result())
         let authError = DriverSubject<AuthErrorCode>()
+
+        CombineLatest3(emailInput.isValid, passwordInput.isValid, confirmPasswordInput.isValid)
+            .map { RegisterViewData(isEmailValid: $0.0, isPasswordValid: $0.1, isConfirmPasswordValid: $0.2) }
+            .assign(to: &$viewData)
 
         input.didTapRegister
             .withLatestFrom(loginInput)

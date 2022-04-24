@@ -91,3 +91,4 @@
 "empty_state_search_description" = "Nie udało się znaleźć pasujących elementów";
 
 "validation_no_elements_available" = "Brak dostępnych elementów.";
+"validation_invalid_email" = "Błędny adres email.";

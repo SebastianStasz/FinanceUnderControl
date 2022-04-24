@@ -131,4 +131,5 @@ public extension String {
     // MARK: - Validation
 
     static let validation_no_elements_available = "validation_no_elements_available".localize()
+    static let validation_invalid_email = "validation_invalid_email".localize()
 }
