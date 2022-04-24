@@ -14,15 +14,16 @@ import SSValidation
 
 final class RegisterVM: ViewModel {
 
-    struct Input {
-        let didTapRegister = DriverSubject<Void>()
+    struct ViewBinding {
+        let didConfirmRegistration = DriverSubject<Void>()
+        let dismissView = DriverSubject<Void>()
     }
 
     @Published private(set) var isEmailValid = false
     @Published private(set) var passwordHintVD = RegisterPasswordHintVD(for: "")
     @Published private(set) var isPasswordConfirmationValid = false
 
-    let input = Input()
+    let binding = ViewBinding()
     let emailInput = TextInputVM(validator: .email(errorMessage: .validation_invalid_email))
     let passwordInput = TextInputVM(validator: .alwaysValid)
     let confirmPasswordInput = TextInputVM(validator: .alwaysValid)
@@ -30,7 +31,7 @@ final class RegisterVM: ViewModel {
     override init() {
         super.init()
 
-        let loginInput = CombineLatest(emailInput.result(), passwordInput.result())
+        let registrationData = CombineLatest(emailInput.result(), passwordInput.result())
         let authError = DriverSubject<AuthErrorCode>()
 
         emailInput.isValid.assign(to: &$isEmailValid)
@@ -43,8 +44,8 @@ final class RegisterVM: ViewModel {
             .map { $0.0 == $0.1 }
             .assign(to: &$isPasswordConfirmationValid)
 
-        input.didTapRegister
-            .withLatestFrom(loginInput)
+        binding.didConfirmRegistration
+            .withLatestFrom(registrationData)
             .startLoading(on: self)
             .await {
                 guard let email = $0.0, let password = $0.1 else { return }
@@ -62,18 +63,18 @@ final class RegisterVM: ViewModel {
                 }
             } receiveValue: { [weak self] in
                 print("Registered successfully")
-                self?.baseAction.dismissView.send()
+                self?.binding.dismissView.send()
             }
             .store(in: &cancellables)
 
-        authError.map {
-            switch $0 {
-            case .emailAlreadyInUse:
-                return "This email is already in use."
-            default:
-                return "Unknown error"
-            }
-        }
-        .assign(to: &$emailMessage)
+//        authError.map {
+//            switch $0 {
+//            case .emailAlreadyInUse:
+//                return "This email is already in use."
+//            default:
+//                return "Unknown error"
+//            }
+//        }
+//        .assign(to: &$emailMessage)
     }
 }

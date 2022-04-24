@@ -9,6 +9,7 @@ import Shared
 import SwiftUI
 
 private struct RegisterViewModifier: ViewModifier {
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var viewModel: RegisterVM
     @FocusState private var isFieldFocused: Bool
     @State private var isNextViewPresented = false
@@ -21,16 +22,15 @@ private struct RegisterViewModifier: ViewModifier {
                 .focused($isFieldFocused)
                 .doubleTitle(title: type.title, subtitle: type.subtitle)
 
-            BaseButton("Confirm", role: .primary) {
-                isNextViewPresented = true
-            }
-            .disabled(!isConfirmEnabled)
-            .padding(.horizontal, .medium)
-            .padding(.bottom, isFieldFocused ? .medium : 0)
+            BaseButton("Confirm", role: .primary, action: didTapConfirm)
+                .disabled(!isConfirmEnabled)
+                .padding(.horizontal, .medium)
+                .padding(.bottom, isFieldFocused ? .medium : 0)
         }
         .background(Color.backgroundPrimary)
         .onAppearFocus($isFieldFocused)
         .navigation(isActive: $isNextViewPresented) { type.nextView }
+        .onReceive(viewModel.binding.dismissView, perform: dismiss.callAsFunction)
     }
 
     private var isConfirmEnabled: Bool {
@@ -41,6 +41,17 @@ private struct RegisterViewModifier: ViewModifier {
             return viewModel.passwordHintVD.isValid
         case .passwordConfirmation:
             return viewModel.isPasswordConfirmationValid
+        }
+    }
+
+    private func didTapConfirm() {
+        switch type {
+        case .email:
+            isNextViewPresented = true
+        case .password:
+            isNextViewPresented = true
+        case .passwordConfirmation:
+            viewModel.binding.didConfirmRegistration.send()
         }
     }
 }

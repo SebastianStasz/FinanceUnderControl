@@ -42,7 +42,7 @@ enum RegisterViewType {
         case .password:
             RegisterConfirmPasswordView()
         case .passwordConfirmation:
-            RegisterConfirmPasswordView()
+            EmptyView()
         }
     }
 }
