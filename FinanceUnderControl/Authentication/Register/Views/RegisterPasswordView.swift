@@ -13,8 +13,11 @@ struct RegisterPasswordView: View {
     @EnvironmentObject private var viewModel: RegisterVM
 
     var body: some View {
-        LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true)
-            .asRegisterView(for: .password)
+        VStack(spacing: .medium) {
+            LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true)
+            RegisterPasswordHintView(viewData: viewModel.passwordHintVD)
+        }
+        .asRegisterView(for: .password)
     }
 }
 

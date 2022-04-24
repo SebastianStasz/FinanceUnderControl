@@ -9,13 +9,16 @@ import SwiftUI
 
 public enum FootnoteTextType {
     case info
-    case validation
+    case valid
+    case invalid
 
     var color: Color {
         switch self {
         case .info:
             return .gray // TODO: Adapt to DS
-        case .validation:
+        case .valid:
+            return .green.opacity(0.7) // TODO: Adapt to DS
+        case .invalid:
             return .red.opacity(0.7) // TODO: Adapt to DS
         }
     }

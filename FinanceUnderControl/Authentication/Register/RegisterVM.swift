@@ -18,7 +18,9 @@ final class RegisterVM: ViewModel {
         let didTapRegister = DriverSubject<Void>()
     }
 
-    @Published private(set) var viewData = RegisterViewData.initialState
+    @Published private(set) var isEmailValid = false
+    @Published private(set) var passwordHintVD = RegisterPasswordHintVD(for: "")
+    @Published private(set) var isPasswordConfirmationValid = false
 
     let input = Input()
     let emailInput = TextInputVM(validator: .email(errorMessage: .validation_invalid_email))
@@ -31,9 +33,15 @@ final class RegisterVM: ViewModel {
         let loginInput = CombineLatest(emailInput.result(), passwordInput.result())
         let authError = DriverSubject<AuthErrorCode>()
 
-        CombineLatest3(emailInput.isValid, passwordInput.isValid, confirmPasswordInput.isValid)
-            .map { RegisterViewData(isEmailValid: $0.0, isPasswordValid: $0.1, isConfirmPasswordValid: $0.2) }
-            .assign(to: &$viewData)
+        emailInput.isValid.assign(to: &$isEmailValid)
+
+        passwordInput.result()
+            .map { RegisterPasswordHintVD(for: $0 ?? "") }
+            .assign(to: &$passwordHintVD)
+
+        CombineLatest(passwordInput.result(), confirmPasswordInput.result())
+            .map { $0.0 == $0.1 }
+            .assign(to: &$isPasswordConfirmationValid)
 
         input.didTapRegister
             .withLatestFrom(loginInput)

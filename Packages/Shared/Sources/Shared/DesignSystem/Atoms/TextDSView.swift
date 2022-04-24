@@ -22,7 +22,7 @@ struct TextDSView: View {
             Text("Body - action", style: .body(.action))
 
             Text("Footnote - info", style: .footnote(.info))
-            Text("Footnote - validation", style: .footnote(.validation))
+            Text("Footnote - validation", style: .footnote(.invalid))
 
             Text("Currency", style: .currency)
         }

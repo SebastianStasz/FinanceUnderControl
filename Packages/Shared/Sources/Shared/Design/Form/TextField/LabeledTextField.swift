@@ -45,7 +45,7 @@ public struct LabeledTextField<T>: View {
                 .card(style: style)
 
             if showValidation, let message = viewModel.validationMessage ?? validationMessage {
-                Text(message, style: .footnote(.validation))
+                Text(message, style: .footnote(.invalid))
                     .padding(.leading, .micro)
             }
         }

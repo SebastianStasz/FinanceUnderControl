@@ -36,11 +36,11 @@ private struct RegisterViewModifier: ViewModifier {
     private var isConfirmEnabled: Bool {
         switch type {
         case .email:
-            return viewModel.viewData.isEmailValid
+            return viewModel.isEmailValid
         case .password:
-            return viewModel.viewData.isPasswordValid
+            return viewModel.passwordHintVD.isValid
         case .passwordConfirmation:
-            return viewModel.viewData.isConfirmPasswordValid
+            return viewModel.isPasswordConfirmationValid
         }
     }
 }
