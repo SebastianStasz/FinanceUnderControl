@@ -9,10 +9,10 @@ import Combine
 import SwiftUI
 
 final class SwiftUIVC<Content: View>: UIHostingController<Content> {
-    private let viewModel: ViewModel
+    private let viewModel: ViewModel2
     var cancellables: Set<AnyCancellable> = []
 
-    init(viewModel: ViewModel, view: Content) {
+    init(viewModel: ViewModel2, view: Content) {
         self.viewModel = viewModel
         super.init(rootView: view)
     }

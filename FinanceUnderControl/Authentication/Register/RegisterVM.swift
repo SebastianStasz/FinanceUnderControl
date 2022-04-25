@@ -12,7 +12,7 @@ import Shared
 import SSUtils
 import SSValidation
 
-final class RegisterVM: ViewModel {
+final class RegisterVM: ViewModel2 {
 
     struct ViewBinding {
         let didConfirmEmail = DriverSubject<Void>()
@@ -25,16 +25,12 @@ final class RegisterVM: ViewModel {
     @Published private(set) var passwordHintVD = RegisterPasswordHintVD(for: "")
     @Published private(set) var isPasswordConfirmationValid = false
 
-    private let coordinator: Coordinator
     let binding = ViewBinding()
     let emailInput = TextInputVM(validator: .email(errorMessage: .validation_invalid_email))
     let passwordInput = TextInputVM(validator: .alwaysValid)
     let confirmPasswordInput = TextInputVM(validator: .alwaysValid)
 
-    init(coordinator: Coordinator) {
-        self.coordinator = coordinator
-        super.init()
-
+    override func bind() {
         let registrationData = CombineLatest(emailInput.result(), passwordInput.result())
         let authError = DriverSubject<AuthErrorCode>()
 

@@ -29,4 +29,24 @@ extension Publisher {
         })
         .eraseToAnyPublisher()
     }
+
+    func startLoading<T: ViewModel2>(on object: T) -> AnyPublisher<Output, Failure> {
+        setLoading(to: true, on: object)
+    }
+
+    func stopLoading<T: ViewModel2>(on object: T) -> AnyPublisher<Output, Failure> {
+        receive(on: DispatchQueue.main)
+            .setLoading(to: false, on: object)
+            .handleEvents(receiveCompletion: { [weak object] _ in
+                object?.isLoading = false
+            })
+            .eraseToAnyPublisher()
+    }
+
+    private func setLoading<T: ViewModel2>(to isLoading: Bool, on object: T) -> AnyPublisher<Output, Failure> {
+        handleEvents(receiveOutput: { [weak object] _ in
+            object?[keyPath: \.isLoading] = isLoading
+        })
+        .eraseToAnyPublisher()
+    }
 }

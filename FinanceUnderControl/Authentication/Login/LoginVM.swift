@@ -9,7 +9,7 @@ import Foundation
 import SSUtils
 import SSValidation
 
-final class LoginVM: ViewModel {
+final class LoginVM: ViewModel2 {
 
     struct ViewBinding {
         let didTapSignUp = DriverSubject<Void>()
@@ -17,15 +17,11 @@ final class LoginVM: ViewModel {
 
     @Published private(set) var isFormValid = false
 
-    private let coordinator: Coordinator
     let viewBinding = ViewBinding()
     let emailInput = TextInputVM()
     let passwordInput = TextInputVM()
 
-    init(coordinator: Coordinator) {
-        self.coordinator = coordinator
-        super.init()
-
+    override func bind() {
         CombineLatest(emailInput.$validationState, passwordInput.$validationState)
             .map { $0.0.isValid && $0.1.isValid }
             .assign(to: &$isFormValid)
