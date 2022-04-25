@@ -25,12 +25,14 @@ final class RegisterVM: ViewModel {
     @Published private(set) var passwordHintVD = RegisterPasswordHintVD(for: "")
     @Published private(set) var isPasswordConfirmationValid = false
 
+    private let coordinator: Coordinator
     let binding = ViewBinding()
     let emailInput = TextInputVM(validator: .email(errorMessage: .validation_invalid_email))
     let passwordInput = TextInputVM(validator: .alwaysValid)
     let confirmPasswordInput = TextInputVM(validator: .alwaysValid)
 
-    override init() {
+    init(coordinator: Coordinator) {
+        self.coordinator = coordinator
         super.init()
 
         let registrationData = CombineLatest(emailInput.result(), passwordInput.result())
@@ -65,7 +67,7 @@ final class RegisterVM: ViewModel {
                 }
             } receiveValue: { [weak self] in
                 print("Registered successfully")
-                self?.binding.dismissView.send()
+//                self?.binding.dismissView.send()
             }
             .store(in: &cancellables)
 

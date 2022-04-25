@@ -15,7 +15,7 @@ struct LoginView: BaseView {
         case email, password
     }
 
-    @ObservedObject var viewModel = LoginVM()
+    @ObservedObject var viewModel: LoginVM
     @FocusState private var focusedField: Field?
 
     var baseBody: some View {
@@ -48,7 +48,6 @@ struct LoginView: BaseView {
         }
         .doubleTitle(title: "Hello!", subtitle: "Sign in and start managing your finances just now!")
         .onTapGesture { focusedField = nil }
-        .embedInNavigationView(title: "", displayMode: .inline)
         .handleViewModelActions(viewModel)
     }
 
@@ -72,7 +71,8 @@ struct LoginView: BaseView {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView(viewModel: .init())
-        LoginView(viewModel: .init()).darkScheme()
+        let viewModel = LoginVM(coordinator: PreviewCoordinator())
+        LoginView(viewModel: viewModel)
+        LoginView(viewModel: viewModel).darkScheme()
     }
 }

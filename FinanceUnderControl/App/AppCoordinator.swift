@@ -7,15 +7,14 @@
 
 import SwiftUI
 
-final class AppCoordinator: Coordinator {
+final class AppCoordinator {
 
     private let window: UIWindow
-    private var childCoordinators: [Coordinator] = []
 
     init(with window: UIWindow) {
         self.window = window
-        let authenticationCoordinator = AuthenticationCoordinator()
-        window.rootViewController = authenticationCoordinator.rootViewController
-        childCoordinators.append(authenticationCoordinator)
+        let navigationController = UINavigationController()
+        window.rootViewController = navigationController
+        AuthenticationCoordinator(.push(on: navigationController)).start()
     }
 }

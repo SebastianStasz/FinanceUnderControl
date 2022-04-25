@@ -17,11 +17,13 @@ final class LoginVM: ViewModel {
 
     @Published private(set) var isFormValid = false
 
+    private let coordinator: Coordinator
     let viewBinding = ViewBinding()
     let emailInput = TextInputVM()
     let passwordInput = TextInputVM()
 
-    override init() {
+    init(coordinator: Coordinator) {
+        self.coordinator = coordinator
         super.init()
 
         CombineLatest(emailInput.$validationState, passwordInput.$validationState)

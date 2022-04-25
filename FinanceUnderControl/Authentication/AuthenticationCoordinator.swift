@@ -8,29 +8,36 @@
 import Combine
 import SwiftUI
 
+final class SwiftUIVC<Content: View>: UIHostingController<Content> {
+    private let viewModel: ViewModel
+    var cancellables: Set<AnyCancellable> = []
+
+    init(viewModel: ViewModel, view: Content) {
+        self.viewModel = viewModel
+        super.init(rootView: view)
+    }
+    
+    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 final class AuthenticationCoordinator: Coordinator {
 
-    private let viewModel = LoginVM()
-    private var cancellables: Set<AnyCancellable> = []
-    private var coordinators: [Coordinator] = []
-    let rootViewController: UIViewController
-
-    init() {
-        let view = LoginView(viewModel: viewModel)
-        rootViewController = UIHostingController(rootView: view)
+    override func initializeView() -> UIViewController {
+        let viewModel = LoginVM(coordinator: self)
+        let viewController = SwiftUIVC(viewModel: viewModel, view: LoginView(viewModel: viewModel))
 
         viewModel.viewBinding.didTapSignUp
             .sink { [weak self] in self?.presentRegisterView() }
-            .store(in: &cancellables)
+            .store(in: &viewController.cancellables)
+
+        return viewController
     }
 
     private func presentRegisterView() {
-        let coordinator = RegisterCoordinator()
-        let dismiss = {
-            coordinators.fir
-        }
-        coordinators.append(coordinator)
-        rootViewController.presentFullScreen(coordinator.navigationController)
+        guard let navigationController = navigationController else { return }
+        RegisterCoordinator(.presentFullScreen(on: navigationController)).start()
     }
 }
 

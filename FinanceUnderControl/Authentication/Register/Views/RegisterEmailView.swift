@@ -9,7 +9,7 @@ import Shared
 import SwiftUI
 
 struct RegisterEmailView: BaseView {
-    @ObservedObject var viewModel = RegisterVM()
+    @ObservedObject var viewModel: RegisterVM
 
     var baseBody: some View {
         LabeledTextField("Email", viewModel: viewModel.emailInput, showValidation: false, keyboardType: .emailAddress)
@@ -22,7 +22,8 @@ struct RegisterEmailView: BaseView {
 
 struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterEmailView(viewModel: .init())
-        RegisterEmailView(viewModel: .init()).darkScheme()
+        let viewModel = RegisterVM(coordinator: PreviewCoordinator())
+        RegisterEmailView(viewModel: viewModel)
+        RegisterEmailView(viewModel: viewModel).darkScheme()
     }
 }

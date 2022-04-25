@@ -26,8 +26,9 @@ struct RegisterPasswordView: View {
 
 struct PasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterPasswordView(viewModel: .init())
-        RegisterPasswordView(viewModel: .init()).darkScheme()
+        let viewModel = RegisterVM(coordinator: PreviewCoordinator())
+        RegisterPasswordView(viewModel: viewModel)
+        RegisterPasswordView(viewModel: viewModel).darkScheme()
     }
 }
 

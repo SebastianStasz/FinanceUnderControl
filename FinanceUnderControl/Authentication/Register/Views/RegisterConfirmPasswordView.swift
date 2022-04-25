@@ -22,7 +22,8 @@ struct RegisterConfirmPasswordView: View {
 
 struct RegisterConfirmPasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterConfirmPasswordView(viewModel: .init())
-        RegisterConfirmPasswordView(viewModel: .init()).darkScheme()
+        let viewModel = RegisterVM(coordinator: PreviewCoordinator())
+        RegisterConfirmPasswordView(viewModel: viewModel)
+        RegisterConfirmPasswordView(viewModel: viewModel).darkScheme()
     }
 }
