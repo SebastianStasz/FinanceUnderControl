@@ -11,8 +11,13 @@ import SSValidation
 
 final class LoginVM: ViewModel {
 
+    struct ViewBinding {
+        let didTapSignUp = DriverSubject<Void>()
+    }
+
     @Published private(set) var isFormValid = false
 
+    let viewBinding = ViewBinding()
     let emailInput = TextInputVM()
     let passwordInput = TextInputVM()
 

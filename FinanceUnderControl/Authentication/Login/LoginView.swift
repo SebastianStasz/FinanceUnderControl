@@ -15,9 +15,8 @@ struct LoginView: BaseView {
         case email, password
     }
 
-    @StateObject private var viewModel = LoginVM()
+    @ObservedObject var viewModel = LoginVM()
     @FocusState private var focusedField: Field?
-    @State private var isRegisterViewPresented = false
 
     var baseBody: some View {
         VStack(alignment: .center, spacing: .xxlarge) {
@@ -50,13 +49,13 @@ struct LoginView: BaseView {
         .doubleTitle(title: "Hello!", subtitle: "Sign in and start managing your finances just now!")
         .onTapGesture { focusedField = nil }
         .embedInNavigationView(title: "", displayMode: .inline)
-        .fullScreenCover(isPresented: $isRegisterViewPresented, content: RegisterEmailView.init)
         .handleViewModelActions(viewModel)
     }
 
     private func didTapSignUp() {
         focusedField = nil
-        isRegisterViewPresented = true
+        viewModel.viewBinding.didTapSignUp.send()
+
     }
 
     private func didSubmit() {
@@ -73,7 +72,7 @@ struct LoginView: BaseView {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
-        LoginView().darkScheme()
+        LoginView(viewModel: .init())
+        LoginView(viewModel: .init()).darkScheme()
     }
 }

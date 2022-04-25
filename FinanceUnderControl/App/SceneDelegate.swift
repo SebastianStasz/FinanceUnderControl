@@ -5,10 +5,11 @@
 //  Created by sebastianstaszczyk on 24/04/2022.
 //
 
+import Firebase
 import UIKit
 import SwiftUI
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private var appCoordinator: AppCoordinator?
 
@@ -17,8 +18,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let window = UIWindow(windowScene: windowScene)
             let coordinator = AppCoordinator(with: window)
             appCoordinator = coordinator
-            coordinator.start()
             window.makeKeyAndVisible()
+
+            FirebaseApp.configure()
         }
     }
 }

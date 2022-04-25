@@ -10,7 +10,7 @@ import SwiftUI
 
 struct RegisterPasswordView: View {
 
-    @EnvironmentObject private var viewModel: RegisterVM
+    @ObservedObject var viewModel: RegisterVM
 
     var body: some View {
         VStack(spacing: .medium) {
@@ -18,6 +18,7 @@ struct RegisterPasswordView: View {
             RegisterPasswordHintView(viewData: viewModel.passwordHintVD)
         }
         .asRegisterView(for: .password)
+        .environmentObject(viewModel)
     }
 }
 
@@ -25,7 +26,8 @@ struct RegisterPasswordView: View {
 
 struct PasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterPasswordView()
+        RegisterPasswordView(viewModel: .init())
+        RegisterPasswordView(viewModel: .init()).darkScheme()
     }
 }
 

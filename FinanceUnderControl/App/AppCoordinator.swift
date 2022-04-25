@@ -14,12 +14,8 @@ final class AppCoordinator: Coordinator {
 
     init(with window: UIWindow) {
         self.window = window
-    }
-
-    func start() {
         let authenticationCoordinator = AuthenticationCoordinator()
-        authenticationCoordinator.start()
-        window.rootViewController = authenticationCoordinator.viewController
+        window.rootViewController = authenticationCoordinator.rootViewController
         childCoordinators.append(authenticationCoordinator)
     }
 }

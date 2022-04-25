@@ -15,8 +15,10 @@ import SSValidation
 final class RegisterVM: ViewModel {
 
     struct ViewBinding {
+        let didConfirmEmail = DriverSubject<Void>()
+        let didEnterPassword = DriverSubject<Void>()
         let didConfirmRegistration = DriverSubject<Void>()
-        let dismissView = DriverSubject<Void>()
+        let registeredSuccessfully = DriverSubject<Void>()
     }
 
     @Published private(set) var isEmailValid = false
