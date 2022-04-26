@@ -17,17 +17,18 @@ final class LoginVM: ViewModel2 {
 
     @Published private(set) var isFormValid = false
 
-    let viewBinding = ViewBinding()
+    let binding = ViewBinding()
     let emailInput = TextInputVM()
     let passwordInput = TextInputVM()
 
     override func bind() {
+        let loginData = CombineLatest(emailInput.$resultValue, passwordInput.$resultValue)
+
         CombineLatest(emailInput.$validationState, passwordInput.$validationState)
             .map { $0.0.isValid && $0.1.isValid }
             .assign(to: &$isFormValid)
-    }
 
-    func login() {
-        
+        binding.didTapSignUp
+            .withLatestFrom(loginData)
     }
 }

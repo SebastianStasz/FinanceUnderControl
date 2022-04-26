@@ -28,7 +28,7 @@ final class AuthenticationCoordinator: Coordinator {
         let viewModel = LoginVM(coordinator: self)
         let viewController = SwiftUIVC(viewModel: viewModel, view: LoginView(viewModel: viewModel))
 
-        viewModel.viewBinding.didTapSignUp
+        viewModel.binding.didTapSignUp
             .sink { [weak self] in self?.presentRegisterView() }
             .store(in: &viewController.cancellables)
 

@@ -33,7 +33,7 @@ final class RegisterVM: ViewModel2 {
 
     override func bind() {
         let registrationData = CombineLatest(emailInput.result(), passwordInput.result())
-        let authError = DriverSubject<Error>()
+        let registrationError = DriverSubject<Error>()
 
         emailInput.isValid.assign(to: &$isEmailValid)
 
@@ -47,30 +47,18 @@ final class RegisterVM: ViewModel2 {
 
         binding.didConfirmRegistration
             .withLatestFrom(registrationData)
-            .flatMap { input in
-                Just(input)
-                    .startLoading(on: self)
-                    .await { input in
-                        guard let email = input.0, let password = input.1 else { return }
-                        try await Auth.auth().createUser(withEmail: email, password: password)
-                    }
-                    .stopLoading(on: self)
-                    .catch { error -> AnyPublisher<Void, Never> in
-                        print(error)
-                        authError.send(error)
-                        return Just(nil).compactMap { $0 }.eraseToAnyPublisher()
-                    }
+            .perform(on: self, errorTracker: registrationError) {
+                guard let email = $0.0, let password = $0.1 else { return }
+                try await Auth.auth().createUser(withEmail: email, password: password)
             }
-            .sink { [weak self] in
-                self?.binding.registeredSuccessfully.send()
+            .sinkAndStore(on: self) {
+                $0.binding.registeredSuccessfully.send($1)
             }
-            .store(in: &cancellables)
 
-        authError.sink { [weak self] in
-            if let authErrorCode = AuthErrorCode(rawValue: $0._code) {
-                self?.binding.registrationError.send(authErrorCode)
+        registrationError.sinkAndStore(on: self) {
+            if let authErrorCode = AuthErrorCode(rawValue: $1._code) {
+                $0.binding.registrationError.send(authErrorCode)
             }
         }
-        .store(in: &cancellables)
     }
 }

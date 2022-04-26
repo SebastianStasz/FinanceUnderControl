@@ -53,8 +53,7 @@ struct LoginView: BaseView {
 
     private func didTapSignUp() {
         focusedField = nil
-        viewModel.viewBinding.didTapSignUp.send()
-
+        viewModel.binding.didTapSignUp.send()
     }
 
     private func didSubmit() {
