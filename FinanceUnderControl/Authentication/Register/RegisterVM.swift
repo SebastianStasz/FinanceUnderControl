@@ -19,6 +19,7 @@ final class RegisterVM: ViewModel2 {
         let didEnterPassword = DriverSubject<Void>()
         let didConfirmRegistration = DriverSubject<Void>()
         let registeredSuccessfully = DriverSubject<Void>()
+        let registrationError = DriverSubject<AuthErrorCode>()
     }
 
     @Published private(set) var isEmailValid = false
@@ -32,7 +33,7 @@ final class RegisterVM: ViewModel2 {
 
     override func bind() {
         let registrationData = CombineLatest(emailInput.result(), passwordInput.result())
-        let authError = DriverSubject<AuthErrorCode>()
+        let authError = DriverSubject<Error>()
 
         emailInput.isValid.assign(to: &$isEmailValid)
 
@@ -46,35 +47,30 @@ final class RegisterVM: ViewModel2 {
 
         binding.didConfirmRegistration
             .withLatestFrom(registrationData)
-            .startLoading(on: self)
-            .await {
-                guard let email = $0.0, let password = $0.1 else { return }
-                try await Auth.auth().createUser(withEmail: email, password: password)
-            }
-            .stopLoading(on: self)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    print("Register error: \(error)")
-                    if let error = AuthErrorCode(rawValue: error._code) {
-                        authError.send(error)
-                    } else {
-                        print("Unknown error")
+            .flatMap { input in
+                Just(input)
+                    .startLoading(on: self)
+                    .await { input in
+                        guard let email = input.0, let password = input.1 else { return }
+                        try await Auth.auth().createUser(withEmail: email, password: password)
                     }
-                }
-            } receiveValue: { [weak self] in
-                print("Registered successfully")
-//                self?.binding.dismissView.send()
+                    .stopLoading(on: self)
+                    .catch { error -> AnyPublisher<Void, Never> in
+                        print(error)
+                        authError.send(error)
+                        return Just(nil).compactMap { $0 }.eraseToAnyPublisher()
+                    }
+            }
+            .sink { [weak self] in
+                self?.binding.registeredSuccessfully.send()
             }
             .store(in: &cancellables)
 
-//        authError.map {
-//            switch $0 {
-//            case .emailAlreadyInUse:
-//                return "This email is already in use."
-//            default:
-//                return "Unknown error"
-//            }
-//        }
-//        .assign(to: &$emailMessage)
+        authError.sink { [weak self] in
+            if let authErrorCode = AuthErrorCode(rawValue: $0._code) {
+                self?.binding.registrationError.send(authErrorCode)
+            }
+        }
+        .store(in: &cancellables)
     }
 }

@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import SSUtils
 
-class Coordinator {
+class Coordinator: BaseActions {
     private let presentationStyle: PresentationStyle
     weak var navigationController: UINavigationController?
 
@@ -26,6 +27,10 @@ class Coordinator {
 
     func initializeView() -> UIViewController {
         UIViewController()
+    }
+
+    func dismiss(animated: Bool = true) {
+        navigationController?.dismiss(animated: animated)
     }
 
     private func push(on navigationController: UINavigationController) {

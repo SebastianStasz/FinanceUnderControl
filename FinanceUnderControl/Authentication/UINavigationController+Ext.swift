@@ -13,6 +13,13 @@ extension UINavigationController {
     func push<Content: View>(_ content: Content, animated: Bool = true) {
         pushViewController(UIHostingController(rootView: content), animated: animated)
     }
+
+    func presentResultView(viewData: ResultVD) {
+        let resultView = ResultView(viewData: viewData)
+        let viewController = UIHostingController(rootView: resultView)
+        let nvc = UINavigationController(rootViewController: viewController)
+        presentFullScreen(nvc)
+    }
 }
 
 extension UIViewController {

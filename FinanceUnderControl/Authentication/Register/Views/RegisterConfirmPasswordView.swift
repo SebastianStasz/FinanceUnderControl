@@ -15,6 +15,7 @@ struct RegisterConfirmPasswordView: View {
         LabeledTextField("Confirm password", viewModel: viewModel.confirmPasswordInput, isSecure: true)
             .asRegisterView(for: .passwordConfirmation)
             .environmentObject(viewModel)
+            .handleViewModelActions2(viewModel)
     }
 }
 
