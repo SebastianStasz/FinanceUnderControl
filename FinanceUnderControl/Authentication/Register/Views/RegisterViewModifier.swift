@@ -26,6 +26,8 @@ private struct RegisterViewModifier: ViewModifier {
         }
         .background(Color.backgroundPrimary)
         .onAppearFocus($isFieldFocused)
+        .onAppear { viewDidAppear() }
+        .onSubmit(didSubmit)
     }
 
     private var isConfirmEnabled: Bool {
@@ -39,6 +41,10 @@ private struct RegisterViewModifier: ViewModifier {
         }
     }
 
+    private func didSubmit() {
+        if isConfirmEnabled { didTapConfirm() }
+    }
+
     private func didTapConfirm() {
         switch type {
         case .email:
@@ -47,6 +53,15 @@ private struct RegisterViewModifier: ViewModifier {
             viewModel.binding.didEnterPassword.send()
         case .passwordConfirmation:
             viewModel.binding.didConfirmRegistration.send()
+        }
+    }
+
+    private func viewDidAppear() {
+        if case .email = type {
+            viewModel.passwordInput.setText(to: "")
+            viewModel.confirmPasswordInput.setText(to: "")
+        } else if case .password = type {
+            viewModel.confirmPasswordInput.setText(to: "")
         }
     }
 }

@@ -5,7 +5,6 @@
 //  Created by sebastianstaszczyk on 24/04/2022.
 //
 
-import Combine
 import FirebaseAuth
 import Shared
 import SwiftUI
@@ -36,32 +35,51 @@ final class RegisterCoordinator: Coordinator {
 
         return viewController
     }
+}
 
-    private func presentPasswordView(viewModel: RegisterVM) {
+private extension RegisterCoordinator {
+
+    func presentPasswordView(viewModel: RegisterVM) {
         navigationController?.push(RegisterPasswordView(viewModel: viewModel))
     }
 
-    private func presentPasswordConfirmationView(viewModel: RegisterVM) {
+    func presentPasswordConfirmationView(viewModel: RegisterVM) {
         navigationController?.push(RegisterConfirmPasswordView(viewModel: viewModel))
     }
 
-    private func presentRegisteredSuccessfully() {
-        let viewData = ResultVD.success(message: "Registered successfully") { [weak self] in
-            self?.dismiss()
-        }
+    func presentRegisteredSuccessfully() {
+        let viewData = ResultData.success(title: .authorization_register_success_title, message: .authorization_register_success_message, action: goBackToLoginView)
         navigationController?.presentResultView(viewData: viewData)
-        dismiss()
     }
 
-    private func handleRegistrationError(_ error: AuthErrorCode) {
-        let viewData: ResultVD
-        let dismiss = onSelf { $0.dismiss() }
+    func handleRegistrationError(_ error: AuthErrorCode) {
         switch error {
         case .emailAlreadyInUse:
-            viewData = .error(message: "Provided email is already in use.", action: dismiss)
+            presentEmailAlreadyInUse()
+        case .invalidRecipientEmail, .missingEmail:
+            presentInvalidEmail()
         default:
-            viewData = .error(message: "Unknown error", action: dismiss)
+            presentGenericRegistrationError()
         }
-        navigationController?.presentResultView(viewData: viewData)
+    }
+
+    func presentEmailAlreadyInUse() {
+        let resultData = ResultData.error(title: .authorization_register_account_exists_title, message: .authorization_register_account_exists_message, action: goBackToLoginView)
+        navigationController?.presentResultView(viewData: resultData)
+    }
+
+    func presentInvalidEmail() {
+        let resultData = ResultData.error(title: .authorization_register_account_invalid_email_title, message: .authorization_register_account_invalid_email_message)
+        let completion = onSelf { $0.navigationController?.popToView(ofType: RegisterEmailView.self, animated: true) }
+        navigationController?.presentResultView(viewData: resultData, completion: completion)
+    }
+
+    func presentGenericRegistrationError() {
+        let resultData = ResultData.error(title: .common_error, message: .authorization_register_account_unknown_error_message)
+        navigationController?.presentResultView(viewData: resultData)
+    }
+
+    func goBackToLoginView() {
+        navigationController?.presentingViewController?.dismiss(animated: true)
     }
 }
