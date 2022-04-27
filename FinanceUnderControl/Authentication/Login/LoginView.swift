@@ -27,13 +27,13 @@ struct LoginView: BaseView {
                         .focused($focusedField, equals: .email)
                         .onTapGesture { focusedField = .email }
 
-                    LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true)
+                    LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true, validationMessage: viewModel.passwordMessage)
                         .focused($focusedField, equals: .password)
                         .onTapGesture { focusedField = .password }
                 }
                 .onSubmit(didSubmit)
 
-                BaseButton("Sign in", role: .primary, action: {})
+                BaseButton("Sign in", role: .primary, action: didTapSignIn)
                     .disabled(!viewModel.isFormValid)
             }
 
@@ -56,12 +56,16 @@ struct LoginView: BaseView {
         viewModel.binding.didTapSignUp.send()
     }
 
+    private func didTapSignIn() {
+        viewModel.binding.didTapSignIn.send()
+    }
+
     private func didSubmit() {
         if focusedField == .email {
             focusedField = .password
         } else {
             focusedField = nil
-//            viewModel.login()
+            didTapSignIn()
         }
     }
 }
