@@ -40,10 +40,3 @@ final class AuthenticationCoordinator: Coordinator {
         RegisterCoordinator(.presentFullScreen(on: navigationController)).start()
     }
 }
-
-extension UIViewController {
-    func presentFullScreen(_ viewController: UIViewController) {
-        viewController.modalPresentationStyle = .fullScreen
-        present(viewController, animated: true)
-    }
-}
