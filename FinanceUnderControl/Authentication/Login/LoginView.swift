@@ -15,9 +15,8 @@ struct LoginView: BaseView {
         case email, password
     }
 
-    @StateObject private var viewModel = LoginVM()
+    @ObservedObject var viewModel: LoginVM
     @FocusState private var focusedField: Field?
-    @State private var isRegisterViewPresented = false
 
     var baseBody: some View {
         VStack(alignment: .center, spacing: .xxlarge) {
@@ -28,13 +27,13 @@ struct LoginView: BaseView {
                         .focused($focusedField, equals: .email)
                         .onTapGesture { focusedField = .email }
 
-                    LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true)
+                    LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true, validationMessage: viewModel.passwordMessage)
                         .focused($focusedField, equals: .password)
                         .onTapGesture { focusedField = .password }
                 }
                 .onSubmit(didSubmit)
 
-                BaseButton("Sign in", role: .primary, action: {})
+                BaseButton("Sign in", role: .primary, action: didTapSignIn)
                     .disabled(!viewModel.isFormValid)
             }
 
@@ -49,14 +48,16 @@ struct LoginView: BaseView {
         }
         .doubleTitle(title: "Hello!", subtitle: "Sign in and start managing your finances just now!")
         .onTapGesture { focusedField = nil }
-        .embedInNavigationView(title: "", displayMode: .inline)
-        .fullScreenCover(isPresented: $isRegisterViewPresented, content: RegisterEmailView.init)
-        .handleViewModelActions(viewModel)
+        .handleViewModelActions2(viewModel)
     }
 
     private func didTapSignUp() {
         focusedField = nil
-        isRegisterViewPresented = true
+        viewModel.binding.didTapSignUp.send()
+    }
+
+    private func didTapSignIn() {
+        viewModel.binding.didTapSignIn.send()
     }
 
     private func didSubmit() {
@@ -64,7 +65,7 @@ struct LoginView: BaseView {
             focusedField = .password
         } else {
             focusedField = nil
-//            viewModel.login()
+            didTapSignIn()
         }
     }
 }
@@ -73,7 +74,8 @@ struct LoginView: BaseView {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
-        LoginView().darkScheme()
+        let viewModel = LoginVM(coordinator: PreviewCoordinator())
+        LoginView(viewModel: viewModel)
+        LoginView(viewModel: viewModel).darkScheme()
     }
 }

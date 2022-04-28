@@ -9,7 +9,7 @@ import Foundation
 import FinanceCoreData
 import Shared
 
-final class TabBarVM: ObservableObject {
+final class TabBarVM: ViewModel2 {
     typealias Tab = TabBarModel
     var availableTabs: [Tab] { Tab.allCases }
 

@@ -29,7 +29,6 @@ final class AppVM {
     }
 
     private init() {
-        FirebaseApp.configure()
         let controller = PersistenceController.previewEmpty
         self.controller = controller
     }

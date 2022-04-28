@@ -11,33 +11,19 @@ import SSUtils
 
 struct TabBarView: View {
 
-    @StateObject private var viewModel = TabBarVM()
-    private let testView: AnyView?
+    @ObservedObject var viewModel: TabBarVM
 
-    init() {
+    init(viewModel: TabBarVM) {
+        self.viewModel = viewModel
         UITabBar.appearance().isHidden = true
-        testView = nil
     }
-
-    #if DEBUG
-
-    init(view: AnyView) {
-        UITabBar.appearance().isHidden = true
-        testView = view
-    }
-
-    #endif
 
     var body: some View {
         VStack {
             // TabView
             TabView(selection: $viewModel.selectedTab ) {
                 ForEach(viewModel.availableTabs) { tab in
-                    if let view = testView {
-                        view
-                    } else {
-                        tab.embedInNavigationView(title: tab.name).tag(tab)
-                    }
+                    tab.embedInNavigationView(title: tab.name).tag(tab)
                 }
             }
 
@@ -93,7 +79,8 @@ struct TabBarView: View {
 
 struct TabBarView_Previews: PreviewProvider {
     static var previews: some View {
-        TabBarView()
-        TabBarView().darkScheme()
+        let viewModel = TabBarVM(coordinator: PreviewCoordinator())
+        TabBarView(viewModel: viewModel)
+        TabBarView(viewModel: viewModel).darkScheme()
     }
 }

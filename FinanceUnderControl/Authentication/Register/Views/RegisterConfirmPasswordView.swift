@@ -9,11 +9,13 @@ import Shared
 import SwiftUI
 
 struct RegisterConfirmPasswordView: View {
-    @EnvironmentObject private var viewModel: RegisterVM
+    @ObservedObject var viewModel: RegisterVM
 
     var body: some View {
         LabeledTextField("Confirm password", viewModel: viewModel.confirmPasswordInput, isSecure: true)
             .asRegisterView(for: .passwordConfirmation)
+            .environmentObject(viewModel)
+            .handleViewModelActions2(viewModel)
     }
 }
 
@@ -21,6 +23,8 @@ struct RegisterConfirmPasswordView: View {
 
 struct RegisterConfirmPasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterConfirmPasswordView()
+        let viewModel = RegisterVM(coordinator: PreviewCoordinator())
+        RegisterConfirmPasswordView(viewModel: viewModel)
+        RegisterConfirmPasswordView(viewModel: viewModel).darkScheme()
     }
 }

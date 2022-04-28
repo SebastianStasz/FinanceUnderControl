@@ -33,16 +33,4 @@ enum RegisterViewType {
             return "Let's make sure you didn't make any typos."
         }
     }
-
-    @ViewBuilder
-    var nextView: some View {
-        switch self {
-        case .email:
-            RegisterPasswordView()
-        case .password:
-            RegisterConfirmPasswordView()
-        case .passwordConfirmation:
-            EmptyView()
-        }
-    }
 }

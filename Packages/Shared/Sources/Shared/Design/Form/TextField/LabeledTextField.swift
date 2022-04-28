@@ -44,11 +44,20 @@ public struct LabeledTextField<T>: View {
             InputField(title, viewModel: viewModel, prompt: prompt ?? title, isSecure: isSecure, keyboardType: keyboardType).textStyle(.body())
                 .card(style: style)
 
-            if showValidation, let message = viewModel.validationMessage ?? validationMessage {
+            if let message = message {
                 Text(message, style: .footnote(.invalid))
                     .padding(.leading, .micro)
             }
         }
+    }
+
+    private var message: String? {
+        if let message = validationMessage {
+            return message
+        } else if let message = viewModel.validationMessage, showValidation {
+            return message
+        }
+        return nil
     }
 }
 

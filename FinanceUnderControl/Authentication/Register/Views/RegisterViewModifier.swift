@@ -9,10 +9,8 @@ import Shared
 import SwiftUI
 
 private struct RegisterViewModifier: ViewModifier {
-    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var viewModel: RegisterVM
     @FocusState private var isFieldFocused: Bool
-    @State private var isNextViewPresented = false
 
     let type: RegisterViewType
 
@@ -24,13 +22,12 @@ private struct RegisterViewModifier: ViewModifier {
 
             BaseButton("Confirm", role: .primary, action: didTapConfirm)
                 .disabled(!isConfirmEnabled)
-                .padding(.horizontal, .medium)
-                .padding(.bottom, isFieldFocused ? .medium : 0)
+                .padding([.horizontal, .bottom], .medium)
         }
         .background(Color.backgroundPrimary)
         .onAppearFocus($isFieldFocused)
-        .navigation(isActive: $isNextViewPresented) { type.nextView }
-        .onReceive(viewModel.binding.dismissView, perform: dismiss.callAsFunction)
+        .onAppear { viewDidAppear() }
+        .onSubmit(didSubmit)
     }
 
     private var isConfirmEnabled: Bool {
@@ -44,14 +41,27 @@ private struct RegisterViewModifier: ViewModifier {
         }
     }
 
+    private func didSubmit() {
+        if isConfirmEnabled { didTapConfirm() }
+    }
+
     private func didTapConfirm() {
         switch type {
         case .email:
-            isNextViewPresented = true
+            viewModel.binding.didConfirmEmail.send()
         case .password:
-            isNextViewPresented = true
+            viewModel.binding.didEnterPassword.send()
         case .passwordConfirmation:
             viewModel.binding.didConfirmRegistration.send()
+        }
+    }
+
+    private func viewDidAppear() {
+        if case .email = type {
+            viewModel.passwordInput.setText(to: "")
+            viewModel.confirmPasswordInput.setText(to: "")
+        } else if case .password = type {
+            viewModel.confirmPasswordInput.setText(to: "")
         }
     }
 }
