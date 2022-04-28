@@ -20,7 +20,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let coordinator = AppCoordinator(with: window)
             appCoordinator = coordinator
             window.makeKeyAndVisible()
-            try! Auth.auth().signOut()
         }
     }
 }

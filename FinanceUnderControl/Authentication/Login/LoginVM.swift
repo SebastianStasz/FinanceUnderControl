@@ -35,17 +35,21 @@ final class LoginVM: ViewModel2 {
 
         binding.didTapSignIn
             .withLatestFrom(loginData)
-            .perform(on: self, errorTracker: loginError) {
-                guard let email = $0.0, let password = $0.1 else { return }
-                try await Auth.auth().signIn(withEmail: email, password: password)
+            .perform(on: self, errorTracker: loginError) { input -> AuthDataResult? in
+                guard let email = input.0, let password = input.1 else { return nil }
+                return try await Auth.auth().signIn(withEmail: email, password: password)
             }
-            .sink { _ in }
-            .store(in: &cancellables)
+            .compactMap { $0 }
+            .sinkAndStore(on: self) { vm, result in
+                if !result.user.isEmailVerified {
+                    vm.passwordMessage = "Email not verified."
+                }
+            }
 
         loginError.sinkAndStore(on: self) {
             if let authErrorCode = AuthErrorCode(rawValue: $1._code) {
                 switch authErrorCode {
-                case .wrongPassword, .invalidEmail, .missingEmail:
+                case .wrongPassword, .invalidEmail, .missingEmail, .userNotFound:
                     $0.passwordMessage = "Invalid email or password."
                 default:
                     $0.binding.loginError.send(authErrorCode)

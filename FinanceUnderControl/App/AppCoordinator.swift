@@ -26,10 +26,12 @@ final class AppCoordinator {
     private func handleUserState() {
         Auth.auth().addStateDidChangeListener { [weak self] _, user in
             guard let navigationController = self?.navigationController else { return }
-            navigationController.viewControllers = []
-            if user != nil {
+
+            if let user = user, user.isEmailVerified, navigationController.viewControllers.notContains(TabBarView.self) {
+                navigationController.viewControllers = []
                 TabBarCoordinator(.push(on: navigationController)).start()
-            } else {
+            } else if navigationController.viewControllers.notContains(LoginView.self) {
+                navigationController.viewControllers = []
                 AuthenticationCoordinator(.push(on: navigationController)).start()
             }
         }

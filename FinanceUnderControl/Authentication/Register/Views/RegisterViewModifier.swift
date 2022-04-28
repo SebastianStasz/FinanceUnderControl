@@ -18,6 +18,7 @@ private struct RegisterViewModifier: ViewModifier {
         VStack {
             content
                 .focused($isFieldFocused)
+                .textInputAutocapitalization(.never)
                 .doubleTitle(title: type.title, subtitle: type.subtitle)
 
             BaseButton("Confirm", role: .primary, action: didTapConfirm)

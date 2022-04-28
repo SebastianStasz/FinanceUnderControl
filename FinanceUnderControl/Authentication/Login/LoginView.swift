@@ -26,10 +26,12 @@ struct LoginView: BaseView {
                     LabeledTextField("Email", viewModel: viewModel.emailInput, keyboardType: .emailAddress)
                         .focused($focusedField, equals: .email)
                         .onTapGesture { focusedField = .email }
+                        .textInputAutocapitalization(.never)
 
                     LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true, validationMessage: viewModel.passwordMessage)
                         .focused($focusedField, equals: .password)
                         .onTapGesture { focusedField = .password }
+                        .textInputAutocapitalization(.never)
                 }
                 .onSubmit(didSubmit)
 
