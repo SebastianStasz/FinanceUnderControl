@@ -8,47 +8,20 @@
 import SwiftUI
 
 public enum TextStyle {
-    case headlineBig
+    case title
+    case subtitle
+    case headlineLarge
     case headlineSmall(HeadlineSmallTextType = .normal)
     case bodyMedium
     case body(BodyTextType = .normal)
     case footnote(FootnoteTextType = .info)
     case currency
 
-    public var font: Font.TextStyle {
-        switch self {
-        case .headlineBig:
-            return .title3
-        case .headlineSmall, .footnote:
-            return .footnote
-        case .bodyMedium, .body:
-            return .subheadline
-        case .currency:
-            return .body
-        }
-    }
-
-    public var weight: Font.Weight {
-        switch self {
-        case .headlineBig, .bodyMedium, .currency:
-            return .medium
-        default:
-            return .regular
-        }
-    }
-
-    public var textCase: SwiftUI.Text.Case? {
-        switch self {
-        case .headlineSmall, .currency:
-            return .uppercase
-        default:
-            return nil
-        }
-    }
-
     public var color: Color {
         switch self {
-        case .headlineBig:
+        case .subtitle:
+            return .gray
+        case .headlineLarge:
             return .white // TODO: Adapt to DS
         case .headlineSmall(let type):
             return type.color
@@ -61,20 +34,48 @@ public enum TextStyle {
         }
     }
 
-    public var design: Font.Design {
+    public var textCase: SwiftUI.Text.Case? {
         switch self {
-        case .currency:
-            return .monospaced
+        case .headlineSmall, .currency:
+            return .uppercase
         default:
-            return .default
+            return nil
+        }
+    }
+
+    public var font: Font {
+        switch self {
+        case .title:
+            return .custom(LatoFont.latoBold.rawValue, size: 42, relativeTo: .largeTitle)
+
+        case .subtitle:
+            return .custom(LatoFont.latoRegular.rawValue, size: 19, relativeTo: .title3)
+
+        case .headlineLarge:
+            return .system(.title3).weight(.medium)
+
+        case .headlineSmall:
+            return .system(.footnote)
+
+        case .bodyMedium:
+            return .system(.subheadline).weight(.medium)
+
+        case .body:
+            return .system(.subheadline)
+
+        case .footnote:
+            return .system(.footnote)
+
+        case .currency:
+            return .system(.body, design: .monospaced).weight(.medium)
         }
     }
 }
 
 public extension View {
     func textStyle(_ style: TextStyle) -> some View {
-        self.foregroundColor(style.color)
-            .font(.system(style.font, design: style.design).weight(style.weight))
+        self.font(style.font)
             .textCase(style.textCase)
+            .foregroundColor(style.color)
     }
 }

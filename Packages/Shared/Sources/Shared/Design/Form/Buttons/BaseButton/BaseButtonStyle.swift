@@ -15,7 +15,7 @@ struct BaseButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .textStyle(.headlineBig)
+            .textStyle(.headlineLarge)
             .infiniteWidth()
             .padding(.medium)
             .background(role.background)

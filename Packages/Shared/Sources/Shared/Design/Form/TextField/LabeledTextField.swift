@@ -15,27 +15,49 @@ public struct LabeledTextField<T>: View {
     private let title: String
     private let style: CardStyle
     private let prompt: String?
+    private let showValidation: Bool
+    private let isSecure: Bool
+    private let validationMessage: String?
+    private let keyboardType: UIKeyboardType?
 
     public init(_ title: String,
                 viewModel: InputVM<T>,
                 prompt: String? = nil,
+                showValidation: Bool = true,
+                isSecure: Bool = false,
+                validationMessage: String? = nil,
+                keyboardType: UIKeyboardType? = nil,
                 style: CardStyle = .primary
     ) {
         self.title = title
         self.viewModel = viewModel
         self.prompt = prompt
+        self.showValidation = showValidation
+        self.isSecure = isSecure
+        self.validationMessage = validationMessage
+        self.keyboardType = keyboardType
         self.style = style
     }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: .micro) {
-            InputField(title, viewModel: viewModel, prompt: prompt ?? title).textStyle(.body())
+            InputField(title, viewModel: viewModel, prompt: prompt ?? title, isSecure: isSecure, keyboardType: keyboardType).textStyle(.body())
+                .card(style: style)
 
-            if let message = viewModel.validationMessage {
-                Text(message, style: .footnote(.validation))
+            if let message = message {
+                Text(message, style: .footnote(.invalid))
+                    .padding(.leading, .micro)
             }
         }
-        .card(style: style)
+    }
+
+    private var message: String? {
+        if let message = validationMessage {
+            return message
+        } else if let message = viewModel.validationMessage, showValidation {
+            return message
+        }
+        return nil
     }
 }
 

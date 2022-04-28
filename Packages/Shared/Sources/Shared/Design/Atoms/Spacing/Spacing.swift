@@ -14,6 +14,7 @@ public enum Spacing: CGFloat {
     case large   = 16
     case xlarge  = 24
     case xxlarge = 32
+    case huge    = 42
 }
 
 extension Spacing: Identifiable, CaseIterable {
@@ -34,6 +35,8 @@ extension Spacing: Identifiable, CaseIterable {
             return "xLarge"
         case .xxlarge:
             return "xxLarge"
+        case .huge:
+            return "Huge"
         }
     }
 }

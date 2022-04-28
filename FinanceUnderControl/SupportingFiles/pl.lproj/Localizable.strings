@@ -36,6 +36,15 @@
 "common_export" = "Eksportuj";
 "common_file_name" = "Nazwa pliku";
 "common_more" = "Więcej";
+"common_error" = "Błąd";
+
+"authorization_register_success_title" = "Zarejestrowano pomyślnie";
+"authorization_register_success_message" = "Czas zalogować się na swoje konto!";
+"authorization_register_account_exists_title" = "Konto istnieje";
+"authorization_register_account_exists_message" = "Konto z podanym adresem email już istnieje. Zaloguj się lub użyj innego adresu email.";
+"authorization_register_account_invalid_email_title" = "Błędny email";
+"authorization_register_account_invalid_email_message" = "Podamy email jest niepoprawny. Spróbuj ponownie używając innego adresu.";
+"authorization_register_account_unknown_error_message" = "W trakcie rejestracji wystąpił błąd. Spróbuj ponownie później lub wybierz inną formę logowania.";
 
 "cash_flow_filter_title" = "Filtruj";
 "cash_flow_filter_type" = "Typ przepływów";
@@ -91,3 +100,4 @@
 "empty_state_search_description" = "Nie udało się znaleźć pasujących elementów";
 
 "validation_no_elements_available" = "Brak dostępnych elementów.";
+"validation_invalid_email" = "Błędny adres email.";

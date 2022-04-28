@@ -56,6 +56,17 @@ public extension String {
     static let common_export = "common_export".localize()
     static let common_file_name = "common_file_name".localize()
     static let common_more = "common_more".localize()
+    static let common_error = "common_error".localize()
+
+    // MARK: - Authorization
+
+    static let authorization_register_success_title = "authorization_register_success_title".localize()
+    static let authorization_register_success_message = "authorization_register_success_message".localize()
+    static let authorization_register_account_exists_title = "authorization_register_account_exists_title".localize()
+    static let authorization_register_account_exists_message = "authorization_register_account_exists_message".localize()
+    static let authorization_register_account_invalid_email_title = "authorization_register_account_invalid_email_title".localize()
+    static let authorization_register_account_invalid_email_message = "authorization_register_account_invalid_email".localize()
+    static let authorization_register_account_unknown_error_message = "authorization_register_account_unknown_error_message".localize()
 
     // MARK: - Cash flow filter
 
@@ -131,4 +142,5 @@ public extension String {
     // MARK: - Validation
 
     static let validation_no_elements_available = "validation_no_elements_available".localize()
+    static let validation_invalid_email = "validation_invalid_email".localize()
 }

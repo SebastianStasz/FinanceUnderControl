@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import SwiftUI
 import SSUtils
+import Firebase
 
 final class AppVM {
     static let shared = AppVM()
@@ -28,7 +29,7 @@ final class AppVM {
     }
 
     private init() {
-        let controller = PersistenceController.preview
+        let controller = PersistenceController.previewEmpty
         self.controller = controller
     }
 

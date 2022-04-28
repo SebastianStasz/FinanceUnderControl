@@ -31,7 +31,7 @@ public struct LabeledView<Content: View>: View {
             }
             
             if let message = validationMessage {
-                Text(message, style: .footnote(.validation))
+                Text(message, style: .footnote(.invalid))
             }
         }
         .card()

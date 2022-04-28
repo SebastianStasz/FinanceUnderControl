@@ -11,7 +11,7 @@ struct TextDSView: View {
 
     var body: some View {
         Group {
-            Text("Headline big", style: .headlineBig)
+            Text("Headline big", style: .headlineLarge)
 
             Text("Headline small - normal", style: .headlineSmall(.normal))
             Text("Headline small - action", style: .headlineSmall(.action))
@@ -22,7 +22,7 @@ struct TextDSView: View {
             Text("Body - action", style: .body(.action))
 
             Text("Footnote - info", style: .footnote(.info))
-            Text("Footnote - validation", style: .footnote(.validation))
+            Text("Footnote - validation", style: .footnote(.invalid))
 
             Text("Currency", style: .currency)
         }

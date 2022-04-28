@@ -16,7 +16,7 @@ extension CantorView {
                 if let exchangeRate = viewModel.exchangeRateValue {
                     Text(exchangeRate)
                 } else {
-                    Text(noExchangeRateMessage, style: .footnote(.validation))
+                    Text(noExchangeRateMessage, style: .footnote(.invalid))
                 }
                 if let exchangedMoney = viewModel.exchangedMoney {
                     Text(exchangedMoney).transition(.scale)

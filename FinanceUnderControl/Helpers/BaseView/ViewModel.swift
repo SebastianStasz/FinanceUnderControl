@@ -22,3 +22,18 @@ class ViewModel: ObservableObject, CombineHelper {
     var cancellables: Set<AnyCancellable> = []
     let baseAction = BaseAction()
 }
+
+class ViewModel2: ObservableObject, CombineHelper {
+
+    @Published var isLoading = false
+
+    var cancellables: Set<AnyCancellable> = []
+    private let coordinator: Coordinator
+
+    init(coordinator: Coordinator) {
+        self.coordinator = coordinator
+        bind()
+    }
+
+    func bind() {}
+}

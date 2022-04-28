@@ -36,6 +36,15 @@
 "common_export" = "Export";
 "common_file_name" = "File name";
 "common_more" = "More";
+"common_error" = "Error";
+
+"authorization_register_success_title" = "Registered successfully";
+"authorization_register_success_message" = "Now it's time to sign in!";
+"authorization_register_account_exists_title" = "Account exists";
+"authorization_register_account_exists_message" = "Account with provided email already exists. Sign in or use differen email address.";
+"authorization_register_account_invalid_email_title" = "Invalid email";
+"authorization_register_account_invalid_email_message" = "Provided email is invalid. Try again with different one.";
+"authorization_register_account_unknown_error_message" = "An error occurred during registration. Please try again later or choose a different login method.";
 
 "cash_flow_filter_title" = "Filter";
 "cash_flow_filter_type" = "Cash flow type";
@@ -90,3 +99,4 @@
 "empty_state_search_description" = "We can't find any item matching your search";
 
 "validation_no_elements_available" = "No elements available.";
+"validation_invalid_email" = "Invalid email address.";
