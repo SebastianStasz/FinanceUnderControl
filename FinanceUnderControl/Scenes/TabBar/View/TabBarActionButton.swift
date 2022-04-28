@@ -73,7 +73,7 @@ struct TabBarAddButton_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Color.backgroundPrimary
-            TabBarActionButton(viewModel: TabBarVM())
+            TabBarActionButton(viewModel: TabBarVM(coordinator: PreviewCoordinator()))
                 .frame(width: 50, height: 50)
         }
     }

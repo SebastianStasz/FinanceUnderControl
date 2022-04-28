@@ -16,7 +16,6 @@ final class LoginVM: ViewModel2 {
         let didTapSignUp = DriverSubject<Void>()
         let didTapSignIn = DriverSubject<Void>()
         let loginError = DriverSubject<AuthErrorCode>()
-        let loginSuccessfully = DriverSubject<Void>()
     }
 
     @Published private(set) var isFormValid = false
@@ -40,9 +39,8 @@ final class LoginVM: ViewModel2 {
                 guard let email = $0.0, let password = $0.1 else { return }
                 try await Auth.auth().signIn(withEmail: email, password: password)
             }
-            .sinkAndStore(on: self) {
-                $0.binding.loginSuccessfully.send($1)
-            }
+            .sink { _ in }
+            .store(in: &cancellables)
 
         loginError.sinkAndStore(on: self) {
             if let authErrorCode = AuthErrorCode(rawValue: $1._code) {

@@ -47,12 +47,13 @@ final class RegisterVM: ViewModel2 {
 
         binding.didConfirmRegistration
             .withLatestFrom(registrationData)
-            .perform(on: self, errorTracker: registrationError) {
-                guard let email = $0.0, let password = $0.1 else { return }
-                try await Auth.auth().createUser(withEmail: email, password: password)
+            .perform(on: self, errorTracker: registrationError) { input -> AuthDataResult? in
+                guard let email = input.0, let password = input.1 else { return nil }
+                return try await Auth.auth().createUser(withEmail: email, password: password)
             }
-            .sinkAndStore(on: self) {
-                $0.binding.registeredSuccessfully.send($1)
+            .compactMap { $0 }
+            .sinkAndStore(on: self) { vm, _ in
+                vm.binding.registeredSuccessfully.send()
             }
 
         registrationError.sinkAndStore(on: self) {

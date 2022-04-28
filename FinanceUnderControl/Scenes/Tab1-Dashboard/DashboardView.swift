@@ -33,8 +33,8 @@ struct DashboardView: View {
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            DashboardView().inTabBarPreview()
-            DashboardView().inTabBarPreview().darkScheme()
+            DashboardView()
+            DashboardView().darkScheme()
         }
     }
 }

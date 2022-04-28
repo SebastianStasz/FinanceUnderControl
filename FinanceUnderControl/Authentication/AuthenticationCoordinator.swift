@@ -6,22 +6,7 @@
 //
 
 import FirebaseAuth
-import Combine
-import SwiftUI
-
-final class SwiftUIVC<Content: View>: UIHostingController<Content> {
-    private let viewModel: ViewModel2
-    var cancellables: Set<AnyCancellable> = []
-
-    init(viewModel: ViewModel2, view: Content) {
-        self.viewModel = viewModel
-        super.init(rootView: view)
-    }
-    
-    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
+import UIKit
 
 final class AuthenticationCoordinator: Coordinator {
 
@@ -37,10 +22,6 @@ final class AuthenticationCoordinator: Coordinator {
             .sink { [weak self] in self?.handleLoginEror($0) }
             .store(in: &viewController.cancellables)
 
-        viewModel.binding.loginSuccessfully
-            .sink { [weak self] in self?.handleLoginSuccessfull() }
-            .store(in: &viewController.cancellables)
-
         return viewController
     }
 
@@ -52,9 +33,5 @@ final class AuthenticationCoordinator: Coordinator {
     private func handleLoginEror(_ error: AuthErrorCode) {
         let resultData = ResultData.error(title: "Failed to login", message: "Something went wrong. Please try again in a moment.")
         navigationController?.presentResultView(viewData: resultData)
-    }
-
-    private func handleLoginSuccessfull() {
-        print("Logged successfully")
     }
 }
