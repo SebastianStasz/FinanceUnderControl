@@ -28,4 +28,20 @@ extension UINavigationController {
         }
         popToViewController(viewControllers[index], animated: animated)
     }
+
+    func push<V: View, RV: View>(_ view: V, byReplacing viewToReplace: RV, animated: Bool) {
+        guard let index = viewControllers.firstIndex(of: viewToReplace) else {
+            push(view, animated: animated) ; return
+        }
+        var currentViewControllers = viewControllers
+        currentViewControllers.remove(at: index)
+        currentViewControllers.append(UIHostingController(rootView: view))
+        setViewControllers(currentViewControllers, animated: animated)
+    }
+}
+
+private extension Array where Element == UIViewController {
+    func firstIndex<V: View>(of view: V) -> Int? {
+        firstIndex(where: { $0 is UIHostingController<V> })
+    }
 }
