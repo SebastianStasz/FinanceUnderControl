@@ -10,7 +10,7 @@ import SwiftUI
 
 struct DashboardView: View {
 
-    @StateObject private var viewModel = DashboardVM()
+    @ObservedObject var viewModel: DashboardVM
 
     var body: some View {
         FormView {
@@ -32,9 +32,10 @@ struct DashboardView: View {
 
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
+        let viewModel = DashboardVM(coordinator: PreviewCoordinator())
         Group {
-            DashboardView()
-            DashboardView().darkScheme()
+            DashboardView(viewModel: viewModel)
+            DashboardView(viewModel: viewModel).darkScheme()
         }
     }
 }
