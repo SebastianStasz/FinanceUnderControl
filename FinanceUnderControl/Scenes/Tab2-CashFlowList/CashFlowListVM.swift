@@ -11,7 +11,7 @@ import Foundation
 import SSUtils
 import SSValidation
 
-final class CashFlowListVM: ViewModel {
+final class CashFlowListVM: ViewModel2 {
     typealias Filter = CashFlowEntity.Filter
 
     let minValueInput = DoubleInputVM(validator: .alwaysValid)
@@ -21,8 +21,8 @@ final class CashFlowListVM: ViewModel {
     @Published var cashFlowFilter = CashFlowFilter()
     @Published var searchText = ""
 
-    override init() {
-        super.init()
+    override init(coordinator: CoordinatorProtocol) {
+        super.init(coordinator: coordinator)
 
         let searchPredicate = $searchText
             .map { $0.isEmpty ? nil : Filter.nameContains($0).nsPredicate }
