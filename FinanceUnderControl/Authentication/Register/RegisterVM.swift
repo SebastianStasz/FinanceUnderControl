@@ -52,9 +52,7 @@ final class RegisterVM: ViewModel2 {
                 return try await Auth.auth().createUser(withEmail: email, password: password)
             }
             .compactMap { $0 }
-            .sinkAndStore(on: self) { vm, result in
-                result.user.sendEmailVerification()
-                try? Auth.auth().signOut()
+            .sinkAndStore(on: self) { vm, _ in
                 vm.binding.registeredSuccessfully.send()
             }
 

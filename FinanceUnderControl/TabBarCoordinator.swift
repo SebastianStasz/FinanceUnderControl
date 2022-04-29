@@ -7,13 +7,12 @@
 
 import UIKit
 
-final class TabBarCoordinator: Coordinator {
+final class TabBarCoordinator: CoordinatorProtocol {
 
-    override func initializeView() -> UIViewController {
+    func start() -> UIViewController {
         let viewModel = TabBarVM(coordinator: self)
         let view = TabBarView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
-
         return viewController
     }
 }

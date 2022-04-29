@@ -12,28 +12,24 @@ import SwiftUI
 final class AppCoordinator {
 
     private var cancellables: Set<AnyCancellable> = []
+    private var rootViewController: UIViewController!
     private let window: UIWindow
-    private let navigationController: UINavigationController
 
     init(with window: UIWindow) {
         self.window = window
-        let navigationController = UINavigationController()
-        self.navigationController = navigationController
-        window.rootViewController = navigationController
         handleUserState()
     }
 
     private func handleUserState() {
         Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            guard let navigationController = self?.navigationController else { return }
+            guard let self = self else { return }
 
-            if let user = user, user.isEmailVerified, navigationController.viewControllers.notContains(TabBarView.self) {
-                navigationController.viewControllers = []
-                TabBarCoordinator(.push(on: navigationController)).start()
-            } else if navigationController.viewControllers.notContains(LoginView.self) {
-                navigationController.viewControllers = []
-                AuthenticationCoordinator(.push(on: navigationController)).start()
+            if user != nil {
+                self.rootViewController = TabBarCoordinator().start()
+            } else {
+                AuthenticationCoordinator(.presentFullScreen(on: self.rootViewController)).start()
             }
+            self.window.rootViewController = self.rootViewController
         }
     }
 }
