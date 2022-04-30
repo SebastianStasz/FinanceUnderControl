@@ -35,7 +35,7 @@ public extension Button where Label == SwiftUI.Label<SwiftUI.Text, Image> {
 
     private static func deleteBtn(action: @escaping Action) -> some View {
         Button(role: .destructive, action: action) {
-            Label("Delete", systemImage: SFSymbol.trash.name)
+            Label(String.common_delete, systemImage: SFSymbol.trash.name)
         }
         .foregroundColor(.red)
     }

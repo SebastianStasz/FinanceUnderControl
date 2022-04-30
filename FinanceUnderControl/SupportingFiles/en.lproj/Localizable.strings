@@ -36,6 +36,7 @@
 "common_export" = "Export";
 "common_file_name" = "File name";
 "common_more" = "More";
+"common_delete" = "Delete";
 
 "cash_flow_filter_title" = "Filter";
 "cash_flow_filter_type" = "Cash flow type";

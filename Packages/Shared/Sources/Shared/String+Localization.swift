@@ -56,6 +56,7 @@ public extension String {
     static let common_export = "common_export".localize()
     static let common_file_name = "common_file_name".localize()
     static let common_more = "common_more".localize()
+    static let common_delete = "common_delete".localize()
 
     // MARK: - Cash flow filter
 
