@@ -22,7 +22,7 @@ final class ExportFinanceDataVM: ViewModel {
     @Published var isExporterShown = false
     @Published var errorMessage: String?
 
-    let fileNameInput = TextInputVM(validator: .alwaysValid())
+    let fileNameInput = TextInputVM(validator: .alwaysValid)
     let defaultFileName: String
     let input = Input()
 
