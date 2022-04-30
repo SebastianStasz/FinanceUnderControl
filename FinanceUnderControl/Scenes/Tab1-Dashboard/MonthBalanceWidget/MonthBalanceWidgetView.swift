@@ -8,10 +8,8 @@
 import Shared
 import SwiftUI
 import SSUtils
-import Inject
 
 struct MonthBalanceWidgetView: View {
-    @ObservedObject private var iO = Inject.observer
     @StateObject private var viewModel = MonthBalanceWidgetVM()
 
     var body: some View {
@@ -29,7 +27,6 @@ struct MonthBalanceWidgetView: View {
         }
         .card()
         .overlay(loadingIndicator)
-        .enableInjection()
     }
 
     @ViewBuilder
