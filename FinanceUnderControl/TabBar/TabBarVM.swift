@@ -14,12 +14,12 @@ final class TabBarVM: ViewModel2 {
 
     struct ViewBinding {
         let didSelectTab = DriverSubject<TabBarModel>()
+        let presentCashFlowTypeSelection = DriverSubject<Void>()
     }
 
     let binding = ViewBinding()
-    @Published var selectedTab: TabBarModel = .dashboard
+    @Published private(set) var selectedTab: TabBarModel = .dashboard
     @Published var arePopupsShown = false
-    @Published var cashFlowCategoryType: CashFlowType?
 
     override func commonInit() {
         binding.didSelectTab.assign(to: &$selectedTab)

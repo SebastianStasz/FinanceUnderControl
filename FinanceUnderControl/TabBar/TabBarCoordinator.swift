@@ -6,47 +6,39 @@
 //
 
 import UIKit
-import SwiftUI
 import Shared
+import SwiftUI
 
 final class TabBarCoordinator: RootCoordinator {
     
-    private let tabBarController = AppTabBarController()
+    private var tabBarController: AppTabBarController!
 
     func start() -> UIViewController {
-        return tabBarController
-    }
-}
-
-final class AppTabBarController: UITabBarController, CoordinatorProtocol {
-
-    private lazy var viewModel = TabBarVM(coordinator: self)
-
-    init() {
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        let viewModel = TabBarVM(coordinator: self)
+        tabBarController = AppTabBarController(viewModel: viewModel)
 
         viewModel.binding.didSelectTab
-            .sink { [weak self] tab in self?.selectedIndex = tab.id }
+            .sink { [weak self] tab in self?.tabBarController.selectedIndex = tab.id }
             .store(in: &viewModel.cancellables)
 
-        let dashboard = DashboardCoordinator().start()
-        let cashFlowList = CashFlowListCoordinator().start()
-        let cantor = CantorCoordinator().start()
-        let settings = SettingsCoordinator().start()
+        viewModel.binding.presentCashFlowTypeSelection
+            .sink { [weak self] tab in
+                self?.presentCashFlowTypeSelection() }
+            .store(in: &viewModel.cancellables)
 
-        viewControllers = [dashboard, cashFlowList, cantor, settings]
+        return tabBarController
+    }
 
-        let tabBarView = UIHostingController(rootView: TabBarView(viewModel: viewModel))
+    private func presentCashFlowTypeSelection() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(title: "Expense", action: onSelf { $0.presentCashFlowForm(for: .expense) })
+        alert.addAction(title: "Income", action: onSelf { $0.presentCashFlowForm(for: .income) })
+        alert.addCancelAction()
+        tabBarController.present(alert, animated: true)
+    }
 
-        tabBarView.view.frame = tabBar.frame
-        view.addSubview(tabBarView.view)
+    private func presentCashFlowForm(for type: CashFlowType) {
+        let viewController = UIHostingController(rootView: CashFlowFormView(for: .new(for: type)))
+        tabBarController.present(viewController, animated: true)
     }
 }

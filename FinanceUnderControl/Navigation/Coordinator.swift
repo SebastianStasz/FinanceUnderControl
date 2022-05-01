@@ -8,9 +8,9 @@
 import UIKit
 import SSUtils
 
-protocol CoordinatorProtocol {}
+protocol CoordinatorProtocol: BaseActions {}
 
-class Coordinator: CoordinatorProtocol, BaseActions {
+class Coordinator: CoordinatorProtocol {
     private let presentationStyle: PresentationStyle
     weak var navigationController: UINavigationController?
 

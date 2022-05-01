@@ -6,13 +6,25 @@
 //
 
 import SwiftUI
+import Shared
 
 final class CashFlowListCoordinator: RootCoordinator {
+
+    private let navigationController = UINavigationController()
+
+    init() {
+        navigationController.navigationBar.prefersLargeTitles = true
+    }
 
     func start() -> UIViewController {
         let viewModel = CashFlowListVM(coordinator: self)
         let view = CashFlowListView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
-        return viewController
+        navigationController.viewControllers = [viewController]
+        return navigationController
+    }
+
+    private func presentFilterView() {
+
     }
 }

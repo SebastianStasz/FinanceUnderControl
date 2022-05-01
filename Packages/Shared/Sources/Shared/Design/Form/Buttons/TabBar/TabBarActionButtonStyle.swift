@@ -9,11 +9,7 @@ import SwiftUI
 
 public struct TabBarActionButtonStyle: ButtonStyle {
 
-    let isEnabled: Bool
-
-    public init(isEnabled: Bool) {
-        self.isEnabled = isEnabled
-    }
+    public init() {}
 
     static private let linearGradient = Gradient(colors: [.basicPrimary, .basicPrimary, .blue])
     static private let actionBtnGradient = LinearGradient(gradient: Self.linearGradient, startPoint: .top, endPoint: .bottom)
@@ -21,17 +17,11 @@ public struct TabBarActionButtonStyle: ButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         ZStack {
             Circle()
-                .fill(Self.actionBtnGradient)
-                .scaleEffect(1.2)
-
-            Circle()
                 .foregroundColor(.blue)
 
             SFSymbol.plus.image
                 .foregroundColor(.white)
-                .font(.system(size: 24, weight: .medium))
-                .rotationEffect(isEnabled ? Angle(degrees: 45) : .zero)
+                .font(.system(size: 20, weight: .medium))
         }
-        .animation(.easeInOut(duration: 0.2))
     }
 }

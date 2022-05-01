@@ -16,7 +16,9 @@ struct TabBarView: View {
         HStack {
             ForEach(TabBarModel.allCases) { tab in
                 if isMiddleElement(tab.id) {
-                    TabBarActionButton(viewModel: viewModel).offset(y: -14)
+                    Button("Add", action: presentCashFlowTypeSelection)
+                        .buttonStyle(TabBarActionButtonStyle())
+                        .offset(y: -10)
                 }
 
                 Button(tab.name, action: selectTab(tab))
@@ -34,14 +36,18 @@ struct TabBarView: View {
             .shadow(color: .black.opacity(0.05), radius: 5)
     }
 
-    // MARK: Interactions
-
     private func isMiddleElement(_ element: Int) -> Bool {
         element == TabBarModel.allCases.count / 2
     }
 
+    // MARK: Interactions
+
     private func selectTab(_ tab: TabBarModel) {
         viewModel.binding.didSelectTab.send(tab)
+    }
+
+    private func presentCashFlowTypeSelection() {
+        viewModel.binding.presentCashFlowTypeSelection.send()
     }
 }
 
