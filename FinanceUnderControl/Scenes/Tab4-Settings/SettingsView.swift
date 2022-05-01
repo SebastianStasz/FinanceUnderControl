@@ -33,6 +33,7 @@ struct SettingsView: View {
                 Navigation("Design system", leadsTo: DesignSystemView())
             }
         }
+        .navigationTitle(String.tab_settings_title)
         .onAppear { viewModel.bind() }
     }
 }

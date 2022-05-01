@@ -15,15 +15,9 @@ import Firebase
 final class AppVM {
     static let shared = AppVM()
 
-    private let currencyService = CurrencyService()
-
     let context: NSManagedObjectContext
 
     private init() {
         context = PersistenceController.preview.context
-    }
-
-    func setupCurrencies() async {
-        await currencyService.setupCurrencies(in: context)
     }
 }

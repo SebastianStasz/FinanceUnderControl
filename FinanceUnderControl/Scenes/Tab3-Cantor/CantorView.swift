@@ -26,14 +26,10 @@ struct CantorView: BaseView {
             sectorMore
                 .displayIf(viewModel.exchangeRateValue.notNil)
         }
-        .toolbar { toolbarContent }
-        .infoAlert(.common_info, isPresented: $isInfoAlertPresented, message: .cantor_exchange_rates_info_message)
         .onAppear { viewModel.bind() }
-        .environment(\.managedObjectContext, AppVM.shared.context)
-    }
-
-    private var toolbarContent: some ToolbarContent {
-        Toolbar.trailing(systemImage: SFSymbol.infoCircle.name, action: showInfoAlert)
+        .navigationTitle(String.tab_currencies_title)
+        .toolbar { Toolbar.trailing(systemImage: SFSymbol.infoCircle.name, action: showInfoAlert) }
+        .infoAlert(.common_info, isPresented: $isInfoAlertPresented, message: .cantor_exchange_rates_info_message)
     }
 
     // MARK: - Interactions

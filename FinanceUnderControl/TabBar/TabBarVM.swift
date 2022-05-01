@@ -12,6 +12,8 @@ import SSUtils
 
 final class TabBarVM: ViewModel2 {
 
+    private let currencyService = CurrencyService()
+
     struct ViewBinding {
         let didSelectTab = DriverSubject<TabBarModel>()
         let presentCashFlowTypeSelection = DriverSubject<Void>()
@@ -23,5 +25,9 @@ final class TabBarVM: ViewModel2 {
 
     override func commonInit() {
         binding.didSelectTab.assign(to: &$selectedTab)
+    }
+
+    func setupCurrencies() async {
+        await currencyService.setupCurrencies(in: AppVM.shared.context)
     }
 }

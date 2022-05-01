@@ -13,7 +13,7 @@ final class CashFlowListCoordinator: RootCoordinator {
     private let navigationController = UINavigationController()
 
     init() {
-        navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.prefersLargeTitles()
     }
 
     func start() -> UIViewController {

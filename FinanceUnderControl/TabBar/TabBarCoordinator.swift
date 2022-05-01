@@ -30,7 +30,7 @@ final class TabBarCoordinator: RootCoordinator {
     }
 
     private func presentCashFlowTypeSelection() {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Add", message: nil, preferredStyle: .actionSheet)
         alert.addAction(title: "Expense", action: onSelf { $0.presentCashFlowForm(for: .expense) })
         alert.addAction(title: "Income", action: onSelf { $0.presentCashFlowForm(for: .income) })
         alert.addCancelAction()

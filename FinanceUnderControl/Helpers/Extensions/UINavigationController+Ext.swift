@@ -38,6 +38,10 @@ extension UINavigationController {
         currentViewControllers.append(UIHostingController(rootView: view))
         setViewControllers(currentViewControllers, animated: animated)
     }
+
+    func prefersLargeTitles() {
+        navigationBar.prefersLargeTitles = true
+    }
 }
 
 extension Array where Element == UIViewController {

@@ -9,10 +9,17 @@ import UIKit
 
 final class CantorCoordinator: RootCoordinator {
 
+    private let navigationController = UINavigationController()
+
+    init() {
+        navigationController.prefersLargeTitles()
+    }
+
     func start() -> UIViewController {
         let viewModel = CantorVM(coordinator: self)
         let view = CantorView(viewModel: viewModel)
-        let viewController = SwiftUIVC(viewModel: viewModel, view: view)
-        return viewController
+        let viewController = SwiftUIVC(viewModel: viewModel, view: view.environment(\.managedObjectContext, AppVM.shared.context))
+        navigationController.viewControllers = [viewController]
+        return navigationController
     }
 }

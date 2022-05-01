@@ -27,6 +27,8 @@ struct TabBarView: View {
         }
         .infiniteWidth(maxHeight: 49)
         .background(tabBarBackground)
+        .ignoresSafeArea(.keyboard)
+        .task { await viewModel.setupCurrencies() }
     }
 
     private var tabBarBackground: some View {
