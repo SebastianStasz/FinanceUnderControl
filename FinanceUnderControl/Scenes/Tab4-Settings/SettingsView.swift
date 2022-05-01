@@ -15,10 +15,7 @@ struct SettingsView: View {
     @FetchRequest(sortDescriptors: [CurrencyEntity.Sort.byCode(.forward).nsSortDescriptor]
     ) var currencies: FetchedResults<CurrencyEntity>
 
-    @StateObject private var viewModel = SettingsVM()
-
-    @State private var isExportDataViewShown = false
-    @State private var isImportDataViewShown = false
+    @ObservedObject var viewModel: SettingsVM
 
     var body: some View {
         FormView {
@@ -32,24 +29,11 @@ struct SettingsView: View {
                 LabeledPicker(.common_secondary, elements: currencies, selection: $viewModel.secondaryCurrency)
             }
 
-            Sector(.settings_your_finance_data) {
-                Button(action: { isExportDataViewShown = true }) {
-                    Text(.common_export).card()
-                }
-                .buttonStyle(.plain)
-
-                Button(action: { isImportDataViewShown = true }) {
-                    Text(.common_import).card()
-                }
-                .buttonStyle(.plain)
-            }
-
             Sector("Debug") {
                 Navigation("Design system", leadsTo: DesignSystemView())
             }
         }
-        .sheet(isPresented: $isExportDataViewShown, content: ExportFinanceDataView.init)
-        .sheet(isPresented: $isImportDataViewShown, content: ImportFinanceDataView.init)
+        .onAppear { viewModel.bind() }
     }
 }
 
@@ -57,8 +41,8 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
-            .background(Color.backgroundPrimary)
-            .embedInNavigationView(title: .tab_settings_title, displayMode: .large)
+        let viewModel = SettingsVM(coordinator: PreviewCoordinator())
+        SettingsView(viewModel: viewModel)
+        SettingsView(viewModel: viewModel).darkScheme()
     }
 }
