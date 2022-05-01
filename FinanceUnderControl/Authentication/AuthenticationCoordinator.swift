@@ -8,9 +8,11 @@
 import FirebaseAuth
 import UIKit
 
-final class AuthenticationCoordinator: Coordinator {
+final class AuthenticationCoordinator: RootCoordinator {
 
-    override func initializeView() -> UIViewController {
+    private let navigationController = UINavigationController()
+
+    func start() -> UIViewController {
         let viewModel = LoginVM(coordinator: self)
         let viewController = SwiftUIVC(viewModel: viewModel, view: LoginView(viewModel: viewModel))
 
@@ -22,16 +24,15 @@ final class AuthenticationCoordinator: Coordinator {
             .sink { [weak self] in self?.handleLoginEror($0) }
             .store(in: &viewController.cancellables)
 
-        return viewController
+        return navigationController
     }
 
     private func presentRegisterView() {
-        guard let navigationController = navigationController else { return }
         RegisterCoordinator(.presentFullScreen(on: navigationController)).start()
     }
 
     private func handleLoginEror(_ error: AuthErrorCode) {
         let resultData = ResultData.error(title: "Failed to login", message: "Something went wrong. Please try again in a moment.")
-        navigationController?.presentResultView(viewData: resultData)
+        navigationController.presentResultView(viewData: resultData)
     }
 }

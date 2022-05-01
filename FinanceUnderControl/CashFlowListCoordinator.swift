@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-final class CashFlowListCoordinator: CoordinatorProtocol {
+final class CashFlowListCoordinator: RootCoordinator {
 
     func start() -> UIViewController {
         let viewModel = CashFlowListVM(coordinator: self)

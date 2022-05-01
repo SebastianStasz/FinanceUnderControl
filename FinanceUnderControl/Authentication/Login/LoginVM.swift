@@ -25,7 +25,7 @@ final class LoginVM: ViewModel2 {
     let emailInput = TextInputVM()
     let passwordInput = TextInputVM()
 
-    override func bind() {
+    override func commonInit() {
         let loginData = CombineLatest(emailInput.$resultValue, passwordInput.$resultValue)
         let loginError = DriverSubject<Error>()
 

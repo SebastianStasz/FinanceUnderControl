@@ -9,11 +9,13 @@ import Foundation
 import SwiftUI
 import Shared
 
-enum TabBarModel: Int {
+enum TabBarModel: Int, Identifiable, CaseIterable {
     case dashboard
     case cashFlow
     case currencies
     case settings
+
+    var id: Int { rawValue }
 
     var name: String {
         switch self {
@@ -41,31 +43,6 @@ enum TabBarModel: Int {
         }
     }
 }
-
-// MARK: - Tab Views
-
-extension TabBarModel: View {
-
-    var body: some View {
-        switch self {
-        case .dashboard:
-            DashboardView()
-        case .cashFlow:
-            CashFlowListView()
-        case .currencies:
-            CantorView()
-        case .settings:
-            SettingsView()
-        }
-    }
-}
-
-extension TabBarModel: Identifiable {
-    var id: Int { rawValue }
-}
-
-extension TabBarModel: CaseIterable {}
-
 
 extension TabBarButtonStyle {
     init(for tab: TabBarModel, isSelected: Bool) {

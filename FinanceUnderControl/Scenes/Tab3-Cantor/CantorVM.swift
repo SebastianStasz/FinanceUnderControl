@@ -12,8 +12,7 @@ import SwiftUI
 import SSUtils
 import SSValidation
 
-final class CantorVM: ObservableObject {
-    private var cancellables: Set<AnyCancellable> = []
+final class CantorVM: ViewModel2 {
     private let currencySettings = CurrencySettings()
 
     @Published var currencySelector = CurrencySelector<CurrencyEntity?>()
@@ -28,7 +27,7 @@ final class CantorVM: ObservableObject {
         return true
     }
 
-    init() {
+    func bind() {
         let currencySettingsOutput = currencySettings.result()
         currencySettingsOutput.secondaryCurrency
             .sink { [weak self] currency in

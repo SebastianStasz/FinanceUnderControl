@@ -16,7 +16,7 @@ struct CantorView: BaseView {
     @FetchRequest(sortDescriptors: [CurrencyEntity.Sort.byCode(.forward).nsSortDescriptor]
     ) var currencies: FetchedResults<CurrencyEntity>
 
-    @StateObject var viewModel = CantorVM()
+    @ObservedObject var viewModel: CantorVM
     @State private var isInfoAlertPresented = false
 
     var baseBody: some View {
@@ -28,6 +28,8 @@ struct CantorView: BaseView {
         }
         .toolbar { toolbarContent }
         .infoAlert(.common_info, isPresented: $isInfoAlertPresented, message: .cantor_exchange_rates_info_message)
+        .onAppear { viewModel.bind() }
+        .environment(\.managedObjectContext, AppVM.shared.context)
     }
 
     private var toolbarContent: some ToolbarContent {
@@ -45,7 +47,8 @@ struct CantorView: BaseView {
 
 struct CantorView_Previews: PreviewProvider {
     static var previews: some View {
-        CantorView()
-            .embedInNavigationView(title: "Cantor")
+        let viewModel = CantorVM(coordinator: PreviewCoordinator())
+        CantorView(viewModel: viewModel)
+        CantorView(viewModel: viewModel).darkScheme()
     }
 }

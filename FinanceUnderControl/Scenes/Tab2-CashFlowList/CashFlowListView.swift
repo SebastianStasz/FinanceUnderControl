@@ -54,10 +54,6 @@ struct CashFlowListView: View {
         .onChange(of: viewModel.cashFlowPredicate) {
             cashFlows.nsPredicate = $0
         }
-        .onReceive(AppVM.shared.events.groupingChanged) {
-            cashFlows.nsPredicate = NSPredicate(format: "name == %@", "")
-            cashFlows.nsPredicate = viewModel.cashFlowPredicate
-        }
     }
 
     @ViewBuilder
@@ -95,8 +91,6 @@ struct CashFlowListView: View {
     private func deleteCashFlow() {
         _ = cashFlowToDelete?.delete()
         cashFlowToDelete = nil
-        try? AppVM.shared.context.save()
-        AppVM.shared.events.cashFlowsChanged.send()
     }
 }
 

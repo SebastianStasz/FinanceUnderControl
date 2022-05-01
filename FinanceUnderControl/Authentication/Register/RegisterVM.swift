@@ -31,7 +31,7 @@ final class RegisterVM: ViewModel2 {
     let passwordInput = TextInputVM(validator: .alwaysValid)
     let confirmPasswordInput = TextInputVM(validator: .alwaysValid)
 
-    override func bind() {
+    override func commonInit() {
         let registrationData = CombineLatest(emailInput.result(), passwordInput.result())
         let registrationError = DriverSubject<Error>()
 

@@ -32,8 +32,8 @@ class ViewModel2: ObservableObject, CombineHelper {
 
     init(coordinator: CoordinatorProtocol) {
         self.coordinator = coordinator
-        bind()
+        commonInit()
     }
 
-    func bind() {}
+    func commonInit() {}
 }

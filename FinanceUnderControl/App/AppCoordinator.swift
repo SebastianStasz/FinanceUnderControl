@@ -12,7 +12,6 @@ import SwiftUI
 final class AppCoordinator {
 
     private var cancellables: Set<AnyCancellable> = []
-    private var rootViewController: UIViewController!
     private let window: UIWindow
 
     init(with window: UIWindow) {
@@ -23,13 +22,9 @@ final class AppCoordinator {
     private func handleUserState() {
         Auth.auth().addStateDidChangeListener { [weak self] _, user in
             guard let self = self else { return }
-
-            if user != nil {
-                self.rootViewController = TabBarCoordinator().start()
-            } else {
-                AuthenticationCoordinator(.presentFullScreen(on: self.rootViewController)).start()
-            }
-            self.window.rootViewController = self.rootViewController
+            let coordinator: RootCoordinator = user != nil ? TabBarCoordinator() : AuthenticationCoordinator()
+            let viewController = coordinator.start()
+            self.window.rootViewController = viewController
         }
     }
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-final class DashboardCoordinator: CoordinatorProtocol {
+final class DashboardCoordinator: RootCoordinator {
 
     func start() -> UIViewController {
         let viewModel = DashboardVM(coordinator: self)
