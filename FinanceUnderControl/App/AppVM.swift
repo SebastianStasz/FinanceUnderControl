@@ -15,31 +15,15 @@ import Firebase
 final class AppVM {
     static let shared = AppVM()
 
-    struct Events {
-        let cashFlowsChanged = DriverSubject<Void>()
-        let groupingChanged = DriverSubject<Void>()
-    }
-
     private let currencyService = CurrencyService()
-    let controller: PersistenceController
-    let events = Events()
 
-    var context: NSManagedObjectContext {
-        controller.context
-    }
+    let context: NSManagedObjectContext
 
     private init() {
-        let controller = PersistenceController.previewEmpty
-        self.controller = controller
+        context = PersistenceController.preview.context
     }
 
     func setupCurrencies() async {
         await currencyService.setupCurrencies(in: context)
-    }
-
-    func didChangeScenePhase(to scenePhase: ScenePhase) {
-        if case .background = scenePhase {
-            controller.save()
-        }
     }
 }

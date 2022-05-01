@@ -31,7 +31,7 @@ final class RegisterVM: ViewModel2 {
     let passwordInput = TextInputVM(validator: .alwaysValid)
     let confirmPasswordInput = TextInputVM(validator: .alwaysValid)
 
-    override func bind() {
+    override func commonInit() {
         let registrationData = CombineLatest(emailInput.result(), passwordInput.result())
         let registrationError = DriverSubject<Error>()
 
@@ -52,9 +52,7 @@ final class RegisterVM: ViewModel2 {
                 return try await Auth.auth().createUser(withEmail: email, password: password)
             }
             .compactMap { $0 }
-            .sinkAndStore(on: self) { vm, result in
-                result.user.sendEmailVerification()
-                try? Auth.auth().signOut()
+            .sinkAndStore(on: self) { vm, _ in
                 vm.binding.registeredSuccessfully.send()
             }
 

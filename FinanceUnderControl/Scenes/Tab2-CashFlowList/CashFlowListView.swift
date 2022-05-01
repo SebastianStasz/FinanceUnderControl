@@ -14,7 +14,7 @@ struct CashFlowListView: View {
     @SectionedFetchRequest(sectionIdentifier: \.monthAndYear, sortDescriptors: [CashFlowEntity.Sort.byDate(.reverse).nsSortDescriptor], animation: .easeInOut
     ) private var cashFlows: SectionedFetchResults<Date, CashFlowEntity>
 
-    @StateObject private var viewModel = CashFlowListVM()
+    @ObservedObject var viewModel: CashFlowListVM
     @State private var isFilterViewShown = false
     @State private var cashFlowToDelete: CashFlowEntity?
     @State private var cashFlowFormType: CashFlowFormType<CashFlowEntity>?
@@ -54,10 +54,6 @@ struct CashFlowListView: View {
         .onChange(of: viewModel.cashFlowPredicate) {
             cashFlows.nsPredicate = $0
         }
-        .onReceive(AppVM.shared.events.groupingChanged) {
-            cashFlows.nsPredicate = NSPredicate(format: "name == %@", "")
-            cashFlows.nsPredicate = viewModel.cashFlowPredicate
-        }
     }
 
     @ViewBuilder
@@ -95,8 +91,6 @@ struct CashFlowListView: View {
     private func deleteCashFlow() {
         _ = cashFlowToDelete?.delete()
         cashFlowToDelete = nil
-        try? AppVM.shared.context.save()
-        AppVM.shared.events.cashFlowsChanged.send()
     }
 }
 
@@ -104,9 +98,10 @@ struct CashFlowListView: View {
 
 struct CashFlowListView_Previews: PreviewProvider {
     static var previews: some View {
+        let viewModel = CashFlowListVM(coordinator: PreviewCoordinator())
         Group {
-            CashFlowListView()
-            CashFlowListView().darkScheme()
+            CashFlowListView(viewModel: viewModel)
+            CashFlowListView(viewModel: viewModel).darkScheme()
         }
         .embedInNavigationView()
         .environment(\.managedObjectContext, PersistenceController.preview.context)

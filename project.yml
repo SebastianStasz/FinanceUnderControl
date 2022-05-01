@@ -11,18 +11,24 @@ options:
     iOS: "15.0"
 
 packages:
-  SSUtils:
-    url: https://github.com/SebastianStasz/SSUtils
-    from: 1.0.0
+  FirebaseAuth:
+    url: https://github.com/firebase/firebase-ios-sdk
+    from: 8.0.0
 
-  SSValidation:
-    url: https://github.com/SebastianStasz/SSValidation
-    from: 1.0.0
+#  SSUtils:
+#    url: https://github.com/SebastianStasz/SSUtils
+#    from: 1.0.0
+#
+#  SSValidation:
+#    url: https://github.com/SebastianStasz/SSValidation
+#    from: 1.0.0
 
 localPackages:
   - "./Packages/Domain"
   - "./Packages/FinanceCoreData"
   - "./Packages/Shared"
+  - "~/Developer/ss_libraries/SSValidation"
+  - "~/Developer/ss_libraries/SSUtils"
 
 targets:
   FinanceUnderControl:
@@ -40,6 +46,7 @@ targets:
       - package: "Shared"
       - package: "SSUtils"
       - package: "SSValidation"
+      - package: "FirebaseAuth"
 
   FinanceUnderControlTests:
     type: "bundle.unit-test"

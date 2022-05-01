@@ -9,14 +9,14 @@ import Combine
 import Foundation
 import FinanceCoreData
 
-final class SettingsVM: ObservableObject {
-    private var cancellables: Set<AnyCancellable> = []
+final class SettingsVM: ViewModel2 {
+
     @Published private var currencySettings = CurrencySettings()
 
     @Published var primaryCurrency: CurrencyEntity?
     @Published var secondaryCurrency: CurrencyEntity?
 
-    init() {
+    func bind() {
         let currencySettingsOutput = currencySettings.result()
         currencySettingsOutput.primaryCurrency.assign(to: &$primaryCurrency)
         currencySettingsOutput.secondaryCurrency.assign(to: &$secondaryCurrency)
