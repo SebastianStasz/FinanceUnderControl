@@ -9,20 +9,14 @@ import FinanceCoreData
 import Shared
 import SwiftUI
 
-struct CashFlowFormView: BaseView {
-    @Environment(\.managedObjectContext) private var context
-
-    @FetchRequest private var currencies: FetchedResults<CurrencyEntity>
-    @FetchRequest private var categories: FetchedResults<CashFlowCategoryEntity>
-    @StateObject private var viewModel = CashFlowFormVM()
-    private let formType: CashFlowFormType<CashFlowEntity>
-
-    init(for formType: CashFlowFormType<CashFlowEntity>) {
-        self.formType = formType
-        let currenciesSort = [CurrencyEntity.Sort.byCode(.forward).nsSortDescriptor]
-        _currencies = FetchRequest<CurrencyEntity>(sortDescriptors: currenciesSort)
-        _categories = CashFlowCategoryEntity.fetchRequest(forType: formType.formModel.type ?? .income)
+extension Currency: Pickerable {
+    public var valueName: String {
+        code
     }
+}
+
+struct CashFlowFormView: BaseView {
+    @ObservedObject var viewModel: CashFlowFormVM
 
     var baseBody: some View {
         FormView {
@@ -32,35 +26,31 @@ struct CashFlowFormView: BaseView {
             }
 
             Sector(.create_cash_flow_more_label) {
-                LabeledPicker(.create_cash_flow_currency, elements: currencies, selection: $viewModel.formModel.currency)
+                LabeledPicker(.create_cash_flow_currency, elements: Currency.allCases, selection: $viewModel.formModel.currency)
                     .opacity(0.5)
                     .disabled(true)
                 LabeledDatePicker(.create_cash_flow_date, selection: $viewModel.formModel.date)
-                LabeledPicker(.common_category, elements: categories, selection: $viewModel.formModel.category)
+                LabeledPicker(.common_category, elements: ["1", "2"], selection: $viewModel.formModel.categoryId)
             }
         }
-        .asSheet(title: formType.title, askToDismiss: viewModel.formChanged, primaryButton: primaruButton)
+        .asSheet(title: "formType.title", askToDismiss: false, primaryButton: primaruButton)
         .handleViewModelActions(viewModel)
     }
 
     private var primaruButton: HorizontalButtons.Configuration {
-        .init(formType.confirmButtonTitle, enabled: viewModel.formModel.model.notNil, action: didTapConfirm)
-    }
-
-    func onAppear() {
-        viewModel.onAppear(formType: formType)
+        .init("formType.confirmButtonTitle", enabled: true, action: didTapConfirm)
     }
 
     private func didTapConfirm() {
-        viewModel.didTapConfirm.send(formType)
+        viewModel.binding.didTapConfirm.send()
     }
 }
 
 // MARK: - Preview
 
-struct CashFlowFormView_Previews: PreviewProvider {
-    static var previews: some View {
-        CashFlowFormView(for: .new(for: .income))
-        CashFlowFormView(for: .new(for: .income)).darkScheme()
-    }
-}
+//struct CashFlowFormView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CashFlowFormView(for: .new(for: .income))
+//        CashFlowFormView(for: .new(for: .income)).darkScheme()
+//    }
+//}

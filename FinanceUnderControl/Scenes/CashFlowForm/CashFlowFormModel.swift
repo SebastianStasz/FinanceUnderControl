@@ -9,6 +9,21 @@ import FinanceCoreData
 import Foundation
 import Shared
 
+struct CashFlowFormModel {
+    var date = Date()
+    var name: String?
+    var value: Decimal?
+    var currency: Currency? = .PLN
+    var categoryId: String?
+    var type: CashFlowType?
+
+    var model: CashFlow? {
+        guard let name = name, let value = value, let categoryId = categoryId else { return nil }
+        return CashFlow(name: name, money: Money(value, currency: currency!), date: date, categoryId: categoryId)
+    }
+}
+
+
 extension CashFlowEntity {
 
     struct FormModel: CashFlowGroupingFormModel {

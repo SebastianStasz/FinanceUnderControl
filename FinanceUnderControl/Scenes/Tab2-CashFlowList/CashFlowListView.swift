@@ -45,9 +45,6 @@ struct CashFlowListView: View {
             Button.delete(action: deleteCashFlow)
             Button.cancel { cashFlowToDelete = nil }
         }
-        .sheet(item: $cashFlowFormType) {
-            CashFlowFormView(for: $0)
-        }
         .sheet(isPresented: $isFilterViewShown) {
             CashFlowFilterView(cashFlowFilter: $viewModel.cashFlowFilter)
         }

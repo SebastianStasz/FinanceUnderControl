@@ -5,25 +5,24 @@
 //  Created by sebastianstaszczyk on 28/04/2022.
 //
 
-import UIKit
 import Shared
 import SwiftUI
 
 final class TabBarCoordinator: RootCoordinator {
     
-    private var tabBarController: AppTabBarController!
+    private var tabBarController: TabBarController!
+    private var cashFlowFormVM: CashFlowFormVM?
 
     func start() -> UIViewController {
         let viewModel = TabBarVM(coordinator: self)
-        tabBarController = AppTabBarController(viewModel: viewModel)
+        tabBarController = TabBarController(viewModel: viewModel)
 
         viewModel.binding.didSelectTab
             .sink { [weak self] tab in self?.tabBarController.selectedIndex = tab.id }
             .store(in: &viewModel.cancellables)
 
         viewModel.binding.presentCashFlowTypeSelection
-            .sink { [weak self] tab in
-                self?.presentCashFlowTypeSelection() }
+            .sink { [weak self] tab in self?.presentCashFlowTypeSelection() }
             .store(in: &viewModel.cancellables)
 
         return tabBarController
@@ -38,7 +37,10 @@ final class TabBarCoordinator: RootCoordinator {
     }
 
     private func presentCashFlowForm(for type: CashFlowType) {
-        let viewController = UIHostingController(rootView: CashFlowFormView(for: .new(for: type)))
+        let viewModel = CashFlowFormVM(for: type)
+        cashFlowFormVM = viewModel
+        let view = CashFlowFormView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
         tabBarController.present(viewController, animated: true)
     }
 }

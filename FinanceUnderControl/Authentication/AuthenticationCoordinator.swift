@@ -15,6 +15,7 @@ final class AuthenticationCoordinator: RootCoordinator {
     func start() -> UIViewController {
         let viewModel = LoginVM(coordinator: self)
         let viewController = SwiftUIVC(viewModel: viewModel, view: LoginView(viewModel: viewModel))
+        navigationController.viewControllers = [viewController]
 
         viewModel.binding.didTapSignUp
             .sink { [weak self] in self?.presentRegisterView() }

@@ -1,13 +1,14 @@
 //
-//  AppTabBarController.swift
+//  TabBarController.swift
 //  FinanceUnderControl
 //
 //  Created by sebastianstaszczyk on 01/05/2022.
 //
 
+import Shared
 import SwiftUI
 
-final class AppTabBarController: UITabBarController {
+final class TabBarController: UITabBarController {
 
     private let viewModel: TabBarVM
 
@@ -32,6 +33,7 @@ final class AppTabBarController: UITabBarController {
 
         UITabBar.appearance().isHidden = true
         let customTabBar = UIHostingController(rootView: TabBarView(viewModel: viewModel))
+        customTabBar.view.backgroundColor = UIColor(.backgroundPrimary)
         view.addSubview(customTabBar.view)
 
         customTabBar.view.translatesAutoresizingMaskIntoConstraints = false

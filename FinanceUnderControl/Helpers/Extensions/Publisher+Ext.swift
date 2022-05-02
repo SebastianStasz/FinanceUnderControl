@@ -71,12 +71,33 @@ extension Publisher {
                 .eraseToAnyPublisher()
         }
     }
+
+    func perform<T, VM: ViewModel>(
+        on viewModel: VM,
+        errorTracker: DriverSubject<Error>,
+        _ transform: @escaping (Output) async throws -> T
+    ) -> Publishers.FlatMap<Publishers.SetFailureType<AnyPublisher<T, Never>, Never>, Self> {
+        flatMap {
+            Just($0)
+                .startLoading(on: viewModel)
+                .await(transform)
+                .stopLoading(on: viewModel)
+                .catch { error -> AnyPublisher<T, Never> in
+                    errorTracker.send(error)
+                    Swift.print("-----")
+                    Swift.print("‼️\(viewModel): \(error)")
+                    Swift.print("-----")
+                    return Just(nil).compactMap { $0 }.eraseToAnyPublisher()
+                }
+                .eraseToAnyPublisher()
+        }
+    }
 }
 
 
 extension Publisher where Failure == Never {
 
-    func sinkAndStore<VM: ViewModel2>(on viewModel: VM, action: @escaping (VM, Output) -> Void) {
+    func sinkAndStore<VM: CombineHelper>(on viewModel: VM, action: @escaping (VM, Output) -> Void) {
         sink { [weak viewModel] value in
             guard let viewModel = viewModel else { return }
             action(viewModel, value)
