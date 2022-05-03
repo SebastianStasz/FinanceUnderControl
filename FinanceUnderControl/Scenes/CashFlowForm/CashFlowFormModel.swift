@@ -23,26 +23,26 @@ struct CashFlowFormModel {
     }
 }
 
+enum CashFlowForm {
+    case new(for: CashFlowType)
+    case edit
 
-extension CashFlowEntity {
+    var title: String {
+        switch self {
+        case .new(let type):
+            return type == .income ? .cash_flow_add_income : .cash_flow_add_expense
+        case .edit:
+//            return type == .income ? .cash_flow_edit_income : .cash_flow_edit_expense
+            return "Edit"
+        }
+    }
 
-    struct FormModel: CashFlowGroupingFormModel {
-        typealias Ent = CashFlowEntity
-
-        var date = Date()
-        var name: String?
-        var value: Decimal?
-        var currency: CurrencyEntity?
-        var category: CashFlowCategoryEntity?
-        var type: CashFlowType?
-
-        var model: CashFlowEntity.Model? {
-            guard let name = name,
-                  let value = value,
-                  let currency = currency,
-                  let category = category
-            else { return nil }
-            return CashFlowEntity.Model(name: name, date: date, value: value, currency: currency, category: category)
+    var confirmButtonTitle: String {
+        switch self {
+        case .new:
+            return .button_create
+        case .edit:
+            return .common_save
         }
     }
 }

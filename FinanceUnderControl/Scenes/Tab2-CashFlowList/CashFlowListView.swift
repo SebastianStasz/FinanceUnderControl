@@ -17,7 +17,6 @@ struct CashFlowListView: View {
     @ObservedObject var viewModel: CashFlowListVM
     @State private var isFilterViewShown = false
     @State private var cashFlowToDelete: CashFlowEntity?
-    @State private var cashFlowFormType: CashFlowFormType<CashFlowEntity>?
 
     private var isSearching: Bool {
         viewModel.cashFlowPredicate.notNil
@@ -32,7 +31,7 @@ struct CashFlowListView: View {
     var body: some View {
         BaseList(.tab_cashFlow_title, emptyStateVD: emptyStateVD, sectorIdMapper: { $0.string(format: .monthAndYear) }, sectors: cashFlows) {
             CashFlowCardView($0)
-                .actions(edit: editCashFlow($0), delete: showDeleteCashFlowConfirmation(for: $0))
+                .actions(edit: {}(), delete: showDeleteCashFlowConfirmation(for: $0))
         }
         .searchable(text: $viewModel.searchText)
         .toolbar {
@@ -75,10 +74,6 @@ struct CashFlowListView: View {
 
     private func resetFilters() {
         viewModel.cashFlowFilter.resetToDefaultValues()
-    }
-
-    private func editCashFlow(_ cashFlow: CashFlowEntity) {
-        cashFlowFormType = .edit(cashFlow)
     }
 
     private func showDeleteCashFlowConfirmation(for cashFlow: CashFlowEntity) {

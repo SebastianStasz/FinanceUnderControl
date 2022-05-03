@@ -48,8 +48,3 @@ extension CashFlowCategoryGroupEntity: CashFlowFormSupport {
     }
 }
 
-extension CashFlowEntity: CashFlowFormSupport {
-    var formModel: FormModel {
-        .init(date: date, name: name, value: value, currency: currency_, category: category, type: category.type)
-    }
-}

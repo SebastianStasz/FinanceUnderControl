@@ -11,9 +11,9 @@ import FinanceCoreData
 
 final class CashFlowFormCoordinator: Coordinator {
 
-    private let formType: CashFlowFormType<CashFlowEntity>
+    private let formType: CashFlowForm
 
-    init(_ presentationStyle: PresentationStyle, formType: CashFlowFormType<CashFlowEntity>) {
+    init(_ presentationStyle: PresentationStyle, formType: CashFlowForm) {
         self.formType = formType
         super.init(presentationStyle)
     }
@@ -24,9 +24,9 @@ final class CashFlowFormCoordinator: Coordinator {
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
         viewController.addCloseButton()
 
-//        viewModel.binding.createdSuccessfully
-//            .sink { viewController.dismiss(animated: true) }
-//            .store(in: &viewModel.cancellables)
+        viewModel.binding.createdSuccessfully
+            .sink { viewController.dismiss(animated: true) }
+            .store(in: &viewModel.cancellables)
 
         return viewController
     }

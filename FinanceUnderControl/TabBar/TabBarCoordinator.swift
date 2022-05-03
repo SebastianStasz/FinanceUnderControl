@@ -36,7 +36,7 @@ final class TabBarCoordinator: RootCoordinator {
         tabBarController.present(alert, animated: true)
     }
 
-    private func presentCashFlowForm(for formType: CashFlowFormType<CashFlowEntity>) {
+    private func presentCashFlowForm(for formType: CashFlowForm) {
         CashFlowFormCoordinator(.presentModally(on: tabBarController), formType: formType).start()
     }
 }

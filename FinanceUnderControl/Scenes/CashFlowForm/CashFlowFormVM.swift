@@ -27,9 +27,9 @@ final class CashFlowFormVM: ViewModel2 {
     var valueInput = DecimalInputVM()
 
     @Published var formModel = CashFlowFormModel()
-    let formType: CashFlowFormType<CashFlowEntity>
+    let formType: CashFlowForm
 
-    init(for formType: CashFlowFormType<CashFlowEntity>, coordinator: CoordinatorProtocol, service: CashFlowService = .init()) {
+    init(for formType: CashFlowForm, coordinator: CoordinatorProtocol, service: CashFlowService = .init()) {
         self.formType = formType
         self.service = service
         super.init(coordinator: coordinator)
