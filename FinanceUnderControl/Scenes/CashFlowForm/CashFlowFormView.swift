@@ -33,12 +33,12 @@ struct CashFlowFormView: BaseView {
                 LabeledPicker(.common_category, elements: ["1", "2"], selection: $viewModel.formModel.categoryId)
             }
         }
-        .asSheet(title: "formType.title", askToDismiss: false, primaryButton: primaruButton)
-        .handleViewModelActions(viewModel)
+        .navigationTitle(viewModel.formType.title)
+        .horizontalButtons(primaryButton: primaruButton)
     }
 
     private var primaruButton: HorizontalButtons.Configuration {
-        .init("formType.confirmButtonTitle", enabled: true, action: didTapConfirm)
+        .init(viewModel.formType.confirmButtonTitle, enabled: viewModel.formModel.model.notNil, action: didTapConfirm)
     }
 
     private func didTapConfirm() {

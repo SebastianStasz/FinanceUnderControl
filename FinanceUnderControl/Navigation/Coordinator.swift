@@ -22,6 +22,8 @@ class Coordinator: CoordinatorProtocol {
         switch presentationStyle {
         case let .push(navigationController):
             push(on: navigationController)
+        case let .presentModally(on: viewController):
+            presentModally(on: viewController)
         case let .presentFullScreen(viewController):
             presentFullScreen(on: viewController)
         }
@@ -38,6 +40,12 @@ class Coordinator: CoordinatorProtocol {
     private func push(on navigationController: UINavigationController) {
         self.navigationController = navigationController
         navigationController.pushViewController(initializeView(), animated: true)
+    }
+
+    private func presentModally(on viewController: UIViewController) {
+        let navigationController = UINavigationController(rootViewController: initializeView())
+        self.navigationController = navigationController
+        viewController.present(navigationController, animated: true)
     }
 
     private func presentFullScreen(on viewController: UIViewController) {

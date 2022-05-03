@@ -42,6 +42,16 @@ struct HorizontalButtons: View {
     }
 }
 
+extension View {
+    func horizontalButtons(primaryButton: HorizontalButtons.Configuration, secondaryButton: HorizontalButtons.Configuration? = nil) -> some View {
+        self.toolbar {
+            ToolbarItem.init(placement: .bottomBar) {
+                HorizontalButtons(primaryButton: primaryButton, secondaryButton: secondaryButton)
+            }
+        }
+    }
+}
+
 // MARK: - Preview
 
 struct HorizontalButtons_Previews: PreviewProvider {

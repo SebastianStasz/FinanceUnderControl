@@ -23,6 +23,8 @@
 "common_currencies" = "Currencies";
 "common_expenses" = "Expenses";
 "common_incomes" = "Incomes";
+"common_expense" = "Wydatek";
+"common_income" = "Przychód";
 "common_primary" = "Primary";
 "common_secondary" = "Secondary";
 "common_exchange_rate" = "Exchange rate";
@@ -37,6 +39,7 @@
 "common_file_name" = "File name";
 "common_more" = "More";
 "common_error" = "Error";
+"common_add" = "Dodaj";
 
 "authorization_register_success_title" = "Registered successfully";
 "authorization_register_success_message" = "Now it's time to sign in!";

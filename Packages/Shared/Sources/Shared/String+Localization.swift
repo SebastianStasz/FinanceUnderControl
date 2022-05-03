@@ -43,6 +43,8 @@ public extension String {
     static let common_currencies = "common_currencies".localize()
     static let common_expenses = "common_expenses".localize()
     static let common_incomes = "common_incomes".localize()
+    static let common_expense = "common_expense".localize()
+    static let common_income = "common_income".localize()
     static let common_primary = "common_primary".localize()
     static let common_secondary = "common_secondary".localize()
     static let common_exchange_rate = "common_exchange_rate".localize()
@@ -57,6 +59,7 @@ public extension String {
     static let common_file_name = "common_file_name".localize()
     static let common_more = "common_more".localize()
     static let common_error = "common_error".localize()
+    static let common_add = "common_add".localize()
 
     // MARK: - Authorization
 

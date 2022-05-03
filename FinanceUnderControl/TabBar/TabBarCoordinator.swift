@@ -7,11 +7,11 @@
 
 import Shared
 import SwiftUI
+import FinanceCoreData
 
 final class TabBarCoordinator: RootCoordinator {
     
     private var tabBarController: TabBarController!
-    private var cashFlowFormVM: CashFlowFormVM?
 
     func start() -> UIViewController {
         let viewModel = TabBarVM(coordinator: self)
@@ -29,18 +29,14 @@ final class TabBarCoordinator: RootCoordinator {
     }
 
     private func presentCashFlowTypeSelection() {
-        let alert = UIAlertController(title: "Add", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(title: "Expense", action: onSelf { $0.presentCashFlowForm(for: .expense) })
-        alert.addAction(title: "Income", action: onSelf { $0.presentCashFlowForm(for: .income) })
+        let alert = UIAlertController(title: .common_add, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(title: .common_expense, action: onSelf { $0.presentCashFlowForm(for: .new(for: .expense)) })
+        alert.addAction(title: .common_income, action: onSelf { $0.presentCashFlowForm(for: .new(for: .income)) })
         alert.addCancelAction()
         tabBarController.present(alert, animated: true)
     }
 
-    private func presentCashFlowForm(for type: CashFlowType) {
-        let viewModel = CashFlowFormVM(for: type)
-        cashFlowFormVM = viewModel
-        let view = CashFlowFormView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-        tabBarController.present(viewController, animated: true)
+    private func presentCashFlowForm(for formType: CashFlowFormType<CashFlowEntity>) {
+        CashFlowFormCoordinator(.presentModally(on: tabBarController), formType: formType).start()
     }
 }

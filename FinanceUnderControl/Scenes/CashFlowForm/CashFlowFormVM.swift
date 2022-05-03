@@ -14,7 +14,7 @@ import FinanceCoreData
 import FirebaseFirestore
 import FirebaseAuth
 
-final class CashFlowFormVM: ViewModel {
+final class CashFlowFormVM: ViewModel2 {
 
     struct Binding {
         let didTapConfirm = DriverSubject<Void>()
@@ -27,12 +27,12 @@ final class CashFlowFormVM: ViewModel {
     var valueInput = DecimalInputVM()
 
     @Published var formModel = CashFlowFormModel()
-    private let type: CashFlowType
+    let formType: CashFlowFormType<CashFlowEntity>
 
-    init(for type: CashFlowType, service: CashFlowService = .init()) {
-        self.type = type
+    init(for formType: CashFlowFormType<CashFlowEntity>, coordinator: CoordinatorProtocol, service: CashFlowService = .init()) {
+        self.formType = formType
         self.service = service
-        super.init()
+        super.init(coordinator: coordinator)
 
         nameInput.result().weakAssign(to: \.formModel.name, on: self)
         valueInput.result().weakAssign(to: \.formModel.value, on: self)
@@ -48,10 +48,10 @@ final class CashFlowFormVM: ViewModel {
             .sinkAndStore(on: self) { vm, _ in
                 vm.binding.createdSuccessfully.send()
             }
-
-        errorTracker
-            .sinkAndStore(on: self) { vm, error in
-                print(error)
-            }
+//
+//        errorTracker
+//            .sinkAndStore(on: self) { vm, error in
+//                print(error)
+//            }
     }
 }
