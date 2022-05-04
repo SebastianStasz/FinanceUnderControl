@@ -12,10 +12,8 @@ import SSUtils
 import SSValidation
 
 final class CashFlowListVM: ViewModel {
-    typealias Filter = CashFlowEntity.Filter
 
-    private let service: CashFlowService
-
+    private let service: CashFlowService = .init()
     let minValueInput = DoubleInputVM(validator: .alwaysValid)
     let maxValueInput = DoubleInputVM(validator: .alwaysValid)
 
@@ -23,17 +21,12 @@ final class CashFlowListVM: ViewModel {
     @Published var cashFlowFilter = CashFlowFilter()
     @Published var searchText = ""
 
-    init(coordinator: CoordinatorProtocol, service: CashFlowService = .init()) {
-        self.service = service
-        super.init(coordinator: coordinator)
-
 //        let searchPredicate = $searchText
 //            .map { $0.isEmpty ? nil : Filter.nameContains($0).nsPredicate }
 //
 //        CombineLatest(searchPredicate, $cashFlowFilter)
 //            .map { [$0, $1.nsPredicate].andNSPredicate }
 //            .assign(to: &$cashFlowPredicate)
-    }
 
     override func viewDidLoad() {
         let errorTracker = DriverSubject<Error>()

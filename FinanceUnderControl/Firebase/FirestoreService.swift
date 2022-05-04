@@ -17,9 +17,16 @@ struct FirestoreService {
 
     private init() {}
 
-    func getDocuments(from collection: Collection) async throws -> [QueryDocumentSnapshot] {
+    func getDocuments<T: DocumentField>(from collection: Collection, orderedBy orderingField: T? = nil) async throws -> [QueryDocumentSnapshot] {
         try await withUnsafeThrowingContinuation { (continuation: UnsafeContinuation<[QueryDocumentSnapshot], Error>) in
-            db.collection(collection.rawValue).getDocuments { snapShot, error in
+            var query = db.collection(collection.rawValue)
+                .whereField("userId", isEqualTo: userId)
+
+            if let orderingField = orderingField {
+                query = query.order(by: orderingField.key)
+            }
+
+            query.getDocuments { snapShot, error in
                 if let snapShot = snapShot {
                     continuation.resume(returning: snapShot.documents)
                 } else if let error = error {

@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct CashFlowService {
+struct CashFlowService: CollectionService {
+    typealias Field = CashFlow.Field
 
     private let firestore = FirestoreService.shared
 
@@ -16,6 +17,7 @@ struct CashFlowService {
     }
 
     func fetchAll() async throws {
-        let docs = try await firestore.getDocuments(from: .cashFlows)
+        let docs = try await firestore.getDocuments(from: .cashFlows, orderedBy: Field.date)
+        print(docs)
     }
 }

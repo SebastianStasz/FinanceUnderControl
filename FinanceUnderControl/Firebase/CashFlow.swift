@@ -8,18 +8,23 @@
 import FirebaseAuth
 import Foundation
 import Shared
+import SwiftUI
 
-struct CashFlow {
+struct CashFlow: FirestoreDocument {
     let name: String
     let money: Money
     let date: Date
     let categoryId: String
 
     var data: [String: Any] {
-        ["name": name,
-         "amount": money.value,
-         "currency": money.currency.rawValue,
-         "categoryId": categoryId,
-         "date": date]
+        [Field.name.key: name,
+         Field.amount.key: money.value,
+         Field.currency.key: money.currency.rawValue,
+         Field.categoryId.key: categoryId,
+         Field.date.key: date]
+    }
+
+    enum Field: String, DocumentField {
+        case name, amount, currency, categoryId, date
     }
 }
