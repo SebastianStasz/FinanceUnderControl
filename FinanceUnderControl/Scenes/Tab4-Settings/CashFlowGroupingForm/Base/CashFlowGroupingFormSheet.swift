@@ -17,7 +17,7 @@ private struct CashFlowGroupingFormSheet<Entity: CashFlowFormSupport>: ViewModif
         content
             .onAppear(perform: onAppear)
             .asSheet(title: formType.title, askToDismiss: formType.formModel != viewModel.formModel, primaryButton: primaryButton)
-            .handleViewModelActions(viewModel)
+//            .handleViewModelActions(viewModel)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {

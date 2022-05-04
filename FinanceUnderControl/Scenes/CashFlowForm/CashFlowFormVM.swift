@@ -14,7 +14,7 @@ import FinanceCoreData
 import FirebaseFirestore
 import FirebaseAuth
 
-final class CashFlowFormVM: ViewModel2 {
+final class CashFlowFormVM: ViewModel {
 
     struct Binding {
         let didTapConfirm = DriverSubject<Void>()

@@ -10,7 +10,7 @@ import FinanceCoreData
 import Shared
 import SSUtils
 
-final class TabBarVM: ViewModel2 {
+final class TabBarVM: ViewModel {
 
     private let currencyService = CurrencyService()
 

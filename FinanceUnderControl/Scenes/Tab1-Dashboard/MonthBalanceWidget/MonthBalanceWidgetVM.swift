@@ -10,13 +10,10 @@ import FinanceCoreData
 import Foundation
 import SSUtils
 
-final class MonthBalanceWidgetVM: ViewModel {
+final class MonthBalanceWidgetVM: ObservableObject {
 
     @Published private(set) var monthBalance = MonthBalance.empty
 
-    override init() {
-        super.init()
-        
 //        Publishers.Merge(Just(()), AppVM.shared.events.cashFlowsChanged)
 //            .startLoading(on: self)
 //            .asyncMap { _ async -> MonthBalance in
@@ -26,5 +23,4 @@ final class MonthBalanceWidgetVM: ViewModel {
 //            }
 //            .stopLoading(on: self)
 //            .assign(to: &$monthBalance)
-    }
 }

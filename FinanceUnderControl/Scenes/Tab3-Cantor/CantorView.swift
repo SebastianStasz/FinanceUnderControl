@@ -26,7 +26,6 @@ struct CantorView: BaseView {
             sectorMore
                 .displayIf(viewModel.exchangeRateValue.notNil)
         }
-        .onAppear { viewModel.bind() }
         .navigationTitle(String.tab_currencies_title)
         .toolbar { Toolbar.trailing(systemImage: SFSymbol.infoCircle.name, action: showInfoAlert) }
         .infoAlert(.common_info, isPresented: $isInfoAlertPresented, message: .cantor_exchange_rates_info_message)

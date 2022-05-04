@@ -9,7 +9,7 @@ import FinanceCoreData
 import Foundation
 import Shared
 
-final class DashboardVM: ViewModel2 {
+final class DashboardVM: ViewModel {
 
     @Published private(set) var topExpenses: HorizontalBarVD?
 

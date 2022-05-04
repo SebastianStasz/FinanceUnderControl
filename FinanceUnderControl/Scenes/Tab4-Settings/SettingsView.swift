@@ -34,7 +34,6 @@ struct SettingsView: View {
             }
         }
         .navigationTitle(String.tab_settings_title)
-        .onAppear { viewModel.bind() }
     }
 }
 

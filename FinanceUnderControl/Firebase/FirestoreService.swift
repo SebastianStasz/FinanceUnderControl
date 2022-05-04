@@ -17,6 +17,18 @@ struct FirestoreService {
 
     private init() {}
 
+    func getDocuments(from collection: Collection) async throws -> [QueryDocumentSnapshot] {
+        try await withUnsafeThrowingContinuation { (continuation: UnsafeContinuation<[QueryDocumentSnapshot], Error>) in
+            db.collection(collection.rawValue).getDocuments { snapShot, error in
+                if let snapShot = snapShot {
+                    continuation.resume(returning: snapShot.documents)
+                } else if let error = error {
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
     func createDocument(in collection: Collection, data: [String: Any]) async throws {
         var data = data
         data["userId"] = userId

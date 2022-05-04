@@ -9,14 +9,14 @@ import Combine
 import Foundation
 import FinanceCoreData
 
-final class SettingsVM: ViewModel2 {
+final class SettingsVM: ViewModel {
 
     @Published private var currencySettings = CurrencySettings()
 
     @Published var primaryCurrency: CurrencyEntity?
     @Published var secondaryCurrency: CurrencyEntity?
 
-    func bind() {
+    override func viewDidLoad() {
         let currencySettingsOutput = currencySettings.result()
         currencySettingsOutput.primaryCurrency.assign(to: &$primaryCurrency)
         currencySettingsOutput.secondaryCurrency.assign(to: &$secondaryCurrency)

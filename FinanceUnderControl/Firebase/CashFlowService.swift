@@ -14,4 +14,8 @@ struct CashFlowService {
     func create(model: CashFlow) async throws {
         try await firestore.createDocument(in: .cashFlows, data: model.data)
     }
+
+    func fetchAll() async throws {
+        let docs = try await firestore.getDocuments(from: .cashFlows)
+    }
 }

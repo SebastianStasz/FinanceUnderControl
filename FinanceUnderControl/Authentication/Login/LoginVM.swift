@@ -10,7 +10,7 @@ import Foundation
 import SSUtils
 import SSValidation
 
-final class LoginVM: ViewModel2 {
+final class LoginVM: ViewModel {
 
     struct ViewBinding {
         let didTapSignUp = DriverSubject<Void>()

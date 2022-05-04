@@ -37,7 +37,7 @@ struct CashFlowFilterView: BaseView {
         )
         .onReceive(viewModel.action.applyFilters) { cashFlowFilter = $0 }
         .onChange(of: viewModel.cashFlowCategoriesPredicate) { cashFlowCategories.nsPredicate = $0 }
-        .handleViewModelActions(viewModel)
+//        .handleViewModelActions(viewModel)
     }
 
     func onAppear() {

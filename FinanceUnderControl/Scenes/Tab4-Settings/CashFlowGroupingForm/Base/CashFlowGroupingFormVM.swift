@@ -8,10 +8,13 @@
 import Combine
 import CoreData
 import SSValidation
+import SSUtils
 import FinanceCoreData
 
-class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
+class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ObservableObject, CombineHelper {
     typealias FormType = CashFlowFormType<Entity>
+
+    var cancellables: Set<AnyCancellable> = []
 
     struct Input {
         let didTapConfirm = PassthroughSubject<FormType, Never>()
@@ -25,9 +28,8 @@ class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
     @Published var formModel = Entity.FormModel()
     @Published private(set) var isFormValid = false
 
-    override init() {
+    init() {
         self.context = AppVM.shared.context
-        super.init()
 
         nameInput.assignResult(to: \.formModel.name, on: self)
 
@@ -60,7 +62,7 @@ class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
         case .edit:
             editCashFlowCategoryGroup(form: form, model: model)
         }
-        baseAction.dismissView.send()
+//        baseAction.dismissView.send()
     }
 
     private func createCashFlowCategoryGroup(model: Entity.Model) {
@@ -72,7 +74,7 @@ class CashFlowGroupingFormVM<Entity: CashFlowFormSupport>: ViewModel {
     }
 
     private func deleteCashFlowGroup(_ cashFlowGroup: Entity?) {
-        baseAction.dismissView.send()
+//        baseAction.dismissView.send()
         cashFlowGroup?.delete()
     }
 }

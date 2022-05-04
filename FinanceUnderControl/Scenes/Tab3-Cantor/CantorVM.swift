@@ -12,7 +12,7 @@ import SwiftUI
 import SSUtils
 import SSValidation
 
-final class CantorVM: ViewModel2 {
+final class CantorVM: ViewModel {
     private let currencySettings = CurrencySettings()
 
     @Published var currencySelector = CurrencySelector<CurrencyEntity?>()
@@ -27,7 +27,7 @@ final class CantorVM: ViewModel2 {
         return true
     }
 
-    func bind() {
+    override func viewDidLoad() {
         let currencySettingsOutput = currencySettings.result()
         currencySettingsOutput.secondaryCurrency
             .sink { [weak self] currency in

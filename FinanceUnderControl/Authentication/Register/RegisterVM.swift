@@ -12,7 +12,7 @@ import Shared
 import SSUtils
 import SSValidation
 
-final class RegisterVM: ViewModel2 {
+final class RegisterVM: ViewModel {
 
     struct ViewBinding {
         let didConfirmEmail = DriverSubject<Void>()

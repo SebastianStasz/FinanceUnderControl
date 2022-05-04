@@ -11,9 +11,11 @@ import Foundation
 import SSUtils
 import SSValidation
 
-final class CashFlowFilterVM: ViewModel {
+final class CashFlowFilterVM: ObservableObject, CombineHelper {
 
-    final class Action: ViewModel.BaseAction {
+    var cancellables: Set<AnyCancellable> = []
+
+    struct Binding {
         let applyFilters = PassthroughSubject<CashFlowFilter, Never>()
     }
 
@@ -22,10 +24,9 @@ final class CashFlowFilterVM: ViewModel {
 
     @Published var cashFlowFilter = CashFlowFilter()
     @Published var cashFlowCategoriesPredicate: NSPredicate?
-    let action = Action()
+    let action = Binding()
 
-    override init() {
-        super.init()
+    init() {
 
         minValueInput.assignResult(to: \.cashFlowFilter.minimumValue, on: self)
         maxValueInput.assignResult(to: \.cashFlowFilter.maximumValue, on: self)
@@ -45,7 +46,7 @@ final class CashFlowFilterVM: ViewModel {
 
     func applyFilters() {
         action.applyFilters.send(cashFlowFilter)
-        baseAction.dismissView.send()
+//        baseAction.dismissView.send()
     }
 
     func resetFilters() {
