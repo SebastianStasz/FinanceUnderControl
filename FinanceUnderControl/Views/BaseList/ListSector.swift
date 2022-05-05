@@ -10,7 +10,7 @@ import Shared
 
 struct ListSector<T: Identifiable> {
     let title: String
-    let elements: [T]
+    var elements: [T]
     let editAction: EditAction?
     let visibleIfEmpty: Bool
 

@@ -50,7 +50,7 @@ struct LoginView: BaseView {
         }
         .doubleTitle(title: "Hello!", subtitle: "Sign in and start managing your finances just now!")
         .onTapGesture { focusedField = nil }
-        .handleViewModelActions2(viewModel)
+        .handleViewModelActions(viewModel)
     }
 
     private func didTapSignUp() {

@@ -5,12 +5,11 @@
 //  Created by sebastianstaszczyk on 02/05/2022.
 //
 
-import FirebaseAuth
 import FirebaseFirestore
 import Foundation
 import Shared
 
-struct CashFlow: FirestoreDocument, Identifiable {
+struct CashFlow: FirestoreDocument, Identifiable, Equatable {
     let name: String
     let money: Money
     let date: Date
@@ -22,7 +21,7 @@ struct CashFlow: FirestoreDocument, Identifiable {
 
     var data: [String: Any] {
         [Field.name.key: name,
-         Field.amount.key: money.value,
+         Field.amount.key: money.value.asString,
          Field.currency.key: money.currency.rawValue,
          Field.categoryId.key: categoryId,
          Field.date.key: date]

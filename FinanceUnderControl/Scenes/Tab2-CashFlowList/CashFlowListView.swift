@@ -10,13 +10,9 @@ import SwiftUI
 import Shared
 import SSUtils
 
-struct CashFlowListView: View {
-    @SectionedFetchRequest(sectionIdentifier: \.monthAndYear, sortDescriptors: [CashFlowEntity.Sort.byDate(.reverse).nsSortDescriptor], animation: .easeInOut
-    ) private var cashFlows: SectionedFetchResults<Date, CashFlowEntity>
+struct CashFlowListView: BaseView {
 
     @ObservedObject var viewModel: CashFlowListVM
-    @State private var isFilterViewShown = false
-    @State private var cashFlowToDelete: CashFlowEntity?
 
     private var isSearching: Bool {
         viewModel.cashFlowPredicate.notNil
@@ -28,28 +24,35 @@ struct CashFlowListView: View {
                      isSearching: isSearching)
     }
 
-    var body: some View {
-        BaseList(.tab_cashFlow_title, emptyStateVD: emptyStateVD, sectorIdMapper: { $0.string(format: .monthAndYear) }, sectors: cashFlows) {
-            CashFlowCardView($0)
-                .actions(edit: {}(), delete: showDeleteCashFlowConfirmation(for: $0))
-        }
-        .searchable(text: $viewModel.searchText)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: showFilterView) { filterIcon }
-                    .disabled(cashFlows.isEmpty && !isSearching)
+    @ViewBuilder
+    var baseBody: some View {
+        if viewModel.isLoading && viewModel.listSectors.isEmpty {
+            Color.backgroundPrimary
+                .ignoresSafeArea()
+                .overlay(LoadingIndicator(isLoading: true))
+                .navigationTitle(String.tab_cashFlow_title)
+        } else {
+            BaseList(.tab_cashFlow_title, emptyStateVD: emptyStateVD, sectors: viewModel.listSectors) {
+                CashFlowCardView($0)
             }
         }
-        .confirmationDialog(.settings_select_action, item: $cashFlowToDelete) {
-            Button.delete(action: deleteCashFlow)
-            Button.cancel { cashFlowToDelete = nil }
-        }
-        .sheet(isPresented: $isFilterViewShown) {
-            CashFlowFilterView(cashFlowFilter: $viewModel.cashFlowFilter)
-        }
-        .onChange(of: viewModel.cashFlowPredicate) {
-            cashFlows.nsPredicate = $0
-        }
+//        .searchable(text: $viewModel.searchText)
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarTrailing) {
+//                Button(action: showFilterView) { filterIcon }
+//                    .disabled(cashFlows.isEmpty && !isSearching)
+//            }
+//        }
+//        .confirmationDialog(.settings_select_action, item: $cashFlowToDelete) {
+//            Button.delete(action: deleteCashFlow)
+//            Button.cancel { cashFlowToDelete = nil }
+//        }
+//        .sheet(isPresented: $isFilterViewShown) {
+//            CashFlowFilterView(cashFlowFilter: $viewModel.cashFlowFilter)
+//        }
+//        .onChange(of: viewModel.cashFlowPredicate) {
+//            cashFlows.nsPredicate = $0
+//        }
     }
 
     @ViewBuilder
@@ -68,22 +71,22 @@ struct CashFlowListView: View {
 
     // MARK: - Interactions
 
-    private func showFilterView() {
-        isFilterViewShown = true
-    }
-
-    private func resetFilters() {
-        viewModel.cashFlowFilter.resetToDefaultValues()
-    }
-
-    private func showDeleteCashFlowConfirmation(for cashFlow: CashFlowEntity) {
-        cashFlowToDelete = cashFlow
-    }
-
-    private func deleteCashFlow() {
-        _ = cashFlowToDelete?.delete()
-        cashFlowToDelete = nil
-    }
+//    private func showFilterView() {
+//        isFilterViewShown = true
+//    }
+//
+//    private func resetFilters() {
+//        viewModel.cashFlowFilter.resetToDefaultValues()
+//    }
+//
+//    private func showDeleteCashFlowConfirmation(for cashFlow: CashFlowEntity) {
+//        cashFlowToDelete = cashFlow
+//    }
+//
+//    private func deleteCashFlow() {
+//        _ = cashFlowToDelete?.delete()
+//        cashFlowToDelete = nil
+//    }
 }
 
 // MARK: - Preview

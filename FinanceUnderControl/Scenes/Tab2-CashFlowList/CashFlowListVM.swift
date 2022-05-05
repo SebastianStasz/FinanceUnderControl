@@ -17,7 +17,8 @@ final class CashFlowListVM: ViewModel {
     let minValueInput = DoubleInputVM(validator: .alwaysValid)
     let maxValueInput = DoubleInputVM(validator: .alwaysValid)
 
-    @Published private(set ) var cashFlowPredicate: NSPredicate?
+    @Published private(set) var cashFlowPredicate: NSPredicate?
+    @Published private(set) var listSectors: [ListSector<CashFlow>] = []
     @Published var cashFlowFilter = CashFlowFilter()
     @Published var searchText = ""
 
@@ -35,11 +36,19 @@ final class CashFlowListVM: ViewModel {
         maxValueInput.assignResult(to: \.cashFlowFilter.maximumValue, on: self)
 
         Just(())
-            .perform(on: self, errorTracker: errorTracker) { [weak self] in
-                try await self?.service.fetchAll()
+            .performWithLoading(on: self, errorTracker: errorTracker) { [weak self] in
+                try await self?.service.fetch()
             }
-            .sinkAndStore(on: self) { vm, _ in
-
+            .compactMap { $0 }
+            .sinkAndStore(on: self) { vm, cashFlows in
+                let groupedCashFlows = Dictionary(grouping: cashFlows, by: { $0.date.stringMonthAndYear })
+                for group in groupedCashFlows {
+                    if let sectorIndex = vm.listSectors.firstIndex(where: { $0.title == group.key }) {
+                        vm.listSectors[sectorIndex].elements.append(contentsOf: group.value)
+                    } else {
+                        vm.listSectors.append(ListSector(group.key, elements: group.value))
+                    }
+                }
             }
     }
 }

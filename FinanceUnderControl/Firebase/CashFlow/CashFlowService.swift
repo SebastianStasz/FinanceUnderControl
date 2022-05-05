@@ -8,18 +8,20 @@
 import Foundation
 import FirebaseFirestore
 
-struct CashFlowService: CollectionService {
+final class CashFlowService: CollectionService {
     typealias Document = CashFlow
     typealias Field = Document.Field
 
     private let firestore = FirestoreService.shared
+    private var lastDocument: QueryDocumentSnapshot?
 
     func create(model: CashFlow) async throws {
         try await firestore.createDocument(in: .cashFlows, data: model.data)
     }
 
-    func fetchAll() async throws {
-        let docs = try await firestore.getDocuments(from: .cashFlows, orderedBy: Field.date)
-        print(docs)
+    func fetch() async throws -> [CashFlow] {
+        let docs = try await firestore.getDocuments(from: .cashFlows, lastDocument: lastDocument, orderedBy: OrderField(field: Field.date, order: .reverse))
+        lastDocument = docs.last
+        return docs.map { CashFlow(from: $0) }
     }
 }

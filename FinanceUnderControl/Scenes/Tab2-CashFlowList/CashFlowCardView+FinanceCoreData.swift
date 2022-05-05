@@ -9,13 +9,13 @@ import FinanceCoreData
 import Shared
 
 extension CashFlowCardView {
-    init(_ cashFlow: CashFlowEntity) {
+    init(_ cashFlow: CashFlow) {
         self.init(title: cashFlow.name,
                   date: cashFlow.date,
                   money: cashFlow.money,
-                  type: cashFlow.category.type,
-                  icon: cashFlow.category.icon.rawValue,
-                  iconColor: cashFlow.category.color.color
+                  type: .expense,
+                  icon: "house",
+                  iconColor: .indigo
         )
     }
 }
