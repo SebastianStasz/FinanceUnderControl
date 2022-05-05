@@ -13,9 +13,8 @@ import SSUtils
 import SSValidation
 
 final class CantorVM: ViewModel {
-    private let currencySettings = CurrencySettings()
 
-    @Published var currencySelector = CurrencySelector<CurrencyEntity?>()
+    @Published var currencySelector = CurrencySelector<CurrencyEntity?>(primaryCurrency: nil, secondaryCurrency: nil)
     let amountOfMoneyInput = DecimalInputVM(validator: .alwaysValid)
     @Published private(set) var exchangeRateValue: String?
     @Published private(set) var exchangedMoney: String?
@@ -28,18 +27,8 @@ final class CantorVM: ViewModel {
     }
 
     override func viewDidLoad() {
-        let currencySettingsOutput = currencySettings.result()
-        currencySettingsOutput.secondaryCurrency
-            .sink { [weak self] currency in
-                self?.currencySelector.setPrimaryCurrency(to: currency)
-            }
-            .store(in: &cancellables)
-
-        currencySettingsOutput.primaryCurrency
-            .sink { [weak self] currency in
-                self?.currencySelector.setSecondaryCurrency(to: currency)
-            }
-            .store(in: &cancellables)
+        currencySelector.setPrimaryCurrency(to: CurrencyEntity.get(withCode: Storage.primaryCurrency.code, from: AppVM.shared.context))
+        currencySelector.setSecondaryCurrency(to: CurrencyEntity.get(withCode: Storage.secondaryCurrency.code, from: AppVM.shared.context))
 
         let exchangeRateValue = $currencySelector
             .map { selector -> Decimal? in

@@ -5,16 +5,10 @@
 //  Created by Sebastian Staszczyk on 10/12/2021.
 //
 
-import FinanceCoreData
-import SSUtils
-import SwiftUI
 import Shared
+import SwiftUI
 
 struct SettingsView: View {
-
-    @FetchRequest(sortDescriptors: [CurrencyEntity.Sort.byCode(.forward).nsSortDescriptor]
-    ) var currencies: FetchedResults<CurrencyEntity>
-
     @ObservedObject var viewModel: SettingsVM
 
     var body: some View {
@@ -25,8 +19,8 @@ struct SettingsView: View {
             }
 
             Sector(.common_currencies) {
-                LabeledPicker(.common_primary, elements: currencies, selection: $viewModel.primaryCurrency)
-                LabeledPicker(.common_secondary, elements: currencies, selection: $viewModel.secondaryCurrency)
+                LabeledPicker(.common_primary, elements: Currency.allCases, selection: $viewModel.currencySelector.primaryCurrency)
+                LabeledPicker(.common_secondary, elements: Currency.allCases, selection: $viewModel.currencySelector.secondaryCurrency)
             }
 
             Sector("Debug") {

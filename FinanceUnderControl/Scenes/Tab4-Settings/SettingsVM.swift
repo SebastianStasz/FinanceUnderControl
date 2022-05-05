@@ -8,33 +8,17 @@
 import Combine
 import Foundation
 import FinanceCoreData
+import Shared
 
 final class SettingsVM: ViewModel {
 
-    @Published private var currencySettings = CurrencySettings()
-
-    @Published var primaryCurrency: CurrencyEntity?
-    @Published var secondaryCurrency: CurrencyEntity?
+    @Published var currencySelector = CurrencySelector<Currency?>(primaryCurrency: Storage.primaryCurrency, secondaryCurrency: Storage.secondaryCurrency)
 
     override func viewDidLoad() {
-        let currencySettingsOutput = currencySettings.result()
-        currencySettingsOutput.primaryCurrency.assign(to: &$primaryCurrency)
-        currencySettingsOutput.secondaryCurrency.assign(to: &$secondaryCurrency)
-
-        $primaryCurrency
-            .compactMap { $0?.code }
-            .sink { [weak self] code in
-                guard self?.currencySettings.currencySelector.primaryCurrency != code else { return }
-                self?.currencySettings.currencySelector.setPrimaryCurrency(to: code)
-            }
-            .store(in: &cancellables)
-
-        $secondaryCurrency
-            .compactMap { $0?.code }
-            .sink { [weak self] code in
-                guard self?.currencySettings.currencySelector.secondaryCurrency != code else { return }
-                self?.currencySettings.currencySelector.setSecondaryCurrency(to: code)
-            }
-            .store(in: &cancellables)
+        $currencySelector
+            .sinkAndStore(on: self, action: { vm, selector in
+                UserDefaults.set(value: selector.primaryCurrency!.code, forKey: .primaryCurrency)
+                UserDefaults.set(value: selector.secondaryCurrency!.code, forKey: .secondaryCurrency)
+            })
     }
 }
