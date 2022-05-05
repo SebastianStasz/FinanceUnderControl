@@ -1,5 +1,5 @@
 //
-//  CashFlowDocument.swift
+//  CashFlow.swift
 //  FinanceUnderControl
 //
 //  Created by sebastianstaszczyk on 02/05/2022.
@@ -9,11 +9,11 @@ import FirebaseFirestore
 import Foundation
 import Shared
 
-struct CashFlowDocument: FirestoreDocument, Identifiable, Equatable {
+struct CashFlow: FirestoreDocument, Identifiable, Equatable {
     let name: String
     let money: Money
     let date: Date
-    let categoryId: String
+    let category: CashFlowCategory
 
     var id: String {
         date.description + name
@@ -23,7 +23,7 @@ struct CashFlowDocument: FirestoreDocument, Identifiable, Equatable {
         [Field.name.key: name,
          Field.amount.key: money.value.asString,
          Field.currency.key: money.currency.rawValue,
-         Field.categoryId.key: categoryId,
+         Field.categoryId.key: category.id,
          Field.date.key: date]
     }
 
@@ -32,13 +32,13 @@ struct CashFlowDocument: FirestoreDocument, Identifiable, Equatable {
     }
 }
 
-extension CashFlowDocument {
-    init(from document: QueryDocumentSnapshot) {
+extension CashFlow {
+    init(from document: QueryDocumentSnapshot, category: CashFlowCategory) {
         let currency = document.getCurrency(for: Field.currency)
         let amount = document.getDecimal(for: Field.amount)
-        self.name = document.getString(for: Field.name)
-        self.money = Money(amount, currency: currency)
-        self.date = document.getDate(for: Field.date)
-        self.categoryId = document.getString(for: Field.categoryId)
+        name = document.getString(for: Field.name)
+        money = Money(amount, currency: currency)
+        date = document.getDate(for: Field.date)
+        self.category = category
     }
 }

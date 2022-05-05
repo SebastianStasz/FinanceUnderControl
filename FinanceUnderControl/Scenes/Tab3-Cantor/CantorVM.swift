@@ -27,8 +27,8 @@ final class CantorVM: ViewModel {
     }
 
     override func viewDidLoad() {
-        currencySelector.setPrimaryCurrency(to: CurrencyEntity.get(withCode: Storage.primaryCurrency.code, from: AppVM.shared.context))
-        currencySelector.setSecondaryCurrency(to: CurrencyEntity.get(withCode: Storage.secondaryCurrency.code, from: AppVM.shared.context))
+        currencySelector.setPrimaryCurrency(to: CurrencyEntity.get(withCode: PersistentStorage.primaryCurrency.code, from: AppVM.shared.context))
+        currencySelector.setSecondaryCurrency(to: CurrencyEntity.get(withCode: PersistentStorage.secondaryCurrency.code, from: AppVM.shared.context))
 
         let exchangeRateValue = $currencySelector
             .map { selector -> Decimal? in

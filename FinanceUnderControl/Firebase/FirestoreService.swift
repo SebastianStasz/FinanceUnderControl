@@ -17,6 +17,10 @@ struct FirestoreService {
 
     private init() {}
 
+    func getDocument(fromReference reference: DocumentReference) async throws -> DocumentSnapshot {
+        try await db.document(reference.path).getDocument()
+    }
+
     func getDocuments<T: DocumentField>(from collection: Collection,
                                         lastDocument: QueryDocumentSnapshot? = nil,
                                         orderedBy orderField: OrderField<T>? = nil

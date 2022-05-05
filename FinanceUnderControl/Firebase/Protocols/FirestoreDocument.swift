@@ -12,6 +12,4 @@ protocol FirestoreDocument {
     associatedtype Field: DocumentField
     
     var data: [String: Any] { get }
-
-    init(from queryDocumentSnapshot: QueryDocumentSnapshot)
 }

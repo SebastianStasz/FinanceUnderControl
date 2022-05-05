@@ -9,4 +9,5 @@ import Foundation
 
 enum Collection: String {
     case cashFlows
+    case cashFlowCategories
 }

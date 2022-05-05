@@ -1,5 +1,5 @@
 //
-//  Storage.swift
+//  PersistentStorage.swift
 //  FinanceUnderControl
 //
 //  Created by sebastianstaszczyk on 05/05/2022.
@@ -8,7 +8,7 @@
 import Foundation
 import Shared
 
-struct Storage {
+struct PersistentStorage {
     static var primaryCurrency: Currency {
         let code = UserDefaults.string(forKey: .primaryCurrency) ?? Currency.PLN.code
         return Currency(rawValue: code) ?? .PLN

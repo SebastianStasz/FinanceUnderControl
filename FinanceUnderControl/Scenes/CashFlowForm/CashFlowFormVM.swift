@@ -27,11 +27,17 @@ final class CashFlowFormVM: ViewModel {
     var valueInput = DecimalInputVM()
 
     @Published var formModel = CashFlowFormModel()
+    @Published var storage: StorageProtocol
     let formType: CashFlowForm
 
-    init(for formType: CashFlowForm, coordinator: CoordinatorProtocol, service: CashFlowService = .init()) {
+    init(for formType: CashFlowForm,
+         coordinator: CoordinatorProtocol,
+         storage: StorageProtocol = Storage.shared,
+         service: CashFlowService = .init()
+    ) {
         self.formType = formType
         self.service = service
+        self.storage = storage
         super.init(coordinator: coordinator)
 
         nameInput.result().weakAssign(to: \.formModel.name, on: self)

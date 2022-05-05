@@ -12,7 +12,7 @@ import Shared
 
 final class SettingsVM: ViewModel {
 
-    @Published var currencySelector = CurrencySelector<Currency?>(primaryCurrency: Storage.primaryCurrency, secondaryCurrency: Storage.secondaryCurrency)
+    @Published var currencySelector = CurrencySelector<Currency?>(primaryCurrency: PersistentStorage.primaryCurrency, secondaryCurrency: PersistentStorage.secondaryCurrency)
 
     override func viewDidLoad() {
         $currencySelector

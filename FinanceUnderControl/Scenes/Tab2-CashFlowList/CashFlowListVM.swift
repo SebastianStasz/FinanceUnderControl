@@ -18,7 +18,7 @@ final class CashFlowListVM: ViewModel {
     let maxValueInput = DoubleInputVM(validator: .alwaysValid)
 
     @Published private(set) var cashFlowPredicate: NSPredicate?
-    @Published private(set) var listSectors: [ListSector<CashFlowDocument>] = []
+    @Published private(set) var listSectors: [ListSector<CashFlow>] = []
     @Published var cashFlowFilter = CashFlowFilter()
     @Published var searchText = ""
 

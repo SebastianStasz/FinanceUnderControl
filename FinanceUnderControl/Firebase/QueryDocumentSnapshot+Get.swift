@@ -11,7 +11,7 @@ import Shared
 
 // TODO: Remove force unwrap and handle exceptions
 
-extension QueryDocumentSnapshot {
+extension DocumentSnapshot {
     func get<T: DocumentField>(_ field: T) -> Any? {
         get(field.rawValue)
     }

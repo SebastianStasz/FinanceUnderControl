@@ -14,12 +14,12 @@ struct CashFlowFormModel {
     var name: String?
     var value: Decimal?
     var currency: Currency? = .PLN
-    var categoryId: String?
+    var category: CashFlowCategory?
     var type: CashFlowType?
 
-    var model: CashFlowDocument? {
-        guard let name = name, let value = value, let categoryId = categoryId else { return nil }
-        return CashFlowDocument(name: name, money: Money(value, currency: currency!), date: date, categoryId: categoryId)
+    var model: CashFlow? {
+        guard let name = name, let value = value, let category = category else { return nil }
+        return CashFlow(name: name, money: Money(value, currency: currency!), date: date, category: category)
     }
 }
 

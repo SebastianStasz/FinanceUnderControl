@@ -30,7 +30,7 @@ struct CashFlowFormView: BaseView {
                     .opacity(0.5)
                     .disabled(true)
                 LabeledDatePicker(.create_cash_flow_date, selection: $viewModel.formModel.date)
-                LabeledPicker(.common_category, elements: ["1", "2"], selection: $viewModel.formModel.categoryId)
+                LabeledPicker(.common_category, elements: viewModel.storage.cashFlowCategories, selection: $viewModel.formModel.category)
             }
         }
         .navigationTitle(viewModel.formType.title)
