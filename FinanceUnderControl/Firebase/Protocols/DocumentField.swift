@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol DocumentField: RawRepresentable where RawValue == String {
+protocol DocumentField: RawRepresentable where RawValue == String, Self: CaseIterable {
     var key: String { get }
 }
 

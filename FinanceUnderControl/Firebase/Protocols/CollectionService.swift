@@ -8,5 +8,6 @@
 import Foundation
 
 protocol CollectionService {
+    associatedtype Document: FirestoreDocument
     associatedtype Field: DocumentField
 }

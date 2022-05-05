@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct CashFlowService: CollectionService {
-    typealias Field = CashFlow.Field
+    typealias Document = CashFlow
+    typealias Field = Document.Field
 
     private let firestore = FirestoreService.shared
 
