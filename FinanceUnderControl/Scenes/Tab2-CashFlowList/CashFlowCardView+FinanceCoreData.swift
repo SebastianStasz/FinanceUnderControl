@@ -9,7 +9,7 @@ import FinanceCoreData
 import Shared
 
 extension CashFlowCardView {
-    init(_ cashFlow: CashFlow) {
+    init(_ cashFlow: CashFlowDocument) {
         self.init(title: cashFlow.name,
                   date: cashFlow.date,
                   money: cashFlow.money,

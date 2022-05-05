@@ -17,9 +17,9 @@ struct CashFlowFormModel {
     var categoryId: String?
     var type: CashFlowType?
 
-    var model: CashFlow? {
+    var model: CashFlowDocument? {
         guard let name = name, let value = value, let categoryId = categoryId else { return nil }
-        return CashFlow(name: name, money: Money(value, currency: currency!), date: date, categoryId: categoryId)
+        return CashFlowDocument(name: name, money: Money(value, currency: currency!), date: date, categoryId: categoryId)
     }
 }
 
