@@ -19,7 +19,7 @@ struct CashFlowFormModel {
 
     var model: CashFlow? {
         guard let name = name, let value = value, let category = category else { return nil }
-        return CashFlow(name: name, money: Money(value, currency: currency!), date: date, category: category)
+        return CashFlow(id: UUID().uuidString, name: name, money: Money(value, currency: currency!), date: date, category: category)
     }
 }
 

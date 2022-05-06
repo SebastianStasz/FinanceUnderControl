@@ -17,6 +17,10 @@ struct FirestoreService {
 
     private init() {}
 
+    private var userDocument: DocumentReference {
+        db.collection(Collection.users.name).document(Collection.users.documentIdPrefix + userId)
+    }
+
     func getDocument(fromReference reference: DocumentReference) async throws -> DocumentSnapshot {
         try await db.document(reference.path).getDocument()
     }
@@ -26,12 +30,11 @@ struct FirestoreService {
                                         orderedBy orderField: OrderField<T>? = nil
     ) async throws -> [QueryDocumentSnapshot] {
         try await withUnsafeThrowingContinuation { (continuation: UnsafeContinuation<[QueryDocumentSnapshot], Error>) in
-            var query = db.collection(collection.rawValue)
-                .whereField("userId", isEqualTo: userId)
+            let query = userDocument.collection(collection.name)
 
-            if let orderField = orderField {
-                query = query.order(by: orderField.field.key, descending: orderField.order == .reverse)
-            }
+//            if let orderField = orderField {
+//                query = query.order(by: orderField.field.key, descending: orderField.order == .reverse) as! CollectionReference
+//            }
 
             if let lastDocument = lastDocument {
                 query.start(afterDocument: lastDocument)
@@ -47,17 +50,10 @@ struct FirestoreService {
         }
     }
 
-    func createDocument(in collection: Collection, data: [String: Any]) async throws {
-        var data = data
-        data["userId"] = userId
-        try await withUnsafeThrowingContinuation { (continuation: UnsafeContinuation<Void, Error>) in
-            db.collection(collection.rawValue).addDocument(data: data) { error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume()
-                }
-            }
-        }
+    func createDocument(in collection: Collection, withId id: String, data: [String: Any]) async throws {
+        try await userDocument
+            .collection(collection.name)
+            .document(collection.documentIdPrefix + id)
+            .setData(data)
     }
 }

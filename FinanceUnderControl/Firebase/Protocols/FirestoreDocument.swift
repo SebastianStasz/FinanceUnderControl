@@ -8,7 +8,7 @@
 import FirebaseFirestore
 import Foundation
 
-protocol FirestoreDocument {
+protocol FirestoreDocument: Identifiable, Equatable {
     associatedtype Field: DocumentField
     
     var data: [String: Any] { get }

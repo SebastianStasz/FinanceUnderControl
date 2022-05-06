@@ -34,4 +34,8 @@ extension DocumentSnapshot {
         let timestamp = get(field.rawValue) as! Timestamp
         return timestamp.dateValue()
     }
+
+    func getStringArray<T: DocumentField>(for field: T) -> [String] {
+        get(field) as! [String]
+    }
 }

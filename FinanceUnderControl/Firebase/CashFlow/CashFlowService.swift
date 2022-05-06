@@ -18,11 +18,11 @@ final class CashFlowService: CollectionService {
     private var lastDocument: QueryDocumentSnapshot?
 
     func create(model: CashFlow) async throws {
-        try await firestore.createDocument(in: .cashFlows, data: model.data)
+        try await firestore.createDocument(in: .cashFlows, withId: model.id, data: model.data)
     }
 
     func fetch() async throws -> [CashFlow] {
-        let docs = try await firestore.getDocuments(from: .cashFlows, lastDocument: lastDocument, orderedBy: OrderField(field: Field.date, order: .reverse))
+        let docs = try await firestore.getDocuments(from: .cashFlows, lastDocument: lastDocument, orderedBy: orderField)
         lastDocument = docs.last
         return try await docs.asyncMap {
             if storage.cashFlowCategories.isEmpty {
@@ -37,28 +37,8 @@ final class CashFlowService: CollectionService {
         }
         .compactMap { $0 }
     }
-}
 
-protocol StorageProtocol {
-    var cashFlowCategories: [CashFlowCategory] { get }
-}
-
-final class Storage: StorageProtocol {
-    static let shared = Storage()
-
-    private lazy var cashFlowCategoryService = CashFlowCategoryService()
-
-    private(set) var cashFlowCategories: [CashFlowCategory] = []
-
-    var incomeCashFlowCategories: [CashFlowCategory] {
-        cashFlowCategories.filter { $0.type == .income }
-    }
-
-    var expenseCashFlowCategories: [CashFlowCategory] {
-        cashFlowCategories.filter { $0.type == .expense }
-    }
-
-    func updateCashFlowCategories() async throws {
-        try await cashFlowCategories = cashFlowCategoryService.getAll()
+    private var orderField: OrderField<Field> {
+        OrderField(field: Field.date, order: .reverse)
     }
 }

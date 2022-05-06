@@ -22,23 +22,24 @@ final class CashFlowFormVM: ViewModel {
     }
 
     private let service: CashFlowService
+    private let storage = Storage.shared
+    let formType: CashFlowForm
     let binding = Binding()
     var nameInput = TextInputVM()
     var valueInput = DecimalInputVM()
 
+    @Published private(set) var categories: [CashFlowCategory] = []
     @Published var formModel = CashFlowFormModel()
-    @Published var storage: StorageProtocol
-    let formType: CashFlowForm
 
     init(for formType: CashFlowForm,
          coordinator: CoordinatorProtocol,
-         storage: StorageProtocol = Storage.shared,
          service: CashFlowService = .init()
     ) {
         self.formType = formType
         self.service = service
-        self.storage = storage
         super.init(coordinator: coordinator)
+
+        storage.$cashFlowCategories.assign(to: &$categories)
 
         nameInput.result().weakAssign(to: \.formModel.name, on: self)
         valueInput.result().weakAssign(to: \.formModel.value, on: self)
@@ -59,5 +60,11 @@ final class CashFlowFormVM: ViewModel {
 //            .sinkAndStore(on: self) { vm, error in
 //                print(error)
 //            }
+    }
+
+    func updateCashFlowCategoriesIfNeeded() async {
+        if storage.cashFlowCategories.isEmpty {
+            try? await storage.updateCashFlowCategories()
+        }
     }
 }

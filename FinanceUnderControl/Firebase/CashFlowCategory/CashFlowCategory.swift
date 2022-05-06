@@ -10,21 +10,21 @@ import FirebaseFirestore
 import Foundation
 import Shared
 
-struct CashFlowCategory: FirestoreDocument, Identifiable, Equatable {
+struct CashFlowCategory: FirestoreDocument {
     let id: String
     let name: String
     let type: CashFlowType
     let icon: CashFlowCategoryIcon
+
+    enum Field: String, DocumentField {
+        case id, name, type, icon
+    }
 
     var data: [String: Any] {
         [Field.id.key: id,
          Field.name.key: name,
          Field.type.key: type,
          Field.icon.key: icon]
-    }
-
-    enum Field: String, DocumentField {
-        case id, name, type, icon
     }
 }
 
