@@ -48,13 +48,17 @@ final class CashFlowListVM: ViewModel {
             .compactMap { $0 }
             .sinkAndStore(on: self) { vm, cashFlows in
                 let groupedCashFlows = Dictionary(grouping: cashFlows, by: { $0.date.stringMonthAndYear })
+                var sectors: [ListSector<CashFlow>] = []
+
                 for group in groupedCashFlows {
-                    if let sectorIndex = vm.listSectors.firstIndex(where: { $0.title == group.key }) {
-                        vm.listSectors[sectorIndex].elements.append(contentsOf: group.value)
-                    } else {
-                        vm.listSectors.append(ListSector(group.key, elements: group.value))
-                    }
+                    sectors.append(ListSector(group.key, elements: group.value))
+//                    if let sectorIndex = vm.listSectors.firstIndex(where: { $0.title == group.key }) {
+//                        vm.listSectors[sectorIndex].elements.append(contentsOf: group.value)
+//                    } else {
+//                        vm.listSectors.append(ListSector(group.key, elements: group.value))
+//                    }
                 }
+                vm.listSectors = sectors
             }
 
         binding.confirmCashFlowDeletion

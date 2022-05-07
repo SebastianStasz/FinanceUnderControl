@@ -26,18 +26,9 @@ struct CashFlowListView: BaseView {
     }
 
     var baseBody: some View {
-        Group {
-            if viewModel.isLoading && viewModel.listSectors.isEmpty {
-                Color.backgroundPrimary
-                    .ignoresSafeArea()
-                    .overlay(LoadingIndicator(isLoading: true))
-                    .navigationTitle(String.tab_cashFlow_title)
-            } else {
-                BaseList(.tab_cashFlow_title, emptyStateVD: emptyStateVD, sectors: viewModel.listSectors) {
-                    CashFlowCardView($0)
-                        .actions(edit: (), delete: reportDeleteCashFlow($0))
-                }
-            }
+        BaseList(.tab_cashFlow_title, isLoading: viewModel.isLoading, emptyStateVD: emptyStateVD, sectors: viewModel.listSectors) {
+            CashFlowCardView($0)
+                .actions(edit: (), delete: reportDeleteCashFlow($0))
         }
         .confirmationDialog(String.settings_select_action, isPresented: $isDeleteConfirmationShown) {
             Button.delete { viewModel.binding.confirmCashFlowDeletion.send() }

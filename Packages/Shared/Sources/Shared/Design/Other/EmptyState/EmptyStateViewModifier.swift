@@ -10,10 +10,12 @@ import SwiftUI
 private struct EmptyStateViewModifier: ViewModifier {
 
     private let isEmpty: Bool
+    private let isLoading: Bool
     private let viewData: EmptyStateVD
 
-    init(isEmpty: Bool, viewData: EmptyStateVD) {
+    init(isEmpty: Bool, isLoading: Bool, viewData: EmptyStateVD) {
         self.isEmpty = isEmpty
+        self.isLoading = isLoading
         self.viewData = viewData
     }
 
@@ -21,14 +23,14 @@ private struct EmptyStateViewModifier: ViewModifier {
         Color.clear.overlay(
             Group {
                 if !isEmpty { content }
-                else { EmptyStateView(viewData) }
+                else { EmptyStateView(viewData, isLoading: isLoading) }
             }
         )
     }
 }
 
 public extension View {
-    func emptyState(isEmpty: Bool, viewData: EmptyStateVD) -> some View {
-        modifier(EmptyStateViewModifier(isEmpty: isEmpty, viewData: viewData))
+    func emptyState(isEmpty: Bool, isLoading: Bool, viewData: EmptyStateVD) -> some View {
+        modifier(EmptyStateViewModifier(isEmpty: isEmpty, isLoading: isLoading, viewData: viewData))
     }
 }

@@ -11,9 +11,11 @@ import SSUtils
 struct EmptyStateView: View {
 
     private let viewData: EmptyStateVD
+    private let isLoading: Bool
 
-    init(_ viewData: EmptyStateVD) {
+    init(_ viewData: EmptyStateVD, isLoading: Bool) {
         self.viewData = viewData
+        self.isLoading = isLoading
     }
 
     var body: some View {
@@ -28,6 +30,7 @@ struct EmptyStateView: View {
                     .padding(.horizontal, .xxlarge * 2)
             }
         }
+        .opacity(isLoading ? 0 : 1)
         .padding(.bottom, .xxlarge)
         .infiniteSize()
         .background(Color.backgroundPrimary)
@@ -42,8 +45,8 @@ struct EmptyStateView_Previews: PreviewProvider {
             title: "No notifications yet",
             description: "We will notify you once we have sometinhg for you"
         )
-        EmptyStateView(viewData)
-        EmptyStateView(viewData).darkScheme()
+        EmptyStateView(viewData, isLoading: false)
+        EmptyStateView(viewData, isLoading: false).darkScheme()
     }
 }
 
