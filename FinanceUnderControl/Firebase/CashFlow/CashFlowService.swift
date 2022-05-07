@@ -21,6 +21,10 @@ final class CashFlowService: CollectionService {
         try await firestore.createDocument(in: .cashFlows, withId: model.id, data: model.data)
     }
 
+    func delete(_ cashFlow: CashFlow) async throws {
+        try await firestore.deleteDocument(withId: cashFlow.id, from: .cashFlows)
+    }
+
     func fetch() async throws -> [CashFlow] {
         let docs = try await firestore.getDocuments(from: .cashFlows, lastDocument: lastDocument, orderedBy: orderField)
         lastDocument = docs.last

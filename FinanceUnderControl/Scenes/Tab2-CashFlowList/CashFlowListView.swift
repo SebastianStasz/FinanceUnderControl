@@ -13,6 +13,7 @@ import SSUtils
 struct CashFlowListView: BaseView {
 
     @ObservedObject var viewModel: CashFlowListVM
+    @State private var isDeleteConfirmationShown = false
 
     private var isSearching: Bool {
         viewModel.cashFlowPredicate.notNil
@@ -24,17 +25,23 @@ struct CashFlowListView: BaseView {
                      isSearching: isSearching)
     }
 
-    @ViewBuilder
     var baseBody: some View {
-        if viewModel.isLoading && viewModel.listSectors.isEmpty {
-            Color.backgroundPrimary
-                .ignoresSafeArea()
-                .overlay(LoadingIndicator(isLoading: true))
-                .navigationTitle(String.tab_cashFlow_title)
-        } else {
-            BaseList(.tab_cashFlow_title, emptyStateVD: emptyStateVD, sectors: viewModel.listSectors) {
-                CashFlowCardView($0)
+        Group {
+            if viewModel.isLoading && viewModel.listSectors.isEmpty {
+                Color.backgroundPrimary
+                    .ignoresSafeArea()
+                    .overlay(LoadingIndicator(isLoading: true))
+                    .navigationTitle(String.tab_cashFlow_title)
+            } else {
+                BaseList(.tab_cashFlow_title, emptyStateVD: emptyStateVD, sectors: viewModel.listSectors) {
+                    CashFlowCardView($0)
+                        .actions(edit: (), delete: reportDeleteCashFlow($0))
+                }
             }
+        }
+        .confirmationDialog(String.settings_select_action, isPresented: $isDeleteConfirmationShown) {
+            Button.delete { viewModel.binding.confirmCashFlowDeletion.send() }
+            Button.cancel(action: {})
         }
 //        .searchable(text: $viewModel.searchText)
 //        .toolbar {
@@ -43,16 +50,17 @@ struct CashFlowListView: BaseView {
 //                    .disabled(cashFlows.isEmpty && !isSearching)
 //            }
 //        }
-//        .confirmationDialog(.settings_select_action, item: $cashFlowToDelete) {
-//            Button.delete(action: deleteCashFlow)
-//            Button.cancel { cashFlowToDelete = nil }
-//        }
 //        .sheet(isPresented: $isFilterViewShown) {
 //            CashFlowFilterView(cashFlowFilter: $viewModel.cashFlowFilter)
 //        }
 //        .onChange(of: viewModel.cashFlowPredicate) {
 //            cashFlows.nsPredicate = $0
 //        }
+    }
+
+    func reportDeleteCashFlow(_ cashFlow: CashFlow) {
+        viewModel.binding.cashFlowToDelete.send(cashFlow)
+        isDeleteConfirmationShown = true
     }
 
     @ViewBuilder

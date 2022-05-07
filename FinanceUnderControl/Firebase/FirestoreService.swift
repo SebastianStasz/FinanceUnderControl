@@ -21,6 +21,10 @@ struct FirestoreService {
         db.collection(Collection.users.name).document(Collection.users.documentIdPrefix + userId)
     }
 
+    func deleteDocument(withId documentId: String, from collection: Collection) async throws {
+        try await userDocument.collection(collection.name).document(collection.documentIdPrefix + documentId).delete()
+    }
+
     func getDocument(fromReference reference: DocumentReference) async throws -> DocumentSnapshot {
         try await db.document(reference.path).getDocument()
     }

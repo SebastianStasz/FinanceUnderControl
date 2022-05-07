@@ -13,9 +13,15 @@ import SSValidation
 
 final class CashFlowListVM: ViewModel {
 
+    struct Binding {
+        let cashFlowToDelete = DriverSubject<CashFlow>()
+        let confirmCashFlowDeletion = DriverSubject<Void>()
+    }
+
     private let service: CashFlowService = .init()
     let minValueInput = DoubleInputVM(validator: .alwaysValid)
     let maxValueInput = DoubleInputVM(validator: .alwaysValid)
+    let binding = Binding()
 
     @Published private(set) var cashFlowPredicate: NSPredicate?
     @Published private(set) var listSectors: [ListSector<CashFlow>] = []
@@ -35,7 +41,7 @@ final class CashFlowListVM: ViewModel {
         minValueInput.assignResult(to: \.cashFlowFilter.minimumValue, on: self)
         maxValueInput.assignResult(to: \.cashFlowFilter.maximumValue, on: self)
 
-        Just(())
+        Publishers.Merge(Just(()), AppVM.shared.events.didChangeCashFlow)
             .performWithLoading(on: self, errorTracker: errorTracker) { [weak self] in
                 try await self?.service.fetch()
             }
@@ -48,6 +54,19 @@ final class CashFlowListVM: ViewModel {
                     } else {
                         vm.listSectors.append(ListSector(group.key, elements: group.value))
                     }
+                }
+            }
+
+        binding.confirmCashFlowDeletion
+            .withLatestFrom(binding.cashFlowToDelete)
+            .performWithLoading(on: self, errorTracker: errorTracker) { [weak self] in
+                try await self?.service.delete($0)
+            }
+            .withLatestFrom(binding.cashFlowToDelete)
+            .sinkAndStore(on: self) { vm, deltedCashFlow in
+                if let sectorIndex = vm.listSectors.firstIndex(where: { $0.elements.contains(deltedCashFlow) }),
+                   let cashFlowIndex = vm.listSectors[sectorIndex].elements.firstIndex(of: deltedCashFlow) {
+                    vm.listSectors[sectorIndex].elements.remove(at: cashFlowIndex)
                 }
             }
     }
