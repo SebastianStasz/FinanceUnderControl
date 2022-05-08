@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import Shared
 
 final class SettingsCoordinator: RootCoordinator {
+
+    enum Destination {
+        case cashFlowGroupForm(CashFlowType)
+    }
 
     private let navigationController = UINavigationController()
 
@@ -20,6 +25,22 @@ final class SettingsCoordinator: RootCoordinator {
         let view = SettingsView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
         navigationController.viewControllers = [viewController]
+
+        viewModel.binding.navigateTo
+            .sink { [weak self] in self?.navigate(to: $0) }
+            .store(in: &viewModel.cancellables)
+
         return navigationController
+    }
+
+    private func navigate(to destination: Destination) {
+        switch destination {
+        case let .cashFlowGroupForm(type):
+            pushCashFlowGroupingForm(for: type)
+        }
+    }
+
+    private func pushCashFlowGroupingForm(for type: CashFlowType) {
+        CashFlowGroupingCoordinator(.push(on: navigationController), type: type).start()
     }
 }

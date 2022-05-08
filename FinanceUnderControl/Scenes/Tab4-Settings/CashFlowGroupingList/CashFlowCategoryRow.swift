@@ -17,12 +17,12 @@ struct CashFlowCategoryRow: View {
     private let color: Color
     private let editCategory: () -> Void
 
-    init(for category: CashFlowCategoryEntity,
+    init(for category: CashFlowCategory,
          editCategory: @autoclosure @escaping () -> Void
     ) {
         name = category.name
         icon = category.icon
-        color = category.group?.color.color ?? .gray
+        color = .gray
         self.editCategory = editCategory
     }
 
@@ -48,13 +48,13 @@ struct CashFlowCategoryRow: View {
 
 // MARK: - Preview
 
-struct CashFlowCategoryRow_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            CashFlowCategoryRow(for: .carExpense, editCategory: {}())
-            CashFlowCategoryRow(for: .carExpense, editCategory: {}())
-                .environment(\.editMode, .constant(.active))
-        }
-        .sizeThatFits()
-    }
-}
+//struct CashFlowCategoryRow_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            CashFlowCategoryRow(for: .carExpense, editCategory: {}())
+//            CashFlowCategoryRow(for: .carExpense, editCategory: {}())
+//                .environment(\.editMode, .constant(.active))
+//        }
+//        .sizeThatFits()
+//    }
+//}

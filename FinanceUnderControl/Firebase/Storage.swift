@@ -10,9 +10,19 @@ import Foundation
 final class Storage {
     static let shared = Storage()
 
+    private lazy var cashFlowCategoryGroupService = CashFlowCategoryGroupService()
     private lazy var cashFlowCategoryService = CashFlowCategoryService()
 
+    @Published private(set) var cashFlowCategoryGroups: [CashFlowCategoryGroup] = []
     @Published private(set) var cashFlowCategories: [CashFlowCategory] = []
+
+    var incomeCashFlowGroups: [CashFlowCategoryGroup] {
+        cashFlowCategoryGroups.filter { $0.type == .income }
+    }
+
+    var expenseCashFlowGroups: [CashFlowCategoryGroup] {
+        cashFlowCategoryGroups.filter { $0.type == .expense }
+    }
 
     var incomeCashFlowCategories: [CashFlowCategory] {
         cashFlowCategories.filter { $0.type == .income }
@@ -22,7 +32,21 @@ final class Storage {
         cashFlowCategories.filter { $0.type == .expense }
     }
 
-    func updateCashFlowCategories() async throws {
-        try await cashFlowCategories = cashFlowCategoryService.getAll()
+    func updateCashFlowCategoriesIfNeeded() async throws {
+        if cashFlowCategories.isEmpty {
+            let categories = try await cashFlowCategoryService.getAll()
+            DispatchQueue.main.async { [weak self] in
+                self?.cashFlowCategories = categories
+            }
+        }
+    }
+
+    func updateCashFlowCategoryGroupsIfNeeded() async throws {
+        if cashFlowCategoryGroups.isEmpty {
+            let groups = try await cashFlowCategoryGroupService.getAll()
+            DispatchQueue.main.async { [weak self] in
+                self?.cashFlowCategoryGroups = groups
+            }
+        }
     }
 }

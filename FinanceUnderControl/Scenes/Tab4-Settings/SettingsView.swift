@@ -14,8 +14,8 @@ struct SettingsView: View {
     var body: some View {
         FormView {
             Sector(.common_categories) {
-                Navigation(.common_expenses, leadsTo: CashFlowGroupingListView(type: .expense))
-                Navigation(.common_incomes, leadsTo: CashFlowGroupingListView(type: .income))
+                Navigation(.common_expenses) { viewModel.binding.navigateTo.send(.cashFlowGroupForm(.expense)) }
+                Navigation(.common_incomes) { viewModel.binding.navigateTo.send(.cashFlowGroupForm(.income)) }
             }
 
             Sector(.common_currencies) {
@@ -23,9 +23,9 @@ struct SettingsView: View {
                 LabeledPicker(.common_secondary, elements: Currency.allCases, selection: $viewModel.currencySelector.secondaryCurrency)
             }
 
-            Sector("Debug") {
-                Navigation("Design system", leadsTo: DesignSystemView())
-            }
+//            Sector("Debug") {
+//                Navigation("Design system", leadsTo: DesignSystemView())
+//            }
         }
         .navigationTitle(String.tab_settings_title)
     }

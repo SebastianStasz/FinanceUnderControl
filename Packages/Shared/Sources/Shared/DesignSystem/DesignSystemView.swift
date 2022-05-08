@@ -14,26 +14,26 @@ public struct DesignSystemView: View {
 
     public var body: some View {
         FormView {
-            Sector("Atoms") {
-                Navigation("Text", leadsTo: TextDSView.init)
-                Navigation("Color", leadsTo: ColorDSView.init)
-                Navigation("SF symbol", leadsTo: SFSymbolDSView.init)
-                Navigation("Spacing", leadsTo: SpacingDSView.init)
-                Navigation("Corner radius", leadsTo: CornerRadiusDSView.init)
-            }
-
-            Sector("Form") {
-                Navigation("Button", leadsTo: ButtonDSView.init)
-                Navigation("Toggle", leadsTo: ToggleDSView.init)
-                Navigation("Picker", leadsTo: PickerDSView.init)
-                Navigation("Text Field", leadsTo: TextFieldDSView.init)
-            }
-
-            Sector("Other") {
-                Navigation("Sector", leadsTo: SectorDSView.init)
-                Navigation("Description", leadsTo: DescriptionDSView.init)
-                Navigation("Circle view", leadsTo: CircleViewDSView.init)
-            }
+//            Sector("Atoms") {
+//                Navigation("Text", leadsTo: TextDSView.init)eViewDSView.init)
+//                Navigation("Color", leadsTo: ColorDSView.init)
+//                Navigation("SF symbol", leadsTo: SFSymbolDSView.init)
+//                Navigation("Spacing", leadsTo: SpacingDSView.init)
+//                Navigation("Corner radius", leadsTo: CornerRadiusDSView.init)
+//            }
+//
+//            Sector("Form") {
+//                Navigation("Button", leadsTo: ButtonDSView.init)
+//                Navigation("Toggle", leadsTo: ToggleDSView.init)
+//                Navigation("Picker", leadsTo: PickerDSView.init)
+//                Navigation("Text Field", leadsTo: TextFieldDSView.init)
+//            }
+//
+//            Sector("Other") {
+//                Navigation("Sector", leadsTo: SectorDSView.init)
+//                Navigation("Description", leadsTo: DescriptionDSView.init)
+//                Navigation("Circle view", leadsTo: Circl
+//            }
         }
         .navigationBarTitleDisplayMode(.inline)
     }

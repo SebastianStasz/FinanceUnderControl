@@ -64,8 +64,6 @@ final class CashFlowFormVM: ViewModel {
     }
 
     func updateCashFlowCategoriesIfNeeded() async {
-        if storage.cashFlowCategories.isEmpty {
-            try? await storage.updateCashFlowCategories()
-        }
+        try? await storage.updateCashFlowCategoriesIfNeeded()
     }
 }

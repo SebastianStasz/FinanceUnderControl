@@ -15,13 +15,8 @@ final class CashFlowCategoryGroupService: CollectionService {
     private let categoryService = CashFlowCategoryService()
 
     func getAll() async throws -> [CashFlowCategoryGroup] {
-        let allCategories = try await categoryService.getAll()
-        return try await firestore.getDocuments(from: .cashFlowCategoryGroups, orderedBy: orderField)
-            .map { doc -> CashFlowCategoryGroup in
-                let categoryIds = doc.getStringArray(for: Field.categories)
-                let categories = allCategories.filter { categoryIds.contains($0.id) }
-                return CashFlowCategoryGroup(from: doc, categories: categories)
-            }
+        try await firestore.getDocuments(from: .cashFlowCategoryGroups, orderedBy: orderField)
+            .map { CashFlowCategoryGroup(from: $0) }
     }
 
     private var orderField: OrderField<Field> {

@@ -1,37 +1,31 @@
 //
 //  SwiftUIView.swift
-//  
+//  Shared
 //
 //  Created by sebastianstaszczyk on 25/03/2022.
 //
 
 import SwiftUI
 
-public struct Navigation<Destination: View>: View {
-    @State private var isPresented = false
+public struct Navigation: View {
 
     private let title: String
-    private let destination: () -> Destination
+    private let action: () -> Void
 
-    public init(_ title: String, leadsTo destination: @autoclosure @escaping () -> Destination) {
+    public init(_ title: String, action: @autoclosure @escaping () -> Void) {
         self.title = title
-        self.destination = destination
+        self.action = action
     }
 
-    public init(_ title: String, @ViewBuilder leadsTo destination: @escaping () -> Destination) {
+    public init(_ title: String, action: @escaping () -> Void) {
         self.title = title
-        self.destination = destination
+        self.action = action
     }
 
     public var body: some View {
         Text(title).lineLimit(1)
-            .trailingAction(.forward(action: goForward))
+            .trailingAction(.forward(action: action))
             .card()
-            .navigation(isActive: $isPresented, destination: destination)
-    }
-
-    private func goForward() {
-        isPresented = true
     }
 }
 
@@ -40,8 +34,8 @@ public struct Navigation<Destination: View>: View {
 struct Navigation_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            Navigation("Title", leadsTo: Text("Inside"))
-            Navigation("Title", leadsTo: Text("Inside")).darkScheme()
+            Navigation("Title", action: {})
+            Navigation("Title", action: {}).darkScheme()
         }
         .sizeThatFits()
     }

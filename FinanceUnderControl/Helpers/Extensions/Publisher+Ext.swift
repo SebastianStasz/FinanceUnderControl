@@ -32,14 +32,14 @@ extension Publisher {
     }
 
     func perform<T>(
-        errorTracker: DriverSubject<Error>,
+        errorTracker: DriverSubject<Error>? = nil,
         _ transform: @escaping (Output) async throws -> T
     ) -> Publishers.FlatMap<Publishers.SetFailureType<AnyPublisher<T, Never>, Never>, Self> {
         flatMap {
             Just($0)
                 .await(transform)
                 .catch { error -> AnyPublisher<T, Never> in
-                    errorTracker.send(error)
+                    errorTracker?.send(error)
                     Swift.print("-----")
                     Swift.print("‼️ \(error)")
                     Swift.print("-----")
@@ -64,7 +64,7 @@ extension Publisher where Failure == Never {
 
     func performWithLoading<T, VM: ViewModel>(
         on viewModel: VM,
-        errorTracker: DriverSubject<Error>,
+        errorTracker: DriverSubject<Error>? = nil,
         _ transform: @escaping (Output) async throws -> T
     ) -> AnyPublisher<T, Never> {
         startLoading(on: viewModel)
