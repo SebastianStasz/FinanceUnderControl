@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import SSUtils
 
-final class Storage {
+final class Storage: BaseActions {
     static let shared = Storage()
 
     private lazy var cashFlowCategoryGroupService = CashFlowCategoryGroupService()
@@ -35,18 +36,14 @@ final class Storage {
     func updateCashFlowCategoriesIfNeeded() async throws {
         if cashFlowCategories.isEmpty {
             let categories = try await cashFlowCategoryService.getAll()
-            DispatchQueue.main.async { [weak self] in
-                self?.cashFlowCategories = categories
-            }
+            onMainQueue(onSelf { $0.cashFlowCategories = categories })
         }
     }
 
     func updateCashFlowCategoryGroupsIfNeeded() async throws {
         if cashFlowCategoryGroups.isEmpty {
             let groups = try await cashFlowCategoryGroupService.getAll()
-            DispatchQueue.main.async { [weak self] in
-                self?.cashFlowCategoryGroups = groups
-            }
+            onMainQueue(onSelf { $0.cashFlowCategoryGroups = groups })
         }
     }
 }

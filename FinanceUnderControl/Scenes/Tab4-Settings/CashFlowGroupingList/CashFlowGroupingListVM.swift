@@ -12,8 +12,15 @@ import SSUtils
 
 final class CashFlowGroupingListVM: ViewModel {
 
+    struct Binding {
+        let categoryToDelete = DriverSubject<CashFlowCategory>()
+        let confirmCategoryDeletion = DriverSubject<Void>()
+    }
+
     let type: CashFlowType
-    private let storage = Storage.shared
+    let binding = Binding()
+    @Published private var storage = Storage.shared
+    private let categoryService = CashFlowCategoryService()
     @Published private(set) var listSectors: [ListSector<CashFlowCategory>] = []
 
     init(for type: CashFlowType, coordinator: Coordinator) {
@@ -22,11 +29,15 @@ final class CashFlowGroupingListVM: ViewModel {
     }
 
     override func viewDidLoad() {
-        Just(()).performWithLoading(on: self) { [weak self] in
-            try await self?.storage.updateCashFlowCategoryGroupsIfNeeded()
-            try await self?.storage.updateCashFlowCategoriesIfNeeded()
-        }
-        .sinkAndStore(on: self) { vm, _ in }
+        let errorTracker = DriverSubject<Error>()
+        let reloadGroupsAndCategories = DriverSubject<Void>()
+
+        reloadGroupsAndCategories
+            .performWithLoading(on: self) { [weak self] in
+                try await self?.storage.updateCashFlowCategoryGroupsIfNeeded()
+                try await self?.storage.updateCashFlowCategoriesIfNeeded()
+            }
+            .sinkAndStore(on: self) { vm, _ in }
 
         CombineLatest(storage.$cashFlowCategoryGroups, storage.$cashFlowCategories)
             .map { result in
@@ -41,5 +52,20 @@ final class CashFlowGroupingListVM: ViewModel {
                 return sectors
             }
             .assign(to: &$listSectors)
+
+        binding.confirmCategoryDeletion
+            .withLatestFrom(binding.categoryToDelete)
+            .performWithLoading(on: self, errorTracker: errorTracker) { [weak self] in
+                try await self?.categoryService.delete($0)
+            }
+            .sink { reloadGroupsAndCategories.send() }
+            .store(in: &cancellables)
+
+        errorTracker
+            .sinkAndStore(on: self) { _, error in
+                print(error)
+            }
+
+        reloadGroupsAndCategories.send()
     }
 }

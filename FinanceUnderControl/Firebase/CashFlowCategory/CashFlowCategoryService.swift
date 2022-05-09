@@ -19,6 +19,10 @@ final class CashFlowCategoryService: CollectionService {
             .map { CashFlowCategory(from: $0) }
     }
 
+    func delete(_ category: CashFlowCategory) async throws {
+        try await firestore.deleteDocument(withId: category.id, from: .cashFlowCategories)
+    }
+
     private var orderField: OrderField<Field> {
         OrderField(field: Field.name)
     }
