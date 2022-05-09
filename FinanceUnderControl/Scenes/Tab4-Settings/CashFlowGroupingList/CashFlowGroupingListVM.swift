@@ -13,6 +13,7 @@ import SSUtils
 final class CashFlowGroupingListVM: ViewModel {
 
     struct Binding {
+        let navigateTo = DriverSubject<CashFlowGroupingCoordinator.Destination>()
         let categoryToDelete = DriverSubject<CashFlowCategory>()
         let confirmCategoryDeletion = DriverSubject<Void>()
     }

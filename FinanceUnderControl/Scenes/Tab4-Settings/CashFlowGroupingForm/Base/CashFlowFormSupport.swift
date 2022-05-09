@@ -10,41 +10,18 @@ import FinanceCoreData
 import Shared
 import SSValidation
 
-protocol CashFlowFormSupport: Entity, Deletable {
-    associatedtype FormModel: CashFlowGroupingFormModel where FormModel.Ent == Self
+protocol CashFlowFormSupport: FirestoreDocument {
+//    associatedtype FormModel: CashFlowGroupingFormModel
+//
+//    var formModel: FormModel { get }
 
-    var formModel: FormModel { get }
-
-    static func namesInUse(from context: NSManagedObjectContext, forType type: CashFlowType) -> [String]
-    static func create(in context: NSManagedObjectContext, model: Model)
-    @discardableResult func edit(model: Model) -> Bool
+    static func namesInUse(forType type: CashFlowType) -> [String]
+    static func create(_ model: Self)
+//    @discardableResult func edit(model: Model) -> Bool
 }
 
 extension CashFlowFormSupport {
-    static func namesInUse(from context: NSManagedObjectContext, forType type: CashFlowType) -> [String] {
-        []
-    }
+    static func namesInUse(forType type: CashFlowType) -> [String] { [] }
 }
 
 // MARK: - Compatibility
-
-extension CashFlowCategoryEntity: CashFlowFormSupport {
-    var formModel: FormModel {
-        .init(name: name, type: type, icon: icon, color: color)
-    }
-
-    static func namesInUse(from context: NSManagedObjectContext, forType type: CashFlowType) -> [String] {
-        CashFlowCategoryEntity.getAll(from: context, filters: .type(type)).map { $0.name }
-    }
-}
-
-extension CashFlowCategoryGroupEntity: CashFlowFormSupport {
-    var formModel: FormModel {
-        .init(name: name, type: type, color: color, categories: categories)
-    }
-
-    static func namesInUse(from context: NSManagedObjectContext, forType type: CashFlowType) -> [String] {
-        CashFlowCategoryGroupEntity.getAll(from: context, filterBy: .type(type)).map { $0.name }
-    }
-}
-

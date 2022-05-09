@@ -19,6 +19,10 @@ final class CashFlowCategoryService: CollectionService {
             .map { CashFlowCategory(from: $0) }
     }
 
+    func create(_ category: CashFlowCategory) async throws {
+        try await firestore.createDocument(in: .cashFlowCategories, withId: category.id, data: category.data)
+    }
+
     func delete(_ category: CashFlowCategory) async throws {
         try await firestore.deleteDocument(withId: category.id, from: .cashFlowCategories)
     }

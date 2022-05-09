@@ -35,7 +35,7 @@ struct CashFlowGroupingListView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 EditButton().displayIf(viewModel.listSectors.isNotEmpty)
             }
-            Toolbar.trailing(systemImage: SFSymbol.plus.name) {  }
+            Toolbar.trailing(systemImage: SFSymbol.plus.name) { viewModel.binding.navigateTo.send(.presentFormSelection) }
         }
         .confirmationDialog("Delete category", isPresented: $isDeleteConfirmationShown) {
             Button.delete { viewModel.binding.confirmCategoryDeletion.send() }

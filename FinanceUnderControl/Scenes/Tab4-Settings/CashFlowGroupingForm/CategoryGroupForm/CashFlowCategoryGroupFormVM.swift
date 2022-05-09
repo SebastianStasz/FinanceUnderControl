@@ -7,31 +7,42 @@
 
 import FinanceCoreData
 import Foundation
+import Shared
+import SSValidation
 
-final class CashFlowCategoryGroupFormVM: CashFlowGroupingFormVM<CashFlowCategoryGroupEntity> {
+final class CashFlowCategoryGroupFormVM: ViewModel {
+
+    let type: CashFlowType
+    let nameInput = TextInputVM()
+    var formModel = CashFlowCategroupFormModel()
+
+    init(for type: CashFlowType, coordinator: Coordinator) {
+        self.type = type
+        super.init(coordinator: coordinator)
+    }
 
     @Published private(set) var otherCategories: [CashFlowCategoryEntity] = []
 
-    override func onAppear(formType: FormType) {
-        super.onAppear(formType: formType)
-        if let name = formModel.name {
-            otherCategories = CashFlowCategoryEntity.getAll(from: context, filters: .type(formModel.type!), .groupNameIsNot(name))
-        } else {
-            otherCategories = CashFlowCategoryEntity.getAll(from: context, filters: .type(formModel.type!))
-        }
-        sortOtherCategories()
-    }
+//    override func onAppear(formType: FormType) {
+//        super.onAppear(formType: formType)
+//        if let name = formModel.name {
+//            otherCategories = CashFlowCategoryEntity.getAll(from: context, filters: .type(formModel.type!), .groupNameIsNot(name))
+//        } else {
+//            otherCategories = CashFlowCategoryEntity.getAll(from: context, filters: .type(formModel.type!))
+//        }
+//        sortOtherCategories()
+//    }
 
     func checkCategory(_ category: CashFlowCategoryEntity) {
         otherCategories.remove(element: category)
-        formModel.categories.append(category)
-        formModel.categories.sort(by: {
-            $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
-        })
+//        formModel.categories.append(category)
+//        formModel.categories.sort(by: {
+//            $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
+//        })
     }
 
     func uncheckCategory(_ category: CashFlowCategoryEntity) {
-        formModel.categories.remove(element: category)
+//        formModel.categories.remove(element: category)
         otherCategories.append(category)
         sortOtherCategories()
     }

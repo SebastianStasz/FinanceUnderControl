@@ -11,21 +11,12 @@ import SwiftUI
 import FinanceCoreData
 
 struct CashFlowCategoryFormView: BaseView {
-    @Environment(\.dismiss) private var dismiss
-
-    @StateObject var viewModel = CashFlowGroupingFormVM<CashFlowCategoryEntity>()
-    let form: CashFlowFormType<CashFlowCategoryEntity>
-
-    var elementsSpacing: CGFloat { .micro }
-
-    var grid: [GridItem] {
-        Array(repeating: .init(.flexible(), spacing: elementsSpacing), count: 6)
-    }
+    @ObservedObject var viewModel: CashFlowCategoryFormVM
 
     var baseBody: some View {
         FormView {
             VStack(alignment: .center, spacing: .medium) {
-                SquareView(icon: categoryModel.icon.rawValue, color: categoryModel.color.color, size: 95)
+                SquareView(icon: formModel.icon.rawValue, color: formModel.color.color, size: 95)
                 LabeledTextField(.create_cash_flow_name, viewModel: viewModel.nameInput, style: .secondary)
             }
             .card()
@@ -46,19 +37,32 @@ struct CashFlowCategoryFormView: BaseView {
                 .card()
             }
         }
-        .cashFlowGroupingForm(viewModel: viewModel, form: form)
+        .navigationTitle(title)
     }
 
-    private var categoryModel: CashFlowCategoryEntity.FormModel {
+    private var elementsSpacing: CGFloat { .micro }
+
+    private var grid: [GridItem] {
+        Array(repeating: .init(.flexible(), spacing: elementsSpacing), count: 6)
+    }
+
+    private var title: String {
+        if case .new = viewModel.formType {
+            return .settings_create_category
+        }
+        return .settings_edit_category
+    }
+
+    private var formModel: CashFlowCategoryFormModel {
         viewModel.formModel
     }
 }
 
 // MARK: - Preview
 
-struct CashFlowCategoryFormView_Previews: PreviewProvider {
-    static var previews: some View {
-        CashFlowCategoryFormView(form: .new(for: .expense))
-        CashFlowCategoryFormView(form: .new(for: .expense)).darkScheme()
-    }
-}
+//struct CashFlowCategoryFormView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CashFlowCategoryFormView(form: .new(for: .expense))
+//        CashFlowCategoryFormView(form: .new(for: .expense)).darkScheme()
+//    }
+//}
