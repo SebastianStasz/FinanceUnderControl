@@ -24,8 +24,8 @@ struct CashFlowCategory: FirestoreDocument {
     var data: [String: Any] {
         [Field.id.key: id,
          Field.name.key: name,
-         Field.type.key: type,
-         Field.icon.key: icon,
+         Field.type.key: type.rawValue,
+         Field.icon.key: icon.rawValue,
          Field.groupId.key: groupId as Any]
     }
 }

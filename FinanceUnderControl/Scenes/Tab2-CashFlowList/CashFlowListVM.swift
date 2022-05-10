@@ -36,42 +36,27 @@ final class CashFlowListVM: ViewModel {
 //            .assign(to: &$cashFlowPredicate)
 
     override func viewDidLoad() {
-        let errorTracker = DriverSubject<Error>()
+        let cashFlowSubscription = service.subscribe()
 
         minValueInput.assignResult(to: \.cashFlowFilter.minimumValue, on: self)
         maxValueInput.assignResult(to: \.cashFlowFilter.maximumValue, on: self)
 
-        Publishers.Merge(Just(()), AppVM.shared.events.didChangeCashFlow)
-            .performWithLoading(on: self, errorTracker: errorTracker) { [weak self] in
-                try await self?.service.fetch()
-            }
-            .compactMap { $0 }
+        cashFlowSubscription.output
             .sinkAndStore(on: self) { vm, cashFlows in
                 let groupedCashFlows = Dictionary(grouping: cashFlows, by: { $0.date.stringMonthAndYear })
-                var sectors: [ListSector<CashFlow>] = []
+                vm.listSectors = groupedCashFlows.map { ListSector($0.key, elements: $0.value) }
+            }
 
-                for group in groupedCashFlows {
-                    sectors.append(ListSector(group.key, elements: group.value))
-//                    if let sectorIndex = vm.listSectors.firstIndex(where: { $0.title == group.key }) {
-//                        vm.listSectors[sectorIndex].elements.append(contentsOf: group.value)
-//                    } else {
-//                        vm.listSectors.append(ListSector(group.key, elements: group.value))
-//                    }
-                }
-                vm.listSectors = sectors
+        cashFlowSubscription.error
+            .sinkAndStore(on: self) { _, error in
+                print(error)
             }
 
         binding.confirmCashFlowDeletion
             .withLatestFrom(binding.cashFlowToDelete)
-            .performWithLoading(on: self, errorTracker: errorTracker) { [weak self] in
+            .performWithLoading(on: self) { [weak self] in
                 try await self?.service.delete($0)
             }
-            .withLatestFrom(binding.cashFlowToDelete)
-            .sinkAndStore(on: self) { vm, deltedCashFlow in
-                if let sectorIndex = vm.listSectors.firstIndex(where: { $0.elements.contains(deltedCashFlow) }),
-                   let cashFlowIndex = vm.listSectors[sectorIndex].elements.firstIndex(of: deltedCashFlow) {
-                    vm.listSectors[sectorIndex].elements.remove(at: cashFlowIndex)
-                }
-            }
+            .sink {}.store(in: &cancellables)
     }
 }

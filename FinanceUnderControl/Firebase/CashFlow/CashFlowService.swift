@@ -5,6 +5,7 @@
 //  Created by sebastianstaszczyk on 02/05/2022.
 //
 
+import Combine
 import Foundation
 import FirebaseFirestore
 
@@ -23,6 +24,15 @@ final class CashFlowService: CollectionService {
 
     func delete(_ cashFlow: CashFlow) async throws {
         try await firestore.deleteDocument(withId: cashFlow.id, from: .cashFlows)
+    }
+
+    func subscribe() -> FirestoreService.Subscription<[CashFlow]> {
+        let subscription = firestore.subscribe(to: .cashFlows, lastDocument: lastDocument, orderedBy: orderField)
+        let cashFlows = subscription.output
+            .map { $0.map { CashFlow(from: $0, category: .init(id: "1", name: "Test", type: .expense, icon: .airplane, groupId: nil)) } }
+            .eraseToAnyPublisher()
+
+        return .init(output: cashFlows, error: subscription.error)
     }
 
     func fetch() async throws -> [CashFlow] {
