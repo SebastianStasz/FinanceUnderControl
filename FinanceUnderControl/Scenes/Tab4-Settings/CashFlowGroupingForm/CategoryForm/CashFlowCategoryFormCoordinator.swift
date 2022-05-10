@@ -11,6 +11,10 @@ import Shared
 final class CashFlowCategoryFormCoordinator: Coordinator {
     typealias FormType = CashFlowFormType<CashFlowCategory>
 
+    enum Destination {
+        case createdSuccessfully
+    }
+
     private let formType: FormType
 
     init(_ presentationStyle: PresentationStyle, formType: FormType) {
@@ -23,6 +27,21 @@ final class CashFlowCategoryFormCoordinator: Coordinator {
         let view = CashFlowCategoryFormView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
         viewController.addCloseButton()
+
+        viewModel.binding.navigateTo
+            .sink { [weak self] in self?.navigate(to: $0) }
+            .store(in: &viewModel.cancellables)
+
         return viewController
+    }
+}
+
+private extension CashFlowCategoryFormCoordinator {
+
+    func navigate(to destination: Destination) {
+        switch destination {
+        case .createdSuccessfully:
+            navigationController?.dismiss(animated: true)
+        }
     }
 }

@@ -38,6 +38,13 @@ struct CashFlowCategoryFormView: BaseView {
             }
         }
         .navigationTitle(title)
+        .horizontalButtons(primaryButton: primaryButton)
+    }
+
+    private var primaryButton: HorizontalButtons.Configuration {
+        .init(viewModel.formType.confirmButtonTitle, enabled: viewModel.formModel.isValid) {
+            viewModel.binding.didTapConfirm.send()
+        }
     }
 
     private var elementsSpacing: CGFloat { .micro }

@@ -11,4 +11,13 @@ import Shared
 enum CashFlowFormType<T: Equatable>: Equatable {
     case new(CashFlowType)
     case edit(T)
+
+    var confirmButtonTitle: String {
+        switch self {
+        case .new:
+            return .button_create
+        case .edit:
+            return .common_save
+        }
+    }
 }
