@@ -14,7 +14,7 @@ final class CashFlowService: CollectionService {
     typealias Document = CashFlow
 
     private let firestore = FirestoreService.shared
-    private let storage = Storage.shared
+    private let storage = CashFlowGroupingService.shared
     private let categoryService = CashFlowCategoryService()
     private var lastDocument: QueryDocumentSnapshot?
 

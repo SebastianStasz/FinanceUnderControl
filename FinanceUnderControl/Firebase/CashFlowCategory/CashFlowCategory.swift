@@ -15,7 +15,7 @@ struct CashFlowCategory: FirestoreDocument {
     let name: String
     let type: CashFlowType
     let icon: CashFlowCategoryIcon
-    let groupId: String?
+    let group: CashFlowCategoryGroup?
 
     enum Field: String, DocumentField {
         case id, name, type, icon, groupId
@@ -26,17 +26,17 @@ struct CashFlowCategory: FirestoreDocument {
          Field.name.key: name,
          Field.type.key: type.rawValue,
          Field.icon.key: icon.rawValue,
-         Field.groupId.key: groupId as Any]
+         Field.groupId.key: group?.id as Any]
     }
 }
 
 extension CashFlowCategory {
-    init(from document: QueryDocumentSnapshot) {
+    init(from document: QueryDocumentSnapshot, group: CashFlowCategoryGroup?) {
         id = document.getString(for: Field.id)
         name = document.getString(for: Field.name)
         type = CashFlowType(rawValue: document.getString(for: Field.type))!
         icon = CashFlowCategoryIcon(rawValue: document.getString(for: Field.icon)) ?? .bagFill
-        groupId = document.get(Field.groupId) as? String
+        self.group = group
     }
 }
 

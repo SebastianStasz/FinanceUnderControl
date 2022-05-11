@@ -22,7 +22,7 @@ final class CashFlowFormVM: ViewModel {
     }
 
     private let service: CashFlowService
-    private let storage = Storage.shared
+    private let storage = CashFlowGroupingService.shared
     let formType: CashFlowForm
     let binding = Binding()
     var nameInput = TextInputVM()

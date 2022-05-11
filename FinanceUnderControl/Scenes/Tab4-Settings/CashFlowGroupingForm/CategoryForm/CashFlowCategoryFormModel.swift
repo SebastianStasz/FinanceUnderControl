@@ -23,9 +23,9 @@ struct CashFlowCategoryFormModel {
         guard let name = name else { return nil }
         switch formType {
         case let .new(type):
-            return CashFlowCategory(id: UUID().uuidString, name: name, type: type, icon: icon, groupId: nil)
+            return CashFlowCategory(id: UUID().uuidString, name: name, type: type, icon: icon, group: nil)
         case let .edit(category):
-            return CashFlowCategory(id: category.id, name: name, type: category.type, icon: icon, groupId: category.groupId)
+            return CashFlowCategory(id: category.id, name: name, type: category.type, icon: icon, group: category.group)
         }
     }
 }

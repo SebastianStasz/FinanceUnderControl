@@ -20,7 +20,7 @@ final class CashFlowGroupingListVM: ViewModel {
 
     let type: CashFlowType
     let binding = Binding()
-    @Published private var storage = Storage.shared
+    @Published private var storage = CashFlowGroupingService.shared
     private let categoryService = CashFlowCategoryService()
     @Published private(set) var listSectors: [ListSector<CashFlowCategory>] = []
 
@@ -35,9 +35,9 @@ final class CashFlowGroupingListVM: ViewModel {
         CombineLatest(storage.$cashFlowCategoryGroups, storage.$cashFlowCategories)
             .map { result in
                 var sectors: [ListSector<CashFlowCategory>] = []
-                let ungroupedCategories = result.1.filter { $0.groupId.isNil }
-                sectors = result.0.map {
-                    group in ListSector(group.name, elements: result.1.filter { $0.groupId == group.id })
+                let ungroupedCategories = result.1.filter { $0.group.isNil }
+                sectors = result.0.map { group in
+                    ListSector(group.name, elements: result.1.filter { $0.group == group })
                 }
                 if ungroupedCategories.isNotEmpty {
                     sectors.append(ListSector("Ungrouped", elements: ungroupedCategories))

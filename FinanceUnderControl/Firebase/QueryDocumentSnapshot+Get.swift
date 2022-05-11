@@ -20,6 +20,10 @@ extension DocumentSnapshot {
         get(field.rawValue) as! String
     }
 
+    func getOptionalString<T: DocumentField>(for field: T) -> String? {
+        get(field.rawValue) as? String
+    }
+
     func getCurrency<T: DocumentField>(for field: T) -> Currency {
         let code = getString(for: field)
         return Currency(rawValue: code)!

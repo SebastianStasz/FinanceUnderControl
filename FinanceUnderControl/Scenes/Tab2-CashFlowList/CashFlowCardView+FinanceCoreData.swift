@@ -15,7 +15,7 @@ extension CashFlowCardView {
                   money: cashFlow.money,
                   type: cashFlow.category.type,
                   icon: cashFlow.category.icon.rawValue,
-                  iconColor: .indigo
+                  iconColor: cashFlow.category.group?.color.color ?? .gray
         )
     }
 }

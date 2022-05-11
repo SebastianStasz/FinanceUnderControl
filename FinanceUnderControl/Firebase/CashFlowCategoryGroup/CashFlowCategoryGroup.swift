@@ -10,7 +10,7 @@ import FirebaseFirestore
 import FinanceCoreData
 import Shared
 
-struct CashFlowCategoryGroup: FirestoreDocument {
+struct CashFlowCategoryGroup: FirestoreDocument, Hashable {
     let id: String
     let name: String
     let type: CashFlowType

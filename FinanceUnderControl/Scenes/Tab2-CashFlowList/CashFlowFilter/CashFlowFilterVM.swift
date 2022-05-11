@@ -22,7 +22,7 @@ final class CashFlowFilterVM: ViewModel {
 
     @Published var filter: CashFlowFilter
     @Published private(set) var categories: [CashFlowCategory] = []
-    private let storage = Storage.shared
+    private let storage = CashFlowGroupingService.shared
     let action = Binding()
 
     init(filter: CashFlowFilter) {
