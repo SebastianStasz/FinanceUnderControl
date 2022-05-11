@@ -16,17 +16,22 @@ struct CashFlow: FirestoreDocument {
     let date: Date
     let category: CashFlowCategory
 
+    private var nameLowercase: String {
+        name.lowerCaseDiacriticInsensitive
+    }
+
     enum Field: String, DocumentField {
-        case id, name, amount, currency, categoryId, date
+        case id, name, amount, currency, categoryId, date, nameLowercase
     }
 
     var data: [String: Any] {
         [Field.id.key: id,
-         Field.name.key: name,
+         Field.name.key: name.trim,
          Field.amount.key: money.value.asString,
          Field.currency.key: money.currency.rawValue,
          Field.categoryId.key: category.id,
-         Field.date.key: date]
+         Field.date.key: date,
+         Field.nameLowercase.key: name.lowerCaseDiacriticInsensitive]
     }
 }
 

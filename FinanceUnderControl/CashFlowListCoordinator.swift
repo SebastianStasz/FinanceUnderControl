@@ -10,6 +10,10 @@ import Shared
 
 final class CashFlowListCoordinator: RootCoordinator {
 
+    enum Destination {
+        case filterView
+    }
+
     private let navigationController = UINavigationController()
 
     init() {
@@ -21,10 +25,18 @@ final class CashFlowListCoordinator: RootCoordinator {
         let view = CashFlowListView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
         navigationController.viewControllers = [viewController]
+
+        viewModel.binding.navigateTo
+            .sink { [weak self] in self?.navigate(to: $0) }
+            .store(in: &viewModel.cancellables)
+
         return navigationController
     }
 
-    private func presentFilterView() {
-
+    private func navigate(to destination: Destination) {
+        switch destination {
+        case .filterView:
+            print("")
+        }
     }
 }

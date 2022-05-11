@@ -34,7 +34,7 @@ final class CashFlowGroupingListVM: ViewModel {
         let reloadGroupsAndCategories = DriverSubject<Void>()
 
         reloadGroupsAndCategories
-            .performWithLoading(on: self) { [weak self] in
+            .perform(on: self) { [weak self] in
                 try await self?.storage.updateCashFlowCategoryGroupsIfNeeded()
                 try await self?.storage.updateCashFlowCategoriesIfNeeded()
             }
@@ -56,7 +56,7 @@ final class CashFlowGroupingListVM: ViewModel {
 
         binding.confirmCategoryDeletion
             .withLatestFrom(binding.categoryToDelete)
-            .performWithLoading(on: self, errorTracker: errorTracker) { [weak self] in
+            .perform(on: self, errorTracker: errorTracker) { [weak self] in
                 try await self?.categoryService.delete($0)
             }
             .sink { reloadGroupsAndCategories.send() }

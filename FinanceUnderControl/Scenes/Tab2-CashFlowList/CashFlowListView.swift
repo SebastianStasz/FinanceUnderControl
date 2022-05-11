@@ -11,12 +11,15 @@ import Shared
 import SSUtils
 
 struct CashFlowListView: BaseView {
-
     @ObservedObject var viewModel: CashFlowListVM
     @State private var isDeleteConfirmationShown = false
 
     private var isSearching: Bool {
-        viewModel.cashFlowPredicate.notNil
+        viewModel.searchText.isNotEmpty
+    }
+
+    private var listSectors: [ListSector<CashFlow>] {
+        isSearching ? viewModel.filteredListSectors : viewModel.listSectors
     }
 
     private var emptyStateVD: EmptyStateVD {
@@ -26,7 +29,7 @@ struct CashFlowListView: BaseView {
     }
 
     var baseBody: some View {
-        BaseList(.tab_cashFlow_title, isLoading: viewModel.isLoading, emptyStateVD: emptyStateVD, sectors: viewModel.listSectors) {
+        BaseList(.tab_cashFlow_title, isLoading: viewModel.isLoading, emptyStateVD: emptyStateVD, sectors: listSectors) {
             CashFlowCardView($0)
                 .actions(edit: (), delete: reportDeleteCashFlow($0))
         }
@@ -34,7 +37,7 @@ struct CashFlowListView: BaseView {
             Button.delete { viewModel.binding.confirmCashFlowDeletion.send() }
             Button.cancel(action: {})
         }
-//        .searchable(text: $viewModel.searchText)
+        .searchable(text: $viewModel.searchText)
 //        .toolbar {
 //            ToolbarItem(placement: .navigationBarTrailing) {
 //                Button(action: showFilterView) { filterIcon }
@@ -54,19 +57,19 @@ struct CashFlowListView: BaseView {
         isDeleteConfirmationShown = true
     }
 
-    @ViewBuilder
-    private var filterIcon: some View {
-        if viewModel.cashFlowPredicate.isNil {
-            Image(systemName: SFSymbol.filter.name)
-        } else {
-            HStack(alignment: .top, spacing: .micro) {
-                Circle()
-                    .frame(width: .small, height: .small)
-                    .padding(.top, 3)
-                Image(systemName: SFSymbol.filter.name)
-            }
-        }
-    }
+//    @ViewBuilder
+//    private var filterIcon: some View {
+//        if viewModel.cashFlowPredicate.isNil {
+//            Image(systemName: SFSymbol.filter.name)
+//        } else {
+//            HStack(alignment: .top, spacing: .micro) {
+//                Circle()
+//                    .frame(width: .small, height: .small)
+//                    .padding(.top, 3)
+//                Image(systemName: SFSymbol.filter.name)
+//            }
+//        }
+//    }
 
     // MARK: - Interactions
 

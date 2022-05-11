@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct OrderField<T: DocumentField> {
-    let field: T
+struct OrderField {
+    let name: String
     let order: SortOrder
 
-    init(field: T, order: SortOrder = .forward) {
-        self.field = field
+    init(name: String, order: SortOrder = .forward) {
+        self.name = name
         self.order = order
     }
 }

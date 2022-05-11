@@ -49,7 +49,7 @@ final class CashFlowFormVM: ViewModel {
         binding.didTapConfirm
             .withLatestFrom($formModel)
             .compactMap { $0.model }
-            .perform(errorTracker: errorTracker) {
+            .perform(on: self, errorTracker: errorTracker) {
                 try await service.create(model: $0)
             }
             .sinkAndStore(on: self) { vm, _ in

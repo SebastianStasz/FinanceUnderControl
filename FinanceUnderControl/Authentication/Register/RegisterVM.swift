@@ -47,7 +47,7 @@ final class RegisterVM: ViewModel {
 
         binding.didConfirmRegistration
             .withLatestFrom(registrationData)
-            .perform(errorTracker: registrationError) { input -> AuthDataResult? in
+            .perform(on: self, errorTracker: registrationError) { input -> AuthDataResult? in
                 guard let email = input.0, let password = input.1 else { return nil }
                 return try await Auth.auth().createUser(withEmail: email, password: password)
             }

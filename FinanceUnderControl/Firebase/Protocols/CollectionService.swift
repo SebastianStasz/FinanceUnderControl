@@ -9,5 +9,7 @@ import Foundation
 
 protocol CollectionService {
     associatedtype Document: FirestoreDocument
-    associatedtype Field: DocumentField
+    typealias Field = Document.Field
+    typealias Order = Document.Order
+    
 }

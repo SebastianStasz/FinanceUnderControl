@@ -10,12 +10,11 @@ import Foundation
 
 final class CashFlowCategoryService: CollectionService {
     typealias Document = CashFlowCategory
-    typealias Field = Document.Field
 
     private let firestore = FirestoreService.shared
 
     func getAll() async throws -> [CashFlowCategory] {
-        try await firestore.getDocuments(from: .cashFlowCategories, orderedBy: orderField)
+        try await firestore.getDocuments(from: .cashFlowCategories, orderedBy: Order.name())
             .map { CashFlowCategory(from: $0) }
     }
 
@@ -25,9 +24,5 @@ final class CashFlowCategoryService: CollectionService {
 
     func delete(_ category: CashFlowCategory) async throws {
         try await firestore.deleteDocument(withId: category.id, from: .cashFlowCategories)
-    }
-
-    private var orderField: OrderField<Field> {
-        OrderField(field: Field.name)
     }
 }

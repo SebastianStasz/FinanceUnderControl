@@ -11,7 +11,6 @@ import FirebaseFirestore
 
 final class CashFlowService: CollectionService {
     typealias Document = CashFlow
-    typealias Field = Document.Field
 
     private let firestore = FirestoreService.shared
     private let storage = Storage.shared
@@ -27,7 +26,7 @@ final class CashFlowService: CollectionService {
     }
 
     func subscribe() -> FirestoreService.Subscription<[CashFlow]> {
-        let subscription = firestore.subscribe(to: .cashFlows, lastDocument: lastDocument, orderedBy: orderField)
+        let subscription = firestore.subscribe(to: .cashFlows, orderedBy: Order.date(), lastDocument: lastDocument)
         let cashFlows = subscription.output
             .map { $0.map { CashFlow(from: $0, category: .init(id: "1", name: "Test", type: .expense, icon: .airplane, groupId: nil)) } }
             .eraseToAnyPublisher()
@@ -35,8 +34,8 @@ final class CashFlowService: CollectionService {
         return .init(output: cashFlows, error: subscription.error)
     }
 
-    func fetch() async throws -> [CashFlow] {
-        let docs = try await firestore.getDocuments(from: .cashFlows, lastDocument: lastDocument, orderedBy: orderField)
+    func fetch(filters: [Document.Filter]) async throws -> [CashFlow] {
+        let docs = try await firestore.getDocuments(from: .cashFlows, orderedBy: Order.name(), filteredBy: filters.map { $0.predicate }, lastDocument: lastDocument)
         lastDocument = docs.last
         return try await docs.asyncMap {
             try await storage.updateCashFlowCategoriesIfNeeded()
@@ -48,9 +47,5 @@ final class CashFlowService: CollectionService {
             return CashFlow(from: $0, category: category)
         }
         .compactMap { $0 }
-    }
-
-    private var orderField: OrderField<Field> {
-        OrderField(field: Field.date, order: .reverse)
     }
 }

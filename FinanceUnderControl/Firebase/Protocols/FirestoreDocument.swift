@@ -10,6 +10,12 @@ import Foundation
 
 protocol FirestoreDocument: Identifiable, Equatable {
     associatedtype Field: DocumentField
+    associatedtype Order: DocumentFieldOrder
     
     var data: [String: Any] { get }
+}
+
+protocol DocumentFieldOrder {
+
+    var orderField: OrderField { get }
 }

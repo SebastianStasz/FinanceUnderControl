@@ -31,7 +31,8 @@ extension Publisher {
         .eraseToAnyPublisher()
     }
 
-    func perform<T>(
+    fileprivate func privatePerform<T, VM: ViewModel>(
+        on viewModel: VM,
         errorTracker: DriverSubject<Error>? = nil,
         _ transform: @escaping (Output) async throws -> T
     ) -> Publishers.FlatMap<Publishers.SetFailureType<AnyPublisher<T, Never>, Never>, Self> {
@@ -40,6 +41,7 @@ extension Publisher {
                 .await(transform)
                 .catch { error -> AnyPublisher<T, Never> in
                     errorTracker?.send(error)
+                    viewModel.isLoading = false
                     Swift.print("-----")
                     Swift.print("‼️ \(error)")
                     Swift.print("-----")
@@ -62,13 +64,13 @@ extension Publisher where Failure == Never {
         .store(in: &viewModel.cancellables)
     }
 
-    func performWithLoading<T, VM: ViewModel>(
+    func perform<T, VM: ViewModel>(
         on viewModel: VM,
         errorTracker: DriverSubject<Error>? = nil,
         _ transform: @escaping (Output) async throws -> T
     ) -> AnyPublisher<T, Never> {
         startLoading(on: viewModel)
-            .perform(errorTracker: errorTracker, transform)
+            .privatePerform(on: viewModel, errorTracker: errorTracker, transform)
             .stopLoading(on: viewModel)
             .eraseToAnyPublisher()
     }

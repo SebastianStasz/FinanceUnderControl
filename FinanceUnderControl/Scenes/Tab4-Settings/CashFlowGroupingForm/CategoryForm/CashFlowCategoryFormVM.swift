@@ -37,7 +37,7 @@ final class CashFlowCategoryFormVM: ViewModel {
         binding.didTapConfirm
             .withLatestFrom($formModel)
             .compactMap { $0.model(for: formType) }
-            .performWithLoading(on: self, errorTracker: errorTracker) { [weak self] in
+            .perform(on: self, errorTracker: errorTracker) { [weak self] in
                 try await self?.service.create($0)
             }
             .sinkAndStore(on: self) { vm, _ in
