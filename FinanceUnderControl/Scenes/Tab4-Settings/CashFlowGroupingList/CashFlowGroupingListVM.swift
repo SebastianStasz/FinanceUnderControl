@@ -31,14 +31,6 @@ final class CashFlowGroupingListVM: ViewModel {
 
     override func viewDidLoad() {
         let errorTracker = DriverSubject<Error>()
-        let reloadGroupsAndCategories = DriverSubject<Void>()
-
-        reloadGroupsAndCategories
-            .perform(on: self) { [weak self] in
-                try await self?.storage.updateCashFlowCategoryGroupsIfNeeded()
-                try await self?.storage.updateCashFlowCategoriesIfNeeded()
-            }
-            .sinkAndStore(on: self) { vm, _ in }
 
         CombineLatest(storage.$cashFlowCategoryGroups, storage.$cashFlowCategories)
             .map { result in
@@ -59,14 +51,12 @@ final class CashFlowGroupingListVM: ViewModel {
             .perform(on: self, errorTracker: errorTracker) { [weak self] in
                 try await self?.categoryService.delete($0)
             }
-            .sink { reloadGroupsAndCategories.send() }
+            .sink {}
             .store(in: &cancellables)
 
         errorTracker
             .sinkAndStore(on: self) { _, error in
                 print(error)
             }
-
-        reloadGroupsAndCategories.send()
     }
 }

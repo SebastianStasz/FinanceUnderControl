@@ -52,11 +52,13 @@ final class CashFlowListVM: ViewModel {
             }
 
         $searchText.filter { $0.isEmpty }
+            .removeDuplicates()
             .sinkAndStore(on: self) { vm, _ in
                 vm.filteredListSectors = []
             }
 
         $searchText.filter { $0.isNotEmpty }
+            .removeDuplicates()
             .perform(on: self) { [weak self] text in
                 try await self?.service.fetch(filters: [.nameContains(text)])
             }

@@ -13,6 +13,15 @@ final class CashFlowCategoryGroupService: CollectionService {
     private let firestore = FirestoreService.shared
     private let categoryService = CashFlowCategoryService()
 
+    func subscribe() -> FirestoreService.Subscription<[CashFlowCategoryGroup]> {
+        let subscription = firestore.subscribe(to: .cashFlowCategoryGroups, orderedBy: Order.name())
+        let groups = subscription.output
+            .map { $0.map { CashFlowCategoryGroup(from: $0) } }
+            .eraseToAnyPublisher()
+
+        return .init(output: groups, error: subscription.error)
+    }
+
     func getAll() async throws -> [CashFlowCategoryGroup] {
         try await firestore.getDocuments(from: .cashFlowCategoryGroups, orderedBy: Order.name())
             .map { CashFlowCategoryGroup(from: $0) }

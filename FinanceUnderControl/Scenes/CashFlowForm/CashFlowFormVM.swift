@@ -56,14 +56,5 @@ final class CashFlowFormVM: ViewModel {
                 AppVM.shared.events.didChangeCashFlow.send()
                 vm.binding.createdSuccessfully.send()
             }
-//
-//        errorTracker
-//            .sinkAndStore(on: self) { vm, error in
-//                print(error)
-//            }
-    }
-
-    func updateCashFlowCategoriesIfNeeded() async {
-        try? await storage.updateCashFlowCategoriesIfNeeded()
     }
 }

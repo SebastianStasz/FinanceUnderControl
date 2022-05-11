@@ -35,7 +35,6 @@ struct CashFlowFormView: BaseView {
         }
         .navigationTitle(viewModel.formType.title)
         .horizontalButtons(primaryButton: primaruButton)
-        .task { await viewModel.updateCashFlowCategoriesIfNeeded() }
     }
 
     private var primaruButton: HorizontalButtons.Configuration {

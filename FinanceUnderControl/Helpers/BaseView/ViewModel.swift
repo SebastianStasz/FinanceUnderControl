@@ -14,9 +14,9 @@ class ViewModel: ObservableObject, CombineHelper {
     @Published var isLoading = false
 
     var cancellables: Set<AnyCancellable> = []
-    private let coordinator: CoordinatorProtocol
+    private let coordinator: CoordinatorProtocol?
 
-    init(coordinator: CoordinatorProtocol) {
+    init(coordinator: CoordinatorProtocol? = nil) {
         self.coordinator = coordinator
         commonInit()
     }

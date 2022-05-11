@@ -10,38 +10,38 @@ import Shared
 import SwiftUI
 
 struct CashFlowFilterView: BaseView {
-    @Environment(\.dismiss) private var dismiss
 
-    @FetchRequest(sortDescriptors: [CashFlowCategoryEntity.Sort.byName(.forward).nsSortDescriptor])
-    var cashFlowCategories: FetchedResults<CashFlowCategoryEntity>
-
-    @FetchRequest(sortDescriptors: [CurrencyEntity.Sort.byCode(.forward).nsSortDescriptor]
-    ) var currencies: FetchedResults<CurrencyEntity>
-
-    @StateObject var viewModel = CashFlowFilterVM()
-    @Binding var cashFlowFilter: CashFlowFilter
+    @ObservedObject var viewModel: CashFlowFilterVM
 
     var filter: Binding<CashFlowFilter> {
-        $viewModel.cashFlowFilter
+        $viewModel.filter
     }
 
     var baseBody: some View {
         FormView {
-            cashFlowTypeSector
-            amountSector
-            otherSector
+            Sector(.cash_flow_filter_type) {
+                SegmentedPicker(.cash_flow_filter_type, selection: filter.cashFlowSelection, elements: CashFlowSelection.allCases)
+                LabeledPicker(.common_category, elements: viewModel.categories, selection: filter.cashFlowCategory)
+                    .displayIf(filter.wrappedValue.cashFlowSelection != .all, withTransition: .scale)
+            }
+            Sector(.common_amount) {
+                LabeledTextField(.cash_flow_filter_minimum_value, viewModel: viewModel.minValueInput)
+                LabeledTextField(.cash_flow_filter_maximum_value, viewModel: viewModel.maxValueInput)
+                LabeledPicker(.create_cash_flow_currency, elements: currenciesToSelect, selection: filter.currency)
+            }
+            Sector(.cash_flow_filter_other) {
+                DateRangePicker(.cash_flow_filter_date_range, viewData: filter.datePickerViewData)
+            }
         }
-        .asSheet(title: .cash_flow_filter_title,
-                 primaryButton: .init(.button_apply, action: viewModel.applyFilters),
-                 secondaryButton: .init(.button_reset, action: viewModel.resetFilters)
-        )
-        .onReceive(viewModel.action.applyFilters) { cashFlowFilter = $0 }
-        .onChange(of: viewModel.cashFlowCategoriesPredicate) { cashFlowCategories.nsPredicate = $0 }
-//        .handleViewModelActions(viewModel)
+
+//    primaryButton: .init(.button_apply, action: viewModel.applyFilters),
+//    secondaryButton: .init(.button_reset, action: viewModel.resetFilters)
     }
 
-    func onAppear() {
-        viewModel.onAppear(cashFlowFilter: cashFlowFilter)
+    private var currenciesToSelect: [Currency?] {
+        var currencies: [Currency?] = Currency.allCases
+        currencies.append(nil)
+        return currencies
     }
 }
 
@@ -49,6 +49,8 @@ struct CashFlowFilterView: BaseView {
 
 struct CashFlowFilterView_Previews: PreviewProvider {
     static var previews: some View {
-        CashFlowFilterView(cashFlowFilter: .constant(CashFlowFilter()))
+        let viewModel = CashFlowFilterVM(filter: .init())
+        CashFlowFilterView(viewModel: viewModel)
+        CashFlowFilterView(viewModel: viewModel).darkScheme()
     }
 }

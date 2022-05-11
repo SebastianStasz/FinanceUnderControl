@@ -14,6 +14,10 @@ extension UINavigationController {
         pushViewController(UIHostingController(rootView: content), animated: animated)
     }
 
+    func presentModally(_ viewController: UIViewController, animated: Bool = true) {
+        present(viewController, animated: animated)
+    }
+
     func presentResultView(viewData: ResultData, completion: (() -> Void)? = nil) {
         let action = viewData.action ?? onSelf { $0.dismiss(animated: true) }
         let viewData = ResultVD(type: viewData.type, title: viewData.title, message: viewData.message, action: action)

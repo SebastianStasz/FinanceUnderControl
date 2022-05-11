@@ -15,6 +15,7 @@ final class CashFlowListCoordinator: RootCoordinator {
     }
 
     private let navigationController = UINavigationController()
+    @Published private var cashFlowFilter = CashFlowFilter()
 
     init() {
         navigationController.prefersLargeTitles()
@@ -36,7 +37,10 @@ final class CashFlowListCoordinator: RootCoordinator {
     private func navigate(to destination: Destination) {
         switch destination {
         case .filterView:
-            print("")
+            let viewModel = CashFlowFilterVM(filter: cashFlowFilter)
+            let view = CashFlowFilterView(viewModel: viewModel)
+            let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+            navigationController.presentModally(viewController)
         }
     }
 }
