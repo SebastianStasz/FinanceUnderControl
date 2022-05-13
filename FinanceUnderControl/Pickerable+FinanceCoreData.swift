@@ -11,7 +11,3 @@ import Shared
 extension CurrencyEntity: Pickerable {
     public var valueName: String { code }
 }
-
-extension CashFlowCategoryEntity: Pickerable {
-    public var valueName: String { name }
-}

@@ -5,7 +5,6 @@
 //  Created by sebastianstaszczyk on 05/05/2022.
 //
 
-import FinanceCoreData
 import FirebaseFirestore
 import Foundation
 import Shared

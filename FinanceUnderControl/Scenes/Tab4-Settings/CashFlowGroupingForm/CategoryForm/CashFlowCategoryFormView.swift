@@ -27,7 +27,7 @@ struct CashFlowCategoryFormView: BaseView {
                     ForEach(CashFlowCategoryIcon.groups) { group in
                         LazyVGrid(columns: grid, alignment: .center, spacing: elementsSpacing) {
                             ForEach(group.icons) { icon in
-                                CircleView(color: .basicSecondary, icon: icon)
+                                CircleView(color: .basicPrimary, image: icon.rawValue)
                                     .selection($viewModel.formModel.icon, element: icon)
                             }
                         }

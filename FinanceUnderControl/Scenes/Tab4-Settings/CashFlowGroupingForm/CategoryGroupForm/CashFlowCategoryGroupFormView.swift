@@ -77,13 +77,6 @@ struct CashFlowCategoryGroupFormView: BaseView {
 //        viewModel.input.didTapDelete.send(form)
 //    }
 
-    private func uncheckCategory(_ category: CashFlowCategoryEntity) {
-        withAnimation(.easeInOut) { viewModel.uncheckCategory(category) }
-    }
-
-    private func checkCategory(_ category: CashFlowCategoryEntity) {
-        withAnimation(.easeInOut) { viewModel.checkCategory(category) }
-    }
 }
 
 // MARK: - Preview
