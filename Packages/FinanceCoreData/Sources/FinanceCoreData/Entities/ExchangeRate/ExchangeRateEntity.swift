@@ -9,7 +9,6 @@
 import CoreData
 import Foundation
 import Shared
-import SSUtils
 
 @objc(ExchangeRateEntity) public class ExchangeRateEntity: NSManagedObject, Entity {
     @NSManaged private var rateValue_: NSDecimalNumber

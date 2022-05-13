@@ -23,21 +23,6 @@ extension CoreDataSteps {
         CurrencyEntity.createAndReturn(in: context, model: data)
     }
 
-    @discardableResult
-    func createCashFlowEntity(data: CashFlowEntity.Model) -> CashFlowEntity {
-        CashFlowEntity.createAndReturn(in: context, model: data)
-    }
-
-    @discardableResult
-    func createCashFlowCategoryGroupEntity(model: CashFlowCategoryGroupEntity.Model) -> CashFlowCategoryGroupEntity {
-        CashFlowCategoryGroupEntity.createAndReturn(in: context, model: model)
-    }
-
-    @discardableResult
-    func createCashFlowCategoryEntity(data: CashFlowCategoryEntity.Model) -> CashFlowCategoryEntity {
-        CashFlowCategoryEntity.createAndReturn(in: context, model: data)
-    }
-
     // MARK: - Other
 
     @discardableResult

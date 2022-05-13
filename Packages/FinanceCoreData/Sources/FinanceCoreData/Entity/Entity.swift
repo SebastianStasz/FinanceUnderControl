@@ -8,7 +8,6 @@
 import CoreData
 import Foundation
 import SwiftUI
-import SSUtils
 
 public protocol Entity: NSManagedObject, Identifiable {
     associatedtype Filter: EntityFilter
