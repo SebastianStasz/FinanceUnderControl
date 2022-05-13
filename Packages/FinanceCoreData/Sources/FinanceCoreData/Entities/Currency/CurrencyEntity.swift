@@ -16,7 +16,6 @@ import Shared
     @NSManaged public private(set) var code: String
     @NSManaged public private(set) var updateDate: Date?
     @NSManaged public private(set) var exchangeRates: Set<ExchangeRateEntity>
-    @NSManaged public private(set) var cashFlows: Set<CashFlowEntity>
 }
 
 // MARK: - Properties
