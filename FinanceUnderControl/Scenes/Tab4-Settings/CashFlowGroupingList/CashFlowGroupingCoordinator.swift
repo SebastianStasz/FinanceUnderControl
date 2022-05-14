@@ -7,14 +7,17 @@
 
 import UIKit
 import Shared
+import SwiftUI
 
-final class CashFlowGroupingCoordinator: Coordinator {
+final class CashFlowGroupingCoordinator: Coordinator, ObservableObject {
 
     enum Destination {
         case presentFormSelection
+        case presentEditGroupForm(CashFlowCategoryGroup)
     }
 
     private let type: CashFlowType
+    @State var isEditMode = false
 
     init(_ presentationStyle: PresentationStyle, type: CashFlowType) {
         self.type = type
@@ -24,13 +27,22 @@ final class CashFlowGroupingCoordinator: Coordinator {
     override func initializeView() -> UIViewController {
         let viewModel = CashFlowGroupingListVM(for: type, coordinator: self)
         let view = CashFlowGroupingListView(viewModel: viewModel)
-        let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+        let viewController = SwiftUIVC(viewModel: viewModel, view: view        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                EditButton()
+            }
+        })
         viewController.title = type.namePlural
         let presentFormSelection = UIAction { _ in
             viewModel.binding.navigateTo.send(.presentFormSelection)
         }
+        let presentEditingForm = UIAction { [weak self] _ in
+            self?.isEditMode.toggle()
+        }
         
-        viewController.navigationItem.rightBarButtonItems = [.init(systemItem: .add, primaryAction: presentFormSelection)]
+        viewController.navigationItem.rightBarButtonItems = [
+            .init(systemItem: .add, primaryAction: presentFormSelection),
+        ]
 
         viewModel.binding.navigateTo
             .sink { [weak self] in self?.navigate(to: $0) }
@@ -43,22 +55,27 @@ final class CashFlowGroupingCoordinator: Coordinator {
 private extension CashFlowGroupingCoordinator {
 
     func navigate(to destination: Destination) {
-        guard let navigationController = navigationController else { return }
         switch destination {
         case .presentFormSelection:
-            presentFormSelection(on: navigationController)
+            presentFormSelection()
+        case let .presentEditGroupForm(group):
+            presentGroupForm(.edit(group))
         }
     }
 
-    func presentFormSelection(on navigationController: UINavigationController) {
-        let alert = UIAlertController(title: .settings_select_action, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(title: .settings_create_group, action: onSelf {
-            CashFlowCategoryGroupFormCoordinator(.presentModally(on: navigationController), formType: .new($0.type)).start()
-        })
-        alert.addAction(title: .settings_create_category, action: onSelf {
-            CashFlowCategoryFormCoordinator(.presentModally(on: navigationController), formType: .new($0.type)).start()
-        })
+    func presentFormSelection() {
+        let alert = UIAlertController.actionSheet(title: .settings_select_action)
+        alert.addAction(title: .settings_create_group, action: onSelf { $0.presentGroupForm(.new($0.type)) })
+        alert.addAction(title: .settings_create_category, action: onSelf { $0.presentCategoryForm(.new($0.type)) })
         alert.addCancelAction()
-        navigationController.present(alert, animated: true)
+        navigationController?.present(alert, animated: true)
+    }
+
+    func presentGroupForm(_ formType: CashFlowFormType<CashFlowCategoryGroup>) {
+        CashFlowCategoryGroupFormCoordinator(.presentModally(on: navigationController), formType: formType).start()
+    }
+
+    func presentCategoryForm(_ formType: CashFlowFormType<CashFlowCategory>) {
+        CashFlowCategoryFormCoordinator(.presentModally(on: navigationController), formType: formType).start()
     }
 }

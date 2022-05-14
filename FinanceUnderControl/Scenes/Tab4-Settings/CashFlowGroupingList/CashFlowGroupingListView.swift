@@ -16,8 +16,6 @@ struct CashFlowGroupingListView: View {
     @ObservedObject var viewModel: CashFlowGroupingListVM
     @State private var isDeleteConfirmationShown = false
 
-    @State private var isAlertPresented = false
-
     private var emptyStateVD: EmptyStateVD {
         EmptyStateVD(title: "No elements yet",
                      description: "Groups and categories will appear here after you create it")
@@ -29,12 +27,12 @@ struct CashFlowGroupingListView: View {
                 .actions(edit: (), delete: reportDeleteCategory($0))
                 .environment(\.editMode, editMode)
         }
-//        .onDelete(perform: showDeleteConfirmation)
 //        .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
         .confirmationDialog("Delete category", isPresented: $isDeleteConfirmationShown) {
             Button.delete { viewModel.binding.confirmCategoryDeletion.send() }
             Button.cancel {}
         }
+
 //        .sheet(item: $categoryGroupForm) {
 //            CashFlowCategoryGroupFormView(form: $0)
 //        }

@@ -18,4 +18,8 @@ extension UIAlertController {
     func addCancelAction() {
         addAction(.init(title: "Cancel", style: .cancel))
     }
+
+    static func actionSheet(title: String) -> UIAlertController {
+        .init(title: title, message: nil, preferredStyle: .actionSheet)
+    }
 }

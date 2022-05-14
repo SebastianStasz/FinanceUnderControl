@@ -18,8 +18,8 @@ final class CashFlowService: CollectionService {
     private let categoryService = CashFlowCategoryService()
     private var lastDocument: QueryDocumentSnapshot?
 
-    func create(model: CashFlow) async throws {
-        try await firestore.createDocument(in: .cashFlows, withId: model.id, data: model.data)
+    func createOrEdit(_ model: CashFlow) async throws {
+        try await firestore.createOrEditDocument(in: .cashFlows, withId: model.id, data: model.data)
     }
 
     func delete(_ cashFlow: CashFlow) async throws {

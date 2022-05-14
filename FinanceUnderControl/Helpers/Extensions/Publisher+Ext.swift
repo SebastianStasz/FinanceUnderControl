@@ -41,7 +41,9 @@ extension Publisher {
                 .await(transform)
                 .catch { error -> AnyPublisher<T, Never> in
                     errorTracker?.send(error)
-                    viewModel.isLoading = false
+                    DispatchQueue.main.async {
+                        viewModel.isLoading = false
+                    }
                     Swift.print("-----")
                     Swift.print("‼️ \(error)")
                     Swift.print("-----")

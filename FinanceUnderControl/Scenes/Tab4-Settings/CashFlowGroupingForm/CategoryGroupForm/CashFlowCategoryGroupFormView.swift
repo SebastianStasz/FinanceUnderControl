@@ -10,12 +10,8 @@ import Shared
 import SwiftUI
 
 struct CashFlowCategoryGroupFormView: BaseView {
-    @Environment(\.dismiss) private var dismiss
 
     @ObservedObject var viewModel: CashFlowCategoryGroupFormVM
-//    @State private var isDeleteGroupConfirmationShown = false
-//
-//    let form: CashFlowFormType<CashFlowCategoryGroupEntity>
 
     private var grid: [GridItem] {
         Array(repeating: .init(.flexible(), spacing: .micro), count: 6)

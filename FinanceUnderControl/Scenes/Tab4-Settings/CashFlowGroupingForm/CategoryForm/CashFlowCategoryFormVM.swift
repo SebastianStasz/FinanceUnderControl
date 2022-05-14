@@ -38,7 +38,7 @@ final class CashFlowCategoryFormVM: ViewModel {
             .withLatestFrom($formModel)
             .compactMap { $0.model(for: formType) }
             .perform(on: self, errorTracker: errorTracker) { [weak self] in
-                try await self?.service.create($0)
+                try await self?.service.createOrEdit($0)
             }
             .sinkAndStore(on: self) { vm, _ in
                 vm.binding.navigateTo.send(.createdSuccessfully)

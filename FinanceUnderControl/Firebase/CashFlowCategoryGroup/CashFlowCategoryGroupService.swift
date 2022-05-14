@@ -12,8 +12,8 @@ final class CashFlowCategoryGroupService: CollectionService {
 
     private let firestore = FirestoreService.shared
 
-    func create(_ group: CashFlowCategoryGroup) async throws {
-        try await firestore.createDocument(in: .cashFlowCategoryGroups, withId: group.id, data: group.data)
+    func createOrEdit(_ model: CashFlowCategoryGroup) async throws {
+        try await firestore.createOrEditDocument(in: .cashFlowCategoryGroups, withId: model.id, data: model.data)
     }
 
     func getAll() async throws -> [CashFlowCategoryGroup] {

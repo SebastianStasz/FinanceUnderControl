@@ -18,7 +18,7 @@ struct FirestoreService {
 
     private init() {}
 
-    func createDocument(in collection: Collection, withId id: String, data: [String: Any]) async throws {
+    func createOrEditDocument(in collection: Collection, withId id: String, data: [String: Any]) async throws {
         try await userDocument.collection(collection.name).document(collection.documentIdPrefix + id).setData(data)
     }
 

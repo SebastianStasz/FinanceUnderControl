@@ -36,8 +36,10 @@ final class CashFlowGroupingListVM: ViewModel {
             .map { result in
                 var sectors: [ListSector<CashFlowCategory>] = []
                 let ungroupedCategories = result.1.filter { $0.group.isNil }
-                sectors = result.0.map { group in
-                    ListSector(group.name, elements: result.1.filter { $0.group == group })
+                sectors = result.0.map { [weak self] group in
+                    ListSector(group.name, elements: result.1.filter { $0.group == group }, editAction: .init(title: .settings_edit_group, action: {
+                        self?.binding.navigateTo.send(.presentEditGroupForm(group))
+                    }))
                 }
                 sectors.append(ListSector("Ungrouped", elements: ungroupedCategories, visibleIfEmpty: false))
                 return sectors

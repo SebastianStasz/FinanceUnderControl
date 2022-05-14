@@ -50,7 +50,7 @@ final class CashFlowFormVM: ViewModel {
             .withLatestFrom($formModel)
             .compactMap { $0.model }
             .perform(on: self, errorTracker: errorTracker) {
-                try await service.create(model: $0)
+                try await service.createOrEdit($0)
             }
             .sinkAndStore(on: self) { vm, _ in
                 AppVM.shared.events.didChangeCashFlow.send()

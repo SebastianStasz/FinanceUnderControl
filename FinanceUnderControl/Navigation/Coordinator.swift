@@ -23,7 +23,8 @@ class Coordinator: CoordinatorProtocol {
         case let .push(navigationController):
             push(on: navigationController)
         case let .presentModally(on: viewController):
-            presentModally(on: viewController)
+            guard let vc = viewController else { return}
+            presentModally(on: vc)
         case let .presentFullScreen(viewController):
             presentFullScreen(on: viewController)
         }

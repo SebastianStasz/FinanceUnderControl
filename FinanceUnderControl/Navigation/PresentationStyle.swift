@@ -9,6 +9,6 @@ import UIKit
 
 enum PresentationStyle {
     case push(on: UINavigationController)
-    case presentModally(on: UIViewController)
+    case presentModally(on: UIViewController?)
     case presentFullScreen(on: UIViewController)
 }
