@@ -24,12 +24,19 @@ final class CashFlowGroupingCoordinator: Coordinator {
     override func initializeView() -> UIViewController {
         let viewModel = CashFlowGroupingListVM(for: type, coordinator: self)
         let view = CashFlowGroupingListView(viewModel: viewModel)
+        let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+        viewController.title = type.namePlural
+        let presentFormSelection = UIAction { _ in
+            viewModel.binding.navigateTo.send(.presentFormSelection)
+        }
+        
+        viewController.navigationItem.rightBarButtonItems = [.init(systemItem: .add, primaryAction: presentFormSelection)]
 
         viewModel.binding.navigateTo
             .sink { [weak self] in self?.navigate(to: $0) }
             .store(in: &viewModel.cancellables)
 
-        return SwiftUIVC(viewModel: viewModel, view: view)
+        return viewController
     }
 }
 

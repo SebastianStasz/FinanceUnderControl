@@ -17,7 +17,7 @@ struct ListSector<T: Identifiable> {
     init(_ title: String,
          elements: [T],
          editAction: EditAction? = nil,
-         visibleIfEmpty: Bool = false
+         visibleIfEmpty: Bool = true
     ) {
         self.title = title
         self.elements = elements

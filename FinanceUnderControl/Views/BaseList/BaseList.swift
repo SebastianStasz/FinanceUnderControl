@@ -12,7 +12,6 @@ import SSUtils
 
 struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
-    private let title: String
     private let isLoading: Bool
     private let emptyStateVD: EmptyStateVD
     private let sectors: [ListSector<T>]
@@ -42,7 +41,6 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
         .environment(\.defaultMinListRowHeight, 1)
         .environment(\.defaultMinListHeaderHeight, 1)
         .emptyState(isEmpty: sectors.isEmpty, isLoading: isLoading, viewData: emptyStateVD)
-        .navigationTitle(title)
         .overlay(LoadingIndicator(isLoading: isLoading))
     }
 
@@ -69,14 +67,12 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
     }
 
     fileprivate init(
-        _ title: String,
         isLoading: Bool,
         emptyStateVD: EmptyStateVD,
         sectors: [ListSector<T>],
         deleteElement: ((T) -> Void)?,
         @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
-        self.title = title
         self.isLoading = isLoading
         self.emptyStateVD = emptyStateVD
         self.sectors = sectors
@@ -91,47 +87,43 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
 extension BaseList {
 
-    init(_ title: String,
-         isLoading: Bool = false,
+    init(isLoading: Bool = false,
          emptyStateVD: EmptyStateVD,
          sectors: [ListSector<T>],
          @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
-        self.init(title, isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: sectors, deleteElement: nil, rowView: rowView)
+        self.init(isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: sectors, deleteElement: nil, rowView: rowView)
     }
 
-    init(_ title: String,
-         isLoading: Bool = false,
+    init(isLoading: Bool = false,
          emptyStateVD: EmptyStateVD,
          elements: [T],
          @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
-        self.init(title, isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: ListSector.unvisibleSector(elements), deleteElement: nil, rowView: rowView)
+        self.init(isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: ListSector.unvisibleSector(elements), deleteElement: nil, rowView: rowView)
     }
 
-    init(_ title: String,
-         isLoading: Bool = false,
+    init(isLoading: Bool = false,
          emptyStateVD: EmptyStateVD,
          elements: FetchedResults<T>,
          @ViewBuilder rowView: @escaping (T) -> RowView
     ) where T: Entity {
-        self.init(title, isLoading: isLoading, emptyStateVD: emptyStateVD, elements: elements.map { $0 }, rowView: rowView)
+        self.init(isLoading: isLoading, emptyStateVD: emptyStateVD, elements: elements.map { $0 }, rowView: rowView)
     }
 
-    init<I>(_ title: String,
-            isLoading: Bool = false,
+    init<I>(isLoading: Bool = false,
             emptyStateVD: EmptyStateVD,
             sectorIdMapper: (I) -> String,
             sectors: SectionedFetchResults<I, T>,
             @ViewBuilder rowView: @escaping (T) -> RowView
     ) where T: Entity {
         let sectors = sectors.map { ListSector(sectorIdMapper($0.id), elements: $0.map { $0 }) }
-        self.init(title, isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: sectors, rowView: rowView)
+        self.init(isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: sectors, rowView: rowView)
     }
 }
 
 extension BaseList {
     func onDelete(perform action: ((T) -> Void)?) -> BaseList {
-        BaseList(title, isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: sectors, deleteElement: action, rowView: rowView)
+        BaseList(isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: sectors, deleteElement: action, rowView: rowView)
     }
 }

@@ -16,7 +16,7 @@ struct ExchangeRateListView: View {
     @ObservedObject var viewModel: ExchangeRateListVM
 
     var body: some View {
-        BaseList(title, emptyStateVD: emptyStateVD, elements: viewModel.exchangeRates) { exchageRate in
+        BaseList(emptyStateVD: emptyStateVD, elements: viewModel.exchangeRates) { exchageRate in
             HStack(spacing: .medium) {
                 Text(exchageRate.code, style: .currency)
                 Text(exchageRate.rateValue.formatted(for: exchageRate.currency))
@@ -24,6 +24,7 @@ struct ExchangeRateListView: View {
             .card()
         }
         .searchable(text: $viewModel.searchText)
+        .navigationTitle(title)
     }
 
     private var title: String {

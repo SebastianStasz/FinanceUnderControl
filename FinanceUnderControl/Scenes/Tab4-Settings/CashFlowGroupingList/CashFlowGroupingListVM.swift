@@ -32,16 +32,14 @@ final class CashFlowGroupingListVM: ViewModel {
     override func viewDidLoad() {
         let errorTracker = DriverSubject<Error>()
 
-        CombineLatest(storage.$cashFlowCategoryGroups, storage.$cashFlowCategories)
+        CombineLatest(storage.groups(type: type), storage.categories(type: type))
             .map { result in
                 var sectors: [ListSector<CashFlowCategory>] = []
                 let ungroupedCategories = result.1.filter { $0.group.isNil }
                 sectors = result.0.map { group in
                     ListSector(group.name, elements: result.1.filter { $0.group == group })
                 }
-                if ungroupedCategories.isNotEmpty {
-                    sectors.append(ListSector("Ungrouped", elements: ungroupedCategories))
-                }
+                sectors.append(ListSector("Ungrouped", elements: ungroupedCategories, visibleIfEmpty: false))
                 return sectors
             }
             .assign(to: &$listSectors)

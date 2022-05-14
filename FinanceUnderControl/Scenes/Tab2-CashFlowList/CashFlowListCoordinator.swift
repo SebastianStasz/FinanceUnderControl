@@ -25,6 +25,7 @@ final class CashFlowListCoordinator: RootCoordinator {
         let viewModel = CashFlowListVM(coordinator: self)
         let view = CashFlowListView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+        viewController.title = .tab_cashFlow_title
         navigationController.viewControllers = [viewController]
 
         viewModel.binding.navigateTo

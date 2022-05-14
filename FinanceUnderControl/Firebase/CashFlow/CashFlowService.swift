@@ -28,7 +28,7 @@ final class CashFlowService: CollectionService {
 
     func subscribe() -> FirestoreService.Subscription<[CashFlow]> {
         let subscription = firestore.subscribe(to: .cashFlows, orderedBy: Order.date(), lastDocument: lastDocument)
-        let cashFlows = CombineLatest(subscription.output, storage.$cashFlowCategories)
+        let cashFlows = CombineLatest(subscription.output, storage.$categories)
             .map { result in
                 result.0.compactMap { doc -> CashFlow? in
                     let categoryId = doc.getString(for: Field.categoryId)
@@ -46,7 +46,7 @@ final class CashFlowService: CollectionService {
         return docs.map {
             let categoryId = $0.getString(for: Field.categoryId)
 
-            guard let category = storage.cashFlowCategories.first(where: { $0.id == categoryId }) else {
+            guard let category = storage.categories.first(where: { $0.id == categoryId }) else {
                 return nil
             }
             return CashFlow(from: $0, category: category)

@@ -24,19 +24,13 @@ struct CashFlowGroupingListView: View {
     }
 
     var body: some View {
-        BaseList(viewModel.type.namePlural, isLoading: viewModel.isLoading, emptyStateVD: emptyStateVD, sectors: viewModel.listSectors) {
+        BaseList(isLoading: viewModel.isLoading, emptyStateVD: emptyStateVD, sectors: viewModel.listSectors) {
             CashFlowCategoryRow(for: $0, editCategory: showCategoryForm(.edit))
                 .actions(edit: (), delete: reportDeleteCategory($0))
                 .environment(\.editMode, editMode)
         }
 //        .onDelete(perform: showDeleteConfirmation)
 //        .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                EditButton().displayIf(viewModel.listSectors.isNotEmpty)
-            }
-            Toolbar.trailing(systemImage: SFSymbol.plus.name) { viewModel.binding.navigateTo.send(.presentFormSelection) }
-        }
         .confirmationDialog("Delete category", isPresented: $isDeleteConfirmationShown) {
             Button.delete { viewModel.binding.confirmCategoryDeletion.send() }
             Button.cancel {}

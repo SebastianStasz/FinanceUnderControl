@@ -29,7 +29,7 @@ struct CashFlowListView: BaseView {
     }
 
     var baseBody: some View {
-        BaseList(.tab_cashFlow_title, isLoading: viewModel.isLoading, emptyStateVD: emptyStateVD, sectors: listSectors) {
+        BaseList(isLoading: viewModel.isLoading, emptyStateVD: emptyStateVD, sectors: listSectors) {
             CashFlowCardView($0)
                 .actions(edit: (), delete: reportDeleteCashFlow($0))
         }

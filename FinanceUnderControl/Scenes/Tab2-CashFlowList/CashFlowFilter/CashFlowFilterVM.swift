@@ -31,7 +31,7 @@ final class CashFlowFilterVM: ViewModel {
     }
 
     override func viewDidLoad() {
-        storage.$cashFlowCategories.assign(to: &$categories)
+        storage.$categories.assign(to: &$categories)
         minValueInput.assignResult(to: \.filter.minimumValue, on: self)
         maxValueInput.assignResult(to: \.filter.maximumValue, on: self)
     }
