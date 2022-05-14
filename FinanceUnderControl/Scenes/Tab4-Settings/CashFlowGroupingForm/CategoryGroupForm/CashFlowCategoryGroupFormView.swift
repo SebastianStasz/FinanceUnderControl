@@ -39,8 +39,10 @@ struct CashFlowCategoryGroupFormView: BaseView {
 //                    Button.delete(titleOnly: true, action: showDeleteConfirmation)
 //                        .displayIf(isEditForm)
                 }
-
             }
+            .navigationTitle(title)
+            .horizontalButtons(primaryButton: primaryButton)
+            .handleViewModelActions(viewModel)
 
 //            Sector(.common_include) {
 //                ForEach(viewModel.formModel.categories) {
@@ -60,6 +62,19 @@ struct CashFlowCategoryGroupFormView: BaseView {
 //            Button.delete(action: deleteCashFlowGroup)
 //        }
 //        .cashFlowGroupingForm(viewModel: viewModel, form: form)
+    }
+
+    private var primaryButton: HorizontalButtons.Configuration {
+        .init(viewModel.formType.confirmButtonTitle, enabled: viewModel.formModel.isValid) {
+            viewModel.binding.didTapConfirm.send()
+        }
+    }
+
+    private var title: String {
+        if case .new = viewModel.formType {
+            return .settings_create_group
+        }
+        return .settings_edit_group
     }
 
     private var isEditForm: Bool {

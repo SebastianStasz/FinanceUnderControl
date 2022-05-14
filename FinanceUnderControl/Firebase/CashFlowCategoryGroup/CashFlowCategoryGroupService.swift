@@ -11,7 +11,10 @@ final class CashFlowCategoryGroupService: CollectionService {
     typealias Document = CashFlowCategoryGroup
 
     private let firestore = FirestoreService.shared
-    private let categoryService = CashFlowCategoryService()
+
+    func create(_ group: CashFlowCategoryGroup) async throws {
+        try await firestore.createDocument(in: .cashFlowCategoryGroups, withId: group.id, data: group.data)
+    }
 
     func getAll() async throws -> [CashFlowCategoryGroup] {
         try await firestore.getDocuments(from: .cashFlowCategoryGroups, orderedBy: Order.name())

@@ -23,8 +23,8 @@ struct CashFlowCategoryGroup: FirestoreDocument, Hashable {
     var data: [String: Any] {
         [Field.id.key: id,
          Field.name.key: name,
-         Field.type.key: type,
-         Field.color.key: color]
+         Field.type.key: type.rawValue,
+         Field.color.key: color.rawValue]
     }
 }
 

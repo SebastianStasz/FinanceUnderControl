@@ -53,7 +53,7 @@ private extension CashFlowGroupingCoordinator {
     func presentFormSelection(on navigationController: UINavigationController) {
         let alert = UIAlertController(title: .settings_select_action, message: nil, preferredStyle: .actionSheet)
         alert.addAction(title: .settings_create_group, action: onSelf {
-            CashFlowCategoryGroupFormCoordinator(.presentModally(on: navigationController), type: $0.type).start()
+            CashFlowCategoryGroupFormCoordinator(.presentModally(on: navigationController), formType: .new($0.type)).start()
         })
         alert.addAction(title: .settings_create_category, action: onSelf {
             CashFlowCategoryFormCoordinator(.presentModally(on: navigationController), formType: .new($0.type)).start()

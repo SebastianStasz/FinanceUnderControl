@@ -5,7 +5,6 @@
 //  Created by Sebastian Staszczyk on 06/03/2022.
 //
 
-import FinanceCoreData
 import Foundation
 import Shared
 
