@@ -12,6 +12,7 @@ final class CashFlowListCoordinator: RootCoordinator {
 
     enum Destination {
         case filterView
+        case editForm(for: CashFlow)
     }
 
     private let navigationController = UINavigationController()
@@ -34,14 +35,27 @@ final class CashFlowListCoordinator: RootCoordinator {
 
         return navigationController
     }
+}
 
-    private func navigate(to destination: Destination) {
+private extension CashFlowListCoordinator {
+
+    func navigate(to destination: Destination) {
         switch destination {
         case .filterView:
-            let viewModel = CashFlowFilterVM(filter: cashFlowFilter)
-            let view = CashFlowFilterView(viewModel: viewModel)
-            let viewController = SwiftUIVC(viewModel: viewModel, view: view)
-            navigationController.presentModally(viewController)
+            presentFilterView()
+        case let .editForm(cashFlow):
+            presentEditForm(for: cashFlow)
         }
+    }
+
+    func presentFilterView() {
+        let viewModel = CashFlowFilterVM(filter: cashFlowFilter)
+        let view = CashFlowFilterView(viewModel: viewModel)
+        let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+        navigationController.presentModally(viewController)
+    }
+
+    func presentEditForm(for cashFlow: CashFlow) {
+        CashFlowFormCoordinator(.presentModally(on: navigationController), formType: .edit(cashFlow)).start()
     }
 }

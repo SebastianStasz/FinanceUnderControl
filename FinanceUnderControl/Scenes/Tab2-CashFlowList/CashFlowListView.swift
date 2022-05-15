@@ -31,11 +31,10 @@ struct CashFlowListView: BaseView {
     var baseBody: some View {
         BaseList(isLoading: viewModel.isLoading, emptyStateVD: emptyStateVD, sectors: listSectors) {
             CashFlowCardView($0)
-                .actions(edit: (), delete: reportDeleteCashFlow($0))
+                .actions(edit: presentEditForm(for: $0), delete: reportDeleteCashFlow($0))
         }
         .confirmationDialog(String.settings_select_action, isPresented: $isDeleteConfirmationShown) {
             Button.delete { viewModel.binding.confirmCashFlowDeletion.send() }
-            Button.cancel(action: {})
         }
         .searchable(text: $viewModel.searchText)
 //        .toolbar {
@@ -52,9 +51,13 @@ struct CashFlowListView: BaseView {
 //        }
     }
 
-    func reportDeleteCashFlow(_ cashFlow: CashFlow) {
+    private func reportDeleteCashFlow(_ cashFlow: CashFlow) {
         viewModel.binding.cashFlowToDelete.send(cashFlow)
         isDeleteConfirmationShown = true
+    }
+
+    private func presentEditForm(for cashFlow: CashFlow) {
+        viewModel.binding.navigateTo.send(.editForm(for: cashFlow))
     }
 
 //    @ViewBuilder

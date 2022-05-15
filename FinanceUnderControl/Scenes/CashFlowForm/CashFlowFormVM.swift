@@ -32,16 +32,12 @@ final class CashFlowFormVM: ViewModel {
     @Published private(set) var categories: [CashFlowCategory] = []
     @Published var formModel = CashFlowFormModel()
 
-    init(for formType: FormType,
-         coordinator: CoordinatorProtocol,
-         service: CashFlowService = .init()
-    ) {
+    init(for formType: FormType, coordinator: CoordinatorProtocol, service: CashFlowService = .init()) {
         self.formType = formType
         self.service = service
         super.init(coordinator: coordinator)
 
         storage.$categories.assign(to: &$categories)
-
         nameInput.result().weakAssign(to: \.formModel.name, on: self)
         valueInput.result().weakAssign(to: \.formModel.value, on: self)
 
@@ -49,6 +45,8 @@ final class CashFlowFormVM: ViewModel {
         let errorTracker = DriverSubject<Error>()
 
         if case let .edit(cashFlow) = formType {
+            nameInput.setText(to: cashFlow.name)
+            valueInput.setValue(to: cashFlow.money.value)
             formModel = cashFlow.formModel
             initialFormModel = formModel
         } else {
