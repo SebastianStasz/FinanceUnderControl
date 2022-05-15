@@ -8,7 +8,7 @@
 import Foundation
 import Shared
 
-struct CashFlowCategoryFormModel {
+struct CashFlowCategoryFormModel: Equatable {
     var name: String?
     var icon: CashFlowCategoryIcon = .houseFill
     var color: CashFlowCategoryColor = .default

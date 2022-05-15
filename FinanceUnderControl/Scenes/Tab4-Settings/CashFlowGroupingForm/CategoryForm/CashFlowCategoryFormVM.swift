@@ -30,18 +30,35 @@ final class CashFlowCategoryFormVM: ViewModel {
         self.formType = formType
         super.init(coordinator: coordinator)
 
+        let initialFormModel: CashFlowCategoryFormModel?
         let errorTracker = DriverSubject<Error>()
 
         nameInput.$resultValue.weakAssign(to: \.formModel.name, on: self)
 
-        binding.didTapConfirm
-            .withLatestFrom($formModel)
+        if case let .edit(category) = formType {
+            nameInput.setText(to: category.name)
+            formModel = category.formModel
+            initialFormModel = formModel
+        } else {
+            initialFormModel = nil
+        }
+
+        let didTapConfirm = binding.didTapConfirm.withLatestFrom($formModel)
+
+        didTapConfirm
+            .filter { $0 == initialFormModel }
+            .sinkAndStore(on: self) { vm, _ in
+                vm.binding.navigateTo.send(.dismiss)
+            }
+
+        didTapConfirm
+            .filter { $0 != initialFormModel }
             .compactMap { $0.model(for: formType) }
             .perform(on: self, errorTracker: errorTracker) { [weak self] in
                 try await self?.service.createOrEdit($0)
             }
             .sinkAndStore(on: self) { vm, _ in
-                vm.binding.navigateTo.send(.createdSuccessfully)
+                vm.binding.navigateTo.send(.dismiss)
             }
     }
 }

@@ -33,7 +33,7 @@ struct CashFlowFormView: BaseView {
                 LabeledPicker(.common_category, elements: viewModel.categories, selection: $viewModel.formModel.category)
             }
         }
-        .navigationTitle(viewModel.formType.title)
+        .navigationTitle(title)
         .horizontalButtons(primaryButton: primaruButton)
     }
 
@@ -43,6 +43,15 @@ struct CashFlowFormView: BaseView {
 
     private func didTapConfirm() {
         viewModel.binding.didTapConfirm.send()
+    }
+
+    private var title: String {
+        switch viewModel.formType {
+        case let .new(type):
+            return type == .income ? .cash_flow_add_income : .cash_flow_add_expense
+        case let .edit(cashFlow):
+            return cashFlow.category.type == .income ? .cash_flow_edit_income : .cash_flow_edit_expense
+        }
     }
 }
 

@@ -33,6 +33,10 @@ struct CashFlow: FirestoreDocument {
          Field.date.key: date,
          Field.nameLowercase.key: name.lowerCaseDiacriticInsensitive]
     }
+
+    var formModel: CashFlowFormModel {
+        .init(date: date, name: name, value: money.value, currency: money.currency, category: category, type: category.type)
+    }
 }
 
 extension CashFlow {

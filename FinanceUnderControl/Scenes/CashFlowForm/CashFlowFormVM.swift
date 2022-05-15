@@ -15,15 +15,16 @@ import FirebaseFirestore
 import FirebaseAuth
 
 final class CashFlowFormVM: ViewModel {
+    typealias FormType = CashFlowFormType<CashFlow>
 
     struct Binding {
+        let navigateTo = DriverSubject<CashFlowFormCoordinator.Destination>()
         let didTapConfirm = DriverSubject<Void>()
-        let createdSuccessfully = DriverSubject<Void>()
     }
 
     private let service: CashFlowService
     private let storage = CashFlowGroupingService.shared
-    let formType: CashFlowForm
+    let formType: FormType
     let binding = Binding()
     var nameInput = TextInputVM()
     var valueInput = DecimalInputVM()
@@ -31,7 +32,7 @@ final class CashFlowFormVM: ViewModel {
     @Published private(set) var categories: [CashFlowCategory] = []
     @Published var formModel = CashFlowFormModel()
 
-    init(for formType: CashFlowForm,
+    init(for formType: FormType,
          coordinator: CoordinatorProtocol,
          service: CashFlowService = .init()
     ) {
@@ -44,17 +45,34 @@ final class CashFlowFormVM: ViewModel {
         nameInput.result().weakAssign(to: \.formModel.name, on: self)
         valueInput.result().weakAssign(to: \.formModel.value, on: self)
 
+        let initialFormModel: CashFlowFormModel?
         let errorTracker = DriverSubject<Error>()
 
-        binding.didTapConfirm
+        if case let .edit(cashFlow) = formType {
+            formModel = cashFlow.formModel
+            initialFormModel = formModel
+        } else {
+            initialFormModel = nil
+        }
+
+        let didTapConfirm = binding.didTapConfirm
             .withLatestFrom($formModel)
+
+        didTapConfirm
+            .filter { $0 == initialFormModel }
+            .sinkAndStore(on: self) { vm, _ in
+                vm.binding.navigateTo.send(.dismiss)
+            }
+
+        didTapConfirm
+            .filter { $0 != initialFormModel }
             .compactMap { $0.model }
             .perform(on: self, errorTracker: errorTracker) {
                 try await service.createOrEdit($0)
             }
             .sinkAndStore(on: self) { vm, _ in
                 AppVM.shared.events.didChangeCashFlow.send()
-                vm.binding.createdSuccessfully.send()
+                vm.binding.navigateTo.send(.dismiss)
             }
     }
 }

@@ -27,6 +27,10 @@ struct CashFlowCategory: FirestoreDocument {
          Field.icon.key: icon.rawValue,
          Field.groupId.key: group?.id as Any]
     }
+
+    var formModel: CashFlowCategoryFormModel {
+        .init(name: name, icon: icon, color: group?.color ?? .default)
+    }
 }
 
 extension CashFlowCategory {

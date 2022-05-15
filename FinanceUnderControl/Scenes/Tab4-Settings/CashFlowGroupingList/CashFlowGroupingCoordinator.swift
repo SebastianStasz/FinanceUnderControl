@@ -14,6 +14,7 @@ final class CashFlowGroupingCoordinator: Coordinator, ObservableObject {
     enum Destination {
         case presentFormSelection
         case presentEditGroupForm(CashFlowCategoryGroup)
+        case presentEditCategoryForm(CashFlowCategory)
     }
 
     private let type: CashFlowType
@@ -36,9 +37,6 @@ final class CashFlowGroupingCoordinator: Coordinator, ObservableObject {
         let presentFormSelection = UIAction { _ in
             viewModel.binding.navigateTo.send(.presentFormSelection)
         }
-        let presentEditingForm = UIAction { [weak self] _ in
-            self?.isEditMode.toggle()
-        }
         
         viewController.navigationItem.rightBarButtonItems = [
             .init(systemItem: .add, primaryAction: presentFormSelection),
@@ -60,6 +58,8 @@ private extension CashFlowGroupingCoordinator {
             presentFormSelection()
         case let .presentEditGroupForm(group):
             presentGroupForm(.edit(group))
+        case let .presentEditCategoryForm(category):
+            presentCategoryForm(.edit(category))
         }
     }
 

@@ -1,5 +1,5 @@
 //
-//  CashFlowCategroupFormModel.swift
+//  CashFlowCategoryGroupFormModel.swift
 //  FinanceUnderControl
 //
 //  Created by sebastianstaszczyk on 14/03/2022.
@@ -8,7 +8,7 @@
 import Foundation
 import Shared
 
-struct CashFlowCategroupFormModel {
+struct CashFlowCategoryGroupFormModel: Equatable {
     var name: String?
     var color: CashFlowCategoryColor = .blue
 

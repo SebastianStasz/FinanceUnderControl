@@ -27,7 +27,7 @@ struct CashFlowCategoryGroup: FirestoreDocument, Hashable {
          Field.color.key: color.rawValue]
     }
 
-    var formModel: CashFlowCategroupFormModel {
+    var formModel: CashFlowCategoryGroupFormModel {
         .init(name: name, color: color)
     }
 }

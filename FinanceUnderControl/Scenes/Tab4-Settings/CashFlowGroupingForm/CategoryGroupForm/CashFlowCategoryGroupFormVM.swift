@@ -19,7 +19,7 @@ final class CashFlowCategoryGroupFormVM: ViewModel {
         let didTapConfirm = DriverSubject<Void>()
     }
 
-    @Published var formModel = CashFlowCategroupFormModel()
+    @Published var formModel = CashFlowCategoryGroupFormModel()
 
     let binding = Binding()
     let formType: FormType
@@ -33,13 +33,26 @@ final class CashFlowCategoryGroupFormVM: ViewModel {
 
         nameInput.result().weakAssign(to: \.formModel.name, on: self)
 
+        let initialFormModel: CashFlowCategoryGroupFormModel?
+
         if case let .edit(group) = formType {
             nameInput.setText(to: group.name)
             formModel = group.formModel
+            initialFormModel = formModel
+        } else {
+            initialFormModel = nil
         }
 
-        binding.didTapConfirm
-            .withLatestFrom($formModel)
+        let didTapConfirm = binding.didTapConfirm.withLatestFrom($formModel)
+
+        didTapConfirm
+            .filter { $0 == initialFormModel }
+            .sinkAndStore(on: self) { vm, _ in
+                vm.binding.navigateTo.send(.dismiss)
+            }
+
+        didTapConfirm
+            .filter { $0 != initialFormModel }
             .compactMap { $0.model(for: formType) }
             .perform(on: self) { [weak self] in
                 try await self?.service.createOrEdit($0)
