@@ -23,8 +23,8 @@
 "common_currencies" = "Currencies";
 "common_expenses" = "Expenses";
 "common_incomes" = "Incomes";
-"common_expense" = "Wydatek";
-"common_income" = "Przychód";
+"common_expense" = "Expense";
+"common_income" = "Income";
 "common_primary" = "Primary";
 "common_secondary" = "Secondary";
 "common_exchange_rate" = "Exchange rate";

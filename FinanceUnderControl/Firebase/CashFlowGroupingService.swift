@@ -22,12 +22,20 @@ final class CashFlowGroupingService {
         subscribeCategories().output.assign(to: &$categories)
     }
 
-    func groups(type: CashFlowType) -> AnyPublisher<[CashFlowCategoryGroup], Never> {
+    func groupsSubscription(type: CashFlowType) -> AnyPublisher<[CashFlowCategoryGroup], Never> {
         $groups.map { $0.filter { $0.type == type } }.eraseToAnyPublisher()
     }
 
-    func categories(type: CashFlowType) -> AnyPublisher<[CashFlowCategory], Never> {
+    func categoriesSubscription(type: CashFlowType) -> AnyPublisher<[CashFlowCategory], Never> {
         $categories.map { $0.filter { $0.type == type } }.eraseToAnyPublisher()
+    }
+
+    func groups(type: CashFlowType) -> [CashFlowCategoryGroup] {
+        groups.filter { $0.type == type }
+    }
+
+    func categories(type: CashFlowType) -> [CashFlowCategory] {
+        categories.filter { $0.type == type }
     }
 
     private func subscribeGroups() -> FirestoreService.Subscription<[CashFlowCategoryGroup]> {

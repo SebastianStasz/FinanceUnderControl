@@ -37,7 +37,7 @@ final class CashFlowCategoryGroupFormVM: ViewModel {
 
         if case let .edit(group) = formType {
             nameInput.setText(to: group.name)
-            formModel = group.formModel
+            formModel = .init(from: group)
             initialFormModel = formModel
         } else {
             initialFormModel = nil
