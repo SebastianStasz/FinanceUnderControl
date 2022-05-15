@@ -39,7 +39,8 @@
 "common_file_name" = "File name";
 "common_more" = "More";
 "common_error" = "Error";
-"common_add" = "Dodaj";
+"common_add" = "Add";
+"common_delete" = "Delete";
 
 "authorization_register_success_title" = "Registered successfully";
 "authorization_register_success_message" = "Now it's time to sign in!";

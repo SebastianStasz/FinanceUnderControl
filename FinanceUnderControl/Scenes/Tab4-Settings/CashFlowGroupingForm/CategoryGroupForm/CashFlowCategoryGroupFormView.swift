@@ -12,6 +12,7 @@ import SwiftUI
 struct CashFlowCategoryGroupFormView: BaseView {
 
     @ObservedObject var viewModel: CashFlowCategoryGroupFormVM
+    @State private var isDeleteGroupConfirmationPresented = false
 
     private var grid: [GridItem] {
         Array(repeating: .init(.flexible(), spacing: .micro), count: 6)
@@ -38,6 +39,15 @@ struct CashFlowCategoryGroupFormView: BaseView {
             }
             .navigationTitle(title)
             .horizontalButtons(primaryButton: primaryButton)
+            .confirmationDialog("Czy chcesz usunąć grupę?", isPresented: $isDeleteGroupConfirmationPresented) {
+                Button.delete { viewModel.binding.confirmGroupDeletion.send() }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button.delete(titleOnly: true) { isDeleteGroupConfirmationPresented = true }
+                        .displayIf(viewModel.formType.isEdit)
+                }
+            }
             .handleViewModelActions(viewModel)
 
 //            Sector(.common_include) {

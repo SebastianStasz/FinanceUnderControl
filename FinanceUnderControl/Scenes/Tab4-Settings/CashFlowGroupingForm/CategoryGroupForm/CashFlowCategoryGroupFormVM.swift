@@ -15,6 +15,7 @@ final class CashFlowCategoryGroupFormVM: ViewModel {
 
     struct Binding {
         let navigateTo = DriverSubject<CashFlowCategoryGroupFormCoordinator.Destination>()
+        let confirmGroupDeletion = DriverSubject<Void>()
         let didTapConfirm = DriverSubject<Void>()
     }
 
@@ -44,7 +45,16 @@ final class CashFlowCategoryGroupFormVM: ViewModel {
                 try await self?.service.createOrEdit($0)
             }
             .sinkAndStore(on: self) { vm, _ in
-                vm.binding.navigateTo.send(.createdSuccessfully)
+                vm.binding.navigateTo.send(.dismiss)
+            }
+
+        binding.confirmGroupDeletion
+            .perform(on: self) { [weak self] in
+                guard case let .edit(group) = formType else { return }
+                try await self?.service.delete(group)
+            }
+            .sinkAndStore(on: self) { vm, _ in
+                vm.binding.navigateTo.send(.dismiss)
             }
     }
 }

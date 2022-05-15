@@ -12,7 +12,7 @@ final class CashFlowCategoryGroupFormCoordinator: Coordinator {
     typealias FormType = CashFlowFormType<CashFlowCategoryGroup>
 
     enum Destination {
-        case createdSuccessfully
+        case dismiss
     }
 
     private let formType: FormType
@@ -40,7 +40,7 @@ private extension CashFlowCategoryGroupFormCoordinator {
 
     func navigate(to destination: Destination) {
         switch destination {
-        case .createdSuccessfully:
+        case .dismiss:
             navigationController?.dismiss(animated: true)
         }
     }

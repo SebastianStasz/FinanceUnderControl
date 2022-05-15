@@ -60,6 +60,7 @@ public extension String {
     static let common_more = "common_more".localize()
     static let common_error = "common_error".localize()
     static let common_add = "common_add".localize()
+    static let common_delete = "common_delete".localize()
 
     // MARK: - Authorization
 

@@ -40,6 +40,7 @@
 "common_more" = "Więcej";
 "common_error" = "Błąd";
 "common_add" = "Dodaj";
+"common_delete" = "Usuń";
 
 "authorization_register_success_title" = "Zarejestrowano pomyślnie";
 "authorization_register_success_message" = "Czas zalogować się na swoje konto!";

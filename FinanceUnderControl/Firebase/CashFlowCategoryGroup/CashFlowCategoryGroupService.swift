@@ -16,6 +16,10 @@ final class CashFlowCategoryGroupService: CollectionService {
         try await firestore.createOrEditDocument(in: .cashFlowCategoryGroups, withId: model.id, data: model.data)
     }
 
+    func delete(_ group: CashFlowCategoryGroup) async throws {
+        try await firestore.deleteDocument(withId: group.id, from: .cashFlowCategoryGroups)
+    }
+
     func getAll() async throws -> [CashFlowCategoryGroup] {
         try await firestore.getDocuments(from: .cashFlowCategoryGroups, orderedBy: Order.name())
             .map { CashFlowCategoryGroup(from: $0) }

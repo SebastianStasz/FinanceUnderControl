@@ -12,6 +12,11 @@ enum CashFlowFormType<T: Equatable>: Equatable {
     case new(CashFlowType)
     case edit(T)
 
+    var isEdit: Bool {
+        if case .edit = self { return true  }
+        return false
+    }
+
     var confirmButtonTitle: String {
         switch self {
         case .new:
