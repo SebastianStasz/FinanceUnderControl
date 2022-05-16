@@ -13,9 +13,8 @@ import SSValidation
 final class LoginVM: ViewModel {
 
     struct ViewBinding {
-        let didTapSignUp = DriverSubject<Void>()
+        let navigateTo = DriverSubject<AuthenticationCoordinator.Destination>()
         let didTapSignIn = DriverSubject<Void>()
-        let loginError = DriverSubject<AuthErrorCode>()
     }
 
     @Published private(set) var isFormValid = false
@@ -52,7 +51,7 @@ final class LoginVM: ViewModel {
                 case .wrongPassword, .invalidEmail, .missingEmail, .userNotFound:
                     $0.passwordMessage = "Invalid email or password."
                 default:
-                    $0.binding.loginError.send(authErrorCode)
+                    $0.binding.navigateTo.send(.loginError(authErrorCode))
                 }
             }
         }

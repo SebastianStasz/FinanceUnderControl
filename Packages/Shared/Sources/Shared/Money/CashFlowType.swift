@@ -8,49 +8,32 @@
 import Foundation
 import SwiftUI
 
-public enum CashFlowType: String, Codable {
+public enum CashFlowType: String, Codable, Identifiable {
     case income
     case expense
+
+    public var id: String { rawValue }
 }
 
 public extension CashFlowType {
     var name: String {
-        switch self {
-        case .income:
-            return .create_cash_flow_income
-        case .expense:
-            return .create_cash_flow_expense
-        }
+        isIncome ? .create_cash_flow_income : .create_cash_flow_expense
     }
 
     var namePlural: String {
-        switch self {
-        case .income:
-            return .common_incomes
-        case .expense:
-            return .common_expenses
-        }
+        isIncome ? .common_incomes : .common_expenses
     }
 
     var symbol: String {
-        switch self {
-        case .income:
-            return "+"
-        case .expense:
-            return "-"
-        }
+        isIncome ? "+" : "-"
     }
 
     var color: Color {
-        switch self {
-        case .income:
-            return .accentGreen
-        case .expense:
-            return .accentRed
-        }
+        isIncome ? .accentGreen : .accentRed
     }
-}
 
-extension CashFlowType: Identifiable {
-    public var id: String { rawValue }
+    private var isIncome: Bool {
+        if case .income = self { return true }
+        return false
+    }
 }

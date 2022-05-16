@@ -13,7 +13,7 @@ final class CashFlowCategoryGroupService: CollectionService {
     private let firestore = FirestoreService.shared
 
     func createOrEdit(_ model: CashFlowCategoryGroup) async throws {
-        try await firestore.createOrEditDocument(in: .cashFlowCategoryGroups, withId: model.id, data: model.data)
+        try await firestore.createOrEditDocument(withId: model.id, in: .cashFlowCategoryGroups, data: model.data)
     }
 
     func delete(_ group: CashFlowCategoryGroup) async throws {

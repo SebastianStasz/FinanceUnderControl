@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public enum CashFlowCategoryColor: String {
+public enum CashFlowCategoryColor: String, Codable, CaseIterable, Identifiable {
     case blue
     case brown
     case cyan
@@ -20,6 +20,8 @@ public enum CashFlowCategoryColor: String {
     case red
     case teal
     case yellow
+
+    public var id: String { rawValue }
 
     public var color: Color {
         switch self {
@@ -53,12 +55,5 @@ public enum CashFlowCategoryColor: String {
     public static var `default`: CashFlowCategoryColor {
         .gray
     }
-}
-
-extension CashFlowCategoryColor: CaseIterable {}
-extension CashFlowCategoryColor: Codable {}
-
-extension CashFlowCategoryColor: Identifiable {
-    public var id: String { rawValue }
 }
 

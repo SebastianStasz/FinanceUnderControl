@@ -10,6 +10,11 @@ import UIKit
 
 final class AuthenticationCoordinator: RootCoordinator {
 
+    enum Destination {
+        case didTapSignUp
+        case loginError(AuthErrorCode)
+    }
+
     private let navigationController = UINavigationController()
 
     func start() -> UIViewController {
@@ -17,19 +22,20 @@ final class AuthenticationCoordinator: RootCoordinator {
         let viewController = SwiftUIVC(viewModel: viewModel, view: LoginView(viewModel: viewModel))
         navigationController.viewControllers = [viewController]
 
-        viewModel.binding.didTapSignUp
-            .sink { [weak self] in self?.presentRegisterView() }
-            .store(in: &viewController.cancellables)
-
-        viewModel.binding.loginError
-            .sink { [weak self] in self?.handleLoginEror($0) }
+        viewModel.binding.navigateTo
+            .sink { [weak self] in self?.navigate(to: $0) }
             .store(in: &viewController.cancellables)
 
         return navigationController
     }
 
-    private func presentRegisterView() {
-        RegisterCoordinator(.presentFullScreen(on: navigationController)).start()
+    private func navigate(to destination: Destination) {
+        switch destination {
+        case .didTapSignUp:
+            RegisterCoordinator(.presentFullScreen(on: navigationController)).start()
+        case let .loginError(authErrorCode):
+            handleLoginEror(authErrorCode)
+        }
     }
 
     private func handleLoginEror(_ error: AuthErrorCode) {

@@ -36,11 +36,7 @@ final class SettingsCoordinator: RootCoordinator {
     private func navigate(to destination: Destination) {
         switch destination {
         case let .cashFlowGroupForm(type):
-            pushCashFlowGroupingForm(for: type)
+            CashFlowGroupingCoordinator(.push(on: navigationController), type: type).start()
         }
-    }
-
-    private func pushCashFlowGroupingForm(for type: CashFlowType) {
-        CashFlowGroupingCoordinator(.push(on: navigationController), type: type).start()
     }
 }

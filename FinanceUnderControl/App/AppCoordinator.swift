@@ -21,10 +21,8 @@ final class AppCoordinator {
 
     private func handleUserState() {
         Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            guard let self = self else { return }
             let coordinator: RootCoordinator = user != nil ? TabBarCoordinator() : AuthenticationCoordinator()
-            let viewController = coordinator.start()
-            self.window.rootViewController = viewController
+            self?.window.rootViewController = coordinator.start()
         }
     }
 }

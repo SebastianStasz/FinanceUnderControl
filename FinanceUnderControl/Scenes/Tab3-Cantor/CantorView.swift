@@ -24,7 +24,6 @@ struct CantorView: BaseView {
             sectorExchangeRate
             sectorConvert
             sectorMore
-                .displayIf(viewModel.exchangeRateValue.notNil)
         }
         .navigationTitle(String.tab_currencies_title)
         .toolbar { Toolbar.trailing(systemImage: SFSymbol.infoCircle.name, action: showInfoAlert) }

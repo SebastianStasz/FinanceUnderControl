@@ -5,7 +5,7 @@
 //  Created by sebastianstaszczyk on 13/05/2022.
 //
 
-public enum CashFlowCategoryIcon: String {
+public enum CashFlowCategoryIcon: String, Codable, CaseIterable, Identifiable {
 
     // MARK: Transport 12
 
@@ -109,6 +109,8 @@ public enum CashFlowCategoryIcon: String {
     case lightbulbFill = "lightbulb.fill"
     case cameraFill = "camera.fill"
 
+    public var id: String { rawValue }
+
     public static var groups: [IconGroup] {
         var all = CashFlowCategoryIcon.allCases
 
@@ -138,13 +140,6 @@ public enum CashFlowCategoryIcon: String {
 
         return [transport, human, nature, commerce, health, generic, objectAndTools, devices]
     }
-}
-
-extension CashFlowCategoryIcon: CaseIterable {}
-extension CashFlowCategoryIcon: Codable {}
-
-extension CashFlowCategoryIcon: Identifiable {
-    public var id: String { rawValue }
 
     public static var `default`: CashFlowCategoryIcon {
         .folderFill

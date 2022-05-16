@@ -15,11 +15,8 @@ import SSValidation
 final class RegisterVM: ViewModel {
 
     struct ViewBinding {
-        let didConfirmEmail = DriverSubject<Void>()
-        let didEnterPassword = DriverSubject<Void>()
+        let navigateTo = DriverSubject<RegisterCoordinator.Destination>()
         let didConfirmRegistration = DriverSubject<Void>()
-        let registeredSuccessfully = DriverSubject<Void>()
-        let registrationError = DriverSubject<AuthErrorCode>()
     }
 
     @Published private(set) var isEmailValid = false
@@ -54,12 +51,12 @@ final class RegisterVM: ViewModel {
             .compactMap { $0 }
             .sinkAndStore(on: self) { vm, result in
                 result.user.sendEmailVerification()
-                vm.binding.registeredSuccessfully.send()
+                vm.binding.navigateTo.send(.registeredSuccessfully)
             }
 
         registrationError.sinkAndStore(on: self) {
             if let authErrorCode = AuthErrorCode(rawValue: $1._code) {
-                $0.binding.registrationError.send(authErrorCode)
+                $0.binding.navigateTo.send(.registrationError(authErrorCode))
             }
         }
     }

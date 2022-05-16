@@ -44,6 +44,22 @@ struct CashFlowCategoryGroupFormModel: Equatable {
             return CashFlowCategoryGroup(id: group.id, name: name, type: group.type, color: color)
         }
     }
+
+    func categoriesToBeAdded(to group: CashFlowCategoryGroup) -> [CashFlowCategory] {
+        includedCategories
+            .filter { $0.group?.id != group.id }
+            .map { CashFlowCategory(id: $0.id, name: $0.name, type: $0.type, icon: $0.icon, group: group) }
+    }
+
+    func categoriesToBeExcluded(from group: CashFlowCategoryGroup) -> [CashFlowCategory] {
+        otherCategories
+            .filter { $0.group?.id == group.id }
+            .map { CashFlowCategory(id: $0.id, name: $0.name, type: $0.type, icon: $0.icon, group: nil) }
+    }
+
+    func categoriesToUpdate(to group: CashFlowCategoryGroup) -> [CashFlowCategory] {
+        categoriesToBeAdded(to: group) + categoriesToBeExcluded(from: group)
+    }
 }
 
 extension CashFlowCategoryGroupFormModel {

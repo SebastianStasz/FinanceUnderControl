@@ -37,11 +37,8 @@ extension CantorView {
     @ViewBuilder
     var sectorMore: some View {
         if let currency = viewModel.currencySelector.primaryCurrency, currency.exchangeRates.isNotEmpty {
-            Sector(.common_more) {
-//                Navigation(.cantor_all_exchange_rates(forCurrency: currency.code),
-//                           leadsTo: ExchangeRateListView(viewModel: .init(currencyEntity: currency))
-//                )
-            }
+            Navigation(.common_incomes) { viewModel.binding.navigateTo.send(.exchangeRateList(for: currency)) }
+                .embedInSection(.common_more)
         }
     }
 }

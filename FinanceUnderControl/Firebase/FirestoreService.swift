@@ -18,12 +18,21 @@ struct FirestoreService {
 
     private init() {}
 
-    func createOrEditDocument(in collection: Collection, withId id: String, data: [String: Any]) async throws {
-        try await userDocument.collection(collection.name).document(collection.documentIdPrefix + id).setData(data)
+    func createOrEditDocument(withId id: String, in collection: Collection, data: [String: Any]) async throws {
+        try await documentReference(withId: id, in: collection).setData(data)
     }
 
-    func deleteDocument(withId documentId: String, from collection: Collection) async throws {
-        try await userDocument.collection(collection.name).document(collection.documentIdPrefix + documentId).delete()
+    func createOrEditDocuments<T: FirestoreDocument>(_ documents: [T], in collection: Collection) async throws {
+        let batch = db.batch()
+
+        documents.forEach { doc in
+            batch.setData(doc.data, forDocument: documentReference(withId: doc.id, in: collection))
+        }
+        try await batch.commit()
+    }
+
+    func deleteDocument(withId id: String, from collection: Collection) async throws {
+        try await documentReference(withId: id, in: collection).delete()
     }
 
     func getDocument(fromReference reference: DocumentReference) async throws -> DocumentSnapshot {
@@ -53,7 +62,7 @@ struct FirestoreService {
         orderedBy orderField: T,
         filteredBy filters: [FirestoreServiceFilter] = [],
         lastDocument: QueryDocumentSnapshot? = nil
-    ) -> Subscription<[QueryDocumentSnapshot]> {
+    ) -> FirestoreSubscription<[QueryDocumentSnapshot]> {
         let documentsSubject = PassthroughSubject<[QueryDocumentSnapshot], Never>()
         let errorsSubject = PassthroughSubject<Error, Never>()
 
@@ -65,15 +74,18 @@ struct FirestoreService {
                     errorsSubject.send(error)
                 }
             }
-        return Subscription(output: documentsSubject.eraseToAnyPublisher(), error: errorsSubject.eraseToAnyPublisher())
+        return FirestoreSubscription(output: documentsSubject.eraseToAnyPublisher(), error: errorsSubject.eraseToAnyPublisher())
     }
-
 }
 
 private extension FirestoreService {
 
     var userDocument: DocumentReference {
         db.collection(Collection.users.name).document(Collection.users.documentIdPrefix + userId)
+    }
+
+    func documentReference(withId id: String, in collection: Collection) -> DocumentReference {
+        userDocument.collection(collection.name).document(collection.documentIdPrefix + id)
     }
 
     func getQuery(

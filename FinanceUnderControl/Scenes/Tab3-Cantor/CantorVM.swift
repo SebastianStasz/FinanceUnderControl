@@ -14,10 +14,15 @@ import SSValidation
 
 final class CantorVM: ViewModel {
 
+    struct Binding {
+        let navigateTo = DriverSubject<CantorCoordinator.Destination>()
+    }
+
     @Published var currencySelector = CurrencySelector<CurrencyEntity?>(primaryCurrency: nil, secondaryCurrency: nil)
     let amountOfMoneyInput = DecimalInputVM(validator: .alwaysValid)
     @Published private(set) var exchangeRateValue: String?
     @Published private(set) var exchangedMoney: String?
+    let binding = Binding()
 
     var isFormFilled: Bool {
         guard currencySelector.secondaryCurrency.notNil,

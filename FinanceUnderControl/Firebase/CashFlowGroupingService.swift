@@ -38,7 +38,7 @@ final class CashFlowGroupingService {
         categories.filter { $0.type == type }
     }
 
-    private func subscribeGroups() -> FirestoreService.Subscription<[CashFlowCategoryGroup]> {
+    private func subscribeGroups() -> FirestoreSubscription<[CashFlowCategoryGroup]> {
         let subscription = firestore.subscribe(to: .cashFlowCategoryGroups, orderedBy: CashFlowCategoryGroup.Order.name())
         let groups = subscription.output
             .map { $0.map { CashFlowCategoryGroup(from: $0) } }
@@ -47,7 +47,7 @@ final class CashFlowGroupingService {
         return .init(output: groups, error: subscription.error)
     }
 
-    private func subscribeCategories() -> FirestoreService.Subscription<[CashFlowCategory]> {
+    private func subscribeCategories() -> FirestoreSubscription<[CashFlowCategory]> {
         let subscription = firestore.subscribe(to: .cashFlowCategories, orderedBy: CashFlowCategory.Order.name())
         let categories = Publishers.CombineLatest(subscription.output, $groups)
             .map { result in

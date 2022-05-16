@@ -11,7 +11,8 @@ import Foundation
 protocol FirestoreDocument: Identifiable, Equatable {
     associatedtype Field: DocumentField
     associatedtype Order: DocumentFieldOrder
-    
+
+    var id: String { get }
     var data: [String: Any] { get }
 }
 

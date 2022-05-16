@@ -11,26 +11,21 @@ import SwiftUI
 
 final class RegisterCoordinator: Coordinator {
 
+    enum Destination {
+        case didConfirmEmail
+        case didEnterPassword
+        case registeredSuccessfully
+        case registrationError(AuthErrorCode)
+    }
+
     override func initializeView() -> UIViewController {
         let viewModel = RegisterVM(coordinator: self)
         let view = RegisterEmailView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
         viewController.addCloseButton()
 
-        viewModel.binding.didConfirmEmail
-            .sink { [weak self] in self?.presentPasswordView(viewModel: viewModel) }
-            .store(in: &viewController.cancellables)
-
-        viewModel.binding.didEnterPassword
-            .sink { [weak self] in self?.presentPasswordConfirmationView(viewModel: viewModel) }
-            .store(in: &viewController.cancellables)
-
-        viewModel.binding.registeredSuccessfully
-            .sink { [weak self] in self?.presentRegisteredSuccessfully() }
-            .store(in: &viewController.cancellables)
-
-        viewModel.binding.registrationError
-            .sink { [weak self] in self?.handleRegistrationError($0) }
+        viewModel.binding.navigateTo
+            .sink { [weak self] in self?.navigate(to: $0, viewModel: viewModel) }
             .store(in: &viewController.cancellables)
 
         return viewController
@@ -39,12 +34,17 @@ final class RegisterCoordinator: Coordinator {
 
 private extension RegisterCoordinator {
 
-    func presentPasswordView(viewModel: RegisterVM) {
-        navigationController?.push(RegisterPasswordView(viewModel: viewModel))
-    }
-
-    func presentPasswordConfirmationView(viewModel: RegisterVM) {
-        navigationController?.push(RegisterConfirmPasswordView(viewModel: viewModel))
+    func navigate(to destination: Destination, viewModel: RegisterVM) {
+        switch destination {
+        case .didConfirmEmail:
+            navigationController?.push(RegisterPasswordView(viewModel: viewModel))
+        case .didEnterPassword:
+            navigationController?.push(RegisterConfirmPasswordView(viewModel: viewModel))
+        case .registeredSuccessfully:
+            presentRegisteredSuccessfully()
+        case let .registrationError(authErrorCode):
+            handleRegistrationError(authErrorCode)
+        }
     }
 
     func presentRegisteredSuccessfully() {

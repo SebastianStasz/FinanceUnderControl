@@ -25,7 +25,8 @@ final class CashFlowCategoryGroupFormVM: ViewModel {
     let formType: FormType
     let nameInput = TextInputVM()
 
-    private let service = CashFlowCategoryGroupService()
+    private let groupService = CashFlowCategoryGroupService()
+    private let categoryService = CashFlowCategoryService()
 
     init(for formType: FormType, coordinator: Coordinator) {
         self.formType = formType
@@ -55,7 +56,10 @@ final class CashFlowCategoryGroupFormVM: ViewModel {
             .filter { $0 != initialFormModel }
             .compactMap { $0.model(for: formType) }
             .perform(on: self) { [weak self] in
-                try await self?.service.createOrEdit($0)
+                guard let self = self else { return }
+                let categories = self.formModel.categoriesToUpdate(to: $0)
+                try await self.groupService.createOrEdit($0)
+                try await self.categoryService.createOrEdit(categories)
             }
             .sinkAndStore(on: self) { vm, _ in
                 vm.binding.navigateTo.send(.dismiss)
@@ -64,7 +68,7 @@ final class CashFlowCategoryGroupFormVM: ViewModel {
         binding.confirmGroupDeletion
             .perform(on: self) { [weak self] in
                 guard case let .edit(group) = formType else { return }
-                try await self?.service.delete(group)
+                try await self?.groupService.delete(group)
             }
             .sinkAndStore(on: self) { vm, _ in
                 vm.binding.navigateTo.send(.dismiss)

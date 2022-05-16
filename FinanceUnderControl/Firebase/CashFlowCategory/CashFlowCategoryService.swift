@@ -14,7 +14,11 @@ final class CashFlowCategoryService: CollectionService {
     private let firestore = FirestoreService.shared
 
     func createOrEdit(_ model: CashFlowCategory) async throws {
-        try await firestore.createOrEditDocument(in: .cashFlowCategories, withId: model.id, data: model.data)
+        try await firestore.createOrEditDocument(withId: model.id, in: .cashFlowCategories, data: model.data)
+    }
+
+    func createOrEdit(_ models: [CashFlowCategory]) async throws {
+        try await firestore.createOrEditDocuments(models, in: .cashFlowCategories)
     }
 
     func delete(_ category: CashFlowCategory) async throws {

@@ -19,14 +19,14 @@ final class CashFlowService: CollectionService {
     private var lastDocument: QueryDocumentSnapshot?
 
     func createOrEdit(_ model: CashFlow) async throws {
-        try await firestore.createOrEditDocument(in: .cashFlows, withId: model.id, data: model.data)
+        try await firestore.createOrEditDocument(withId: model.id, in: .cashFlows, data: model.data)
     }
 
     func delete(_ cashFlow: CashFlow) async throws {
         try await firestore.deleteDocument(withId: cashFlow.id, from: .cashFlows)
     }
 
-    func subscribe() -> FirestoreService.Subscription<[CashFlow]> {
+    func subscribe() -> FirestoreSubscription<[CashFlow]> {
         let subscription = firestore.subscribe(to: .cashFlows, orderedBy: Order.date(), lastDocument: lastDocument)
         let cashFlows = CombineLatest(subscription.output, storage.$categories)
             .map { result in

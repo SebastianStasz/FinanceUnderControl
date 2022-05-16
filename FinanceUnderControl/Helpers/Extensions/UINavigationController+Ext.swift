@@ -14,6 +14,10 @@ extension UINavigationController {
         pushViewController(UIHostingController(rootView: content), animated: animated)
     }
 
+    func push(_ viewController: UIViewController, animated: Bool = true) {
+        pushViewController(viewController, animated: animated)
+    }
+
     func presentModally(_ viewController: UIViewController, animated: Bool = true) {
         present(viewController, animated: animated)
     }

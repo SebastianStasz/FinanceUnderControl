@@ -9,7 +9,7 @@ import Combine
 import FinanceCoreData
 import Foundation
 
-final class ExchangeRateListVM: ObservableObject, Identifiable {
+final class ExchangeRateListVM: ViewModel {
     private let currencyEntity: CurrencyEntity
     @Published private(set) var exchangeRates: [ExchangeRateEntity] = []
     @Published var searchText = ""
@@ -20,6 +20,7 @@ final class ExchangeRateListVM: ObservableObject, Identifiable {
 
     init(currencyEntity: CurrencyEntity) {
         self.currencyEntity = currencyEntity
+        super.init(coordinator: nil)
         exchangeRates = currencyEntity.exchangeRatesArray
 
         ValidationHelper.search($searchText)
