@@ -49,9 +49,9 @@ private struct RegisterViewModifier: ViewModifier {
     private func didTapConfirm() {
         switch type {
         case .email:
-            viewModel.binding.didConfirmEmail.send()
+            viewModel.binding.navigateTo.send(.didConfirmEmail)
         case .password:
-            viewModel.binding.didEnterPassword.send()
+            viewModel.binding.navigateTo.send(.didEnterPassword)
         case .passwordConfirmation:
             viewModel.binding.didConfirmRegistration.send()
         }
