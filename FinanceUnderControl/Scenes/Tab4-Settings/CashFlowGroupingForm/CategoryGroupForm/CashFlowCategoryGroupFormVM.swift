@@ -19,7 +19,7 @@ final class CashFlowCategoryGroupFormVM: ViewModel {
         let didTapConfirm = DriverSubject<Void>()
     }
 
-    @Published var formModel = CashFlowCategoryGroupFormModel()
+    @Published var formModel: CashFlowCategoryGroupFormModel
 
     let binding = Binding()
     let formType: FormType
@@ -30,6 +30,7 @@ final class CashFlowCategoryGroupFormVM: ViewModel {
 
     init(for formType: FormType, coordinator: Coordinator) {
         self.formType = formType
+        self.formModel = .init(type: formType.cashFlowType)
         super.init(coordinator: coordinator)
 
         nameInput.result().weakAssign(to: \.formModel.name, on: self)

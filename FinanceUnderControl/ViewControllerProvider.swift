@@ -14,6 +14,8 @@ struct ViewControllerProvider {
     static func exchangeRateList(for currency: CurrencyEntity) -> UIViewController {
         let viewModel = ExchangeRateListVM(currencyEntity: currency)
         let view = ExchangeRateListView(viewModel: viewModel)
-        return SwiftUIVC(viewModel: viewModel, view: view)
+        let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+        viewController.title = "\(String.cantor_base_currency): \(currency.code)"
+        return viewController
     }
 }

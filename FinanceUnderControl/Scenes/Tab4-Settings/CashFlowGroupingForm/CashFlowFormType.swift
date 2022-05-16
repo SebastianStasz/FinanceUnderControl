@@ -8,12 +8,21 @@
 import Foundation
 import Shared
 
-enum CashFlowFormType<T: Equatable>: Equatable {
+enum CashFlowFormType<T: Equatable & CashFlowTypeSupport>: Equatable {
     case new(CashFlowType)
     case edit(T)
 
+    var cashFlowType: CashFlowType {
+        switch self {
+        case let .new(type):
+            return type
+        case let .edit(model):
+            return model.type
+        }
+    }
+
     var isEdit: Bool {
-        if case .edit = self { return true  }
+        if case .edit = self { return true }
         return false
     }
 
@@ -25,4 +34,8 @@ enum CashFlowFormType<T: Equatable>: Equatable {
             return .common_save
         }
     }
+}
+
+protocol CashFlowTypeSupport {
+    var type: CashFlowType { get }
 }

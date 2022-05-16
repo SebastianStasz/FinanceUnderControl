@@ -14,6 +14,12 @@ struct CashFlowCategoryGroupFormModel: Equatable {
     var includedCategories: [CashFlowCategory] = []
     var otherCategories: [CashFlowCategory] = []
 
+    init(name: String? = nil, color: CashFlowCategoryColor = .blue, type: CashFlowType) {
+        self.name = name
+        self.color = color
+        otherCategories = CashFlowGroupingService.shared.categories(type: type)
+    }
+
     var isValid: Bool {
         guard let name = name else { return false }
         return name.isNotEmpty

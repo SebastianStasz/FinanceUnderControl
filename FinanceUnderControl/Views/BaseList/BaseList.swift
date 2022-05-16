@@ -37,6 +37,7 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
             .padding(.horizontal, .large)
         }
         .listStyle(.grouped)
+        .padding(.bottom, .xxlarge)
         .background(Color.backgroundPrimary)
         .environment(\.defaultMinListRowHeight, 1)
         .environment(\.defaultMinListHeaderHeight, 1)

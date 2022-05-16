@@ -9,7 +9,7 @@ import FirebaseFirestore
 import Foundation
 import Shared
 
-struct CashFlowCategory: FirestoreDocument {
+struct CashFlowCategory: FirestoreDocument, CashFlowTypeSupport {
     let id: String
     let name: String
     let type: CashFlowType

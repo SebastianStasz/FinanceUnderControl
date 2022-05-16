@@ -15,7 +15,7 @@ struct PersistentStorage {
     }
 
     static var secondaryCurrency: Currency {
-        let code = UserDefaults.string(forKey: .secondaryCurrency) ?? Currency.PLN.code
+        let code = UserDefaults.string(forKey: .secondaryCurrency) ?? Currency.EUR.code
         return Currency(rawValue: code) ?? .PLN
     }
 }

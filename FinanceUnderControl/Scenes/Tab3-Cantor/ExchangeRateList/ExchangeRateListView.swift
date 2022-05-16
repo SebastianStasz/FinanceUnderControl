@@ -24,11 +24,6 @@ struct ExchangeRateListView: View {
             .card()
         }
         .searchable(text: $viewModel.searchText)
-        .navigationTitle(title)
-    }
-
-    private var title: String {
-        "\(String.cantor_base_currency): \(viewModel.baseCurrencyCode)"
     }
 }
 

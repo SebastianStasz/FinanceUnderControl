@@ -37,7 +37,7 @@ final class CashFlowFormVM: ViewModel {
         self.service = service
         super.init(coordinator: coordinator)
 
-        storage.$categories.assign(to: &$categories)
+        storage.categoriesSubscription(type: formType.cashFlowType).assign(to: &$categories)
         nameInput.result().weakAssign(to: \.formModel.name, on: self)
         valueInput.result().weakAssign(to: \.formModel.value, on: self)
 

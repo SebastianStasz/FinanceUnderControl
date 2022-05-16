@@ -9,12 +9,16 @@ import FirebaseFirestore
 import Foundation
 import Shared
 
-struct CashFlow: FirestoreDocument {
+struct CashFlow: FirestoreDocument, CashFlowTypeSupport {
     let id: String
     let name: String
     let money: Money
     let date: Date
     let category: CashFlowCategory
+
+    var type: CashFlowType {
+        category.type
+    }
 
     private var nameLowercase: String {
         name.lowerCaseDiacriticInsensitive

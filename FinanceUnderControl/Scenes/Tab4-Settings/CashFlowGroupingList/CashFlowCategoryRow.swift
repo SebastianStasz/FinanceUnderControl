@@ -5,26 +5,16 @@
 //  Created by sebastianstaszczyk on 18/03/2022.
 //
 
-import FinanceCoreData
 import Shared
 import SwiftUI
 
 struct CashFlowCategoryRow: View {
     @Environment(\.editMode) private var editMode
 
-    private let name: String
-    private let icon: CashFlowCategoryIcon
-    private let color: Color
-    private let editCategory: () -> Void
-
-    init(for category: CashFlowCategory,
-         editCategory: @autoclosure @escaping () -> Void
-    ) {
-        name = category.name
-        icon = category.icon
-        color = .gray
-        self.editCategory = editCategory
-    }
+    let name: String
+    let icon: CashFlowCategoryIcon
+    let color: Color
+    let editCategory: () -> Void
 
     var body: some View {
         HStack(spacing: .medium) {
@@ -46,15 +36,24 @@ struct CashFlowCategoryRow: View {
     }
 }
 
+extension CashFlowCategoryRow {
+    init(for category: CashFlowCategory, editCategory: @autoclosure @escaping () -> Void) {
+        name = category.name
+        icon = category.icon
+        color = category.group?.color.color ?? CashFlowCategoryColor.default.color
+        self.editCategory = editCategory
+    }
+}
+
 // MARK: - Preview
 
-//struct CashFlowCategoryRow_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            CashFlowCategoryRow(for: .carExpense, editCategory: {}())
-//            CashFlowCategoryRow(for: .carExpense, editCategory: {}())
-//                .environment(\.editMode, .constant(.active))
-//        }
-//        .sizeThatFits()
-//    }
-//}
+struct CashFlowCategoryRow_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            CashFlowCategoryRow(name: "Groceries", icon: .cartFill, color: .blue, editCategory: {})
+            CashFlowCategoryRow(name: "Groceries", icon: .cartFill, color: .blue, editCategory: {}).darkScheme()
+                .environment(\.editMode, .constant(.active))
+        }
+        .sizeThatFits()
+    }
+}
