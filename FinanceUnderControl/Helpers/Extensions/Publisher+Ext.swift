@@ -11,6 +11,14 @@ import SSUtils
 
 extension Publisher {
 
+    func handleEvents<VM: ViewModel>(on viewModel: VM, action: @escaping (VM, Output) -> Void) -> AnyPublisher<Output, Failure> {
+        handleEvents(receiveOutput:  { [weak viewModel] output in
+            guard let viewModel = viewModel else { return }
+            action(viewModel, output)
+        })
+        .eraseToAnyPublisher()
+    }
+
     func startLoading<T: ViewModel>(on object: T?) -> AnyPublisher<Output, Failure> {
         setLoading(to: true, on: object)
     }

@@ -18,4 +18,18 @@ struct ViewControllerProvider {
         viewController.title = "\(String.cantor_base_currency): \(currency.code)"
         return viewController
     }
+
+    static func cashFlowFilterVC(viewModel: CashFlowFilterVM) -> UIViewController {
+        let view = CashFlowFilterView(viewModel: viewModel)
+        let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        viewController.title = .cash_flow_filter_title
+        viewController.addCloseButton()
+
+        viewModel.binding.dismiss
+            .sink { [weak navigationController] in navigationController?.dismiss(animated: true) }
+            .store(in: &viewModel.cancellables)
+
+        return navigationController
+    }
 }

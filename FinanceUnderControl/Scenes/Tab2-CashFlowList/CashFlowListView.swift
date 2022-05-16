@@ -5,9 +5,8 @@
 //  Created by Sebastian Staszczyk on 16/01/2022.
 //
 
-import FinanceCoreData
-import SwiftUI
 import Shared
+import SwiftUI
 import SSUtils
 
 struct CashFlowListView: BaseView {
@@ -37,18 +36,12 @@ struct CashFlowListView: BaseView {
             Button.delete { viewModel.binding.confirmCashFlowDeletion.send() }
         }
         .searchable(text: $viewModel.searchText)
-//        .toolbar {
-//            ToolbarItem(placement: .navigationBarTrailing) {
-//                Button(action: showFilterView) { filterIcon }
-//                    .disabled(cashFlows.isEmpty && !isSearching)
-//            }
-//        }
-//        .sheet(isPresented: $isFilterViewShown) {
-//            CashFlowFilterView(cashFlowFilter: $viewModel.cashFlowFilter)
-//        }
-//        .onChange(of: viewModel.cashFlowPredicate) {
-//            cashFlows.nsPredicate = $0
-//        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: presentFilterView) { filterIcon }
+                    .disabled(viewModel.listSectors.isEmpty && !isSearching)
+            }
+        }
     }
 
     private func reportDeleteCashFlow(_ cashFlow: CashFlow) {
@@ -60,25 +53,25 @@ struct CashFlowListView: BaseView {
         viewModel.binding.navigateTo.send(.editForm(for: cashFlow))
     }
 
-//    @ViewBuilder
-//    private var filterIcon: some View {
-//        if viewModel.cashFlowPredicate.isNil {
-//            Image(systemName: SFSymbol.filter.name)
-//        } else {
-//            HStack(alignment: .top, spacing: .micro) {
-//                Circle()
-//                    .frame(width: .small, height: .small)
-//                    .padding(.top, 3)
-//                Image(systemName: SFSymbol.filter.name)
-//            }
-//        }
-//    }
+    @ViewBuilder
+    private var filterIcon: some View {
+        if !viewModel.cashFlowFilter.isFiltering {
+            Image(systemName: SFSymbol.filter.name)
+        } else {
+            HStack(alignment: .top, spacing: .micro) {
+                Circle()
+                    .frame(width: .small, height: .small)
+                    .padding(.top, 3)
+                Image(systemName: SFSymbol.filter.name)
+            }
+        }
+    }
 
     // MARK: - Interactions
 
-//    private func showFilterView() {
-//        isFilterViewShown = true
-//    }
+    private func presentFilterView() {
+        viewModel.binding.navigateTo.send(.filterView)
+    }
 //
 //    private func resetFilters() {
 //        viewModel.cashFlowFilter.resetToDefaultValues()
@@ -104,6 +97,5 @@ struct CashFlowListView_Previews: PreviewProvider {
             CashFlowListView(viewModel: viewModel).darkScheme()
         }
         .embedInNavigationView()
-        .environment(\.managedObjectContext, PersistenceController.preview.context)
     }
 }

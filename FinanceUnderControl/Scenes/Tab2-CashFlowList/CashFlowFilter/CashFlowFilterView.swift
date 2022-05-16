@@ -5,17 +5,11 @@
 //  Created by Sebastian Staszczyk on 16/01/2022.
 //
 
-import FinanceCoreData
 import Shared
 import SwiftUI
 
 struct CashFlowFilterView: BaseView {
-
     @ObservedObject var viewModel: CashFlowFilterVM
-
-    var filter: Binding<CashFlowFilter> {
-        $viewModel.filter
-    }
 
     var baseBody: some View {
         FormView {
@@ -33,9 +27,12 @@ struct CashFlowFilterView: BaseView {
                 DateRangePicker(.cash_flow_filter_date_range, viewData: filter.datePickerViewData)
             }
         }
+        .horizontalButtons(primaryButton: .init(.button_apply, action: viewModel.binding.applyFilters.send),
+                           secondaryButton: .init(.button_reset, action: viewModel.binding.resetFilters.send))
+    }
 
-//    primaryButton: .init(.button_apply, action: viewModel.applyFilters),
-//    secondaryButton: .init(.button_reset, action: viewModel.resetFilters)
+    private var filter: Binding<CashFlowFilter> {
+        $viewModel.filter
     }
 
     private var currenciesToSelect: [Currency?] {

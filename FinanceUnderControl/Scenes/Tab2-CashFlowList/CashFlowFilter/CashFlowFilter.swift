@@ -20,6 +20,10 @@ struct CashFlowFilter: Equatable {
         didSet { cashFlowCategory = nil }
     }
 
+    var isFiltering: Bool {
+        self == CashFlowFilter()
+    }
+
     mutating func resetToDefaultValues() {
         cashFlowSelection = .all
         cashFlowCategory = nil

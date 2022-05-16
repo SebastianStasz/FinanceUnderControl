@@ -23,6 +23,6 @@ final class AppVM {
     let context: NSManagedObjectContext
 
     private init() {
-        context = PersistenceController.preview.context
+        context = PersistenceController.shared.context
     }
 }

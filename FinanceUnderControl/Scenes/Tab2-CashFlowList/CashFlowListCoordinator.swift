@@ -50,9 +50,12 @@ private extension CashFlowListCoordinator {
 
     func presentFilterView() {
         let viewModel = CashFlowFilterVM(filter: cashFlowFilter)
-        let view = CashFlowFilterView(viewModel: viewModel)
-        let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+        let viewController = ViewControllerProvider.cashFlowFilterVC(viewModel: viewModel)
         navigationController.presentModally(viewController)
+
+        viewModel.bind()
+            .sink { [weak self] in self?.cashFlowFilter = $0 }
+            .store(in: &viewModel.cancellables)
     }
 
     func presentEditForm(for cashFlow: CashFlow) {
