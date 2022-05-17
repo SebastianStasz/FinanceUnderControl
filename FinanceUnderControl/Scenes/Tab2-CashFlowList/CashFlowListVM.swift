@@ -19,6 +19,7 @@ final class CashFlowListVM: ViewModel {
 
     private let service = CashFlowService()
     private let cashFlowFilterVM: CashFlowFilterVM
+    private(set) var isSearching = false
     let binding = Binding()
 
     @Published private(set) var cashFlowFilterVD = CashFlowFilter()
@@ -44,35 +45,50 @@ final class CashFlowListVM: ViewModel {
             print(error)
         }
 
-        $searchText.filter { $0.isEmpty }
+        let searchText = $searchText
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+            .map { $0.count < 3 ? "" : $0 }
             .removeDuplicates()
+            .handleEvents(on: self) { vm, text in
+                vm.isSearching = text.isNotEmpty
+            }
+
+        let textWithoutFilters = CombineLatest(searchText, $cashFlowFilterVD)
+            .filter { !$0.1.isFiltering }
+            .map { $0.0 }
+
+        textWithoutFilters
+            .filter { $0.isEmpty }
             .sinkAndStore(on: self) { vm, _ in
                 vm.filteredListSectors = []
             }
 
-//        $searchText.filter { $0.isNotEmpty }
-//            .removeDuplicates()
-//            .perform(on: self) { [weak self] text in
-//                try await self?.service.fetch(filters: [.nameContains(text)])
-//            }
-//            .sinkAndStore(on: self) { vm, cashFlows in
-//                vm.filteredListSectors = Self.groupCashFlows(cashFlows!)
-//            }
-
-        let filterResult = cashFlowFilterVM.filteringResult().removeDuplicates()
-
-        filterResult.assign(to: &$cashFlowFilterVD)
-
-        filterResult
-            .filter { $0.isFiltering }
-            .perform(on: self) { [weak self] in
-                try await self?.service.fetch(filters: $0.firestoreFilters)
+        textWithoutFilters
+            .filter { $0.isNotEmpty }
+            .perform(on: self) { [weak self] text in
+                try await self?.service.fetch(filters: [.nameContains(text)])
             }
             .sinkAndStore(on: self) { vm, cashFlows in
                 vm.filteredListSectors = Self.groupCashFlows(cashFlows!)
             }
 
-        filterResult
+        let cashFlowFilter = cashFlowFilterVM.filteringResult().removeDuplicates()
+        cashFlowFilter.assign(to: &$cashFlowFilterVD)
+
+        let filterResult = cashFlowFilter
+            .filter { $0.isFiltering }
+            .perform(on: self) { [weak self] in
+                try await self?.service.fetch(filters: $0.firestoreFilters)
+            }
+            .compactMap { $0 }
+
+        CombineLatest(filterResult, searchText)
+            .map { result in result.1.isEmpty ? result.0 : result.0.filter { $0.name.localizedCaseInsensitiveContains(result.1) } }
+            .sinkAndStore(on: self) { vm, cashFlows in
+                vm.filteredListSectors = Self.groupCashFlows(cashFlows)
+            }
+
+        cashFlowFilter
             .filter { !$0.isFiltering }
             .sinkAndStore(on: self) { vm, _ in
                 vm.filteredListSectors = []

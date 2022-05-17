@@ -24,23 +24,23 @@ struct CashFlowListView: BaseView {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: presentFilterView) { filterIcon }
-                    .disabled(viewModel.listSectors.isEmpty && !isSearching)
+                    .disabled(viewModel.listSectors.isEmpty)
             }
         }
     }
 
-    private var isSearching: Bool {
-        viewModel.searchText.isNotEmpty || viewModel.cashFlowFilterVD.isFiltering
+    private var isSearchingOrFiltering: Bool {
+        viewModel.isSearching || viewModel.cashFlowFilterVD.isFiltering
     }
 
     private var listSectors: [ListSector<CashFlow>] {
-        viewModel.cashFlowFilterVD.isFiltering ? viewModel.filteredListSectors : viewModel.listSectors
+        isSearchingOrFiltering ? viewModel.filteredListSectors : viewModel.listSectors
     }
 
     private var emptyStateVD: EmptyStateVD {
         EmptyStateVD(title: "No cash flows yet",
                      description: "Cash flows will appear here after you create it",
-                     isSearching: isSearching)
+                     isSearching: isSearchingOrFiltering)
     }
 
     private var filterIcon: some View {
