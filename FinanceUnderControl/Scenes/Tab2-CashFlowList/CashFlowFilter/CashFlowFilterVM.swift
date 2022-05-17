@@ -18,7 +18,7 @@ final class CashFlowFilterVM: ViewModel {
         let dismiss = DriverSubject<Void>()
     }
 
-    @Published var filter: CashFlowFilter
+    @Published var filter = CashFlowFilter()
     @Published private(set) var categories: [CashFlowCategory] = []
 
     let binding = Binding()
@@ -27,25 +27,20 @@ final class CashFlowFilterVM: ViewModel {
 
     private let storage = CashFlowGroupingService.shared
 
-    init(filter: CashFlowFilter) {
-        self.filter = filter
-        super.init(coordinator: nil)
-    }
-
     override func viewDidLoad() {
         storage.$categories.assign(to: &$categories)
         minValueInput.assignResult(to: \.filter.minimumValue, on: self)
         maxValueInput.assignResult(to: \.filter.maximumValue, on: self)
     }
 
-    func bind() -> AnyPublisher<CashFlowFilter, Never> {
+    func filterResult() -> AnyPublisher<String, Never> {
         let resetFilters = binding.resetFilters
             .handleEvents(on: self) { vm, _ in vm.filter.resetToDefaultValues() }
 
         return Merge(resetFilters, binding.applyFilters)
-            .compactMap { [weak self] _ -> CashFlowFilter? in
+            .compactMap { [weak self] _ -> String? in
                 self?.binding.dismiss.send()
-                return self?.filter
+                return "self?.filter"
             }
             .eraseToAnyPublisher()
     }

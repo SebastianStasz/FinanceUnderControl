@@ -11,10 +11,10 @@ import SSUtils
 
 extension Publisher {
 
-    func handleEvents<VM: ViewModel>(on viewModel: VM, action: @escaping (VM, Output) -> Void) -> AnyPublisher<Output, Failure> {
-        handleEvents(receiveOutput:  { [weak viewModel] output in
-            guard let viewModel = viewModel else { return }
-            action(viewModel, output)
+    func handleEvents<T: AnyObject>(on object: T, action: @escaping (T, Output) -> Void) -> AnyPublisher<Output, Failure> {
+        handleEvents(receiveOutput:  { [weak object] output in
+            guard let object = object else { return }
+            action(object, output)
         })
         .eraseToAnyPublisher()
     }

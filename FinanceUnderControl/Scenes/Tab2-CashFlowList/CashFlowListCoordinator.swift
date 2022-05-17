@@ -16,21 +16,21 @@ final class CashFlowListCoordinator: RootCoordinator {
     }
 
     private let navigationController = UINavigationController()
-    @Published private var cashFlowFilter = CashFlowFilter()
 
     init() {
         navigationController.prefersLargeTitles()
     }
 
     func start() -> UIViewController {
-        let viewModel = CashFlowListVM(coordinator: self)
+        let cashFlowFilterVM = CashFlowFilterVM()
+        let viewModel = CashFlowListVM(coordinator: self, cashFlowFilterVM: cashFlowFilterVM)
         let view = CashFlowListView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
         viewController.title = .tab_cashFlow_title
         navigationController.viewControllers = [viewController]
 
         viewModel.binding.navigateTo
-            .sink { [weak self] in self?.navigate(to: $0) }
+            .sink { [weak self] in self?.navigate(to: $0, cashFlowFilterVM: cashFlowFilterVM) }
             .store(in: &viewModel.cancellables)
 
         return navigationController
@@ -39,23 +39,18 @@ final class CashFlowListCoordinator: RootCoordinator {
 
 private extension CashFlowListCoordinator {
 
-    func navigate(to destination: Destination) {
+    func navigate(to destination: Destination, cashFlowFilterVM: CashFlowFilterVM) {
         switch destination {
         case .filterView:
-            presentFilterView()
+            presentFilterView(viewModel: cashFlowFilterVM)
         case let .editForm(cashFlow):
             presentEditForm(for: cashFlow)
         }
     }
 
-    func presentFilterView() {
-        let viewModel = CashFlowFilterVM(filter: cashFlowFilter)
+    func presentFilterView(viewModel: CashFlowFilterVM) {
         let viewController = ViewControllerProvider.cashFlowFilterVC(viewModel: viewModel)
         navigationController.presentModally(viewController)
-
-        viewModel.bind()
-            .sink { [weak self] in self?.cashFlowFilter = $0 }
-            .store(in: &viewModel.cancellables)
     }
 
     func presentEditForm(for cashFlow: CashFlow) {

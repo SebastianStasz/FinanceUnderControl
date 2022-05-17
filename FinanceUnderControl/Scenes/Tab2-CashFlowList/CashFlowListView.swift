@@ -55,7 +55,7 @@ struct CashFlowListView: BaseView {
 
     @ViewBuilder
     private var filterIcon: some View {
-        if !viewModel.cashFlowFilter.isFiltering {
+        if !viewModel.cashFlowFilterVM.filter.isFiltering {
             Image(systemName: SFSymbol.filter.name)
         } else {
             HStack(alignment: .top, spacing: .micro) {
@@ -72,26 +72,13 @@ struct CashFlowListView: BaseView {
     private func presentFilterView() {
         viewModel.binding.navigateTo.send(.filterView)
     }
-//
-//    private func resetFilters() {
-//        viewModel.cashFlowFilter.resetToDefaultValues()
-//    }
-//
-//    private func showDeleteCashFlowConfirmation(for cashFlow: CashFlowEntity) {
-//        cashFlowToDelete = cashFlow
-//    }
-//
-//    private func deleteCashFlow() {
-//        _ = cashFlowToDelete?.delete()
-//        cashFlowToDelete = nil
-//    }
 }
 
 // MARK: - Preview
 
 struct CashFlowListView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = CashFlowListVM(coordinator: PreviewCoordinator())
+        let viewModel = CashFlowListVM(coordinator: PreviewCoordinator(), cashFlowFilterVM: .init())
         Group {
             CashFlowListView(viewModel: viewModel)
             CashFlowListView(viewModel: viewModel).darkScheme()

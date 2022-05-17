@@ -5,7 +5,6 @@
 //  Created by Sebastian Staszczyk on 24/01/2022.
 //
 
-import FinanceCoreData
 import Foundation
 import Shared
 import SSValidation

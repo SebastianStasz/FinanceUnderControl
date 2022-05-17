@@ -5,8 +5,6 @@
 //  Created by Sebastian Staszczyk on 08/02/2022.
 //
 
-import Combine
-import FinanceCoreData
 import Foundation
 import SSUtils
 import SSValidation
@@ -19,26 +17,22 @@ final class CashFlowListVM: ViewModel {
         let confirmCashFlowDeletion = DriverSubject<Void>()
     }
 
-    private let service: CashFlowService = .init()
-    let minValueInput = DoubleInputVM(validator: .alwaysValid)
-    let maxValueInput = DoubleInputVM(validator: .alwaysValid)
+    private let service = CashFlowService()
+    let cashFlowFilterVM: CashFlowFilterVM
     let binding = Binding()
 
     @Published private(set) var listSectors: [ListSector<CashFlow>] = []
     @Published private(set) var filteredListSectors: [ListSector<CashFlow>] = []
-    @Published var cashFlowFilter = CashFlowFilter()
     @Published var searchText = ""
-//
-//        CombineLatest(searchPredicate, $cashFlowFilter)
-//            .map { [$0, $1.nsPredicate].andNSPredicate }
-//            .assign(to: &$cashFlowPredicate)
+
+    init(coordinator: CoordinatorProtocol, cashFlowFilterVM: CashFlowFilterVM) {
+        self.cashFlowFilterVM = cashFlowFilterVM
+        super.init(coordinator: coordinator)
+    }
 
     override func viewDidLoad() {
         let cashFlowSubscription = service.subscribe()
         isLoading = true
-
-        minValueInput.assignResult(to: \.cashFlowFilter.minimumValue, on: self)
-        maxValueInput.assignResult(to: \.cashFlowFilter.maximumValue, on: self)
 
         cashFlowSubscription.output
             .sinkAndStore(on: self) { vm, cashFlows in
@@ -64,6 +58,11 @@ final class CashFlowListVM: ViewModel {
             }
             .sinkAndStore(on: self) { vm, cashFlows in
                 vm.filteredListSectors = Self.groupCashFlows(cashFlows!)
+            }
+
+        cashFlowFilterVM.filterResult()
+            .sinkAndStore(on: self) { _, result in
+                print(result)
             }
 
         binding.confirmCashFlowDeletion

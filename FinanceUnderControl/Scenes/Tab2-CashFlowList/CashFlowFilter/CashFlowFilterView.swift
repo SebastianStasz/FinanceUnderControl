@@ -46,7 +46,7 @@ struct CashFlowFilterView: BaseView {
 
 struct CashFlowFilterView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = CashFlowFilterVM(filter: .init())
+        let viewModel = CashFlowFilterVM()
         CashFlowFilterView(viewModel: viewModel)
         CashFlowFilterView(viewModel: viewModel).darkScheme()
     }
