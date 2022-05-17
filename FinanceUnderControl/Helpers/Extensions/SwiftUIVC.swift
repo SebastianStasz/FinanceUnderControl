@@ -25,4 +25,9 @@ final class SwiftUIVC<Content: View>: UIHostingController<Content> {
         super.viewDidLoad()
         viewModel.viewDidLoad()
     }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.viewDidDisappear()
+    }
 }

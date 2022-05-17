@@ -18,9 +18,10 @@ final class CashFlowListVM: ViewModel {
     }
 
     private let service = CashFlowService()
-    let cashFlowFilterVM: CashFlowFilterVM
+    private let cashFlowFilterVM: CashFlowFilterVM
     let binding = Binding()
 
+    @Published private(set) var cashFlowFilterVD = CashFlowFilter()
     @Published private(set) var listSectors: [ListSector<CashFlow>] = []
     @Published private(set) var filteredListSectors: [ListSector<CashFlow>] = []
     @Published var searchText = ""
@@ -60,9 +61,9 @@ final class CashFlowListVM: ViewModel {
                 vm.filteredListSectors = Self.groupCashFlows(cashFlows!)
             }
 
-        cashFlowFilterVM.filterResult()
-            .sinkAndStore(on: self) { _, result in
-                print(result)
+        cashFlowFilterVM.filteringResult()
+            .sinkAndStore(on: self) { vm, filter in
+                vm.cashFlowFilterVD = filter
             }
 
         binding.confirmCashFlowDeletion

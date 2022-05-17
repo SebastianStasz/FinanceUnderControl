@@ -20,7 +20,7 @@ struct CashFlowFilter: Equatable {
     }
 
     var isFiltering: Bool {
-        self == CashFlowFilter()
+        minimumValue != nil || maximumValue != nil || currency != nil || cashFlowCategory != nil || datePickerViewData.isOn || cashFlowSelection != .all
     }
 
     mutating func resetToDefaultValues() {

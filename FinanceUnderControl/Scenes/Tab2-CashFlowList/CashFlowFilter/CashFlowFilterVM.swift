@@ -25,23 +25,30 @@ final class CashFlowFilterVM: ViewModel {
     let minValueInput = DoubleInputVM(validator: .alwaysValid)
     let maxValueInput = DoubleInputVM(validator: .alwaysValid)
 
+    private var initialFilter = CashFlowFilter()
     private let storage = CashFlowGroupingService.shared
 
-    override func viewDidLoad() {
+    func filteringResult() -> AnyPublisher<CashFlowFilter, Never> {
         storage.$categories.assign(to: &$categories)
-        minValueInput.assignResult(to: \.filter.minimumValue, on: self)
-        maxValueInput.assignResult(to: \.filter.maximumValue, on: self)
-    }
+        minValueInput.result().weakAssign(to: \.filter.minimumValue, on: self)
+        maxValueInput.result().weakAssign(to: \.filter.maximumValue, on: self)
 
-    func filterResult() -> AnyPublisher<String, Never> {
         let resetFilters = binding.resetFilters
             .handleEvents(on: self) { vm, _ in vm.filter.resetToDefaultValues() }
 
         return Merge(resetFilters, binding.applyFilters)
-            .compactMap { [weak self] _ -> String? in
-                self?.binding.dismiss.send()
-                return "self?.filter"
+            .compactMap { [weak self] _ -> CashFlowFilter? in
+                guard let self = self else { return nil }
+                self.initialFilter = self.filter
+                self.binding.dismiss.send()
+                return self.filter
             }
             .eraseToAnyPublisher()
+    }
+
+    override func viewDidDisappear() {
+        filter = initialFilter
+        minValueInput.setValue(to: filter.minimumValue)
+        maxValueInput.setValue(to: filter.maximumValue)
     }
 }
