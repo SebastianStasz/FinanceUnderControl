@@ -101,9 +101,9 @@ private extension FirestoreService {
             query = query.filter(by: $0)
         }
 
-        if let lastDocument = lastDocument {
-            query = query.start(afterDocument: lastDocument)
-        }
+//        if let lastDocument = lastDocument {
+//            query = query.start(afterDocument: lastDocument)
+//        }
 
         return query
     }

@@ -30,11 +30,11 @@ struct CashFlowListView: BaseView {
     }
 
     private var isSearching: Bool {
-        viewModel.searchText.isNotEmpty
+        viewModel.searchText.isNotEmpty || viewModel.cashFlowFilterVD.isFiltering
     }
 
     private var listSectors: [ListSector<CashFlow>] {
-        isSearching ? viewModel.filteredListSectors : viewModel.listSectors
+        viewModel.cashFlowFilterVD.isFiltering ? viewModel.filteredListSectors : viewModel.listSectors
     }
 
     private var emptyStateVD: EmptyStateVD {

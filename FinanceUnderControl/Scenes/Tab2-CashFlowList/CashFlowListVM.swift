@@ -35,16 +35,14 @@ final class CashFlowListVM: ViewModel {
         let cashFlowSubscription = service.subscribe()
         isLoading = true
 
-        cashFlowSubscription.output
-            .sinkAndStore(on: self) { vm, cashFlows in
-                vm.listSectors = Self.groupCashFlows(cashFlows)
-                vm.isLoading = false
-            }
+        cashFlowSubscription.output.sinkAndStore(on: self) { vm, cashFlows in
+            vm.listSectors = Self.groupCashFlows(cashFlows)
+            vm.isLoading = false
+        }
 
-        cashFlowSubscription.error
-            .sinkAndStore(on: self) { _, error in
-                print(error)
-            }
+        cashFlowSubscription.error.sinkAndStore(on: self) { _, error in
+            print(error)
+        }
 
         $searchText.filter { $0.isEmpty }
             .removeDuplicates()
@@ -52,18 +50,32 @@ final class CashFlowListVM: ViewModel {
                 vm.filteredListSectors = []
             }
 
-        $searchText.filter { $0.isNotEmpty }
-            .removeDuplicates()
-            .perform(on: self) { [weak self] text in
-                try await self?.service.fetch(filters: [.nameContains(text)])
+//        $searchText.filter { $0.isNotEmpty }
+//            .removeDuplicates()
+//            .perform(on: self) { [weak self] text in
+//                try await self?.service.fetch(filters: [.nameContains(text)])
+//            }
+//            .sinkAndStore(on: self) { vm, cashFlows in
+//                vm.filteredListSectors = Self.groupCashFlows(cashFlows!)
+//            }
+
+        let filterResult = cashFlowFilterVM.filteringResult().removeDuplicates()
+
+        filterResult.assign(to: &$cashFlowFilterVD)
+
+        filterResult
+            .filter { $0.isFiltering }
+            .perform(on: self) { [weak self] in
+                try await self?.service.fetch(filters: $0.firestoreFilters)
             }
             .sinkAndStore(on: self) { vm, cashFlows in
                 vm.filteredListSectors = Self.groupCashFlows(cashFlows!)
             }
 
-        cashFlowFilterVM.filteringResult()
-            .sinkAndStore(on: self) { vm, filter in
-                vm.cashFlowFilterVD = filter
+        filterResult
+            .filter { !$0.isFiltering }
+            .sinkAndStore(on: self) { vm, _ in
+                vm.filteredListSectors = []
             }
 
         binding.confirmCashFlowDeletion

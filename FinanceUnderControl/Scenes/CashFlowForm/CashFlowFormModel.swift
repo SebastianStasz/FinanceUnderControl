@@ -15,10 +15,10 @@ struct CashFlowFormModel: Equatable {
     var value: Decimal?
     var currency: Currency? = .PLN
     var category: CashFlowCategory?
-    var type: CashFlowType?
+    var type: CashFlowType
 
     var model: CashFlow? {
         guard let name = name, let value = value, let category = category else { return nil }
-        return CashFlow(id: UUID().uuidString, name: name, money: Money(value, currency: currency!), date: date, category: category)
+        return CashFlow(id: UUID().uuidString, name: name, money: Money(value, currency: currency!), date: date, type: type, category: category)
     }
 }

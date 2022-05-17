@@ -30,11 +30,12 @@ final class CashFlowFormVM: ViewModel {
     var valueInput = DecimalInputVM()
 
     @Published private(set) var categories: [CashFlowCategory] = []
-    @Published var formModel = CashFlowFormModel()
+    @Published var formModel: CashFlowFormModel
 
     init(for formType: FormType, coordinator: CoordinatorProtocol, service: CashFlowService = .init()) {
         self.formType = formType
         self.service = service
+        formModel = .init(type: formType.cashFlowType)
         super.init(coordinator: coordinator)
 
         storage.categoriesSubscription(type: formType.cashFlowType).assign(to: &$categories)
