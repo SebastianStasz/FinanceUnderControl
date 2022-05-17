@@ -31,7 +31,8 @@ extension DocumentSnapshot {
 
     func getDecimal<T: DocumentField>(for field: T) -> Decimal {
         let value = getString(for: field)
-        return try! Decimal(value, format: .number)
+        // Use US locale to ensure "." is used for decimal separator
+        return Decimal(string: value, locale: Locale(identifier: "us"))!
     }
 
     func getDate<T: DocumentField>(for field: T) -> Date {
