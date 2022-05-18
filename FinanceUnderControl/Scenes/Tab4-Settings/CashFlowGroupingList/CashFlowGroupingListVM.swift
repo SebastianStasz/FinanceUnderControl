@@ -48,11 +48,10 @@ final class CashFlowGroupingListVM: ViewModel {
 
         binding.confirmCategoryDeletion
             .withLatestFrom(binding.categoryToDelete)
-            .perform(on: self, errorTracker: errorTracker) { [weak self] in
-                try await self?.categoryService.delete($0)
+            .perform(on: self, isLoading: mainLoader, errorTracker: errorTracker) { vm, category in
+                try await vm.categoryService.delete(category)
             }
-            .sink {}
-            .store(in: &cancellables)
+            .sink {}.store(in: &cancellables)
 
         errorTracker
             .sinkAndStore(on: self) { _, error in

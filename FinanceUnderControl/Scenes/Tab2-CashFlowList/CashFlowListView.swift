@@ -30,7 +30,7 @@ struct CashFlowListView: BaseView {
     }
 
     private var isSearchingOrFiltering: Bool {
-        viewModel.isSearching || viewModel.cashFlowFilterVD.isFiltering
+        viewModel.isSearching || viewModel.isFiltering
     }
 
     private var listSectors: [ListSector<CashFlow>] {
@@ -48,7 +48,7 @@ struct CashFlowListView: BaseView {
             Circle()
                 .frame(width: .small, height: .small)
                 .padding(.top, 3)
-                .displayIf(viewModel.cashFlowFilterVD.isFiltering)
+                .displayIf(viewModel.isFiltering)
             Image(systemName: SFSymbol.filter.name)
         }
     }

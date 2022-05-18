@@ -34,7 +34,7 @@ final class LoginVM: ViewModel {
 
         binding.didTapSignIn
             .withLatestFrom(loginData)
-            .perform(on: self, errorTracker: loginError) { input -> AuthDataResult? in
+            .perform(isLoading: mainLoader, errorTracker: loginError) { input -> AuthDataResult? in
                 guard let email = input.0, let password = input.1 else { return nil }
                 return try await Auth.auth().signIn(withEmail: email, password: password)
             }

@@ -18,11 +18,13 @@ final class CashFlowListVM: ViewModel {
     }
 
     private let service = CashFlowService()
+    private let searchTextVM = TextSearchVM()
     private let cashFlowFilterVM: CashFlowFilterVM
-    private(set) var isSearching = false
+    private let filterViewModel = CashFlowListFilterVM()
     let binding = Binding()
 
-    @Published private(set) var cashFlowFilterVD = CashFlowFilter()
+    @Published private(set) var isSearching = false
+    @Published private(set) var isFiltering = false
     @Published private(set) var listSectors: [ListSector<CashFlow>] = []
     @Published private(set) var filteredListSectors: [ListSector<CashFlow>] = []
     @Published var searchText = ""
@@ -33,73 +35,38 @@ final class CashFlowListVM: ViewModel {
     }
 
     override func viewDidLoad() {
+        mainLoader.send(true)
         let cashFlowSubscription = service.subscribe()
-        isLoading = true
+        let cashFlows = cashFlowSubscription.output
 
-        cashFlowSubscription.output.sinkAndStore(on: self) { vm, cashFlows in
+        cashFlows.sinkAndStore(on: self) { vm, cashFlows in
             vm.listSectors = Self.groupCashFlows(cashFlows)
-            vm.isLoading = false
+            vm.mainLoader.send(false)
         }
 
         cashFlowSubscription.error.sinkAndStore(on: self) { _, error in
             print(error)
         }
 
-        let searchText = $searchText
-            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
-            .map { $0.count < 3 ? "" : $0 }
-            .removeDuplicates()
-            .handleEvents(on: self) { vm, text in
-                vm.isSearching = text.isNotEmpty
-            }
-
-        let textWithoutFilters = CombineLatest(searchText, $cashFlowFilterVD)
-            .filter { !$0.1.isFiltering }
-            .map { $0.0 }
-
-        textWithoutFilters
-            .filter { $0.isEmpty }
-            .sinkAndStore(on: self) { vm, _ in
-                vm.filteredListSectors = []
-            }
-
-        textWithoutFilters
-            .filter { $0.isNotEmpty }
-            .perform(on: self) { [weak self] text in
-                try await self?.service.fetch(filters: [.nameContains(text)])
-            }
-            .sinkAndStore(on: self) { vm, cashFlows in
-                vm.filteredListSectors = Self.groupCashFlows(cashFlows!)
-            }
-
-        let cashFlowFilter = cashFlowFilterVM.filteringResult().removeDuplicates()
-        cashFlowFilter.assign(to: &$cashFlowFilterVD)
-
-        let filterResult = cashFlowFilter
-            .filter { $0.isFiltering }
-            .perform(on: self) { [weak self] in
-                try await self?.service.fetch(filters: $0.firestoreFilters)
-            }
-            .compactMap { $0 }
-
-        CombineLatest(filterResult, searchText)
-            .map { result in result.1.isEmpty ? result.0 : result.0.filter { $0.name.localizedCaseInsensitiveContains(result.1) } }
-            .sinkAndStore(on: self) { vm, cashFlows in
-                vm.filteredListSectors = Self.groupCashFlows(cashFlows)
-            }
-
-        cashFlowFilter
-            .filter { !$0.isFiltering }
-            .sinkAndStore(on: self) { vm, _ in
-                vm.filteredListSectors = []
-            }
-
         binding.confirmCashFlowDeletion
             .withLatestFrom(binding.cashFlowToDelete)
-            .perform(on: self) { [weak self] in
-                try await self?.service.delete($0)
-            }
+            .perform(on: self, isLoading: mainLoader) { try await $0.service.delete($1) }
             .sink {}.store(in: &cancellables)
+
+        let filterResult = cashFlowFilterVM.filteringResult().removeDuplicates().asDriver
+        filterResult.map { $0.isFiltering }.assign(to: &$isFiltering)
+
+        let searchTextOutput = searchTextVM.transform($searchText.asDriver)
+        searchTextOutput.isSearching.assign(to: &$isSearching)
+
+        let filterInput = CashFlowListFilterVM.Input(currentCashFlows: cashFlows, filterResult: filterResult, searchText: searchTextOutput.searchText)
+        let filterOutput = filterViewModel.transform(input: filterInput)
+
+        filterOutput.filteredCashFlows.sinkAndStore(on: self) { vm, cashFlows in
+            vm.filteredListSectors = Self.groupCashFlows(cashFlows)
+        }
+
+        Merge(mainLoader, filterOutput.isLoading).assign(to: &$isLoading)
     }
 
     private static func groupCashFlows(_ cashFlows: [CashFlow]) -> [ListSector<CashFlow>] {

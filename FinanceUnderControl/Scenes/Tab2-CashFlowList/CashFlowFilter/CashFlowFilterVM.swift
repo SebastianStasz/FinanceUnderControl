@@ -34,7 +34,7 @@ final class CashFlowFilterVM: ViewModel {
         maxValueInput.result().weakAssign(to: \.filter.maximumValue, on: self)
 
         let resetFilters = binding.resetFilters
-            .handleEvents(on: self) { vm, _ in vm.filter.resetToDefaultValues() }
+            .onNext(on: self) { vm, _ in vm.filter.resetToDefaultValues() }
 
         return Merge(resetFilters, binding.applyFilters)
             .compactMap { [weak self] _ -> CashFlowFilter? in

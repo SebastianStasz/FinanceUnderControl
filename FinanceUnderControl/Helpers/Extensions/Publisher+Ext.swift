@@ -11,55 +11,71 @@ import SSUtils
 
 extension Publisher {
 
-    func handleEvents<T: AnyObject>(on object: T, action: @escaping (T, Output) -> Void) -> AnyPublisher<Output, Failure> {
+    func onNext(_ perform: @escaping (Output) -> Void) -> AnyPublisher<Output, Failure> {
+        handleEvents(receiveOutput: { perform($0) }).eraseToAnyPublisher()
+    }
+
+    func map<O: AnyObject, T>(on object: O, transform: @escaping (O, Output) -> T) -> AnyPublisher<T, Failure> {
+        compactMap { [weak object] in
+            guard let object = object else { return nil }
+            return transform(object, $0)
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func onNext<T: AnyObject>(on object: T, perform: @escaping (T, Output) -> Void) -> AnyPublisher<Output, Failure> {
         handleEvents(receiveOutput:  { [weak object] output in
             guard let object = object else { return }
-            action(object, output)
+            perform(object, output)
         })
         .eraseToAnyPublisher()
     }
 
-    func startLoading<T: ViewModel>(on object: T?) -> AnyPublisher<Output, Failure> {
-        setLoading(to: true, on: object)
-    }
-
-    func stopLoading<T: ViewModel>(on object: T?) -> AnyPublisher<Output, Failure> {
-        receive(on: DispatchQueue.main)
-            .setLoading(to: false, on: object)
-            .handleEvents(receiveCompletion: { [weak object] _ in
-                object?.isLoading = false
-            })
-            .eraseToAnyPublisher()
-    }
-
-    private func setLoading<T: ViewModel>(to isLoading: Bool, on object: T?) -> AnyPublisher<Output, Failure> {
-        handleEvents(receiveOutput: { [weak object] _ in
-            object?[keyPath: \.isLoading] = isLoading
-        })
-        .eraseToAnyPublisher()
-    }
-
-    fileprivate func privatePerform<T, VM: ViewModel>(
-        on viewModel: VM,
+    func perform<T>(
+        isLoading: DriverSubject<Bool>? = nil,
         errorTracker: DriverSubject<Error>? = nil,
-        _ transform: @escaping (Output) async throws -> T
+        _ perform: @escaping (Output) async throws -> T
     ) -> Publishers.FlatMap<Publishers.SetFailureType<AnyPublisher<T, Never>, Never>, Self> {
         flatMap {
             Just($0)
-                .await(transform)
-                .catch { error -> AnyPublisher<T, Never> in
-                    errorTracker?.send(error)
-                    DispatchQueue.main.async {
-                        viewModel.isLoading = false
-                    }
-                    Swift.print("-----")
-                    Swift.print("‼️ \(error)")
-                    Swift.print("-----")
-                    return Just(nil).compactMap { $0 }.eraseToAnyPublisher()
-                }
+                .onNext { _ in isLoading?.send(true) }
+                .await(perform)
+                .catch(isLoading: isLoading, errorTracker: errorTracker)
                 .receive(on: DispatchQueue.main)
+                .onNext { _ in isLoading?.send(false) }
                 .eraseToAnyPublisher()
         }
+    }
+
+    func perform<O: AnyObject, T>(
+        on object: O,
+        isLoading: DriverSubject<Bool>? = nil,
+        errorTracker: DriverSubject<Error>? = nil,
+        _ perform: @escaping (O, Output) async throws -> T
+    ) -> Publishers.FlatMap<Publishers.SetFailureType<AnyPublisher<T, Never>, Never>, Self> {
+        flatMap {
+            Just($0)
+                .onNext { _ in isLoading?.send(true) }
+                .await(on: object, perform: perform)
+                .catch(isLoading: isLoading, errorTracker: errorTracker)
+                .receive(on: DispatchQueue.main)
+                .onNext { _ in isLoading?.send(false) }
+                .eraseToAnyPublisher()
+        }
+    }
+
+    private func `catch`(isLoading: DriverSubject<Bool>?, errorTracker: DriverSubject<Error>? = nil) -> AnyPublisher<Output, Never> {
+        `catch` { error -> AnyPublisher<Output, Never> in
+            DispatchQueue.main.async {
+                errorTracker?.send(error)
+                isLoading?.send(false)
+            }
+            Swift.print("-----")
+            Swift.print("‼️ \(error)")
+            Swift.print("-----")
+            return Just(nil).compactMap { $0 }.eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
 }
 
@@ -72,16 +88,5 @@ extension Publisher where Failure == Never {
             action(viewModel, value)
         }
         .store(in: &viewModel.cancellables)
-    }
-
-    func perform<T, VM: ViewModel>(
-        on viewModel: VM,
-        errorTracker: DriverSubject<Error>? = nil,
-        _ transform: @escaping (Output) async throws -> T
-    ) -> AnyPublisher<T, Never> {
-        startLoading(on: viewModel)
-            .privatePerform(on: viewModel, errorTracker: errorTracker, transform)
-            .stopLoading(on: viewModel)
-            .eraseToAnyPublisher()
     }
 }
