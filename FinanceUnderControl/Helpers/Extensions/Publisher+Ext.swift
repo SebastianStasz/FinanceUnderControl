@@ -15,7 +15,7 @@ extension Publisher {
         handleEvents(receiveOutput: { perform($0) }).eraseToAnyPublisher()
     }
 
-    func map<O: AnyObject, T>(on object: O, transform: @escaping (O, Output) -> T) -> AnyPublisher<T, Failure> {
+    func map<O: AnyObject, T>(with object: O, transform: @escaping (O, Output) -> T) -> AnyPublisher<T, Failure> {
         compactMap { [weak object] in
             guard let object = object else { return nil }
             return transform(object, $0)

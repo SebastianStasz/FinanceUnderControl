@@ -23,20 +23,22 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
         let errors: Driver<Error>
     }
 
-    private let documents = DriverSubject<[QueryDocumentSnapshot]>()
-    private let errorTracker = DriverSubject<Error>()
-
     var cancellables: Set<AnyCancellable> = []
-    private var limit = 10
+
     private let firestore = FirestoreService.shared
     private let storage = CashFlowGroupingService.shared
+    private let errorTracker = DriverSubject<Error>()
+    private let documents = DriverSubject<[QueryDocumentSnapshot]>()
+
     private lazy var query = firestore.getQuery(for: .cashFlows, orderedBy: Order.date(.reverse), limit: limit)
+    private var listener: ListenerRegistration?
+    private var limit = 10
 
     func transform(input: Input) -> Output {
         updateListener()
 
         input.fetchMore.sinkAndStore(on: self) { vm, _ in
-            vm.limit += 10
+            vm.limit += 25
             vm.query = vm.query.limit(to: vm.limit)
             vm.updateListener()
         }
@@ -50,7 +52,10 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
                 }
             }
 
-        let canFetchMore = cashFlows.map { $0.isNotEmpty }
+        let canFetchMore = cashFlows
+            .map(with: self, transform: { vm, cashFlows in
+                !(vm.limit > cashFlows.count)
+            })
 
         return Output(cashFlows: cashFlows.asDriver,
                       canFetchMore: canFetchMore.asDriver,
@@ -58,7 +63,7 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
     }
 
     private func updateListener() {
-        query.addSnapshotListener { [weak self] querySnapshot, error in
+        listener = query.addSnapshotListener { [weak self] querySnapshot, error in
             if let querySnapshot = querySnapshot {
                 self?.documents.send(querySnapshot.documents)
             } else if let error = error {
