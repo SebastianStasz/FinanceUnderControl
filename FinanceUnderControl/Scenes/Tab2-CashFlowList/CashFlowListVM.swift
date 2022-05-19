@@ -15,18 +15,21 @@ final class CashFlowListVM: ViewModel {
         let navigateTo = DriverSubject<CashFlowListCoordinator.Destination>()
         let cashFlowToDelete = DriverSubject<CashFlow>()
         let confirmCashFlowDeletion = DriverSubject<Void>()
+        let fetchMoreCashFlows = DriverSubject<Void>()
     }
 
     private let service = CashFlowService()
     private let searchTextVM = TextSearchVM()
     private let cashFlowFilterVM: CashFlowFilterVM
     private let filterViewModel = CashFlowListFilterVM()
+    private let cashFlowSubscription = CashFlowSubscription()
     let binding = Binding()
 
     @Published private(set) var isSearching = false
     @Published private(set) var isFiltering = false
     @Published private(set) var listSectors: [ListSector<CashFlow>] = []
     @Published private(set) var filteredListSectors: [ListSector<CashFlow>] = []
+    @Published var isMoreCashFlows = true
     @Published var searchText = ""
 
     init(coordinator: CoordinatorProtocol, cashFlowFilterVM: CashFlowFilterVM) {
@@ -36,16 +39,20 @@ final class CashFlowListVM: ViewModel {
 
     override func viewDidLoad() {
         mainLoader.send(true)
-        let cashFlowSubscription = service.subscribe()
-        let cashFlows = cashFlowSubscription.output
+
+        let subscription = cashFlowSubscription.transform(input: .init(fetchMore: binding.fetchMoreCashFlows.asDriver))
+
+        let cashFlows = subscription.cashFlows
+
+        subscription.canFetchMore.assign(to: &$isMoreCashFlows)
+
+        subscription.errors.sinkAndStore(on: self) { _, error in
+            print(error)
+        }
 
         cashFlows.sinkAndStore(on: self) { vm, cashFlows in
             vm.listSectors = Self.groupCashFlows(cashFlows)
             vm.mainLoader.send(false)
-        }
-
-        cashFlowSubscription.error.sinkAndStore(on: self) { _, error in
-            print(error)
         }
 
         binding.confirmCashFlowDeletion
@@ -59,14 +66,23 @@ final class CashFlowListVM: ViewModel {
         let searchTextOutput = searchTextVM.transform($searchText.asDriver)
         searchTextOutput.isSearching.assign(to: &$isSearching)
 
-        let filterInput = CashFlowListFilterVM.Input(currentCashFlows: cashFlows, filterResult: filterResult, searchText: searchTextOutput.searchText)
+        let filterInput = CashFlowListFilterVM.Input(
+            currentCashFlows: cashFlows,
+            fetchMoreCashFlows: binding.fetchMoreCashFlows.asDriver,
+            filterResult: filterResult,
+            searchText: searchTextOutput.searchText
+        )
         let filterOutput = filterViewModel.transform(input: filterInput)
 
         filterOutput.filteredCashFlows.sinkAndStore(on: self) { vm, cashFlows in
             vm.filteredListSectors = Self.groupCashFlows(cashFlows)
         }
 
-        Merge(mainLoader, filterOutput.isLoading).assign(to: &$isLoading)
+        filterOutput.isMoreCashFlows.assign(to: &$isMoreCashFlows)
+
+        CombineLatest(mainLoader, filterOutput.isLoading)
+            .map { $0.0 || $0.1 }
+            .assign(to: &$isLoading)
     }
 
     private static func groupCashFlows(_ cashFlows: [CashFlow]) -> [ListSector<CashFlow>] {

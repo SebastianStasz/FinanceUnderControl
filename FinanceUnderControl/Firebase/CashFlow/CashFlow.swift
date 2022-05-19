@@ -17,7 +17,7 @@ struct CashFlow: FirestoreDocument, CashFlowTypeSupport {
     let type: CashFlowType
     let category: CashFlowCategory
 
-    private var nameLowercase: String {
+    var nameLowercase: String {
         name.lowerCaseDiacriticInsensitive
     }
 
@@ -32,7 +32,7 @@ struct CashFlow: FirestoreDocument, CashFlowTypeSupport {
          Field.currency.key: money.currency.rawValue,
          Field.categoryId.key: category.id,
          Field.date.key: date,
-         Field.type.key: type,
+         Field.type.key: type.rawValue,
          Field.nameLowercase.key: name.lowerCaseDiacriticInsensitive]
     }
 

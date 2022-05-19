@@ -44,7 +44,7 @@ final class CashFlowGroupingService {
             .map { $0.map { CashFlowCategoryGroup(from: $0) } }
             .eraseToAnyPublisher()
 
-        return .init(output: groups, error: subscription.error)
+        return .init(output: groups, firstDocument: subscription.firstDocument, lastDocument: subscription.lastDocument, error: subscription.error)
     }
 
     private func subscribeCategories() -> FirestoreSubscription<[CashFlowCategory]> {
@@ -59,6 +59,6 @@ final class CashFlowGroupingService {
             }
             .eraseToAnyPublisher()
 
-        return .init(output: categories, error: subscription.error)
+        return .init(output: categories, firstDocument: subscription.firstDocument, lastDocument: subscription.lastDocument, error: subscription.error)
     }
 }

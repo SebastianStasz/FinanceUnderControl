@@ -13,7 +13,7 @@ struct CashFlowListView: BaseView {
     @State private var isDeleteConfirmationShown = false
 
     var baseBody: some View {
-        BaseList(isLoading: viewModel.isLoading, emptyStateVD: emptyStateVD, sectors: listSectors) {
+        BaseList(isLoading: viewModel.isLoading, emptyStateVD: emptyStateVD, sectors: listSectors, onLastItemAppear: viewModel.binding.fetchMoreCashFlows, isMoreItems: $viewModel.isMoreCashFlows) {
             CashFlowCardView($0)
                 .actions(edit: presentEditForm(for: $0), delete: reportDeleteCashFlow($0))
         }
