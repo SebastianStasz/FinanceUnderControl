@@ -22,4 +22,10 @@ extension Query {
             return self.whereField(field, isGreaterThanOrEqualTo: value).whereField(field, isLessThanOrEqualTo: value + "~")
         }
     }
+
+    func filter(by filters: [FirestoreServiceFilter]) -> Query {
+        var query = self
+        filters.forEach { query = query.filter(by: $0) }
+        return query
+    }
 }

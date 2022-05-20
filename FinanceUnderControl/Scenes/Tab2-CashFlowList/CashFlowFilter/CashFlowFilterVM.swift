@@ -36,7 +36,7 @@ final class CashFlowFilterVM: ViewModel {
         let resetFilters = binding.resetFilters
             .onNext(on: self) { vm, _ in vm.filter.resetToDefaultValues() }
 
-        return Merge(resetFilters, binding.applyFilters)
+        return Merge3(Just(()), resetFilters, binding.applyFilters)
             .compactMap { [weak self] _ -> CashFlowFilter? in
                 guard let self = self else { return nil }
                 self.initialFilter = self.filter

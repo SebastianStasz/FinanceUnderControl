@@ -12,7 +12,7 @@ import SSUtils
 class ViewModel: ObservableObject, CombineHelper {
 
     @Published var isLoading = false
-    let mainLoader = DriverSubject<Bool>()
+    let mainLoader = DriverState(false)
 
     var cancellables: Set<AnyCancellable> = []
     private let coordinator: CoordinatorProtocol?

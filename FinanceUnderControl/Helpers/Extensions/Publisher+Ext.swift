@@ -32,7 +32,7 @@ extension Publisher {
     }
 
     func perform<T>(
-        isLoading: DriverSubject<Bool>? = nil,
+        isLoading: DriverState<Bool>? = nil,
         errorTracker: DriverSubject<Error>? = nil,
         _ perform: @escaping (Output) async throws -> T
     ) -> Publishers.FlatMap<Publishers.SetFailureType<AnyPublisher<T, Never>, Never>, Self> {
@@ -49,7 +49,7 @@ extension Publisher {
 
     func perform<O: AnyObject, T>(
         on object: O,
-        isLoading: DriverSubject<Bool>? = nil,
+        isLoading: DriverState<Bool>? = nil,
         errorTracker: DriverSubject<Error>? = nil,
         _ perform: @escaping (O, Output) async throws -> T
     ) -> Publishers.FlatMap<Publishers.SetFailureType<AnyPublisher<T, Never>, Never>, Self> {
@@ -64,7 +64,7 @@ extension Publisher {
         }
     }
 
-    private func `catch`(isLoading: DriverSubject<Bool>?, errorTracker: DriverSubject<Error>? = nil) -> AnyPublisher<Output, Never> {
+    private func `catch`(isLoading: DriverState<Bool>?, errorTracker: DriverSubject<Error>? = nil) -> AnyPublisher<Output, Never> {
         `catch` { error -> AnyPublisher<Output, Never> in
             DispatchQueue.main.async {
                 errorTracker?.send(error)

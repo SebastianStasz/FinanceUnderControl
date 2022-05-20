@@ -23,13 +23,11 @@ final class CashFlowListVM: ViewModel {
     private let cashFlowFilterVM: CashFlowFilterVM
     private let filterViewModel = CashFlowListFilterVM()
     private let cashFlowSubscription = CashFlowSubscription()
+    let listVM = BaseListVM<CashFlow>()
     let binding = Binding()
 
-    @Published private(set) var isSearching = false
-    @Published private(set) var isFiltering = false
-    @Published private(set) var listSectors: [ListSector<CashFlow>] = []
-    @Published private(set) var filteredListSectors: [ListSector<CashFlow>] = []
-    @Published var isMoreCashFlows = true
+    @Published var listVD = BaseListVD<CashFlow>.initialState
+    @Published var isFiltering = false
     @Published var searchText = ""
 
     init(coordinator: CoordinatorProtocol, cashFlowFilterVM: CashFlowFilterVM) {
@@ -38,21 +36,39 @@ final class CashFlowListVM: ViewModel {
     }
 
     override func viewDidLoad() {
-        mainLoader.send(true)
+        let searchTextOutput = searchTextVM.transform($searchText.asDriver)
+        let filterResult = cashFlowFilterVM.filteringResult().removeDuplicates().asDriver
+        let isFiltering = filterResult.map { $0.isFiltering }
+        let fetchMore = binding.fetchMoreCashFlows.withLatestFrom(isFiltering.map { _ in })
+        let subscription = cashFlowSubscription.transform(input: .init(fetchMore: fetchMore.asDriver))
 
-        let subscription = cashFlowSubscription.transform(input: .init(fetchMore: binding.fetchMoreCashFlows.asDriver))
+        let filterOutput = filterViewModel.transform(input: .init(
+            currentCashFlows: subscription.cashFlows,
+            filterResult: filterResult,
+            searchText: searchTextOutput.searchText,
+            fetchMore: binding.fetchMoreCashFlows.asDriver)
+        )
 
-        let cashFlows = subscription.cashFlows
+        let sectors = CombineLatest3(isFiltering, subscription.cashFlows, filterOutput.filteredCashFlows.prepend([]))
+            .map { $0.0 ? $0.2 : $0.1 }
+            .map { Self.groupCashFlows($0) }
+        let isMoreCashFlows = CombineLatest(subscription.canFetchMore, filterOutput.isMoreCashFlows).map { $0 || $1 }
+        let isSearching = CombineLatest(isFiltering, searchTextOutput.isSearching).map { $0 || $1 }
 
-        subscription.canFetchMore.assign(to: &$isMoreCashFlows)
+        let listOutput = listVM.transform(input: .init(
+            sectors: sectors.asDriver,
+            isMoreItems: isMoreCashFlows.asDriver,
+            isSearching: isSearching.asDriver,
+            isLoading: $isLoading.print("Load input").asDriver)
+        )
+
+        listOutput.viewData.assign(to: &$listVD)
+        listOutput.fetchMore.sinkAndStore(on: self) { vm, _ in
+            vm.binding.fetchMoreCashFlows.send()
+        }
 
         subscription.errors.sinkAndStore(on: self) { _, error in
             print(error)
-        }
-
-        cashFlows.sinkAndStore(on: self) { vm, cashFlows in
-            vm.listSectors = Self.groupCashFlows(cashFlows)
-            vm.mainLoader.send(false)
         }
 
         binding.confirmCashFlowDeletion
@@ -60,28 +76,9 @@ final class CashFlowListVM: ViewModel {
             .perform(on: self, isLoading: mainLoader) { try await $0.service.delete($1) }
             .sink {}.store(in: &cancellables)
 
-        let filterResult = cashFlowFilterVM.filteringResult().removeDuplicates().asDriver
-        filterResult.map { $0.isFiltering }.assign(to: &$isFiltering)
-
-        let searchTextOutput = searchTextVM.transform($searchText.asDriver)
-        searchTextOutput.isSearching.assign(to: &$isSearching)
-
-        let filterInput = CashFlowListFilterVM.Input(
-            currentCashFlows: cashFlows,
-            fetchMoreCashFlows: binding.fetchMoreCashFlows.asDriver,
-            filterResult: filterResult,
-            searchText: searchTextOutput.searchText
-        )
-        let filterOutput = filterViewModel.transform(input: filterInput)
-
-        filterOutput.filteredCashFlows.sinkAndStore(on: self) { vm, cashFlows in
-            vm.filteredListSectors = Self.groupCashFlows(cashFlows)
-        }
-
-        filterOutput.isMoreCashFlows.assign(to: &$isMoreCashFlows)
-
-        CombineLatest(mainLoader, filterOutput.isLoading)
-            .map { $0.0 || $0.1 }
+        CombineLatest3(mainLoader.print("Main loader"), subscription.isLoading, filterOutput.isLoading.print("Filter loader"))
+            .map { $0.0 || $0.1 || $0.2}
+            .print("Result Load")
             .assign(to: &$isLoading)
     }
 

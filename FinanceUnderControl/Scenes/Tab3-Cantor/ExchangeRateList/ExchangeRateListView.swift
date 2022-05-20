@@ -16,14 +16,15 @@ struct ExchangeRateListView: View {
     @ObservedObject var viewModel: ExchangeRateListVM
 
     var body: some View {
-        BaseList(emptyStateVD: emptyStateVD, elements: viewModel.exchangeRates) { exchageRate in
-            HStack(spacing: .medium) {
-                Text(exchageRate.code, style: .currency)
-                Text(exchageRate.rateValue.formatted(for: exchageRate.currency))
-            }
-            .card()
-        }
-        .searchable(text: $viewModel.searchText)
+        Text("")
+//        BaseList(emptyStateVD: emptyStateVD, elements: viewModel.exchangeRates) { exchageRate in
+//            HStack(spacing: .medium) {
+//                Text(exchageRate.code, style: .currency)
+//                Text(exchageRate.rateValue.formatted(for: exchageRate.currency))
+//            }
+//            .card()
+//        }
+//        .searchable(text: $viewModel.searchText)
     }
 }
 

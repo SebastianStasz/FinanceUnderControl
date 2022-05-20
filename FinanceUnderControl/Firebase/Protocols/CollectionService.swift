@@ -11,4 +11,5 @@ protocol CollectionService {
     associatedtype Document: FirestoreDocument
     typealias Field = Document.Field
     typealias Order = Document.Order
+    typealias Filter = Document.Filter
 }

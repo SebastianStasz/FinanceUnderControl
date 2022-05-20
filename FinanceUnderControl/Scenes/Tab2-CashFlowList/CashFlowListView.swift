@@ -13,7 +13,7 @@ struct CashFlowListView: BaseView {
     @State private var isDeleteConfirmationShown = false
 
     var baseBody: some View {
-        BaseList(isLoading: viewModel.isLoading, emptyStateVD: emptyStateVD, sectors: listSectors, onLastItemAppear: viewModel.binding.fetchMoreCashFlows, isMoreItems: $viewModel.isMoreCashFlows) {
+        BaseList(viewModel: viewModel.listVM, viewData: viewModel.listVD, emptyTitle: "No cash flows yet", emptyDescription: "Cash flows will appear here after you create it") {
             CashFlowCardView($0)
                 .actions(edit: presentEditForm(for: $0), delete: reportDeleteCashFlow($0))
         }
@@ -24,23 +24,9 @@ struct CashFlowListView: BaseView {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: presentFilterView) { filterIcon }
-                    .disabled(viewModel.listSectors.isEmpty)
+                    .disabled(viewModel.listVD.isEmpty && !viewModel.isFiltering)
             }
         }
-    }
-
-    private var isSearchingOrFiltering: Bool {
-        viewModel.isSearching || viewModel.isFiltering
-    }
-
-    private var listSectors: [ListSector<CashFlow>] {
-        isSearchingOrFiltering ? viewModel.filteredListSectors : viewModel.listSectors
-    }
-
-    private var emptyStateVD: EmptyStateVD {
-        EmptyStateVD(title: "No cash flows yet",
-                     description: "Cash flows will appear here after you create it",
-                     isSearching: isSearchingOrFiltering)
     }
 
     private var filterIcon: some View {

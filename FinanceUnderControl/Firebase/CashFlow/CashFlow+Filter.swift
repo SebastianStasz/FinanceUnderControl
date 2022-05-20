@@ -10,7 +10,7 @@ import Shared
 
 extension CashFlow {
 
-    enum Filter {
+    enum Filter: DocumentFilter {
         case nameContains(String)
         case isType(CashFlowType)
         case isCategory(CashFlowCategory)
