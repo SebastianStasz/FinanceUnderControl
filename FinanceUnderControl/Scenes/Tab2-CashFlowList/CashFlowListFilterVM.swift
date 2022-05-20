@@ -43,6 +43,7 @@ final class CashFlowListFilterVM: CombineHelper {
             .map { QueryConfiguration<CashFlow>(lastDocument: $0.0.last, filters: $0.1.firestoreFilters) }
 
         let subscription = subscription.transform(input: .init(
+            start: Just(()).asDriver,
             fetchMore: fetchMore.asDriver,
             queryConfiguration: queryConfiguration.asDriver)
         )

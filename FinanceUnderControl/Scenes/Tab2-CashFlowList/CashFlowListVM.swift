@@ -5,6 +5,7 @@
 //  Created by Sebastian Staszczyk on 08/02/2022.
 //
 
+import Combine
 import Foundation
 import SSUtils
 import SSValidation
@@ -40,7 +41,7 @@ final class CashFlowListVM: ViewModel {
         let filterResult = cashFlowFilterVM.filteringResult().removeDuplicates().asDriver
         let isFiltering = filterResult.map { $0.isFiltering }
         let fetchMore = binding.fetchMoreCashFlows.withLatestFrom(isFiltering.map { _ in })
-        let subscription = cashFlowSubscription.transform(input: .init(fetchMore: fetchMore.asDriver))
+        let subscription = cashFlowSubscription.transform(input: .init(start: Just(()).asDriver, fetchMore: fetchMore.asDriver, queryConfiguration: nil))
 
         let filterOutput = filterViewModel.transform(input: .init(
             currentCashFlows: subscription.cashFlows,

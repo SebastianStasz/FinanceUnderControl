@@ -5,55 +5,9 @@
 //  Created by Sebastian Staszczyk on 01/12/2021.
 //
 
-import Combine
-import FinanceCoreData
 import Shared
 import SwiftUI
 import SSUtils
-
-struct BaseListVD<T: Identifiable & Equatable> {
-    let sectors: [ListSector<T>]
-    let isMoreItems: Bool
-    let isLoading: Bool
-    let isSearching: Bool
-
-    var isEmpty: Bool {
-        sectors.isEmpty
-    }
-
-    static var initialState: Self {
-        .init(sectors: [], isMoreItems: false, isLoading: true, isSearching: false)
-    }
-}
-
-final class BaseListVM<T: Identifiable & Equatable>: ObservableObject {
-    typealias ViewData = BaseListVD<T>
-
-    struct Input {
-        let sectors: Driver<[ListSector<T>]>
-        let isMoreItems: Driver<Bool>
-        let isSearching: Driver<Bool>
-        let isLoading: Driver<Bool>
-    }
-
-    struct Output {
-        let viewData: Driver<ViewData>
-        let fetchMore: Driver<Void>
-    }
-
-    let fetchMore = DriverSubject<Void>()
-
-    func transform(input: Input) -> Output {
-
-        let isMoreItems = Merge(fetchMore.map { false }, input.isMoreItems)
-
-        let viewData = CombineLatest4(input.sectors, isMoreItems, input.isLoading, input.isSearching)
-            .map { ViewData(sectors: $0.0, isMoreItems: $0.1, isLoading: $0.2, isSearching: $0.3) }
-
-        return Output(viewData: viewData.asDriver,
-                      fetchMore: fetchMore.asDriver)
-    }
-}
 
 struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
     typealias ViewModel = BaseListVM<T>
@@ -152,7 +106,6 @@ extension BaseList {
          viewData: ViewData,
          emptyTitle: String,
          emptyDescription: String,
-         onLastItemAppear: DriverSubject<Void>? = nil,
          @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
         self.init(viewModel: viewModel, viewData: viewData, emptyTitle: emptyTitle, emptyDescription: emptyDescription, deleteElement: nil, rowView: rowView)

@@ -16,21 +16,15 @@ struct CashFlowGroupingListView: View {
     @ObservedObject var viewModel: CashFlowGroupingListVM
     @State private var isDeleteConfirmationShown = false
 
-    private var emptyStateVD: EmptyStateVD {
-        EmptyStateVD(title: "No elements yet",
-                     description: "Groups and categories will appear here after you create it")
-    }
-
     var body: some View {
-        Text("")
-//        BaseList(isLoading: viewModel.isLoading, emptyStateVD: emptyStateVD, sectors: viewModel.listSectors) {
-//            CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
-//                .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
-//                .environment(\.editMode, editMode)
-//        }
-//        .confirmationDialog("Delete category", isPresented: $isDeleteConfirmationShown) {
-//            Button.delete { viewModel.binding.confirmCategoryDeletion.send() }
-//        }
+        BaseList(viewModel: viewModel.listVM, viewData: viewModel.listVD, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it") {
+            CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
+                .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
+                .environment(\.editMode, editMode)
+        }
+        .confirmationDialog("Delete category", isPresented: $isDeleteConfirmationShown) {
+            Button.delete { viewModel.binding.confirmCategoryDeletion.send() }
+        }
 //        .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
     }
 

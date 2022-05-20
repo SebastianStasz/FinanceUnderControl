@@ -28,13 +28,13 @@ final class CurrencyService {
     }
 
     private func updateExchangeRates(for currency: CurrencyEntity) async {
-//        do {
-//            let response = try await exchangeRateService.getLatestExchangeRates(for: currency.code)
-//            let exchangeRates = response.rates.map { ExchangeRateEntity.Model(code: $0.code, rateValue: $0.rate, baseCurrency: response.base) }
-//            currency.updateExchangeRates(with: exchangeRates)
-//        } catch let error {
-//            print("CurrencyService - update exchange rates error: \(error)")
-//        }
+        do {
+            let response = try await exchangeRateService.getLatestExchangeRates(for: currency.code)
+            let exchangeRates = response.rates.map { ExchangeRateEntity.Model(code: $0.code, rateValue: $0.rate, baseCurrency: response.base) }
+            currency.updateExchangeRates(with: exchangeRates)
+        } catch let error {
+            print("CurrencyService - update exchange rates error: \(error)")
+        }
     }
 
     private func getCurrencies(from context: NSManagedObjectContext) -> [CurrencyEntity] {

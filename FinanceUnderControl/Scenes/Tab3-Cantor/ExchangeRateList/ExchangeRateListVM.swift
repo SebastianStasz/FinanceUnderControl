@@ -10,25 +10,20 @@ import FinanceCoreData
 import Foundation
 
 final class ExchangeRateListVM: ViewModel {
-    private let currencyEntity: CurrencyEntity
-    @Published private(set) var exchangeRates: [ExchangeRateEntity] = []
-    @Published var searchText = ""
 
-    var baseCurrencyCode: String {
-        currencyEntity.code
-    }
+    private let currencyEntity: CurrencyEntity
+    let listVM = BaseListVM<ExchangeRateEntity>()
+
+    @Published private(set) var listVD = BaseListVD<ExchangeRateEntity>.initialState
 
     init(currencyEntity: CurrencyEntity) {
         self.currencyEntity = currencyEntity
         super.init(coordinator: nil)
-        exchangeRates = currencyEntity.exchangeRatesArray
+    }
 
-        ValidationHelper.search($searchText)
-            .map { text in
-                text.isEmpty
-                    ? currencyEntity.exchangeRatesArray
-                    : currencyEntity.exchangeRatesArray.filter { $0.code.lowerCaseDiacriticInsensitive.contains(text) }
-            }
-            .assign(to: &$exchangeRates)
+    override func viewDidLoad() {
+        let exchangeRates = Just(currencyEntity.exchangeRatesArray).asDriver
+        let listOutput = listVM.transform(input: .init(elements: exchangeRates))
+        listOutput.viewData.assign(to: &$listVD)
     }
 }
