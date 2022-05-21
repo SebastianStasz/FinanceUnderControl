@@ -14,7 +14,14 @@ public struct DateRangePickerViewData: Equatable {
 
     public init(isOn: Bool = false, startDate: Date? = nil, endDate: Date = Date()) {
         self.isOn = isOn
-        self.startDate = startDate ?? Calendar.current.date(byAdding: .month, value: -1, to: endDate) ?? endDate
+        let endDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: endDate)
+        let endDate = Calendar.current.date(from: endDateComponents)!
+        if let startDate = startDate {
+            let startDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: endDate)
+            self.startDate = Calendar.current.date(from: startDateComponents)!
+        } else {
+            self.startDate = Calendar.current.date(byAdding: .month, value: -1, to: endDate)!
+        }
         self.endDate = endDate
     }
 }

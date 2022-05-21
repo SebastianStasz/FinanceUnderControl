@@ -27,10 +27,7 @@ final class BaseListVM<T: Identifiable & Equatable>: ObservableObject {
     let fetchMore = DriverSubject<Void>()
 
     func transform(input: Input) -> Output {
-
-        let isMoreItems = Merge(fetchMore.map { false }, input.isMoreItems)
-
-        let viewData = CombineLatest4(input.sectors, isMoreItems, input.isLoading, input.isSearching)
+        let viewData = CombineLatest4(input.sectors, input.isMoreItems, input.isLoading, input.isSearching)
             .map { ViewData(sectors: $0.0, isMoreItems: $0.1, isLoading: $0.2, isSearching: $0.3) }
 
         return Output(viewData: viewData.asDriver,

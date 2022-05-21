@@ -13,6 +13,10 @@ import SSUtils
 struct QueryConfiguration<Document: FirestoreDocument> {
     let lastDocument: Document?
     let filters: [Document.Filter]
+
+    static var none: QueryConfiguration {
+        .init(lastDocument: nil, filters: [])
+    }
 }
 
 final class CashFlowSubscription: CollectionService, CombineHelper {
@@ -21,7 +25,7 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
     struct Input {
         let start: Driver<Void>
         let fetchMore: Driver<Void>
-        let queryConfiguration: Driver<QueryConfiguration<Document>>?
+        let queryConfiguration: Driver<QueryConfiguration<Document>>
     }
 
     struct Output {
@@ -47,11 +51,6 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
     func transform(input: Input) -> Output {
         let loadingIndicator = DriverState(false)
 
-        input.start.sinkAndStore(on: self) { vm, _ in
-            loadingIndicator.send(true)
-            vm.updateListener()
-        }
-
         CombineLatest(input.start, input.fetchMore).map { $1 }
             .sinkAndStore(on: self) { vm, _ in
                 vm.limit += 25
@@ -59,18 +58,17 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
                 loadingIndicator.send(true)
             }
 
-        if let queryConfiguration = input.queryConfiguration {
-            CombineLatest(input.start, queryConfiguration).map { $1 }
-                .sinkAndStore(on: self, action: { vm, configuration in
-                    let filters = configuration.filters.map { $0.predicate }
-                    var fieldValues: [Any] = []
-                    if let lastCashFlow = configuration.lastDocument {
-                        fieldValues.append(lastCashFlow.id)
-                        fieldValues.append(lastCashFlow.nameLowercase)
-                    }
-                    vm.query = vm.firestore.getQuery(for: .cashFlows, orderedBy: Order.date(.reverse), filteredBy: filters, startAfter: fieldValues, limit: vm.limit)
-                })
-        }
+        CombineLatest(input.start, input.queryConfiguration).map { $1 }
+            .sinkAndStore(on: self, action: { vm, configuration in
+                let filters = configuration.filters.map { $0.predicate }
+                var fieldValues: [Any] = []
+                if let lastCashFlow = configuration.lastDocument {
+//                    fieldValues.append(lastCashFlow.date)
+                    fieldValues.append(lastCashFlow.id)
+//                    fieldValues.append(lastCashFlow.type)
+                }
+                vm.query = vm.firestore.getQuery(for: .cashFlows, orderedBy: Order.date(.reverse), filteredBy: filters, startAfter: fieldValues, limit: vm.limit)
+            })
 
         let cashFlows = CombineLatest(documents, storage.$categories)
             .map { result in

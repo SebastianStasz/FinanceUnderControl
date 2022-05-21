@@ -98,7 +98,7 @@ struct FirestoreService {
         if let limit = limit {
             query = query.limit(to: limit)
         }
-        if let fieldValues = fieldValues {
+        if let fieldValues = fieldValues, fieldValues.isNotEmpty {
             query = query.start(after: fieldValues)
         }
 

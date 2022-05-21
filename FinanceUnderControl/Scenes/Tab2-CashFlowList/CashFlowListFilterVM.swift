@@ -21,7 +21,7 @@ final class CashFlowListFilterVM: CombineHelper {
 
     struct Output {
         let filteredCashFlows: Driver<[CashFlow]>
-        let isMoreCashFlows: Driver<Bool>
+        let canFetchMore: Driver<Bool>
         let isLoading: Driver<Bool>
     }
 
@@ -29,44 +29,53 @@ final class CashFlowListFilterVM: CombineHelper {
     private lazy var subscription = CashFlowSubscription()
 
     func transform(input: Input) -> Output {
-        let isMoreCashFlows = DriverState(false)
         let filterResultWhenFiltering = input.filterResult.filter { $0.isFiltering }.removeDuplicates()
-        let fetchMore = input.fetchMore.withLatestFrom(filterResultWhenFiltering).asVoid()
 
-        let currentCashFlowsFilterResult = filterResultWhenFiltering
-            .withLatestFrom(CombineLatest(input.currentCashFlows, input.searchText)) { [weak self] in
-                self?.performBaseFiltering(on: $1.0, searchText: $1.1, filterResult: $0)
-            }
-            .compactMap { $0 }
+        let fetchMore = input.fetchMore
+            .withLatestFrom(input.filterResult)
+            .filter { $0.isFiltering }
+            .print("Fetch more filtered")
+            .asVoid()
+
+        let currentCashFlowsFilterResult = CombineLatest3(filterResultWhenFiltering, input.currentCashFlows, input.searchText)
+            .map { Self.performBaseFiltering(on: $0.1, searchText: $0.2, filterResult: $0.0) }
+            .print("Current")
 
         let queryConfiguration = CombineLatest(currentCashFlowsFilterResult, input.filterResult)
-            .map { QueryConfiguration<CashFlow>(lastDocument: $0.0.last, filters: $0.1.firestoreFilters) }
+            .first()
+            .map {
+                QueryConfiguration<CashFlow>(lastDocument: $0.0.last, filters: $0.1.firestoreFilters)
+            }
 
         let subscription = subscription.transform(input: .init(
-            start: Just(()).asDriver,
-            fetchMore: fetchMore.asDriver,
+            start: filterResultWhenFiltering.asVoid(),
+            fetchMore: fetchMore,
             queryConfiguration: queryConfiguration.asDriver)
         )
 
         let moreCashFlowsFilterResult = CombineLatest(subscription.cashFlows, input.searchText)
+            .first()
             .map { result in
                 result.0.filter { $0.name.localizedCaseInsensitiveContainsIfNotEmpty(result.1) }
             }
+            .print("More")
 
-        let filterResultChanged = input.filterResult.removeDuplicates()
+//        let resetCashFlows = input.filterResult.removeDuplicates()
+//            .map { filter in
+//                [CashFlow]()
+//            }
+//            .asDriver
 
-        let resetCashFlows = filterResultChanged.map { _ in [CashFlow]() }.asDriver
-
-        let filteredCashFlows = Merge(resetCashFlows, CombineLatest(currentCashFlowsFilterResult, moreCashFlowsFilterResult).map { $0.0 + $0.1 })
-            .print("Filtered")
+        let filteredCashFlows = CombineLatest(currentCashFlowsFilterResult, moreCashFlowsFilterResult).map { $0.0 + $0.1 }
+//            .print("Filtered")
             .asDriver
 
         return Output(filteredCashFlows: filteredCashFlows,
-                      isMoreCashFlows: isMoreCashFlows.asDriver,
+                      canFetchMore: subscription.canFetchMore.prepend(false).print("Can fetch more").asDriver,
                       isLoading: subscription.isLoading)
     }
 
-    private func performBaseFiltering(on cashFlows: [CashFlow], searchText: String, filterResult: CashFlowFilter) -> [CashFlow] {
+    private static func performBaseFiltering(on cashFlows: [CashFlow], searchText: String, filterResult: CashFlowFilter) -> [CashFlow] {
         let cashFlowType = filterResult.cashFlowSelection.type
         let category = filterResult.cashFlowCategory
         return cashFlows
