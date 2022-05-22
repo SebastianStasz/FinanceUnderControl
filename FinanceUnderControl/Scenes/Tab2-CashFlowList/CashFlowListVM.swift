@@ -41,7 +41,7 @@ final class CashFlowListVM: ViewModel {
         let isFiltering = filterResult.map { $0.isFiltering }.removeDuplicates()
 
         let queryConfiguration = filterResult.map(with: self) { vm, filter in
-            QueryConfiguration<CashFlow>(filters: filter.firestoreFilters, sorters: [CashFlow.Order.date()], lastDocument: nil, limit: 10)
+            QueryConfiguration<CashFlow>(filters: filter.firestoreFilters, sorters: [CashFlow.Order.date()], limit: 10)
         }
 
         let subscription = cashFlowSubscription.transform(input: .init(
@@ -50,7 +50,7 @@ final class CashFlowListVM: ViewModel {
         )
 
         let isSearching = CombineLatest(isFiltering, searchTextOutput.isSearching).map { $0 || $1 }
-        let sectors = subscription.cashFlows.map { Self.groupCashFlows($0) }
+        let sectors = Merge(filterResult.map { _ in [] }, subscription.cashFlows).map { Self.groupCashFlows($0) }
 
         let listOutput = listVM.transform(input: .init(
             sectors: sectors.asDriver,
@@ -59,6 +59,7 @@ final class CashFlowListVM: ViewModel {
             isLoading: $isLoading.asDriver)
         )
 
+        isFiltering.assign(to: &$isFiltering)
         listOutput.viewData.assign(to: &$listVD)
         listOutput.fetchMore.sinkAndStore(on: self) { vm, _ in
             vm.binding.fetchMoreCashFlows.send()

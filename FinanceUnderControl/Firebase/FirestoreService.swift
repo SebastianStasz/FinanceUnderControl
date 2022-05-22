@@ -79,11 +79,6 @@ struct FirestoreService {
         if let limit = configuration.limit {
             query = query.limit(to: limit)
         }
-        if let document = configuration.lastDocument {
-            var fieldValues = configuration.sorters.map { $0.valueFrom(document) }
-            fieldValues.append(document.id)
-            query = query.start(after: fieldValues)
-        }
 
         return query
     }

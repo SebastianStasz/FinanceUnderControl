@@ -29,9 +29,14 @@ final class CashFlowFilterVM: ViewModel {
     private let storage = CashFlowGroupingService.shared
 
     func filteringResult() -> AnyPublisher<CashFlowFilter, Never> {
-        storage.$categories.assign(to: &$categories)
         minValueInput.result().weakAssign(to: \.filter.minimumValue, on: self)
         maxValueInput.result().weakAssign(to: \.filter.maximumValue, on: self)
+
+        $filter.flatMap { [weak self] filter -> AnyPublisher<[CashFlowCategory], Never> in
+            guard let self = self, let type = filter.cashFlowSelection.type else { return Just([]).asDriver }
+            return self.storage.categoriesSubscription(type: type)
+        }
+        .assign(to: &$categories)
 
         let resetFilters = binding.resetFilters
             .onNext(on: self) { vm, _ in vm.filter.resetToDefaultValues() }
