@@ -28,12 +28,7 @@ final class CashFlowService: CollectionService {
     }
 
     func fetch(filters: [Document.Filter], startAfter lastCashFlow: CashFlow? = nil) async throws -> ([CashFlow], QueryDocumentSnapshot?) {
-        var fieldValues: [Any] = []
-        if let lastCashFlow = lastCashFlow {
-            fieldValues.append(lastCashFlow.id)
-            fieldValues.append(lastCashFlow.nameLowercase)
-        }
-        let docs = try await firestore.getDocuments(from: .cashFlows, orderedBy: Order.name(), filteredBy: filters.map { $0.predicate }, startAfter: fieldValues, limit: limit)
+        let docs = try await firestore.getDocuments(from: .cashFlows, orderedBy: [Order.name()], filteredBy: filters.map { $0.predicate }, startAfter: lastCashFlow, limit: limit)
         let cashFlows = docs.map { doc -> CashFlow in
             let categoryId = doc.getString(for: Field.categoryId)
             let category = storage.categories.first(where: { $0.id == categoryId })!

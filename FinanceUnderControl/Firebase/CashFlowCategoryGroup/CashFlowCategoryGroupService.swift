@@ -21,7 +21,7 @@ final class CashFlowCategoryGroupService: CollectionService {
     }
 
     func getAll() async throws -> [CashFlowCategoryGroup] {
-        try await firestore.getDocuments(from: .cashFlowCategoryGroups, orderedBy: Order.name())
+        try await firestore.getDocuments(from: .cashFlowCategoryGroups, orderedBy: [Order.name()])
             .map { CashFlowCategoryGroup(from: $0) }
     }
 }

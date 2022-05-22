@@ -29,7 +29,11 @@ final class CashFlowListFilterVM: CombineHelper {
     private lazy var subscription = CashFlowSubscription()
 
     func transform(input: Input) -> Output {
-        let filterResultWhenFiltering = input.filterResult.filter { $0.isFiltering }.removeDuplicates()
+        let filterResult = input.filterResult.removeDuplicates { prev, new in
+            prev.isFiltering ? prev == new : false
+        }
+        let filterResultWhenFiltering = filterResult.filter { $0.isFiltering }
+        let didEndFiltering = filterResult.filter { !$0.isFiltering }
 
         let fetchMore = input.fetchMore
             .withLatestFrom(input.filterResult)
@@ -41,20 +45,19 @@ final class CashFlowListFilterVM: CombineHelper {
             .map { Self.performBaseFiltering(on: $0.1, searchText: $0.2, filterResult: $0.0) }
             .print("Current")
 
-        let queryConfiguration = CombineLatest(currentCashFlowsFilterResult, input.filterResult)
-            .first()
+        let queryConfiguration = CombineLatest(currentCashFlowsFilterResult, filterResultWhenFiltering)
             .map {
-                QueryConfiguration<CashFlow>(lastDocument: $0.0.last, filters: $0.1.firestoreFilters)
+                QueryConfiguration(lastDocument: $0.0.last, filters: $0.1.firestoreFilters)
             }
 
         let subscription = subscription.transform(input: .init(
             start: filterResultWhenFiltering.asVoid(),
+            stop: didEndFiltering.asVoid(),
             fetchMore: fetchMore,
             queryConfiguration: queryConfiguration.asDriver)
         )
 
         let moreCashFlowsFilterResult = CombineLatest(subscription.cashFlows, input.searchText)
-            .first()
             .map { result in
                 result.0.filter { $0.name.localizedCaseInsensitiveContainsIfNotEmpty(result.1) }
             }

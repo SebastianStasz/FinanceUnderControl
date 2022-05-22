@@ -12,10 +12,10 @@ extension CashFlowCategoryGroup {
     enum Order: DocumentFieldOrder {
         case name(SortOrder = .forward)
 
-        var orderField: OrderField {
+        var orderField: OrderField<CashFlowCategoryGroup> {
             switch self {
             case let .name(order):
-                return .init(name: Field.name.key, order: order)
+                return .init(field: .name, order: order)
             }
         }
     }

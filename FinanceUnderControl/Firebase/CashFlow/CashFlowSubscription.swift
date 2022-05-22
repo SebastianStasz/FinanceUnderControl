@@ -24,6 +24,7 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
 
     struct Input {
         let start: Driver<Void>
+        let stop: Driver<Void>
         let fetchMore: Driver<Void>
         let queryConfiguration: Driver<QueryConfiguration<Document>>
     }
@@ -42,7 +43,7 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
     private let errorTracker = DriverSubject<Error>()
     private let documents = DriverSubject<[QueryDocumentSnapshot]>()
 
-    private lazy var query = firestore.getQuery(for: .cashFlows, orderedBy: Order.date(.reverse), limit: limit) {
+    private lazy var query = firestore.getQuery(for: .cashFlows, orderedBy: [Order.date(.reverse)], limit: limit) {
         didSet { updateListener() }
     }
     private var listener: ListenerRegistration?
@@ -50,6 +51,10 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
 
     func transform(input: Input) -> Output {
         let loadingIndicator = DriverState(false)
+
+        input.stop.sinkAndStore(on: self) { vm, _ in
+            vm.listener = nil
+        }
 
         CombineLatest(input.start, input.fetchMore).map { $1 }
             .sinkAndStore(on: self) { vm, _ in
@@ -61,13 +66,7 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
         CombineLatest(input.start, input.queryConfiguration).map { $1 }
             .sinkAndStore(on: self, action: { vm, configuration in
                 let filters = configuration.filters.map { $0.predicate }
-                var fieldValues: [Any] = []
-                if let lastCashFlow = configuration.lastDocument {
-//                    fieldValues.append(lastCashFlow.date)
-                    fieldValues.append(lastCashFlow.id)
-//                    fieldValues.append(lastCashFlow.type)
-                }
-                vm.query = vm.firestore.getQuery(for: .cashFlows, orderedBy: Order.date(.reverse), filteredBy: filters, startAfter: fieldValues, limit: vm.limit)
+                vm.query = vm.firestore.getQuery(for: .cashFlows, orderedBy: [Order.date(.reverse)], filteredBy: filters, startAfter: configuration.lastDocument, limit: vm.limit)
             })
 
         let cashFlows = CombineLatest(documents, storage.$categories)

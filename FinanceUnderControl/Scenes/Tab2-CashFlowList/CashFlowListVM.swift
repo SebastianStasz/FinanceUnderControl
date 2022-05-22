@@ -38,12 +38,13 @@ final class CashFlowListVM: ViewModel {
 
     override func viewDidLoad() {
         let searchTextOutput = searchTextVM.transform($searchText.asDriver)
-        let filterResult = cashFlowFilterVM.filteringResult().removeDuplicates().asDriver
-        let isFiltering = filterResult.map { $0.isFiltering }
+        let filterResult = cashFlowFilterVM.filteringResult()
+        let isFiltering = filterResult.map { $0.isFiltering }.removeDuplicates()
         let fetchMore = binding.fetchMoreCashFlows.withLatestFrom(isFiltering).filter { !$0 }
 
         let subscription = cashFlowSubscription.transform(input: .init(
             start: Just(()).asDriver,
+            stop: Empty().asDriver,
             fetchMore: fetchMore.asVoid(),
             queryConfiguration: Just(.none).asDriver)
         )
@@ -55,10 +56,10 @@ final class CashFlowListVM: ViewModel {
             fetchMore: binding.fetchMoreCashFlows.asDriver)
         )
 
-        let canFetchMore = CombineLatest(subscription.canFetchMore, filterOutput.canFetchMore)
-            .withLatestFrom(isFiltering) { $1 ? $0.1 : $0.0 }
-
         let isSearching = CombineLatest(isFiltering, searchTextOutput.isSearching).map { $0 || $1 }
+
+        let canFetchMore = CombineLatest3(isFiltering, subscription.canFetchMore, filterOutput.canFetchMore)
+            .map { $0.0 ? $0.2 : $0.1 }
 
         let sectors = CombineLatest3(isFiltering, subscription.cashFlows, filterOutput.filteredCashFlows.prepend([]))
             .map { $0.0 ? $0.2 : $0.1 }

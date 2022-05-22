@@ -7,12 +7,16 @@
 
 import Foundation
 
-struct OrderField {
-    let name: String
+struct OrderField<T: FirestoreDocument> {
+    let field: T.Field
     let order: SortOrder
 
-    init(name: String, order: SortOrder = .forward) {
-        self.name = name
+    init(field: T.Field, order: SortOrder = .forward) {
+        self.field = field
         self.order = order
+    }
+
+    func valueFrom(_ document: T) -> Any {
+        document.data[field.key]!
     }
 }

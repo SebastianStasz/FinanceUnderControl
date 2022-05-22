@@ -18,7 +18,15 @@ protocol FirestoreDocument: Identifiable, Equatable {
 }
 
 protocol DocumentFieldOrder {
-    var orderField: OrderField { get }
+    associatedtype Document: FirestoreDocument
+    var orderField: OrderField<Document> { get }
+    func valueFrom(_ document: Document) -> Any
+}
+
+extension DocumentFieldOrder {
+    func valueFrom(_ document: Document) -> Any {
+        orderField.valueFrom(document)
+    }
 }
 
 protocol DocumentFilter {
