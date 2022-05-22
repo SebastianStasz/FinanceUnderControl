@@ -9,7 +9,7 @@ import Foundation
 
 extension CashFlowCategory {
 
-    enum Order: DocumentFieldOrder {
+    enum Order: DocumentOrder {
         case name(SortOrder = .forward)
 
         var orderField: OrderField<CashFlowCategory> {

@@ -10,21 +10,10 @@ import FirebaseFirestore
 import Foundation
 import SSUtils
 
-struct QueryConfiguration<Document: FirestoreDocument> {
-    let lastDocument: Document?
-    let filters: [Document.Filter]
-
-    static var none: QueryConfiguration {
-        .init(lastDocument: nil, filters: [])
-    }
-}
-
 final class CashFlowSubscription: CollectionService, CombineHelper {
     typealias Document = CashFlow
 
     struct Input {
-        let start: Driver<Void>
-        let stop: Driver<Void>
         let fetchMore: Driver<Void>
         let queryConfiguration: Driver<QueryConfiguration<Document>>
     }
@@ -37,36 +26,32 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
     }
 
     var cancellables: Set<AnyCancellable> = []
-
     private let firestore = FirestoreService.shared
     private let storage = CashFlowGroupingService.shared
+    private var listener: ListenerRegistration?
+    private var limit = 10
+
     private let errorTracker = DriverSubject<Error>()
     private let documents = DriverSubject<[QueryDocumentSnapshot]>()
 
-    private lazy var query = firestore.getQuery(for: .cashFlows, orderedBy: [Order.date(.reverse)], limit: limit) {
+    private lazy var query = firestore.getQuery(for: .cashFlows, configuration: QueryConfiguration<Document>(sorters: [Order.date(.reverse)], limit: limit)) {
         didSet { updateListener() }
     }
-    private var listener: ListenerRegistration?
-    private var limit = 10
 
     func transform(input: Input) -> Output {
         let loadingIndicator = DriverState(false)
 
-        input.stop.sinkAndStore(on: self) { vm, _ in
-            vm.listener = nil
-        }
-
-        CombineLatest(input.start, input.fetchMore).map { $1 }
+        input.fetchMore
             .sinkAndStore(on: self) { vm, _ in
                 vm.limit += 25
                 vm.query = vm.query.limit(to: vm.limit)
                 loadingIndicator.send(true)
             }
 
-        CombineLatest(input.start, input.queryConfiguration).map { $1 }
+        input.queryConfiguration
             .sinkAndStore(on: self, action: { vm, configuration in
-                let filters = configuration.filters.map { $0.predicate }
-                vm.query = vm.firestore.getQuery(for: .cashFlows, orderedBy: [Order.date(.reverse)], filteredBy: filters, startAfter: configuration.lastDocument, limit: vm.limit)
+                vm.limit = 10
+                vm.query = vm.firestore.getQuery(for: .cashFlows, configuration: configuration)
             })
 
         let cashFlows = CombineLatest(documents, storage.$categories)

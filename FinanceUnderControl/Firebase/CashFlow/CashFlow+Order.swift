@@ -9,7 +9,7 @@ import Foundation
 
 extension CashFlow {
 
-    enum Order: DocumentFieldOrder {
+    enum Order: DocumentOrder {
         case name(SortOrder = .forward)
         case date(SortOrder = .reverse)
 

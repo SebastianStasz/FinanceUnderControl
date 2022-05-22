@@ -10,20 +10,20 @@ import Foundation
 
 protocol FirestoreDocument: Identifiable, Equatable {
     associatedtype Field: DocumentField
-    associatedtype Order: DocumentFieldOrder
+    associatedtype Order: DocumentOrder
     associatedtype Filter: DocumentFilter
 
     var id: String { get }
     var data: [String: Any] { get }
 }
 
-protocol DocumentFieldOrder {
+protocol DocumentOrder {
     associatedtype Document: FirestoreDocument
     var orderField: OrderField<Document> { get }
     func valueFrom(_ document: Document) -> Any
 }
 
-extension DocumentFieldOrder {
+extension DocumentOrder {
     func valueFrom(_ document: Document) -> Any {
         orderField.valueFrom(document)
     }

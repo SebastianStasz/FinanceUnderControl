@@ -26,14 +26,4 @@ final class CashFlowService: CollectionService {
     func delete(_ cashFlow: CashFlow) async throws {
         try await firestore.deleteDocument(withId: cashFlow.id, from: .cashFlows)
     }
-
-    func fetch(filters: [Document.Filter], startAfter lastCashFlow: CashFlow? = nil) async throws -> ([CashFlow], QueryDocumentSnapshot?) {
-        let docs = try await firestore.getDocuments(from: .cashFlows, orderedBy: [Order.name()], filteredBy: filters.map { $0.predicate }, startAfter: lastCashFlow, limit: limit)
-        let cashFlows = docs.map { doc -> CashFlow in
-            let categoryId = doc.getString(for: Field.categoryId)
-            let category = storage.categories.first(where: { $0.id == categoryId })!
-            return CashFlow(from: doc, category: category)
-        }
-        return (cashFlows, docs.last)
-    }
 }

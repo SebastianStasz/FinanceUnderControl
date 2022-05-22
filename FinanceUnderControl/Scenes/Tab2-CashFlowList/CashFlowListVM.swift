@@ -22,7 +22,6 @@ final class CashFlowListVM: ViewModel {
     private let service = CashFlowService()
     private let searchTextVM = TextSearchVM()
     private let cashFlowFilterVM: CashFlowFilterVM
-    private let filterViewModel = CashFlowListFilterVM()
     private let cashFlowSubscription = CashFlowSubscription()
     let listVM = BaseListVM<CashFlow>()
     let binding = Binding()
@@ -40,34 +39,22 @@ final class CashFlowListVM: ViewModel {
         let searchTextOutput = searchTextVM.transform($searchText.asDriver)
         let filterResult = cashFlowFilterVM.filteringResult()
         let isFiltering = filterResult.map { $0.isFiltering }.removeDuplicates()
-        let fetchMore = binding.fetchMoreCashFlows.withLatestFrom(isFiltering).filter { !$0 }
+
+        let queryConfiguration = filterResult.map(with: self) { vm, filter in
+            QueryConfiguration<CashFlow>(filters: filter.firestoreFilters, sorters: [CashFlow.Order.date()], lastDocument: nil, limit: 10)
+        }
 
         let subscription = cashFlowSubscription.transform(input: .init(
-            start: Just(()).asDriver,
-            stop: Empty().asDriver,
-            fetchMore: fetchMore.asVoid(),
-            queryConfiguration: Just(.none).asDriver)
-        )
-
-        let filterOutput = filterViewModel.transform(input: .init(
-            currentCashFlows: subscription.cashFlows,
-            filterResult: filterResult,
-            searchText: searchTextOutput.searchText,
-            fetchMore: binding.fetchMoreCashFlows.asDriver)
+            fetchMore: binding.fetchMoreCashFlows.asDriver,
+            queryConfiguration: queryConfiguration)
         )
 
         let isSearching = CombineLatest(isFiltering, searchTextOutput.isSearching).map { $0 || $1 }
-
-        let canFetchMore = CombineLatest3(isFiltering, subscription.canFetchMore, filterOutput.canFetchMore)
-            .map { $0.0 ? $0.2 : $0.1 }
-
-        let sectors = CombineLatest3(isFiltering, subscription.cashFlows, filterOutput.filteredCashFlows.prepend([]))
-            .map { $0.0 ? $0.2 : $0.1 }
-            .map { Self.groupCashFlows($0) }
+        let sectors = subscription.cashFlows.map { Self.groupCashFlows($0) }
 
         let listOutput = listVM.transform(input: .init(
             sectors: sectors.asDriver,
-            isMoreItems: canFetchMore.asDriver,
+            isMoreItems: subscription.canFetchMore.asDriver,
             isSearching: isSearching.asDriver,
             isLoading: $isLoading.asDriver)
         )
@@ -86,8 +73,8 @@ final class CashFlowListVM: ViewModel {
             .perform(on: self, isLoading: mainLoader) { try await $0.service.delete($1) }
             .sink {}.store(in: &cancellables)
 
-        CombineLatest3(mainLoader, subscription.isLoading, filterOutput.isLoading)
-            .map { $0.0 || $0.1 || $0.2}
+        CombineLatest(mainLoader, subscription.isLoading)
+            .map { $0.0 || $0.1 }
             .assign(to: &$isLoading)
     }
 

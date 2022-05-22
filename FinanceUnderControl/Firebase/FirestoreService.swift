@@ -39,15 +39,9 @@ struct FirestoreService {
         try await db.document(reference.path).getDocument()
     }
 
-    func getDocuments<T, O: DocumentFieldOrder>(
-        from collection: Collection,
-        orderedBy orderFields: [O],
-        filteredBy filters: [FirestoreServiceFilter] = [],
-        startAfter document: T? = nil,
-        limit: Int? = nil
-    ) async throws -> [QueryDocumentSnapshot] where T == O.Document {
+    func getDocuments<T: FirestoreDocument>(from collection: Collection, configuration: QueryConfiguration<T>) async throws -> [QueryDocumentSnapshot] where T == T.Order.Document {
         try await withUnsafeThrowingContinuation { (continuation: UnsafeContinuation<[QueryDocumentSnapshot], Error>) in
-            getQuery(for: collection, orderedBy: orderFields, filteredBy: filters, startAfter: document, limit: limit)
+            getQuery(for: collection, configuration: configuration)
                 .getDocuments { snapShot, error in
                     if let snapShot = snapShot {
                         continuation.resume(returning: snapShot.documents)
@@ -58,19 +52,13 @@ struct FirestoreService {
         }
     }
 
-    func subscribe<T, O: DocumentFieldOrder>(
-        to collection: Collection,
-        orderedBy orderFields: [O],
-        filteredBy filters: [FirestoreServiceFilter] = [],
-        startAfter document: T? = nil,
-        limit: Int? = nil
-    ) -> FirestoreSubscription<[QueryDocumentSnapshot]> where T == O.Document {
+    func subscribe<T: FirestoreDocument>(to collection: Collection, configuration: QueryConfiguration<T>) -> FirestoreSubscription<[QueryDocumentSnapshot]> where T == T.Order.Document {
         let documentsSubject = PassthroughSubject<[QueryDocumentSnapshot], Never>()
         let firstResultDocument = documentsSubject.map { $0.first }.asDriver
         let lastResultDocument = documentsSubject.map { $0.last }.asDriver
         let errorsSubject = PassthroughSubject<Error, Never>()
 
-        getQuery(for: collection, orderedBy: orderFields, filteredBy: filters, startAfter: document, limit: limit)
+        getQuery(for: collection, configuration: configuration)
             .addSnapshotListener { querySnapshot, error in
                 if let querySnapshot = querySnapshot {
                     documentsSubject.send(querySnapshot.documents)
@@ -81,29 +69,18 @@ struct FirestoreService {
         return FirestoreSubscription(output: documentsSubject.eraseToAnyPublisher(), firstDocument: firstResultDocument, lastDocument: lastResultDocument, error: errorsSubject.eraseToAnyPublisher())
     }
 
-    func getQuery<T, O: DocumentFieldOrder>(
-        for collection: Collection,
-        orderedBy orderFields: [O],
-        filteredBy filters: [FirestoreServiceFilter] = [],
-        startAfter document: T? = nil,
-        limit: Int? = nil
-    ) -> Query where T == O.Document {
+    func getQuery<T: FirestoreDocument>(for collection: Collection, configuration: QueryConfiguration<T>) -> Query where T == T.Order.Document {
         var query: Query = userDocument.collection(collection.name)
 
-        filters.forEach {
-            query = query.filter(by: $0)
-        }
-
-        orderFields.forEach {
-            query = query.order(by: $0.orderField.field.key, descending: $0.orderField.order == .reverse)
-        }
+        query = query.filter(by: configuration.filters)
+        query = query.order(by: configuration.sorters)
         query = query.order(by: "id")
 
-        if let limit = limit {
+        if let limit = configuration.limit {
             query = query.limit(to: limit)
         }
-        if let document = document {
-            var fieldValues = orderFields.map { $0.valueFrom(document) }
+        if let document = configuration.lastDocument {
+            var fieldValues = configuration.sorters.map { $0.valueFrom(document) }
             fieldValues.append(document.id)
             query = query.start(after: fieldValues)
         }
