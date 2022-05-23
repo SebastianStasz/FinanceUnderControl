@@ -11,7 +11,7 @@ struct PickerDSView: View {
 
     @State private var labeledPickerSelection: PickerDSType? = .firstOption
     @State private var segmentedPickerSelection: PickerDSType = .firstOption
-    @State private var dateRangePickerViewData = DateRangePickerViewData()
+    @State private var dateRangePickerViewData = MonthAndYearPickerVD()
 
     var body: some View {
         Group {
@@ -21,7 +21,7 @@ struct PickerDSView: View {
             SegmentedPicker("Title", selection: $segmentedPickerSelection, elements: PickerDSType.allCases)
                 .designSystemComponent("Segmented Picker")
 
-            DateRangePicker("Title", viewData: $dateRangePickerViewData)
+            MonthAndYearPicker("Title", viewData: $dateRangePickerViewData)
                 .designSystemComponent("Date Range Picker")
         }
         .designSystemView("Picker")

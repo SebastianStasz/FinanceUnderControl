@@ -22,16 +22,11 @@ final class CashFlowFilterVM: ViewModel {
     @Published private(set) var categories: [CashFlowCategory] = []
 
     let binding = Binding()
-    let minValueInput = DoubleInputVM(validator: .alwaysValid)
-    let maxValueInput = DoubleInputVM(validator: .alwaysValid)
 
     private var initialFilter = CashFlowFilter()
     private let storage = CashFlowGroupingService.shared
 
     func filteringResult() -> AnyPublisher<CashFlowFilter, Never> {
-        minValueInput.result().weakAssign(to: \.filter.minimumValue, on: self)
-        maxValueInput.result().weakAssign(to: \.filter.maximumValue, on: self)
-
         $filter.flatMap { [weak self] filter -> AnyPublisher<[CashFlowCategory], Never> in
             guard let self = self, let type = filter.cashFlowSelection.type else { return Just([]).asDriver }
             return self.storage.categoriesSubscription(type: type)
@@ -54,7 +49,5 @@ final class CashFlowFilterVM: ViewModel {
 
     override func viewDidDisappear() {
         filter = initialFilter
-        minValueInput.setValue(to: filter.minimumValue)
-        maxValueInput.setValue(to: filter.maximumValue)
     }
 }

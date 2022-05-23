@@ -6,6 +6,7 @@
 //
 
 import Shared
+import Firebase
 import SwiftUI
 
 struct CashFlowFilterView: BaseView {
@@ -19,12 +20,10 @@ struct CashFlowFilterView: BaseView {
                     .displayIf(filter.wrappedValue.cashFlowSelection != .all, withTransition: .scale)
             }
             Sector(.common_amount) {
-                LabeledTextField(.cash_flow_filter_minimum_value, viewModel: viewModel.minValueInput)
-                LabeledTextField(.cash_flow_filter_maximum_value, viewModel: viewModel.maxValueInput)
                 LabeledPicker(.create_cash_flow_currency, elements: currenciesToSelect, selection: filter.currency)
             }
             Sector(.cash_flow_filter_other) {
-                DateRangePicker(.cash_flow_filter_date_range, viewData: filter.datePickerViewData)
+                MonthAndYearPicker(.cash_flow_filter_date_range, viewData: filter.datePickerViewData)
             }
         }
         .horizontalButtons(primaryButton: .init(.button_apply, action: viewModel.binding.applyFilters.send),
@@ -40,14 +39,30 @@ struct CashFlowFilterView: BaseView {
         currencies.append(nil)
         return currencies
     }
+
+    private var yearsToSelect: [Int?] {
+        let year = Calendar.current.component(.year, from: Date())
+        var years: [Int?] = (2020...year).map { $0 }
+        years.append(nil)
+        return years
+    }
+
+    private var monthsToSelect: [Int?] {
+        var months: [Int?] = (1...12).map { $0 }
+        months.append(nil)
+        return months
+    }
 }
 
 // MARK: - Preview
 
 struct CashFlowFilterView_Previews: PreviewProvider {
     static var previews: some View {
+        FirebaseApp.configure()
         let viewModel = CashFlowFilterVM()
-        CashFlowFilterView(viewModel: viewModel)
-        CashFlowFilterView(viewModel: viewModel).darkScheme()
+        return Group {
+            CashFlowFilterView(viewModel: viewModel)
+            CashFlowFilterView(viewModel: viewModel).darkScheme()
+        }
     }
 }

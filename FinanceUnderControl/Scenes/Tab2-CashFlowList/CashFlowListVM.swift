@@ -28,7 +28,6 @@ final class CashFlowListVM: ViewModel {
 
     @Published var listVD = BaseListVD<CashFlow>.initialState
     @Published var isFiltering = false
-    @Published var searchText = ""
 
     init(coordinator: CoordinatorProtocol, cashFlowFilterVM: CashFlowFilterVM) {
         self.cashFlowFilterVM = cashFlowFilterVM
@@ -36,7 +35,6 @@ final class CashFlowListVM: ViewModel {
     }
 
     override func viewDidLoad() {
-        let searchTextOutput = searchTextVM.transform($searchText.asDriver)
         let filterResult = cashFlowFilterVM.filteringResult()
         let isFiltering = filterResult.map { $0.isFiltering }.removeDuplicates()
 
@@ -49,13 +47,12 @@ final class CashFlowListVM: ViewModel {
             queryConfiguration: queryConfiguration)
         )
 
-        let isSearching = CombineLatest(isFiltering, searchTextOutput.isSearching).map { $0 || $1 }
         let sectors = Merge(filterResult.map { _ in [] }, subscription.cashFlows).map { Self.groupCashFlows($0) }
 
         let listOutput = listVM.transform(input: .init(
             sectors: sectors.asDriver,
             isMoreItems: subscription.canFetchMore.asDriver,
-            isSearching: isSearching.asDriver,
+            isSearching: isFiltering.asDriver,
             isLoading: $isLoading.asDriver)
         )
 

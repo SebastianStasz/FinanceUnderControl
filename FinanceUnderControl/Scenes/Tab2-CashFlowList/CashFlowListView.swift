@@ -17,7 +17,6 @@ struct CashFlowListView: BaseView {
             CashFlowCardView($0)
                 .actions(edit: presentEditForm(for: $0), delete: reportDeleteCashFlow($0))
         }
-        .searchable(text: $viewModel.searchText)
         .confirmationDialog(String.settings_select_action, isPresented: $isDeleteConfirmationShown) {
             Button.delete(action: confirmCashFlowDeletion)
         }
