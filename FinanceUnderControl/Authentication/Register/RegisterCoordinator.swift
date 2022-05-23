@@ -15,7 +15,7 @@ final class RegisterCoordinator: Coordinator {
         case didConfirmEmail
         case didEnterPassword
         case registeredSuccessfully
-        case registrationError(AuthErrorCode)
+        case registrationError(AuthErrorCode.Code)
     }
 
     override func initializeView() -> UIViewController {
@@ -52,7 +52,7 @@ private extension RegisterCoordinator {
         navigationController?.presentResultView(viewData: viewData)
     }
 
-    func handleRegistrationError(_ error: AuthErrorCode) {
+    func handleRegistrationError(_ error: AuthErrorCode.Code) {
         switch error {
         case .emailAlreadyInUse:
             presentEmailAlreadyInUse()

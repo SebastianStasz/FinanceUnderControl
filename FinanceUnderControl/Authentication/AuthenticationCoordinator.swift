@@ -12,7 +12,7 @@ final class AuthenticationCoordinator: RootCoordinator {
 
     enum Destination {
         case didTapSignUp
-        case loginError(AuthErrorCode)
+        case loginError(AuthErrorCode.Code)
     }
 
     private let navigationController = UINavigationController()
@@ -38,7 +38,7 @@ final class AuthenticationCoordinator: RootCoordinator {
         }
     }
 
-    private func handleLoginEror(_ error: AuthErrorCode) {
+    private func handleLoginEror(_ error: AuthErrorCode.Code) {
         let resultData = ResultData.error(title: "Failed to login", message: "Something went wrong. Please try again in a moment.")
         navigationController.presentResultView(viewData: resultData)
     }

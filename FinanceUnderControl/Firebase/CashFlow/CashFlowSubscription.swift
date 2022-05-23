@@ -43,7 +43,7 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
 
         input.fetchMore
             .sinkAndStore(on: self) { vm, _ in
-                vm.limit += 25
+                vm.limit += 20
                 vm.query = vm.query.limit(to: vm.limit)
                 loadingIndicator.send(true)
             }

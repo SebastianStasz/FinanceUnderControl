@@ -46,7 +46,7 @@ final class LoginVM: ViewModel {
             }
 
         loginError.sinkAndStore(on: self) {
-            if let authErrorCode = AuthErrorCode(rawValue: $1._code) {
+            if let authErrorCode = AuthErrorCode.Code(rawValue: $1._code) {
                 switch authErrorCode {
                 case .wrongPassword, .invalidEmail, .missingEmail, .userNotFound:
                     $0.passwordMessage = "Invalid email or password."

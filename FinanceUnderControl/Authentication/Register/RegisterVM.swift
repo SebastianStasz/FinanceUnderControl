@@ -55,7 +55,7 @@ final class RegisterVM: ViewModel {
             }
 
         registrationError.sinkAndStore(on: self) {
-            if let authErrorCode = AuthErrorCode(rawValue: $1._code) {
+            if let authErrorCode = AuthErrorCode.Code(rawValue: $1._code) {
                 $0.binding.navigateTo.send(.registrationError(authErrorCode))
             }
         }

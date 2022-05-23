@@ -1,67 +1,62 @@
 # Documentation
 # https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md
 
-name: "FinanceUnderControl"
+name: FinanceUnderControl
 
 options:
-  bundleIdPrefix: "sebastian-staszczyk"
-  groupSortPosition: "bottom"
-  platform: "iOS"
+  bundleIdPrefix: sebastian-staszczyk
+  groupSortPosition: bottom
+  platform: iOS
   deploymentTarget:
-    iOS: "15.0"
+    iOS: 15.0
 
 packages:
-  FirebaseAuth:
-    url: https://github.com/firebase/firebase-ios-sdk
-    from: 8.0.0
-
-#  SSUtils:
-#    url: https://github.com/SebastianStasz/SSUtils
-#    from: 1.0.0
-#
-#  SSValidation:
-#    url: https://github.com/SebastianStasz/SSValidation
-#    from: 1.0.0
+ Firebase:
+   url: https://github.com/firebase/firebase-ios-sdk
+   from: 9.0.0
 
 localPackages:
-  - "./Packages/Domain"
-  - "./Packages/FinanceCoreData"
-  - "./Packages/Shared"
-  - "~/Developer/ss_libraries/SSValidation"
-  - "~/Developer/ss_libraries/SSUtils"
+  - ./Packages/Domain
+  - ./Packages/FinanceCoreData
+  - ./Packages/Shared
+  - ~/Developer/ss_libraries/SSValidation
+  - ~/Developer/ss_libraries/SSUtils
 
 targets:
   FinanceUnderControl:
     scheme:
       testTargets:
         - FinanceUnderControl
-        - name: "FinanceUnderControl"
+        - name: FinanceUnderControl
           parallelizable: true
       gatherCoverageData: true
     templates:
       - FinanceUnderControl
     dependencies:
-      - package: "Domain"
-      - package: "FinanceCoreData"
-      - package: "Shared"
-      - package: "SSUtils"
-      - package: "SSValidation"
-      - package: "FirebaseAuth"
+      - package: Domain
+      - package: FinanceCoreData
+      - package: Shared
+      - package: SSUtils
+      - package: SSValidation
+      - package: Firebase
+        product: FirebaseAuth
+      - package: Firebase
+        product: FirebaseFirestore
 
   FinanceUnderControlTests:
-    type: "bundle.unit-test"
-    platform: "iOS"
+    type: bundle.unit-test
+    platform: iOS
     sources:
-      - path: "FinanceUnderControlTests"
+      - path: FinanceUnderControlTests
     scheme:
       testTargets:
         - FinanceUnderControlTests
       gatherCoverageData: true
     dependencies:
-      - target: "FinanceUnderControl"
+      - target: FinanceUnderControl
 
 targetTemplates:
     FinanceUnderControl:
-      platform: "iOS"
-      type: "application"
-      sources: ["FinanceUnderControl"]
+      platform: iOS
+      type: application
+      sources: [FinanceUnderControl]

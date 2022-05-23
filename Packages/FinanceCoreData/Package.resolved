@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "ssutils",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SebastianStasz/SSUtils",
+      "state" : {
+        "revision" : "a7903bfca2c374dc4c78bd89ed93480b67fd6d8f",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "ssvalidation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SebastianStasz/SSValidation",
+      "state" : {
+        "revision" : "3f3969c745055b7e394de0d55afceba898997d90",
+        "version" : "1.0.1"
+      }
+    }
+  ],
+  "version" : 2
+}
