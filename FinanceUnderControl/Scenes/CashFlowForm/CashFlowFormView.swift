@@ -5,25 +5,29 @@
 //  Created by Sebastian Staszczyk on 20/02/2022.
 //
 
-import FinanceCoreData
 import Shared
 import SwiftUI
 
-extension Currency: Pickerable {
-    public var valueName: String {
-        code
-    }
-}
-
 struct CashFlowFormView: BaseView {
+
+    private enum Field {
+        case name, amount
+    }
+
     @ObservedObject var viewModel: CashFlowFormVM
+    @FocusState private var focusedField: Field?
 
     var baseBody: some View {
         FormView {
             Sector(.create_cash_flow_basic_label) {
                 LabeledTextField(.create_cash_flow_name, viewModel: viewModel.nameInput)
+                    .focused($focusedField, equals: .name)
+                    .onTapGesture { focusedField = .name }
                 LabeledTextField(.common_amount, viewModel: viewModel.valueInput)
+                    .focused($focusedField, equals: .amount)
+                    .onTapGesture { focusedField = .amount }
             }
+            .onSubmit(didSubmit)
 
             Sector(.create_cash_flow_more_label) {
                 LabeledPicker(.create_cash_flow_currency, elements: Currency.allCases, selection: $viewModel.formModel.currency)
@@ -35,14 +39,16 @@ struct CashFlowFormView: BaseView {
         }
         .navigationTitle(title)
         .horizontalButtons(primaryButton: primaruButton)
+        .onTapGesture { focusedField = nil }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                focusedField = .name
+            }
+        }
     }
 
     private var primaruButton: HorizontalButtons.Configuration {
         .init(viewModel.formType.confirmButtonTitle, enabled: viewModel.formModel.model.notNil, action: didTapConfirm)
-    }
-
-    private func didTapConfirm() {
-        viewModel.binding.didTapConfirm.send()
     }
 
     private var title: String {
@@ -52,6 +58,14 @@ struct CashFlowFormView: BaseView {
         case let .edit(cashFlow):
             return cashFlow.category.type == .income ? .cash_flow_edit_income : .cash_flow_edit_expense
         }
+    }
+
+    private func didTapConfirm() {
+        viewModel.binding.didTapConfirm.send()
+    }
+
+    private func didSubmit() {
+        focusedField = focusedField == .name ? .amount : nil
     }
 }
 

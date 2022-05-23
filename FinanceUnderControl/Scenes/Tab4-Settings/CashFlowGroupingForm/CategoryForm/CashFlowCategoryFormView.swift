@@ -12,12 +12,14 @@ import FinanceCoreData
 
 struct CashFlowCategoryFormView: BaseView {
     @ObservedObject var viewModel: CashFlowCategoryFormVM
+    @FocusState private var isFocused: Bool
 
     var baseBody: some View {
         FormView {
             VStack(alignment: .center, spacing: .medium) {
                 SquareView(icon: formModel.icon.rawValue, color: formModel.color.color, size: 95)
                 LabeledTextField(.create_cash_flow_name, viewModel: viewModel.nameInput, style: .secondary)
+                    .focused($isFocused)
             }
             .card()
             .padding(.horizontal, .large)
@@ -39,6 +41,8 @@ struct CashFlowCategoryFormView: BaseView {
         }
         .navigationTitle(title)
         .horizontalButtons(primaryButton: primaryButton)
+        .onTapGesture { isFocused = false }
+        .onAppearFocus($isFocused)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {

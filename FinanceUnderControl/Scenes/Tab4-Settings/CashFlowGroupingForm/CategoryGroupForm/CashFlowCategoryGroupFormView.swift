@@ -12,11 +12,13 @@ struct CashFlowCategoryGroupFormView: BaseView {
 
     @ObservedObject var viewModel: CashFlowCategoryGroupFormVM
     @State private var isDeleteGroupConfirmationPresented = false
+    @FocusState private var isFocused: Bool
 
     var baseBody: some View {
         FormView {
             LabeledTextField(.create_cash_flow_name, viewModel: viewModel.nameInput)
                 .embedInSection(.create_cash_flow_name)
+                .focused($isFocused)
 
             LazyVGrid(columns: grid, alignment: .center, spacing: .micro) {
                 ForEach(CashFlowCategoryColor.allCases) { color in
@@ -52,6 +54,8 @@ struct CashFlowCategoryGroupFormView: BaseView {
             }
         }
         .handleViewModelActions(viewModel)
+        .onTapGesture { isFocused = false }
+        .onAppearFocus($isFocused)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {

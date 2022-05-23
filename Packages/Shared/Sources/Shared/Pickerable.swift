@@ -18,3 +18,7 @@ public extension Pickerable {
 extension String: Pickerable {
     public var valueName: String { self }
 }
+
+extension Currency: Pickerable {
+    public var valueName: String { code }
+}
