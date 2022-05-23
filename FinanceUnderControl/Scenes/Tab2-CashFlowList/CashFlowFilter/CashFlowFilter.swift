@@ -32,6 +32,9 @@ struct CashFlowFilter: Equatable {
         if let currency = currency {
             filters.append(.isCurrency(currency))
         }
+        if datePickerViewData.isOn {
+            filters.append(.isDate(year: datePickerViewData.year, month: datePickerViewData.month))
+        }
         return filters
     }
 

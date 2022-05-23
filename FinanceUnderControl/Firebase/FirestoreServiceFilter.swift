@@ -10,6 +10,7 @@ import Foundation
 
 enum FirestoreServiceFilter {
     case isEqual(field: String, value: Any)
+    case areEqual(fields: [String], values: [Any])
     case contains(field: String, value: String)
 }
 
@@ -18,6 +19,10 @@ extension Query {
         switch filter.predicate {
         case let .isEqual(field, value):
             return whereField(field, isEqualTo: value)
+        case let .areEqual(fields, values):
+            var query = self
+            zip(fields, values).forEach { query = query.whereField($0.0, isEqualTo: $0.1) }
+            return query
         case let .contains(field, value):
             return whereField(field, isGreaterThanOrEqualTo: value).whereField(field, isLessThanOrEqualTo: value + "~")
         }
