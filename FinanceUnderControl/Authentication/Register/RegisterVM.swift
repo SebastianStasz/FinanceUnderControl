@@ -44,7 +44,7 @@ final class RegisterVM: ViewModel {
 
         binding.didConfirmRegistration
             .withLatestFrom(registrationData)
-            .perform(on: self, errorTracker: registrationError) { input -> AuthDataResult? in
+            .perform(isLoading: mainLoader, errorTracker: registrationError) { input -> AuthDataResult? in
                 guard let email = input.0, let password = input.1 else { return nil }
                 return try await Auth.auth().createUser(withEmail: email, password: password)
             }
@@ -55,7 +55,7 @@ final class RegisterVM: ViewModel {
             }
 
         registrationError.sinkAndStore(on: self) {
-            if let authErrorCode = AuthErrorCode(rawValue: $1._code) {
+            if let authErrorCode = AuthErrorCode.Code(rawValue: $1._code) {
                 $0.binding.navigateTo.send(.registrationError(authErrorCode))
             }
         }

@@ -19,12 +19,13 @@ final class CurrencyService {
 
         for currency in currencies {
             guard let date = currency.updateDate,
-                    Calendar.current.dateComponents([.day], from: date, to: .now).day! > 1
+                    Calendar.current.dateComponents([.day], from: date, to: .now).day! < 1
             else {
                 await updateExchangeRates(for: currency)
                 continue
             }
         }
+        try! AppVM.shared.context.save()
     }
 
     private func updateExchangeRates(for currency: CurrencyEntity) async {

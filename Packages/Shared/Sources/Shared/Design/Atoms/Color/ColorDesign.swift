@@ -7,29 +7,29 @@
 
 import Foundation
 
-enum ColorDesign: String {
+public enum ColorDesign: String {
     case accentGray = "Accent gray"
     case basic = "Basic"
 
-    enum Background: String, ColorAsset, CaseIterable, Identifiable {
+    public enum Background: String, ColorAsset, CaseIterable, Identifiable {
         case background_primary
         case background_secondary
 
-        var id: String { rawValue }
+        public var id: String { rawValue }
     }
 
-    enum AccentGray: String, ColorAsset, CaseIterable, Identifiable {
+    public enum AccentGray: String, ColorAsset, CaseIterable, Identifiable {
         case gray_medium
 
-        var id: String { rawValue }
+        public var id: String { rawValue }
     }
 
-    enum Basic: String, ColorAsset, CaseIterable, Identifiable {
+    public enum Basic: String, ColorAsset, CaseIterable, Identifiable {
         case basic_primary
         case basic_primary_inverted
         case basic_secondary
 
-        var id: String { rawValue }
+        public var id: String { rawValue }
     }
 }
 
@@ -37,7 +37,7 @@ enum ColorDesign: String {
 
 extension ColorDesign: Identifiable, CaseIterable {
 
-    var id: String { rawValue }
+    public var id: String { rawValue }
 
     var title: String {
         rawValue.capitalized

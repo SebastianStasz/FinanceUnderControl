@@ -34,7 +34,7 @@ final class LoginVM: ViewModel {
 
         binding.didTapSignIn
             .withLatestFrom(loginData)
-            .perform(on: self, errorTracker: loginError) { input -> AuthDataResult? in
+            .perform(isLoading: mainLoader, errorTracker: loginError) { input -> AuthDataResult? in
                 guard let email = input.0, let password = input.1 else { return nil }
                 return try await Auth.auth().signIn(withEmail: email, password: password)
             }
@@ -46,7 +46,7 @@ final class LoginVM: ViewModel {
             }
 
         loginError.sinkAndStore(on: self) {
-            if let authErrorCode = AuthErrorCode(rawValue: $1._code) {
+            if let authErrorCode = AuthErrorCode.Code(rawValue: $1._code) {
                 switch authErrorCode {
                 case .wrongPassword, .invalidEmail, .missingEmail, .userNotFound:
                     $0.passwordMessage = "Invalid email or password."

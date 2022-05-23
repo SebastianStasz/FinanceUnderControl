@@ -54,8 +54,8 @@ final class CashFlowCategoryFormVM: ViewModel {
         didTapConfirm
             .filter { $0 != initialFormModel }
             .compactMap { $0.model(for: formType) }
-            .perform(on: self, errorTracker: errorTracker) { [weak self] in
-                try await self?.service.createOrEdit($0)
+            .perform(on: self, isLoading: mainLoader, errorTracker: errorTracker) { vm, category in
+                try await vm.service.createOrEdit(category)
             }
             .sinkAndStore(on: self) { vm, _ in
                 vm.binding.navigateTo.send(.dismiss)

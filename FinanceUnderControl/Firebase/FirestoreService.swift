@@ -39,14 +39,9 @@ struct FirestoreService {
         try await db.document(reference.path).getDocument()
     }
 
-    func getDocuments<T: DocumentFieldOrder>(
-        from collection: Collection,
-        orderedBy orderField: T,
-        filteredBy filters: [FirestoreServiceFilter] = [],
-        lastDocument: QueryDocumentSnapshot? = nil
-    ) async throws -> [QueryDocumentSnapshot] {
+    func getDocuments<T: FirestoreDocument>(from collection: Collection, configuration: QueryConfiguration<T>) async throws -> [QueryDocumentSnapshot] where T == T.Order.Document {
         try await withUnsafeThrowingContinuation { (continuation: UnsafeContinuation<[QueryDocumentSnapshot], Error>) in
-            getQuery(for: collection, orderedBy: orderField, filteredBy: filters, lastDocument: lastDocument)
+            getQuery(for: collection, configuration: configuration)
                 .getDocuments { snapShot, error in
                     if let snapShot = snapShot {
                         continuation.resume(returning: snapShot.documents)
@@ -57,16 +52,13 @@ struct FirestoreService {
         }
     }
 
-    func subscribe<T: DocumentFieldOrder>(
-        to collection: Collection,
-        orderedBy orderField: T,
-        filteredBy filters: [FirestoreServiceFilter] = [],
-        lastDocument: QueryDocumentSnapshot? = nil
-    ) -> FirestoreSubscription<[QueryDocumentSnapshot]> {
+    func subscribe<T: FirestoreDocument>(to collection: Collection, configuration: QueryConfiguration<T>) -> FirestoreSubscription<[QueryDocumentSnapshot]> where T == T.Order.Document {
         let documentsSubject = PassthroughSubject<[QueryDocumentSnapshot], Never>()
+        let firstResultDocument = documentsSubject.map { $0.first }.asDriver
+        let lastResultDocument = documentsSubject.map { $0.last }.asDriver
         let errorsSubject = PassthroughSubject<Error, Never>()
 
-        getQuery(for: collection, orderedBy: orderField, filteredBy: filters, lastDocument: lastDocument)
+        getQuery(for: collection, configuration: configuration)
             .addSnapshotListener { querySnapshot, error in
                 if let querySnapshot = querySnapshot {
                     documentsSubject.send(querySnapshot.documents)
@@ -74,7 +66,21 @@ struct FirestoreService {
                     errorsSubject.send(error)
                 }
             }
-        return FirestoreSubscription(output: documentsSubject.eraseToAnyPublisher(), error: errorsSubject.eraseToAnyPublisher())
+        return FirestoreSubscription(output: documentsSubject.eraseToAnyPublisher(), firstDocument: firstResultDocument, lastDocument: lastResultDocument, error: errorsSubject.eraseToAnyPublisher())
+    }
+
+    func getQuery<T: FirestoreDocument>(for collection: Collection, configuration: QueryConfiguration<T>) -> Query where T == T.Order.Document {
+        var query: Query = userDocument.collection(collection.name)
+
+        query = query.filter(by: configuration.filters)
+        query = query.order(by: configuration.sorters)
+        query = query.order(by: "id")
+
+        if let limit = configuration.limit {
+            query = query.limit(to: limit)
+        }
+
+        return query
     }
 }
 
@@ -86,25 +92,5 @@ private extension FirestoreService {
 
     func documentReference(withId id: String, in collection: Collection) -> DocumentReference {
         userDocument.collection(collection.name).document(collection.documentIdPrefix + id)
-    }
-
-    func getQuery(
-        for collection: Collection,
-        orderedBy order: DocumentFieldOrder,
-        filteredBy filters: [FirestoreServiceFilter],
-        lastDocument: QueryDocumentSnapshot?
-    ) -> Query {
-        var query = userDocument.collection(collection.name)
-            .order(by: order.orderField.name, descending: order.orderField.order == .reverse)
-
-        filters.forEach {
-            query = query.filter(by: $0)
-        }
-
-//        if let lastDocument = lastDocument {
-//            query = query.start(afterDocument: lastDocument)
-//        }
-
-        return query
     }
 }

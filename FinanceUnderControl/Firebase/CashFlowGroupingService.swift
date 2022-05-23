@@ -39,16 +39,18 @@ final class CashFlowGroupingService {
     }
 
     private func subscribeGroups() -> FirestoreSubscription<[CashFlowCategoryGroup]> {
-        let subscription = firestore.subscribe(to: .cashFlowCategoryGroups, orderedBy: CashFlowCategoryGroup.Order.name())
+        let configuration = QueryConfiguration<CashFlowCategoryGroup>(sorters: [CashFlowCategoryGroup.Order.name()])
+        let subscription = firestore.subscribe(to: .cashFlowCategoryGroups, configuration: configuration)
         let groups = subscription.output
             .map { $0.map { CashFlowCategoryGroup(from: $0) } }
             .eraseToAnyPublisher()
 
-        return .init(output: groups, error: subscription.error)
+        return .init(output: groups, firstDocument: subscription.firstDocument, lastDocument: subscription.lastDocument, error: subscription.error)
     }
 
     private func subscribeCategories() -> FirestoreSubscription<[CashFlowCategory]> {
-        let subscription = firestore.subscribe(to: .cashFlowCategories, orderedBy: CashFlowCategory.Order.name())
+        let configuration = QueryConfiguration<CashFlowCategory>(sorters: [CashFlowCategory.Order.name()])
+        let subscription = firestore.subscribe(to: .cashFlowCategories, configuration: configuration)
         let categories = Publishers.CombineLatest(subscription.output, $groups)
             .map { result in
                 result.0.map { doc -> CashFlowCategory in
@@ -59,6 +61,6 @@ final class CashFlowGroupingService {
             }
             .eraseToAnyPublisher()
 
-        return .init(output: categories, error: subscription.error)
+        return .init(output: categories, firstDocument: subscription.firstDocument, lastDocument: subscription.lastDocument, error: subscription.error)
     }
 }

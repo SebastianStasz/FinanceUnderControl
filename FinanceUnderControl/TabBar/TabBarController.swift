@@ -33,7 +33,7 @@ final class TabBarController: UITabBarController {
 
         UITabBar.appearance().isHidden = true
         let customTabBar = UIHostingController(rootView: TabBarView(viewModel: viewModel))
-        customTabBar.view.backgroundColor = UIColor(.backgroundPrimary)
+        customTabBar.view.backgroundColor = UIColor(named: ColorDesign.Background.background_primary.rawValue)
         view.addSubview(customTabBar.view)
 
         customTabBar.view.translatesAutoresizingMaskIntoConstraints = false

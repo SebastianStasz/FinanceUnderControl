@@ -56,20 +56,19 @@ final class CashFlowCategoryGroupFormVM: ViewModel {
         didTapConfirm
             .filter { $0 != initialFormModel }
             .compactMap { $0.model(for: formType) }
-            .perform(on: self) { [weak self] in
-                guard let self = self else { return }
-                let categories = self.formModel.categoriesToUpdate(to: $0)
-                try await self.groupService.createOrEdit($0)
-                try await self.categoryService.createOrEdit(categories)
+            .perform(on: self, isLoading: mainLoader) { vm, group in
+                let categories = vm.formModel.categoriesToUpdate(to: group)
+                try await vm.groupService.createOrEdit(group)
+                try await vm.categoryService.createOrEdit(categories)
             }
             .sinkAndStore(on: self) { vm, _ in
                 vm.binding.navigateTo.send(.dismiss)
             }
 
         binding.confirmGroupDeletion
-            .perform(on: self) { [weak self] in
-                guard case let .edit(group) = formType else { return }
-                try await self?.groupService.delete(group)
+            .perform(on: self, isLoading: mainLoader) { vm, _ in
+                guard case let .edit(group) = vm.formType else { return }
+                try await vm.groupService.delete(group)
             }
             .sinkAndStore(on: self) { vm, _ in
                 vm.binding.navigateTo.send(.dismiss)

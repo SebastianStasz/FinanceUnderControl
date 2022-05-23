@@ -10,11 +10,12 @@ import Shared
 
 extension CashFlow {
 
-    enum Filter {
+    enum Filter: DocumentFilter {
         case nameContains(String)
         case isType(CashFlowType)
         case isCategory(CashFlowCategory)
         case isCurrency(Currency)
+        case isDate(year: Int, month: Int)
 
         var predicate: FirestoreServiceFilter {
             switch self {
@@ -26,6 +27,8 @@ extension CashFlow {
                 return .isEqual(field: Field.categoryId.key, value: category.id)
             case let .isCurrency(currency):
                 return .isEqual(field: Field.currency.key, value: currency.code)
+            case let .isDate(year, month):
+                return .areEqual(fields: [Field.year.key, Field.month.key], values: [year, month])
             }
         }
     }

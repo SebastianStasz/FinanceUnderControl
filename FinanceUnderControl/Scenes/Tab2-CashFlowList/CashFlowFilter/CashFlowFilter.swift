@@ -10,17 +10,15 @@ import Shared
 import SSValidation
 
 struct CashFlowFilter: Equatable {
-    var minimumValue: Double?
-    var maximumValue: Double?
     var currency: Currency?
     var cashFlowCategory: CashFlowCategory?
-    var datePickerViewData: DateRangePickerViewData = .init()
+    var datePickerViewData: MonthAndYearPickerVD = .init()
     var cashFlowSelection: CashFlowSelection = .all {
         didSet { cashFlowCategory = nil }
     }
 
     var isFiltering: Bool {
-        minimumValue != nil || maximumValue != nil || currency != nil || cashFlowCategory != nil || datePickerViewData.isOn || cashFlowSelection != .all
+        currency != nil || cashFlowCategory != nil || datePickerViewData.isOn || cashFlowSelection != .all
     }
 
     var firestoreFilters: [CashFlow.Filter] {
@@ -34,6 +32,9 @@ struct CashFlowFilter: Equatable {
         if let currency = currency {
             filters.append(.isCurrency(currency))
         }
+        if datePickerViewData.isOn {
+            filters.append(.isDate(year: datePickerViewData.year, month: datePickerViewData.month))
+        }
         return filters
     }
 
@@ -41,8 +42,6 @@ struct CashFlowFilter: Equatable {
         cashFlowSelection = .all
         cashFlowCategory = nil
         datePickerViewData = .init()
-        minimumValue = nil
-        maximumValue = nil
         currency = nil
     }
 }

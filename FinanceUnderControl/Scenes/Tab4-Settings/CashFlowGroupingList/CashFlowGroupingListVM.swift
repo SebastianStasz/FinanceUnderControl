@@ -20,9 +20,11 @@ final class CashFlowGroupingListVM: ViewModel {
 
     let type: CashFlowType
     let binding = Binding()
-    @Published private var storage = CashFlowGroupingService.shared
+    let listVM = BaseListVM<CashFlowCategory>()
+    private var storage = CashFlowGroupingService.shared
     private let categoryService = CashFlowCategoryService()
-    @Published private(set) var listSectors: [ListSector<CashFlowCategory>] = []
+
+    @Published var listVD = BaseListVD<CashFlowCategory>.initialState
 
     init(for type: CashFlowType, coordinator: Coordinator) {
         self.type = type
@@ -32,8 +34,8 @@ final class CashFlowGroupingListVM: ViewModel {
     override func viewDidLoad() {
         let errorTracker = DriverSubject<Error>()
 
-        CombineLatest(storage.groupsSubscription(type: type), storage.categoriesSubscription(type: type))
-            .map { result in
+        let sectors = CombineLatest(storage.groupsSubscription(type: type), storage.categoriesSubscription(type: type))
+            .map { result -> [ListSector<CashFlowCategory>] in
                 var sectors: [ListSector<CashFlowCategory>] = []
                 let ungroupedCategories = result.1.filter { $0.group.isNil }
                 sectors = result.0.map { [weak self] group in
@@ -44,15 +46,20 @@ final class CashFlowGroupingListVM: ViewModel {
                 sectors.append(ListSector("Ungrouped", elements: ungroupedCategories, visibleIfEmpty: false))
                 return sectors
             }
-            .assign(to: &$listSectors)
+
+        let listOutput = listVM.transform(input: .init(
+            sectors: sectors.asDriver,
+            isLoading: $isLoading.asDriver)
+        )
+
+        listOutput.viewData.assign(to: &$listVD)
 
         binding.confirmCategoryDeletion
             .withLatestFrom(binding.categoryToDelete)
-            .perform(on: self, errorTracker: errorTracker) { [weak self] in
-                try await self?.categoryService.delete($0)
+            .perform(on: self, isLoading: mainLoader, errorTracker: errorTracker) { vm, category in
+                try await vm.categoryService.delete(category)
             }
-            .sink {}
-            .store(in: &cancellables)
+            .sink {}.store(in: &cancellables)
 
         errorTracker
             .sinkAndStore(on: self) { _, error in

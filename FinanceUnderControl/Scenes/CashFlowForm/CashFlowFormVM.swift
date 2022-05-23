@@ -66,7 +66,7 @@ final class CashFlowFormVM: ViewModel {
         didTapConfirm
             .filter { $0 != initialFormModel }
             .compactMap { $0.model }
-            .perform(on: self, errorTracker: errorTracker) {
+            .perform(isLoading: mainLoader, errorTracker: errorTracker) { 
                 try await service.createOrEdit($0)
             }
             .sinkAndStore(on: self) { vm, _ in

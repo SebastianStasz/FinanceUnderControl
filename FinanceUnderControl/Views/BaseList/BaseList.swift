@@ -5,16 +5,19 @@
 //  Created by Sebastian Staszczyk on 01/12/2021.
 //
 
-import FinanceCoreData
 import Shared
 import SwiftUI
 import SSUtils
 
 struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
+    typealias ViewModel = BaseListVM<T>
+    typealias ViewData = BaseListVD<T>
 
-    private let isLoading: Bool
-    private let emptyStateVD: EmptyStateVD
-    private let sectors: [ListSector<T>]
+    @ObservedObject private var viewModel: ViewModel
+
+    private let viewData: ViewData
+    private let emptyTitle: String
+    private let emptyDescription: String
     private let rowView: (T) -> RowView
     var deleteElement: ((T) -> Void)?
 
@@ -22,12 +25,17 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
         List {
             Group {
                 if isListWithoutSectors {
-                    listForSector(sectors.first!)
+                    listForSector(viewData.sectors.first!)
                 } else {
-                    ForEach(sectors) { sector in
+                    ForEach(viewData.sectors) { sector in
                         Section(sector.header, shouldBePresented: sector.shouldBePresented) {
                             listForSector(sector)
                         }
+                    }
+                }
+                if viewData.isMoreItems {
+                    Text("Loading").onAppear {
+                        viewModel.fetchMore.send()
                     }
                 }
             }
@@ -41,8 +49,12 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
         .background(Color.backgroundPrimary)
         .environment(\.defaultMinListRowHeight, 1)
         .environment(\.defaultMinListHeaderHeight, 1)
-        .emptyState(isEmpty: sectors.isEmpty, isLoading: isLoading, viewData: emptyStateVD)
-        .overlay(LoadingIndicator(isLoading: isLoading))
+        .emptyState(isEmpty: viewData.isEmpty, isLoading: viewData.isLoading, viewData: emptyStateVD)
+        .overlay(LoadingIndicator(isLoading: viewData.isLoading))
+    }
+
+    private var emptyStateVD: EmptyStateVD {
+        .init(title: emptyTitle, description: emptyDescription, isSearching: viewData.isSearching)
     }
 
     private func listForSector(_ sector: ListSector<T>) -> some View {
@@ -64,19 +76,21 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
     }
 
     private var isListWithoutSectors: Bool {
-        sectors.count == 1 && sectors.first?.title == ListSector<T>.unvisibleSectorTitle
+        viewData.sectors.count == 1 && viewData.sectors.first?.title == ListSector<T>.unvisibleSectorTitle
     }
 
     fileprivate init(
-        isLoading: Bool,
-        emptyStateVD: EmptyStateVD,
-        sectors: [ListSector<T>],
+        viewModel: ViewModel,
+        viewData: ViewData,
+        emptyTitle: String,
+        emptyDescription: String,
         deleteElement: ((T) -> Void)?,
         @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
-        self.isLoading = isLoading
-        self.emptyStateVD = emptyStateVD
-        self.sectors = sectors
+        self.viewModel = viewModel
+        self.viewData = viewData
+        self.emptyTitle = emptyTitle
+        self.emptyDescription = emptyDescription
         self.deleteElement = deleteElement
         self.rowView = rowView
         UITableView.appearance().sectionFooterHeight = .small
@@ -88,43 +102,35 @@ struct BaseList<T: Identifiable, RowView: View>: View where T: Equatable {
 
 extension BaseList {
 
-    init(isLoading: Bool = false,
-         emptyStateVD: EmptyStateVD,
-         sectors: [ListSector<T>],
+    init(viewModel: ViewModel,
+         viewData: ViewData,
+         emptyTitle: String,
+         emptyDescription: String,
          @ViewBuilder rowView: @escaping (T) -> RowView
     ) {
-        self.init(isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: sectors, deleteElement: nil, rowView: rowView)
+        self.init(viewModel: viewModel, viewData: viewData, emptyTitle: emptyTitle, emptyDescription: emptyDescription, deleteElement: nil, rowView: rowView)
     }
 
-    init(isLoading: Bool = false,
-         emptyStateVD: EmptyStateVD,
-         elements: [T],
-         @ViewBuilder rowView: @escaping (T) -> RowView
-    ) {
-        self.init(isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: ListSector.unvisibleSector(elements), deleteElement: nil, rowView: rowView)
-    }
+//    init(viewData: ViewData,
+//         emptyStateVD: EmptyStateVD,
+//         @ViewBuilder rowView: @escaping (T) -> RowView
+//    ) {
+//        self.init(isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: ListSector.unvisibleSector(elements), deleteElement: nil, onLastItemAppear: onLastItemAppear, isMoreItems: isMoreItems, rowView: rowView)
+//    }
 
-    init(isLoading: Bool = false,
-         emptyStateVD: EmptyStateVD,
-         elements: FetchedResults<T>,
-         @ViewBuilder rowView: @escaping (T) -> RowView
-    ) where T: Entity {
-        self.init(isLoading: isLoading, emptyStateVD: emptyStateVD, elements: elements.map { $0 }, rowView: rowView)
-    }
-
-    init<I>(isLoading: Bool = false,
-            emptyStateVD: EmptyStateVD,
-            sectorIdMapper: (I) -> String,
-            sectors: SectionedFetchResults<I, T>,
-            @ViewBuilder rowView: @escaping (T) -> RowView
-    ) where T: Entity {
-        let sectors = sectors.map { ListSector(sectorIdMapper($0.id), elements: $0.map { $0 }) }
-        self.init(isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: sectors, rowView: rowView)
-    }
+//    init(isLoading: Bool = false,
+//         emptyStateVD: EmptyStateVD,
+//         elements: FetchedResults<T>,
+//         onLastItemAppear: DriverSubject<Void>? = nil,
+//         isMoreItems: Binding<Bool> = .constant(false),
+//         @ViewBuilder rowView: @escaping (T) -> RowView
+//    ) where T: Entity {
+//        self.init(isLoading: isLoading, emptyStateVD: emptyStateVD, elements: elements.map { $0 }, onLastItemAppear: onLastItemAppear, isMoreItems: isMoreItems, rowView: rowView)
+//    }
 }
 
 extension BaseList {
     func onDelete(perform action: ((T) -> Void)?) -> BaseList {
-        BaseList(isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: sectors, deleteElement: action, rowView: rowView)
+        BaseList(viewModel: viewModel, viewData: viewData, emptyTitle: emptyTitle, emptyDescription: emptyDescription, deleteElement: action, rowView: rowView)
     }
 }

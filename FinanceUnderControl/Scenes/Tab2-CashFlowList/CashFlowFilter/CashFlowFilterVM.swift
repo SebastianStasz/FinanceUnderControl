@@ -22,33 +22,32 @@ final class CashFlowFilterVM: ViewModel {
     @Published private(set) var categories: [CashFlowCategory] = []
 
     let binding = Binding()
-    let minValueInput = DoubleInputVM(validator: .alwaysValid)
-    let maxValueInput = DoubleInputVM(validator: .alwaysValid)
 
     private var initialFilter = CashFlowFilter()
     private let storage = CashFlowGroupingService.shared
 
     func filteringResult() -> AnyPublisher<CashFlowFilter, Never> {
-        storage.$categories.assign(to: &$categories)
-        minValueInput.result().weakAssign(to: \.filter.minimumValue, on: self)
-        maxValueInput.result().weakAssign(to: \.filter.maximumValue, on: self)
+        $filter.flatMap { [weak self] filter -> AnyPublisher<[CashFlowCategory], Never> in
+            guard let self = self, let type = filter.cashFlowSelection.type else { return Just([]).asDriver }
+            return self.storage.categoriesSubscription(type: type)
+        }
+        .assign(to: &$categories)
 
         let resetFilters = binding.resetFilters
-            .handleEvents(on: self) { vm, _ in vm.filter.resetToDefaultValues() }
+            .onNext(on: self) { vm, _ in vm.filter.resetToDefaultValues() }
 
-        return Merge(resetFilters, binding.applyFilters)
+        return Merge3(Just(()), resetFilters, binding.applyFilters)
             .compactMap { [weak self] _ -> CashFlowFilter? in
                 guard let self = self else { return nil }
                 self.initialFilter = self.filter
                 self.binding.dismiss.send()
                 return self.filter
             }
+            .removeDuplicates()
             .eraseToAnyPublisher()
     }
 
     override func viewDidDisappear() {
         filter = initialFilter
-        minValueInput.setValue(to: filter.minimumValue)
-        maxValueInput.setValue(to: filter.maximumValue)
     }
 }

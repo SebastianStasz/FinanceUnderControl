@@ -12,22 +12,16 @@ public struct LabeledDatePicker: View {
 
     private let title: String
     private let components: DatePicker<Text>.Components
-    private let partialRangeFrom: PartialRangeFrom<Date>?
-    private let partialRangeThrough: PartialRangeThrough<Date>?
     @Binding private var selectedDate: Date
 
-    private init(
+    public init(
         _ title: String,
         selection selectedDate: Binding<Date>,
-        components: DatePicker<Text>.Components = .date,
-        partialRangeFrom: PartialRangeFrom<Date>? = nil,
-        partialRangeThrough: PartialRangeThrough<Date>? = nil
+        components: DatePicker<Text>.Components = .date
     ) {
         self.title = title
         self._selectedDate = selectedDate
         self.components = components
-        self.partialRangeFrom = partialRangeFrom
-        self.partialRangeThrough = partialRangeThrough
     }
 
     public var body: some View {
@@ -38,17 +32,9 @@ public struct LabeledDatePicker: View {
     }
 
     private var datePicker: some View {
-        Group {
-            if let dateRange = partialRangeThrough {
-                DatePicker(title, selection: $selectedDate, in: dateRange, displayedComponents: components)
-            } else if let dateRange = partialRangeFrom {
-                DatePicker(title, selection: $selectedDate, in: dateRange, displayedComponents: components)
-            } else {
-                DatePicker(title, selection: $selectedDate, displayedComponents: components)
-            }
-        }
-        .labelsHidden()
-        .colorMultiply(.clear)
+        DatePicker(title, selection: $selectedDate, displayedComponents: components)
+            .labelsHidden()
+            .colorMultiply(.clear)
     }
 }
 
@@ -61,33 +47,5 @@ struct LabeledDatePicker_Previews: PreviewProvider {
             LabeledDatePicker("Picker title", selection: .constant(.now)).darkScheme()
         }
         .sizeThatFits()
-    }
-}
-
-// MARK: - Initializers
-
-public extension LabeledDatePicker {
-
-    init(_ title: String,
-         selection: Binding<Date>,
-         components: DatePicker<Text>.Components = .date
-    ) {
-        self.init(title, selection: selection, components: components, partialRangeFrom: nil, partialRangeThrough: nil)
-    }
-
-    init(_ title: String,
-         selection: Binding<Date>,
-         components: DatePicker<Text>.Components = .date,
-         in dateRange: PartialRangeFrom<Date>
-    ) {
-        self.init(title, selection: selection, components: components, partialRangeFrom: dateRange)
-    }
-
-    init(_ title: String,
-         selection: Binding<Date>,
-         components: DatePicker<Text>.Components = .date,
-         in dateRange: PartialRangeThrough<Date>
-    ) {
-        self.init(title, selection: selection, components: components, partialRangeThrough: dateRange)
     }
 }

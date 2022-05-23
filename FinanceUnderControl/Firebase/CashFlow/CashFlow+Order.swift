@@ -9,16 +9,16 @@ import Foundation
 
 extension CashFlow {
 
-    enum Order: DocumentFieldOrder {
+    enum Order: DocumentOrder {
         case name(SortOrder = .forward)
         case date(SortOrder = .reverse)
 
-        var orderField: OrderField {
+        var orderField: OrderField<CashFlow> {
             switch self {
             case let .name(order):
-                return .init(name: Field.nameLowercase.key, order: order)
+                return .init(field: .nameLowercase, order: order)
             case let .date(order):
-                return .init(name: Field.date.key, order: order)
+                return .init(field: .date, order: order)
             }
         }
     }

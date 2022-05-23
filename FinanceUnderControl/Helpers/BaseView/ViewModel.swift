@@ -12,6 +12,7 @@ import SSUtils
 class ViewModel: ObservableObject, CombineHelper {
 
     @Published var isLoading = false
+    let mainLoader = DriverState(false)
 
     var cancellables: Set<AnyCancellable> = []
     private let coordinator: CoordinatorProtocol?
@@ -19,6 +20,8 @@ class ViewModel: ObservableObject, CombineHelper {
     init(coordinator: CoordinatorProtocol? = nil) {
         self.coordinator = coordinator
         commonInit()
+
+        mainLoader.assign(to: &$isLoading)
     }
 
     func commonInit() {}

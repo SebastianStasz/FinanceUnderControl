@@ -57,9 +57,10 @@ struct CashFlowFormView: BaseView {
 
 // MARK: - Preview
 
-//struct CashFlowFormView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CashFlowFormView(for: .new(for: .income))
-//        CashFlowFormView(for: .new(for: .income)).darkScheme()
-//    }
-//}
+struct CashFlowFormView_Previews: PreviewProvider {
+    static var previews: some View {
+        let viewModel = CashFlowFormVM(for: .new(.expense), coordinator: PreviewCoordinator())
+        CashFlowFormView(viewModel: viewModel)
+        CashFlowFormView(viewModel: viewModel).darkScheme()
+    }
+}

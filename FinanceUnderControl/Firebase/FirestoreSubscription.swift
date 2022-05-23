@@ -6,10 +6,13 @@
 //
 
 import Combine
+import FirebaseFirestore
 import Foundation
 
 struct FirestoreSubscription<T> {
     let output: AnyPublisher<T, Never>
+    let firstDocument: AnyPublisher<QueryDocumentSnapshot?, Never>
+    let lastDocument: AnyPublisher<QueryDocumentSnapshot?, Never>
     let error: AnyPublisher<Error, Never>
 }
 
