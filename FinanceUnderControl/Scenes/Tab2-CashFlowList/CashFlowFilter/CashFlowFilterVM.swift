@@ -48,6 +48,7 @@ final class CashFlowFilterVM: ViewModel {
                 self.binding.dismiss.send()
                 return self.filter
             }
+            .removeDuplicates()
             .eraseToAnyPublisher()
     }
 
