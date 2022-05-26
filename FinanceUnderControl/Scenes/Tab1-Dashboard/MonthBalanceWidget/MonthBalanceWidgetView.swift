@@ -10,18 +10,27 @@ import SwiftUI
 import SSUtils
 
 struct MonthBalanceWidgetView: View {
-    @StateObject private var viewModel = MonthBalanceWidgetVM()
+
+    let monthBalance: MonthBalance
+
+    private var income: Money {
+        monthBalance.income ?? .init(0, currency: .PLN)
+    }
+
+    private var expense: Money {
+        monthBalance.expense ?? .init(0, currency: .PLN)
+    }
 
     var body: some View {
         HStack(spacing: .medium) {
-            BalanceIndicatorView(incomesValue: viewModel.monthBalance.income.value,
-                                 expensesValue: viewModel.monthBalance.expense.value)
+            BalanceIndicatorView(incomesValue: income.value,
+                                 expensesValue: expense.value)
             .frame(width: 80, height: 80)
             .padding(4)
 
             VStack(spacing: .medium) {
-                MoneyView(from: viewModel.monthBalance.income, type: .income)
-                MoneyView(from: viewModel.monthBalance.expense, type: .expense)
+                MoneyView(from: income, type: .income)
+                MoneyView(from: expense, type: .expense)
             }
             .infiniteWidth()
         }
@@ -31,10 +40,10 @@ struct MonthBalanceWidgetView: View {
 
     @ViewBuilder
     private var loadingIndicator: some View {
-//        if viewModel.isLoading {
+        if monthBalance.isLoading {
             Color.backgroundSecondary.overlay(ProgressView())
                 .cornerRadius(.base)
-//        }
+        }
     }
 }
 
@@ -43,8 +52,8 @@ struct MonthBalanceWidgetView: View {
 struct MonthBalanceWidgetView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            MonthBalanceWidgetView()
-            MonthBalanceWidgetView().darkScheme()
+            MonthBalanceWidgetView(monthBalance: .empty)
+            MonthBalanceWidgetView(monthBalance: .empty).darkScheme()
         }
         .sizeThatFits()
     }

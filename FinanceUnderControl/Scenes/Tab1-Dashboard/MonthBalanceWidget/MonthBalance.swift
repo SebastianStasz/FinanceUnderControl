@@ -9,11 +9,14 @@ import Foundation
 import Shared
 
 struct MonthBalance {
-    let income: Money
-    let expense: Money
+    let income: Money?
+    let expense: Money?
+
+    var isLoading: Bool {
+        income.isNil || expense.isNil
+    }
 
     static var empty: MonthBalance {
-        let empty = Money(0, currency: .PLN)
-        return .init(income: empty, expense: empty)
+        .init(income: nil, expense: nil)
     }
 }
