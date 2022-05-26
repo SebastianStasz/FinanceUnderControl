@@ -14,7 +14,6 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
     typealias Document = CashFlow
 
     struct Input {
-        let fetchMore: Driver<Void>
         let queryConfiguration: Driver<QueryConfiguration<Document>>
     }
 
@@ -29,29 +28,21 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
     private let firestore = FirestoreService.shared
     private let storage = CashFlowGroupingService.shared
     private var listener: ListenerRegistration?
-    private var limit = 10
 
     private let errorTracker = DriverSubject<Error>()
     private let documents = DriverSubject<[QueryDocumentSnapshot]>()
 
-    private lazy var query = firestore.getQuery(for: .cashFlows, configuration: QueryConfiguration<Document>(sorters: [Order.date(.reverse)], limit: limit)) {
+    private lazy var query = firestore.getQuery(for: .cashFlows, configuration: QueryConfiguration<Document>(sorters: [Order.date(.reverse)], limit: 0)) {
         didSet { updateListener() }
     }
 
     func transform(input: Input) -> Output {
         let loadingIndicator = DriverState(false)
 
-        input.fetchMore
-            .sinkAndStore(on: self) { vm, _ in
-                vm.limit += 20
-                vm.query = vm.query.limit(to: vm.limit)
-                loadingIndicator.send(true)
-            }
-
-        input.queryConfiguration
-            .sinkAndStore(on: self, action: { vm, configuration in
-                vm.limit = 10
+        let configuration = input.queryConfiguration
+            .onNext(on: self, perform: { vm, configuration in
                 vm.query = vm.firestore.getQuery(for: .cashFlows, configuration: configuration)
+                loadingIndicator.send(true)
             })
 
         let cashFlows = CombineLatest(documents, storage.$categories)
@@ -62,12 +53,13 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
                     return CashFlow(from: doc, category: category)
                 }
             }
-            .onNext { _ in loadingIndicator.send(false) }
 
         let canFetchMore = cashFlows
-            .map(with: self, transform: { vm, cashFlows in
-                !(vm.limit > cashFlows.count)
-            })
+            .withLatestFrom(configuration) { cashFlows, config -> Bool in
+                guard let limit = config.limit else { return false }
+                return !(cashFlows.count < limit)
+            }
+            .onNext { _ in loadingIndicator.send(false) }
 
         return Output(cashFlows: cashFlows.asDriver,
                       canFetchMore: canFetchMore.asDriver,

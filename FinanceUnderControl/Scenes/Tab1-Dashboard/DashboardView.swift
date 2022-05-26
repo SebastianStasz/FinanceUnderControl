@@ -15,7 +15,7 @@ struct DashboardView: View {
     var body: some View {
         FormView {
             Sector("Current month balance") {
-                MonthBalanceWidgetView()
+                MonthBalanceWidgetView(monthBalance: viewModel.monthBalance)
             }
 
             if let topExpenses = viewModel.topExpenses {
@@ -24,7 +24,6 @@ struct DashboardView: View {
             }
         }
         .navigationBarHidden(true)
-        .task { await viewModel.loadData() }
     }
 }
 

@@ -25,6 +25,7 @@ final class CashFlowListVM: ViewModel {
     private let cashFlowSubscription = CashFlowSubscription()
     let listVM = BaseListVM<CashFlow>()
     let binding = Binding()
+    private var limit = 10
 
     @Published var listVD = BaseListVD<CashFlow>.initialState
     @Published var isFiltering = false
@@ -36,17 +37,16 @@ final class CashFlowListVM: ViewModel {
 
     override func viewDidLoad() {
         let filterResult = cashFlowFilterVM.filteringResult()
+            .onNext(on: self) { vm, _ in vm.limit = 10 }
+
+        let fetchMore = binding.fetchMoreCashFlows
+            .onNext(on: self) { vm, _ in vm.limit += 20 }
+
+        let queryConfiguration = CombineLatest(filterResult, fetchMore.prepend(()))
+            .map(with: self) { QueryConfiguration<CashFlow>(filters: $1.0.firestoreFilters, sorters: [CashFlow.Order.date()], limit: $0.limit) }
+
         let isFiltering = filterResult.map { $0.isFiltering }.removeDuplicates()
-
-        let queryConfiguration = filterResult.map(with: self) { vm, filter in
-            QueryConfiguration<CashFlow>(filters: filter.firestoreFilters, sorters: [CashFlow.Order.date()], limit: 10)
-        }
-
-        let subscription = cashFlowSubscription.transform(input: .init(
-            fetchMore: binding.fetchMoreCashFlows.asDriver,
-            queryConfiguration: queryConfiguration)
-        )
-
+        let subscription = cashFlowSubscription.transform(input: .init(queryConfiguration: queryConfiguration.asDriver))
         let sectors = Merge(filterResult.map { _ in [] }, subscription.cashFlows).map { Self.groupCashFlows($0) }
 
         let listOutput = listVM.transform(input: .init(
