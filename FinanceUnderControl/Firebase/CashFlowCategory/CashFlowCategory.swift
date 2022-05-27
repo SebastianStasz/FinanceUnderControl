@@ -8,6 +8,7 @@
 import FirebaseFirestore
 import Foundation
 import Shared
+import SwiftUI
 
 struct CashFlowCategory: FirestoreDocument, CashFlowTypeSupport {
     let id: String
@@ -15,6 +16,10 @@ struct CashFlowCategory: FirestoreDocument, CashFlowTypeSupport {
     let type: CashFlowType
     let icon: CashFlowCategoryIcon
     let group: CashFlowCategoryGroup?
+
+    var color: Color {
+        group?.color.color ?? CashFlowCategoryColor.default.color
+    }
 
     enum Field: String, DocumentField {
         case id, name, type, icon, groupId
