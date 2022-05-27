@@ -45,6 +45,7 @@ struct CashFlowFormView: BaseView {
                 focusedField = .name
             }
         }
+        .handleViewModelActions(viewModel)
     }
 
     private var primaruButton: HorizontalButtons.Configuration {

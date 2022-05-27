@@ -53,9 +53,9 @@ struct CashFlowCategoryGroupFormView: BaseView {
                     .displayIf(viewModel.formType.isEdit)
             }
         }
-        .handleViewModelActions(viewModel)
         .onTapGesture { isFocused = false }
         .onAppearFocus($isFocused)
+        .handleViewModelActions(viewModel)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {

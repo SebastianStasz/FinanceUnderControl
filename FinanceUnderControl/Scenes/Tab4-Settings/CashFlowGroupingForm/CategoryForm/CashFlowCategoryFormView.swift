@@ -43,6 +43,7 @@ struct CashFlowCategoryFormView: BaseView {
         .horizontalButtons(primaryButton: primaryButton)
         .onTapGesture { isFocused = false }
         .onAppearFocus($isFocused)
+        .handleViewModelActions(viewModel)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {
