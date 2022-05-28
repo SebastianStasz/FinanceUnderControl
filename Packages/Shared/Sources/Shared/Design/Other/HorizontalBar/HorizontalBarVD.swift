@@ -33,7 +33,7 @@ public struct HorizontalBarVD: Equatable {
 
 // MARK: - Sample data
 
-extension HorizontalBarVD {
+public extension HorizontalBarVD {
     static var sample: HorizontalBarVD {
         let bar1 = HorizontalBarVD.Bar(title: "Food", value: 205.9, color: .cyan)
         let bar2 = HorizontalBarVD.Bar(title: "Petrol", value: 435, color: .yellow)

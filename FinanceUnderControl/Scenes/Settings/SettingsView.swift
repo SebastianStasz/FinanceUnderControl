@@ -9,23 +9,19 @@ import Shared
 import SwiftUI
 
 struct SettingsView: View {
+    
     @ObservedObject var viewModel: SettingsVM
 
     var body: some View {
         FormView {
-            Sector(.common_categories) {
-                Navigation(.common_expenses) { viewModel.binding.navigateTo.send(.cashFlowGroupForm(.expense)) }
-                Navigation(.common_incomes) { viewModel.binding.navigateTo.send(.cashFlowGroupForm(.income)) }
-            }
-
             Sector(.common_currencies) {
                 LabeledPicker(.common_primary, elements: Currency.allCases, selection: $viewModel.currencySelector.primaryCurrency)
                 LabeledPicker(.common_secondary, elements: Currency.allCases, selection: $viewModel.currencySelector.secondaryCurrency)
             }
 
-//            Sector("Debug") {
-//                Navigation("Design system", leadsTo: DesignSystemView())
-//            }
+            Sector("Debug") {
+                Navigation("Design system") { }
+            }
         }
         .navigationTitle(String.tab_settings_title)
     }

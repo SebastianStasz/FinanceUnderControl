@@ -8,8 +8,15 @@
 import Combine
 import Foundation
 import Shared
+import SSUtils
 
 final class DashboardVM: ViewModel {
+
+    struct Binding {
+        let navigateTo = DriverSubject<DashboardCoordinator.Destination>()
+    }
+
+    let binding = Binding()
 
     @Published private(set) var monthBalance: MonthBalance = .empty
     @Published private(set) var topExpenses: HorizontalBarVD?

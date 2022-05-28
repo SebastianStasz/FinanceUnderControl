@@ -9,7 +9,7 @@ import UIKit
 import Shared
 import SwiftUI
 
-final class CashFlowGroupingCoordinator: Coordinator, ObservableObject {
+final class CashFlowGroupingCoordinator: RootCoordinator, ObservableObject {
 
     enum Destination {
         case presentFormSelection
@@ -17,16 +17,16 @@ final class CashFlowGroupingCoordinator: Coordinator, ObservableObject {
         case presentEditCategoryForm(CashFlowCategory)
     }
 
+    private let navigationController = UINavigationController()
     private let type: CashFlowType
     @State var isEditMode = false
 
-    init(_ presentationStyle: PresentationStyle, type: CashFlowType) {
+    init(type: CashFlowType) {
         self.type = type
-        super.init(presentationStyle)
     }
 
-    override func initializeView() -> UIViewController {
-        let viewModel = CashFlowGroupingListVM(for: type, coordinator: self)
+    func start() -> UIViewController {
+        let viewModel = CashFlowGroupingListVM(for: type)
         let view = CashFlowGroupingListView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view        .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -68,7 +68,7 @@ private extension CashFlowGroupingCoordinator {
         alert.addAction(title: .settings_create_group, action: onSelf { $0.presentGroupForm(.new($0.type)) })
         alert.addAction(title: .settings_create_category, action: onSelf { $0.presentCategoryForm(.new($0.type)) })
         alert.addCancelAction()
-        navigationController?.present(alert, animated: true)
+        navigationController.present(alert, animated: true)
     }
 
     func presentGroupForm(_ formType: CashFlowFormType<CashFlowCategoryGroup>) {

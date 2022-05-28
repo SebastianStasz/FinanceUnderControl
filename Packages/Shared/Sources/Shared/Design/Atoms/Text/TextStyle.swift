@@ -22,7 +22,7 @@ public enum TextStyle {
         case .subtitle:
             return .gray
         case .headlineLarge:
-            return .white // TODO: Adapt to DS
+            return .primary // TODO: Adapt to DS
         case .headlineSmall(let type):
             return type.color
         case .footnote(let type):

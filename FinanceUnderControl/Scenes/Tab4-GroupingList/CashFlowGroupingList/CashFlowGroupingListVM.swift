@@ -26,9 +26,9 @@ final class CashFlowGroupingListVM: ViewModel {
 
     @Published var listVD = BaseListVD<CashFlowCategory>.initialState
 
-    init(for type: CashFlowType, coordinator: Coordinator) {
+    init(for type: CashFlowType) {
         self.type = type
-        super.init(coordinator: coordinator)
+        super.init(coordinator: nil)
     }
 
     override func viewDidLoad() {
