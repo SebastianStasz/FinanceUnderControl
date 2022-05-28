@@ -18,41 +18,36 @@ final class CashFlowGroupingListVM: ViewModel {
         let confirmCategoryDeletion = DriverSubject<Void>()
     }
 
-    let type: CashFlowType
     let binding = Binding()
     let listVM = BaseListVM<CashFlowCategory>()
     private var storage = CashFlowGroupingService.shared
     private let categoryService = CashFlowCategoryService()
 
-    @Published var listVD = BaseListVD<CashFlowCategory>.initialState
-
-    init(for type: CashFlowType) {
-        self.type = type
-        super.init(coordinator: nil)
-    }
+    @Published var cashFlowType: CashFlowType = .expense
+    @Published private(set) var expenseListVD = BaseListVD<CashFlowCategory>.initialState
+    @Published private(set) var incomeListVD = BaseListVD<CashFlowCategory>.initialState
 
     override func viewDidLoad() {
         let errorTracker = DriverSubject<Error>()
 
-        let sectors = CombineLatest(storage.groupsSubscription(type: type), storage.categoriesSubscription(type: type))
-            .map { result -> [ListSector<CashFlowCategory>] in
-                var sectors: [ListSector<CashFlowCategory>] = []
-                let ungroupedCategories = result.1.filter { $0.group.isNil }
-                sectors = result.0.map { [weak self] group in
-                    ListSector(group.name, elements: result.1.filter { $0.group == group }, editAction: .init(title: .settings_edit_group, action: {
-                        self?.binding.navigateTo.send(.presentEditGroupForm(group))
-                    }))
-                }
-                sectors.append(ListSector("Ungrouped", elements: ungroupedCategories, visibleIfEmpty: false))
-                return sectors
-            }
+        let expenseSectors = CombineLatest(storage.groupsSubscription(type: .expense), storage.categoriesSubscription(type: .expense))
+            .map(with: self) { $0.groupCategories($1.1, by: $1.0) }
 
-        let listOutput = listVM.transform(input: .init(
-            sectors: sectors.asDriver,
+        let incomeSectors = CombineLatest(storage.groupsSubscription(type: .income), storage.categoriesSubscription(type: .income))
+            .map(with: self) { $0.groupCategories($1.1, by: $1.0) }
+
+        let expensesListOutput = listVM.transform(input: .init(
+            sectors: expenseSectors.asDriver,
             isLoading: $isLoading.asDriver)
         )
 
-        listOutput.viewData.assign(to: &$listVD)
+        let incomeslistOutput = listVM.transform(input: .init(
+            sectors: incomeSectors.asDriver,
+            isLoading: $isLoading.asDriver)
+        )
+
+        expensesListOutput.viewData.assign(to: &$expenseListVD)
+        incomeslistOutput.viewData.assign(to: &$incomeListVD)
 
         binding.confirmCategoryDeletion
             .withLatestFrom(binding.categoryToDelete)
@@ -65,5 +60,17 @@ final class CashFlowGroupingListVM: ViewModel {
             .sinkAndStore(on: self) { _, error in
                 print(error)
             }
+    }
+
+    private func groupCategories(_ categories: [CashFlowCategory], by groups: [CashFlowCategoryGroup]) -> [ListSector<CashFlowCategory>] {
+        var sectors: [ListSector<CashFlowCategory>] = []
+        let ungroupedCategories = categories.filter { $0.group.isNil }
+        sectors = groups.map { [weak self] group in
+            ListSector(group.name, elements: categories.filter { $0.group == group }, editAction: .init(title: .settings_edit_group, action: {
+                self?.binding.navigateTo.send(.presentEditGroupForm(group))
+            }))
+        }
+        sectors.append(ListSector("Ungrouped", elements: ungroupedCategories, visibleIfEmpty: false))
+        return sectors
     }
 }

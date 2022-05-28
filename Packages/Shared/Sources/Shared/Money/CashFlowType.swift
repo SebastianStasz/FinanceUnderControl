@@ -8,11 +8,12 @@
 import Foundation
 import SwiftUI
 
-public enum CashFlowType: String, Codable, Identifiable {
-    case income
+public enum CashFlowType: String, Codable, Identifiable, CaseIterable, Pickerable {
     case expense
+    case income
 
     public var id: String { rawValue }
+    public var valueName: String { rawValue }
 }
 
 public extension CashFlowType {

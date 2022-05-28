@@ -110,23 +110,6 @@ extension BaseList {
     ) {
         self.init(viewModel: viewModel, viewData: viewData, emptyTitle: emptyTitle, emptyDescription: emptyDescription, deleteElement: nil, rowView: rowView)
     }
-
-//    init(viewData: ViewData,
-//         emptyStateVD: EmptyStateVD,
-//         @ViewBuilder rowView: @escaping (T) -> RowView
-//    ) {
-//        self.init(isLoading: isLoading, emptyStateVD: emptyStateVD, sectors: ListSector.unvisibleSector(elements), deleteElement: nil, onLastItemAppear: onLastItemAppear, isMoreItems: isMoreItems, rowView: rowView)
-//    }
-
-//    init(isLoading: Bool = false,
-//         emptyStateVD: EmptyStateVD,
-//         elements: FetchedResults<T>,
-//         onLastItemAppear: DriverSubject<Void>? = nil,
-//         isMoreItems: Binding<Bool> = .constant(false),
-//         @ViewBuilder rowView: @escaping (T) -> RowView
-//    ) where T: Entity {
-//        self.init(isLoading: isLoading, emptyStateVD: emptyStateVD, elements: elements.map { $0 }, onLastItemAppear: onLastItemAppear, isMoreItems: isMoreItems, rowView: rowView)
-//    }
 }
 
 extension BaseList {

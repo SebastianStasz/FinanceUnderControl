@@ -28,7 +28,7 @@ final class TabBarController: UITabBarController {
             DashboardCoordinator().start(),
             CashFlowListCoordinator().start(),
             CantorCoordinator().start(),
-            CashFlowGroupingCoordinator(type: .expense).start()
+            CashFlowGroupingCoordinator().start()
         ]
 
         UITabBar.appearance().isHidden = true

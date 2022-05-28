@@ -17,15 +17,27 @@ struct CashFlowGroupingListView: View {
     @State private var isDeleteConfirmationShown = false
 
     var body: some View {
-        BaseList(viewModel: viewModel.listVM, viewData: viewModel.listVD, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it") {
-            CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
-                .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
-                .environment(\.editMode, editMode)
+        VStack {
+            SegmentedPicker(.cash_flow_filter_type, selection: $viewModel.cashFlowType, elements: CashFlowType.allCases)
+            BaseList(viewModel: viewModel.listVM, viewData: listViewData, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it") {
+                CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
+                    .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
+                    .environment(\.editMode, editMode)
+            }
         }
         .confirmationDialog("Delete category", isPresented: $isDeleteConfirmationShown) {
             Button.delete { viewModel.binding.confirmCategoryDeletion.send() }
         }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                EditButton()
+            }
+        }
 //        .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
+    }
+
+    private var listViewData: BaseListVD<CashFlowCategory> {
+        viewModel.cashFlowType == .income ? viewModel.incomeListVD : viewModel.expenseListVD
     }
 
     // MARK: - Interactions
