@@ -24,7 +24,7 @@ struct DashboardView: View {
             }
             .padding(.horizontal, .large)
             Sector("Current month balance") {
-                MonthBalanceWidgetView(monthBalance: .init(income: .init(120, currency: .PLN), expense: .init(20, currency: .PLN)))
+                MonthBalanceWidgetView(monthBalance: viewModel.monthBalance)
             }
 
             if let topExpenses = viewModel.topExpenses {

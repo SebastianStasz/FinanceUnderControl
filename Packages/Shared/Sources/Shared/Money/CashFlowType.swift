@@ -13,7 +13,7 @@ public enum CashFlowType: String, Codable, Identifiable, CaseIterable, Pickerabl
     case income
 
     public var id: String { rawValue }
-    public var valueName: String { rawValue }
+    public var valueName: String { namePlural }
 }
 
 public extension CashFlowType {

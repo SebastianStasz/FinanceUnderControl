@@ -50,6 +50,7 @@ public extension String {
     static let common_exchange_rate = "common_exchange_rate".localize()
     static let common_category = "common_category".localize()
     static let common_edit = "common_edit".localize()
+    static let common_done = "common_done".localize()
     static let common_save = "common_save".localize()
     static let common_color = "common_color".localize()
     static let common_icon = "common_icon".localize()

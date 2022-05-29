@@ -24,15 +24,15 @@ final class CashFlowGroupingCoordinator: RootCoordinator, ObservableObject {
         let viewModel = CashFlowGroupingListVM(coordinator: self)
         let view = CashFlowGroupingListView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
-        viewController.title = "Categories"
+//        viewController.title = "Categories"
         navigationController.viewControllers = [viewController]
         let presentFormSelection = UIAction { _ in
             viewModel.binding.navigateTo.send(.presentFormSelection(viewModel.cashFlowType))
         }
         
-        viewController.navigationItem.rightBarButtonItems = [
-            .init(systemItem: .add, primaryAction: presentFormSelection),
-        ]
+//        viewController.navigationItem.rightBarButtonItems = [
+//            .init(systemItem: .add, primaryAction: presentFormSelection),
+//        ]
 
         viewModel.binding.navigateTo
             .sink { [weak self] in self?.navigate(to: $0) }
