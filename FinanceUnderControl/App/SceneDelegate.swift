@@ -7,6 +7,7 @@
 
 import Firebase
 import UIKit
+import Shared
 import SwiftUI
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -15,6 +16,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         FirebaseApp.configure()
+        AppFonts.register()
 
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)

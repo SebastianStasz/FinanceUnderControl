@@ -18,19 +18,19 @@ struct CashFlowGroupingListView: View {
 
     var body: some View {
         VStack {
-            VStack(spacing: .medium) {
+            VStack(spacing: .large) {
                 HStack(spacing: .large) {
-                    Text(.common_categories, style: .headlineLarge)
+                    Text(.common_categories, style: .navHeadline)
                     Spacer()
 
                     Button(action: toggleEditMode) {
                         SwiftUI.Text(editMode.isEditing ? String.common_done : String.common_edit)
-                            .font(.callout).fontWeight(.medium)
+                            .font(.custom(LatoFont.latoRegular.rawValue, size: 19, relativeTo: .title3))
                             .foregroundColor(.primary)
                     }
 
                     Button(systemImage: "plus", action: presentFormSelection)
-                        .font(.title3)
+                        .font(.custom(LatoFont.latoRegular.rawValue, size: 24, relativeTo: .title3))
                         .foregroundColor(.primary)
                 }
 

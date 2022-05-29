@@ -15,12 +15,11 @@ struct DashboardView: View {
     var body: some View {
         FormView {
             HStack {
-                Text("Good afternoon", style: .headlineLarge)
+                Text("Good morning", style: .navHeadline)
                 Spacer()
                 Button(systemImage: "gearshape", action: presentSettings)
-                    .font(.title3)
-                    .buttonStyle(.plain)
-                
+                    .font(.custom(LatoFont.latoRegular.rawValue, size: 22, relativeTo: .title3))
+                    .foregroundColor(.primary)
             }
             .padding(.horizontal, .large)
             Sector("Current month balance") {

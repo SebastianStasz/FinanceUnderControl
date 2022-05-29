@@ -10,6 +10,8 @@ import SwiftUI
 public enum TextStyle {
     case title
     case subtitle
+    case navHeadline
+    
     case headlineLarge
     case headlineSmall(HeadlineSmallTextType = .normal)
     case bodyMedium
@@ -21,8 +23,10 @@ public enum TextStyle {
         switch self {
         case .subtitle:
             return .gray
+        case .navHeadline:
+            return .primary
         case .headlineLarge:
-            return .primary // TODO: Adapt to DS
+            return .white // TODO: Adapt to DS
         case .headlineSmall(let type):
             return type.color
         case .footnote(let type):
@@ -50,6 +54,9 @@ public enum TextStyle {
 
         case .subtitle:
             return .custom(LatoFont.latoRegular.rawValue, size: 19, relativeTo: .title3)
+
+        case .navHeadline:
+            return .custom(LatoFont.latoBlack.rawValue, size: 24, relativeTo: .title3)
 
         case .headlineLarge:
             return .system(.title3).weight(.medium)
