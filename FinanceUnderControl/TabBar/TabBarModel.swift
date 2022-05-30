@@ -39,7 +39,7 @@ enum TabBarModel: Int, Identifiable, CaseIterable {
         case .currencies:
             return SFSymbol.currenciesTab
         case .settings:
-            return SFSymbol.settingsTab
+            return SFSymbol.cashFlowGroupingTab
         }
     }
 }

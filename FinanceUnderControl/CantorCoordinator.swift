@@ -16,10 +16,6 @@ final class CantorCoordinator: RootCoordinator {
 
     private let navigationController = UINavigationController()
 
-    init() {
-        navigationController.prefersLargeTitles()
-    }
-
     func start() -> UIViewController {
         let viewModel = CantorVM(coordinator: self)
         let view = CantorView(viewModel: viewModel)

@@ -15,46 +15,47 @@ struct CashFlowGroupingListView: View {
     @ObservedObject var viewModel: CashFlowGroupingListVM
     @State private var isDeleteConfirmationShown = false
     @State private var editMode: EditMode = .inactive
+    @State private var navSize: CGSize = .zero
 
     var body: some View {
-        VStack {
-            VStack(spacing: .large) {
-                HStack(spacing: .large) {
-                    Text(.common_categories, style: .navHeadline)
-                    Spacer()
+        Group {
+            //            SegmentedPicker(.cash_flow_filter_type, selection: $viewModel.cashFlowType, elements: CashFlowType.allCases)
 
-                    Button(action: toggleEditMode) {
-                        SwiftUI.Text(editMode.isEditing ? String.common_done : String.common_edit)
-                            .font(.custom(LatoFont.latoRegular.rawValue, size: 19, relativeTo: .title3))
-                            .foregroundColor(.primary)
-                    }
-
-                    Button(systemImage: "plus", action: presentFormSelection)
-                        .font(.custom(LatoFont.latoRegular.rawValue, size: 24, relativeTo: .title3))
-                        .foregroundColor(.primary)
+            if viewModel.cashFlowType == .expense {
+                BaseList(viewModel: viewModel.listVM, viewData: viewModel.expenseListVD, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it", topInset: navSize.height) {
+                    CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
+                        .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
+                        .environment(\.editMode, $editMode)
                 }
-
-                SegmentedPicker(.cash_flow_filter_type, selection: $viewModel.cashFlowType, elements: CashFlowType.allCases)
             }
-            .padding(.large)
-            .background(Color.backgroundPrimary)
 
-            BaseList(viewModel: viewModel.listVM, viewData: listViewData, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it") {
-                CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
-                    .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
-                    .environment(\.editMode, $editMode)
-            }.animation(.none)
+            if viewModel.cashFlowType == .income {
+                BaseList(viewModel: viewModel.listVM, viewData: viewModel.incomeListVD, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it", topInset: navSize.height) {
+                    CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
+                        .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
+                        .environment(\.editMode, $editMode)
+                }
+            }
         }
-        .navigationBarHidden(true)
         .confirmationDialog("Delete category", isPresented: $isDeleteConfirmationShown) {
             Button.delete { viewModel.binding.confirmCategoryDeletion.send() }
         }
         .environment(\.editMode, $editMode)
-//        .infoAlert(isPresented: $isAlertPresented, message: .cannot_delete_cash_flow_category_message)
-    }
-
-    private var listViewData: BaseListVD<CashFlowCategory> {
-        viewModel.cashFlowType == .income ? viewModel.incomeListVD : viewModel.expenseListVD
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Text(.common_categories, style: .navHeadline)
+            }
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button(action: toggleEditMode) {
+                    SwiftUI.Text(editMode.isEditing ? String.common_done : String.common_edit)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                }
+                Button(systemImage: "plus", action: presentFormSelection)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+            }
+        }
     }
 
     // MARK: - Interactions

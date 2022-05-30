@@ -17,16 +17,11 @@ final class CashFlowListCoordinator: RootCoordinator {
 
     private let navigationController = UINavigationController()
 
-    init() {
-        navigationController.prefersLargeTitles()
-    }
-
     func start() -> UIViewController {
         let cashFlowFilterVM = CashFlowFilterVM()
         let viewModel = CashFlowListVM(coordinator: self, cashFlowFilterVM: cashFlowFilterVM)
         let view = CashFlowListView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
-        viewController.title = .tab_cashFlow_title
         navigationController.viewControllers = [viewController]
 
         viewModel.binding.navigateTo

@@ -14,14 +14,6 @@ struct DashboardView: View {
 
     var body: some View {
         FormView {
-            HStack {
-                Text("Good morning", style: .navHeadline)
-                Spacer()
-                Button(systemImage: "gearshape", action: presentSettings)
-                    .font(.custom(LatoFont.latoRegular.rawValue, size: 22, relativeTo: .title3))
-                    .foregroundColor(.primary)
-            }
-            .padding(.horizontal, .large)
             Sector("Current month balance") {
                 MonthBalanceWidgetView(monthBalance: viewModel.monthBalance)
             }
@@ -31,7 +23,16 @@ struct DashboardView: View {
                     .embedInSection("Top expenses")
             }
         }
-        .navigationBarHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Text("Good morning", style: .navHeadline)
+            }
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button(systemImage: "gearshape", action: presentSettings)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+            }
+        }
     }
 
     private func presentSettings() {

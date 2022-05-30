@@ -25,8 +25,16 @@ struct CantorView: BaseView {
             sectorConvert
             sectorMore
         }
-        .navigationTitle(String.tab_currencies_title)
-        .toolbar { Toolbar.trailing(systemImage: SFSymbol.infoCircle.name, action: showInfoAlert) }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Text(.tab_currencies_title, style: .navHeadline)
+            }
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button(systemImage: SFSymbol.infoCircle.name, action: showInfoAlert)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+            }
+        }
         .infoAlert(.common_info, isPresented: $isInfoAlertPresented, message: .cantor_exchange_rates_info_message)
     }
 

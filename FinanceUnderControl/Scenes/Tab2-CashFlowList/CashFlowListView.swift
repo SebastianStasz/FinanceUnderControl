@@ -21,6 +21,9 @@ struct CashFlowListView: BaseView {
             Button.delete(action: confirmCashFlowDeletion)
         }
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Text(.tab_cashFlow_title, style: .navHeadline)
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: presentFilterView) { filterIcon }
                     .disabled(viewModel.listVD.isEmpty && !viewModel.isFiltering)
@@ -35,6 +38,8 @@ struct CashFlowListView: BaseView {
                 .padding(.top, 3)
                 .displayIf(viewModel.isFiltering)
             Image(systemName: SFSymbol.filter.name)
+                .font(.headline)
+                .foregroundColor(.primary)
         }
     }
 
