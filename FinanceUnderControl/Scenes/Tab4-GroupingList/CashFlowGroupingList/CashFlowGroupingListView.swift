@@ -35,15 +35,13 @@ struct CashFlowGroupingListView: View {
                 }
             }
         }
-        .confirmationDialog("Delete category", isPresented: $isDeleteConfirmationShown) {
-            Button.delete { viewModel.binding.confirmCategoryDeletion.send() }
-        }
         .environment(\.editMode, $editMode)
         .navigationBar(title: .common_categories) {
-            Group {
-                Button(editMode.isEditing ? .common_done : .common_edit, action: toggleEditMode)
-                Button(systemImage: SFSymbol.plus.rawValue, action: presentFormSelection)
-            }
+            Button(editMode.isEditing ? .common_done : .common_edit, action: toggleEditMode)
+            Button(systemImage: SFSymbol.plus.rawValue, action: presentFormSelection)
+        }
+        .confirmationDialog("Delete category", isPresented: $isDeleteConfirmationShown) {
+            Button.delete { viewModel.binding.confirmCategoryDeletion.send() }
         }
     }
 

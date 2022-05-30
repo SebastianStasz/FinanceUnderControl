@@ -11,7 +11,7 @@ public extension Button where Label == SwiftUI.Label<SwiftUI.Text, Image> {
 
     static func cancel(action: @escaping Action) -> some View {
         Button(role: .cancel, action: action) {
-            Label("Cancel", systemImage: SFSymbol.close.name)
+            Label(String.common_cancel, systemImage: SFSymbol.close.name)
         }
     }
 
@@ -26,7 +26,7 @@ public extension Button where Label == SwiftUI.Label<SwiftUI.Text, Image> {
 
     static func edit(action: @escaping Action) -> some View {
         Button(action: action) {
-            Label("Edit", systemImage: SFSymbol.infoCircle.name)
+            Label(String.common_edit, systemImage: SFSymbol.infoCircle.name)
         }
         .tint(.gray)
     }
@@ -35,7 +35,7 @@ public extension Button where Label == SwiftUI.Label<SwiftUI.Text, Image> {
 
     private static func deleteBtn(action: @escaping Action) -> some View {
         Button(role: .destructive, action: action) {
-            Label("Delete", systemImage: SFSymbol.trash.name)
+            Label(String.common_delete, systemImage: SFSymbol.trash.name)
         }
         .foregroundColor(.red)
     }

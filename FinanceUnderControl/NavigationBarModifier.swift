@@ -28,7 +28,7 @@ private struct NavigationBarModifier<Items: View>: ViewModifier {
 }
 
 extension View {
-    func navigationBar<Content: View>(title: String, content: @escaping () -> Content) -> some View {
+    func navigationBar<Content: View>(title: String, @ViewBuilder content: @escaping () -> Content) -> some View {
         modifier(NavigationBarModifier(title: title, items: content))
     }
 }
