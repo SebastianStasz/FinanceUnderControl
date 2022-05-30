@@ -23,15 +23,8 @@ struct DashboardView: View {
                     .embedInSection("Top expenses")
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Text("Good morning", style: .navHeadline)
-            }
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
-                Button(systemImage: "gearshape", action: presentSettings)
-                    .font(.headline)
-                    .foregroundColor(.primary)
-            }
+        .navigationBar(title: "Good morning") {
+            Button(systemImage: SFSymbol.settings.rawValue, action: presentSettings)
         }
     }
 

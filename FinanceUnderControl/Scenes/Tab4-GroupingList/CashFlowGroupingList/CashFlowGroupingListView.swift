@@ -15,14 +15,12 @@ struct CashFlowGroupingListView: View {
     @ObservedObject var viewModel: CashFlowGroupingListVM
     @State private var isDeleteConfirmationShown = false
     @State private var editMode: EditMode = .inactive
-    @State private var navSize: CGSize = .zero
 
     var body: some View {
         Group {
             //            SegmentedPicker(.cash_flow_filter_type, selection: $viewModel.cashFlowType, elements: CashFlowType.allCases)
-
             if viewModel.cashFlowType == .expense {
-                BaseList(viewModel: viewModel.listVM, viewData: viewModel.expenseListVD, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it", topInset: navSize.height) {
+                BaseList(viewModel: viewModel.listVM, viewData: viewModel.expenseListVD, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it") {
                     CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
                         .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
                         .environment(\.editMode, $editMode)
@@ -30,7 +28,7 @@ struct CashFlowGroupingListView: View {
             }
 
             if viewModel.cashFlowType == .income {
-                BaseList(viewModel: viewModel.listVM, viewData: viewModel.incomeListVD, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it", topInset: navSize.height) {
+                BaseList(viewModel: viewModel.listVM, viewData: viewModel.incomeListVD, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it") {
                     CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
                         .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
                         .environment(\.editMode, $editMode)
@@ -41,19 +39,10 @@ struct CashFlowGroupingListView: View {
             Button.delete { viewModel.binding.confirmCategoryDeletion.send() }
         }
         .environment(\.editMode, $editMode)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Text(.common_categories, style: .navHeadline)
-            }
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
-                Button(action: toggleEditMode) {
-                    SwiftUI.Text(editMode.isEditing ? String.common_done : String.common_edit)
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                }
-                Button(systemImage: "plus", action: presentFormSelection)
-                    .font(.headline)
-                    .foregroundColor(.primary)
+        .navigationBar(title: .common_categories) {
+            Group {
+                Button(editMode.isEditing ? .common_done : .common_edit, action: toggleEditMode)
+                Button(systemImage: SFSymbol.plus.rawValue, action: presentFormSelection)
             }
         }
     }

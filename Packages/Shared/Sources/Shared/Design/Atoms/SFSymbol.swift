@@ -19,6 +19,7 @@ public enum SFSymbol: String {
     case close          = "xmark"
     case infoCircle     = "info.circle"
     case filter         = "slider.horizontal.3"
+    case settings       = "gearshape"
 
     case trash = "trash.fill"
 
