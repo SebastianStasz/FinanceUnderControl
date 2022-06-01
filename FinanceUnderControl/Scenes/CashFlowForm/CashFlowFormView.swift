@@ -49,7 +49,7 @@ struct CashFlowFormView: BaseView {
     }
 
     private var primaruButton: HorizontalButtons.Configuration {
-        .init(viewModel.formType.confirmButtonTitle, enabled: viewModel.formModel.model.notNil, action: didTapConfirm)
+        .init(viewModel.formType.confirmButtonTitle, enabled: viewModel.formModel.isValid, action: didTapConfirm)
     }
 
     private var title: String {
