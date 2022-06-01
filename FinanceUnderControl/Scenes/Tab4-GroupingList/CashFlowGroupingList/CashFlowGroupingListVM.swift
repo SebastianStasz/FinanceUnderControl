@@ -9,6 +9,7 @@ import Combine
 import Foundation
 import Shared
 import SSUtils
+import SwiftUI
 
 final class CashFlowGroupingListVM: ViewModel {
 

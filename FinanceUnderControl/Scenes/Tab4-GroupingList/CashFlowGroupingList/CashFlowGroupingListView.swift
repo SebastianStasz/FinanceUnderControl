@@ -26,7 +26,6 @@ struct CashFlowGroupingListView: View {
                 .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
                 .environment(\.editMode, $editMode)
         }
-        .animation(.none)
         .environment(\.editMode, $editMode)
         .navigationBar(title: .common_categories) {
             Button(editMode.isEditing ? .common_done : .common_edit, action: toggleEditMode)
