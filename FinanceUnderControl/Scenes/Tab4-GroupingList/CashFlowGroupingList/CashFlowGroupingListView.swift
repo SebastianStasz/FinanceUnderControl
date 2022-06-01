@@ -16,25 +16,17 @@ struct CashFlowGroupingListView: View {
     @State private var isDeleteConfirmationShown = false
     @State private var editMode: EditMode = .inactive
 
-    var body: some View {
-        Group {
-            //            SegmentedPicker(.cash_flow_filter_type, selection: $viewModel.cashFlowType, elements: CashFlowType.allCases)
-            if viewModel.cashFlowType == .expense {
-                BaseList(viewModel: viewModel.listVM, viewData: viewModel.expenseListVD, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it") {
-                    CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
-                        .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
-                        .environment(\.editMode, $editMode)
-                }
-            }
+    private var listSectors: BaseListVD<CashFlowCategory> {
+        viewModel.cashFlowType == .expense ? viewModel.expenseListVD : viewModel.incomeListVD
+    }
 
-            if viewModel.cashFlowType == .income {
-                BaseList(viewModel: viewModel.listVM, viewData: viewModel.incomeListVD, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it") {
-                    CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
-                        .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
-                        .environment(\.editMode, $editMode)
-                }
-            }
+    var body: some View {
+        BaseList(viewModel: viewModel.listVM, viewData: listSectors, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it") {
+            CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
+                .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
+                .environment(\.editMode, $editMode)
         }
+        .animation(.none)
         .environment(\.editMode, $editMode)
         .navigationBar(title: .common_categories) {
             Button(editMode.isEditing ? .common_done : .common_edit, action: toggleEditMode)
@@ -42,6 +34,12 @@ struct CashFlowGroupingListView: View {
         }
         .confirmationDialog("Delete category", isPresented: $isDeleteConfirmationShown) {
             Button.delete { viewModel.binding.confirmCategoryDeletion.send() }
+        }
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                SegmentedPicker(.cash_flow_filter_type, selection: $viewModel.cashFlowType, elements: CashFlowType.allCases)
+                    .padding(.bottom, .small)
+            }
         }
     }
 
