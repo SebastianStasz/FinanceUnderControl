@@ -28,7 +28,7 @@ final class CashFlowCategoryGroupFormVM: ViewModel {
     private let groupService = CashFlowCategoryGroupService()
     private let categoryService = CashFlowCategoryService()
 
-    init(for formType: FormType, coordinator: Coordinator) {
+    init(for formType: FormType, coordinator: Coordinator?) {
         self.formType = formType
         self.formModel = .init(type: formType.cashFlowType)
         super.init(coordinator: coordinator)

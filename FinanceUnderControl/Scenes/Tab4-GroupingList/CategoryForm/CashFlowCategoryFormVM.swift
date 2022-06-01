@@ -26,7 +26,7 @@ final class CashFlowCategoryFormVM: ViewModel {
 
     private let service = CashFlowCategoryService()
 
-    init(for formType: FormType, coordinator: Coordinator) {
+    init(for formType: FormType, coordinator: Coordinator?) {
         self.formType = formType
         super.init(coordinator: coordinator)
 

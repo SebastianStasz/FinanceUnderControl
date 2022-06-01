@@ -7,12 +7,14 @@
 
 import UIKit
 import Shared
+import SwiftUI
 
 final class CashFlowCategoryGroupFormCoordinator: Coordinator {
     typealias FormType = CashFlowFormType<CashFlowCategoryGroup>
 
     enum Destination {
         case dismiss
+        case manageCategories
     }
 
     private let formType: FormType
@@ -29,7 +31,7 @@ final class CashFlowCategoryGroupFormCoordinator: Coordinator {
         viewController.addCloseButton()
 
         viewModel.binding.navigateTo
-            .sink { [weak self] in self?.navigate(to: $0) }
+            .sink { [weak self] in self?.navigate(to: $0, viewModel: viewModel) }
             .store(in: &viewModel.cancellables)
         
         return viewController
@@ -38,10 +40,14 @@ final class CashFlowCategoryGroupFormCoordinator: Coordinator {
 
 private extension CashFlowCategoryGroupFormCoordinator {
 
-    func navigate(to destination: Destination) {
+    func navigate(to destination: Destination, viewModel: CashFlowCategoryGroupFormVM) {
         switch destination {
         case .dismiss:
             navigationController?.dismiss(animated: true)
+        case .manageCategories:
+            let view = ManageCategoriesView(viewModel: viewModel)
+            let viewController = UIHostingController(rootView: view)
+            navigationController?.push(viewController)
         }
     }
 }

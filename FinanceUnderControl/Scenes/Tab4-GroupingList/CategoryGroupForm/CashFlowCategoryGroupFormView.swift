@@ -28,19 +28,8 @@ struct CashFlowCategoryGroupFormView: BaseView {
             }
             .embedInSection(.common_color, style: .card)
 
-            Sector(.common_include) {
-                ForEach(viewModel.formModel.includedCategories) {
-                    CashFlowCategoryGroupItem(for: $0, isOn: true, action: uncheckCategory($0))
-                }
-            }
-            .displayIf(viewModel.formModel.includedCategories.isNotEmpty)
-
-            Sector(.create_cash_flow_more_label) {
-                ForEach(viewModel.formModel.otherCategories) {
-                    CashFlowCategoryGroupItem(for: $0, isOn: false, action: checkCategory($0))
-                }
-            }
-            .displayIf(viewModel.formModel.otherCategories.isNotEmpty)
+            Navigation("Categories") { viewModel.binding.navigateTo.send(.manageCategories) }
+                .padding(.horizontal, .large)
         }
         .navigationTitle(title)
         .horizontalButtons(primaryButton: primaryButton)
@@ -73,16 +62,6 @@ struct CashFlowCategoryGroupFormView: BaseView {
             return .settings_create_group
         }
         return .settings_edit_group
-    }
-
-    // MARK: - Interactions
-
-    private func uncheckCategory(_ category: CashFlowCategory) {
-        viewModel.formModel.uncheckCategory(category)
-    }
-
-    private func checkCategory(_ category: CashFlowCategory) {
-        viewModel.formModel.checkCategory(category)
     }
 }
 
