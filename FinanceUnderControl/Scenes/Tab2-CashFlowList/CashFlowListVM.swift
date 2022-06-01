@@ -8,7 +8,6 @@
 import Combine
 import Foundation
 import SSUtils
-import SSValidation
 
 final class CashFlowListVM: ViewModel {
 
@@ -77,7 +76,9 @@ final class CashFlowListVM: ViewModel {
     }
 
     private static func groupCashFlows(_ cashFlows: [CashFlow]) -> [ListSector<CashFlow>] {
-        Dictionary(grouping: cashFlows, by: { $0.date.stringMonthAndYear })
-            .map { ListSector($0.key, elements: $0.value) }
+        Dictionary(grouping: cashFlows, by: { $0.date.monthAndYear })
+            .map { ($0.key, $0.value) }
+            .sorted(by: { $0.0 > $1.0 })
+            .map { ListSector($0.stringMonthAndYear, elements: $1) }
     }
 }
