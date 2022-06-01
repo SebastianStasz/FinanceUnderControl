@@ -5,9 +5,7 @@
 //  Created by sebastianstaszczyk on 28/04/2022.
 //
 
-import Shared
-import SwiftUI
-import FinanceCoreData
+import UIKit
 
 final class TabBarCoordinator: RootCoordinator {
     
@@ -16,10 +14,6 @@ final class TabBarCoordinator: RootCoordinator {
     func start() -> UIViewController {
         let viewModel = TabBarVM(coordinator: self)
         tabBarController = TabBarController(viewModel: viewModel)
-
-        viewModel.binding.didSelectTab
-            .sink { [weak self] tab in self?.tabBarController.selectedIndex = tab.id }
-            .store(in: &viewModel.cancellables)
 
         viewModel.binding.presentCashFlowTypeSelection
             .sink { [weak self] tab in self?.presentCashFlowTypeSelection() }

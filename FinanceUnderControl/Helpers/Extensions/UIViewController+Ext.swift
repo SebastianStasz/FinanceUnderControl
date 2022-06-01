@@ -22,4 +22,8 @@ extension UIViewController: BaseActions {
         }
         navigationItem.rightBarButtonItem = .init(title: "Close", image: UIImage(systemName: SFSymbol.close.rawValue), primaryAction: closeAction)
     }
+
+    func setTabBarItem(title: String?, icon: SFSymbol, tag: Int) {
+        tabBarItem = .init(title: title, image: .init(systemName: icon.rawValue), tag: tag)
+    }
 }

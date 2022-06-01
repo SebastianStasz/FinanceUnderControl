@@ -8,13 +8,14 @@
 import Shared
 import SwiftUI
 
-final class TabBarController: UITabBarController {
+final class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
     private let viewModel: TabBarVM
 
     init(viewModel: TabBarVM) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        delegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -24,24 +25,27 @@ final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewControllers = [
-            DashboardCoordinator().start(),
-            CashFlowListCoordinator().start(),
-            CantorCoordinator().start(),
-            CashFlowGroupingCoordinator().start()
-        ]
+        let dashboardVC = DashboardCoordinator().start()
+        let cashFlowListVC = CashFlowListCoordinator().start()
+        let addCashFlows = UIViewController()
+        let cantorVC = CantorCoordinator().start()
+        let cashFlowGroupingListVC = CashFlowGroupingCoordinator().start()
 
-        UITabBar.appearance().isHidden = true
-        let customTabBar = UIHostingController(rootView: TabBarView(viewModel: viewModel))
-        customTabBar.view.backgroundColor = UIColor(named: ColorDesign.Background.background_primary.rawValue)
-        view.addSubview(customTabBar.view)
+        dashboardVC.setTabBarItem(title: .tab_dashboard_title, icon: .dashboardTab, tag: 0)
+        cashFlowListVC.setTabBarItem(title: .tab_cashFlow_title, icon: .cashFlowTab, tag: 1)
+        addCashFlows.setTabBarItem(title: nil, icon: .plus, tag: 2)
+        cantorVC.setTabBarItem(title: .tab_currencies_title, icon: .currenciesTab, tag: 3)
+        cashFlowGroupingListVC.setTabBarItem(title: .common_categories, icon: .cashFlowGroupingTab, tag: 4)
 
-        customTabBar.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            customTabBar.view.leadingAnchor.constraint(equalTo: tabBar.leadingAnchor),
-            customTabBar.view.trailingAnchor.constraint(equalTo:tabBar.trailingAnchor),
-            customTabBar.view.bottomAnchor.constraint(equalTo: tabBar.bottomAnchor),
-            customTabBar.view.topAnchor.constraint(equalTo: tabBar.topAnchor)
-        ])
+        viewControllers = [dashboardVC, cashFlowListVC, addCashFlows, cantorVC, cashFlowGroupingListVC]
+    }
+
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        if item.tag == 2 { viewModel.binding.presentCashFlowTypeSelection.send() }
+    }
+
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        guard let index = viewControllers?.firstIndex(of: viewController), index != 2 else { return false }
+        return true
     }
 }
