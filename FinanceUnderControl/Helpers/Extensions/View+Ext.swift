@@ -20,4 +20,14 @@ extension View {
                 Button.edit(action: edit)
             }
     }
+
+    func closeButton(action: @escaping Action) -> some View {
+        toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(systemImage: SFSymbol.close.rawValue, action: action)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+            }
+        }
+    }
 }

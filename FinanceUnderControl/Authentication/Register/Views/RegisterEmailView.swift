@@ -15,6 +15,7 @@ struct RegisterEmailView: BaseView {
         LabeledTextField("Email", viewModel: viewModel.emailInput, showValidation: false, keyboardType: .emailAddress)
             .asRegisterView(for: .email)
             .environmentObject(viewModel)
+            .closeButton { viewModel.binding.navigateTo.send(.dismiss) }
     }
 }
 

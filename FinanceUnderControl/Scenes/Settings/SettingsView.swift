@@ -24,6 +24,7 @@ struct SettingsView: View {
             }
         }
         .navigationTitle(String.tab_settings_title)
+        .closeButton { viewModel.binding.navigateTo.send(.dismiss) }
     }
 }
 

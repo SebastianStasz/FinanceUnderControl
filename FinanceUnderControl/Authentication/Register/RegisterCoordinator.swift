@@ -12,6 +12,7 @@ import SwiftUI
 final class RegisterCoordinator: Coordinator {
 
     enum Destination {
+        case dismiss
         case didConfirmEmail
         case didEnterPassword
         case registeredSuccessfully
@@ -22,7 +23,6 @@ final class RegisterCoordinator: Coordinator {
         let viewModel = RegisterVM(coordinator: self)
         let view = RegisterEmailView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
-        viewController.addCloseButton()
 
         viewModel.binding.navigateTo
             .sink { [weak self] in self?.navigate(to: $0, viewModel: viewModel) }
@@ -36,6 +36,8 @@ private extension RegisterCoordinator {
 
     func navigate(to destination: Destination, viewModel: RegisterVM) {
         switch destination {
+        case .dismiss:
+            navigationController?.dismiss(animated: true)
         case .didConfirmEmail:
             navigationController?.push(RegisterPasswordView(viewModel: viewModel))
         case .didEnterPassword:

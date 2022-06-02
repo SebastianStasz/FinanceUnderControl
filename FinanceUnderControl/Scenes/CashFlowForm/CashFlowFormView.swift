@@ -45,6 +45,7 @@ struct CashFlowFormView: BaseView {
                 focusedField = .name
             }
         }
+        .closeButton { viewModel.binding.navigateTo.send(.dismiss) }
         .handleViewModelActions(viewModel)
     }
 

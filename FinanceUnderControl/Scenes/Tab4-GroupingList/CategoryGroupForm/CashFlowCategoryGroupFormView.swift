@@ -42,6 +42,7 @@ struct CashFlowCategoryGroupFormView: BaseView {
                     .displayIf(viewModel.formType.isEdit)
             }
         }
+        .closeButton { viewModel.binding.navigateTo.send(.dismiss) }
         .onTapGesture { isFocused = false }
         .onAppearFocus($isFocused)
         .handleViewModelActions(viewModel)

@@ -11,13 +11,13 @@ import Shared
 final class SettingsCoordinator: Coordinator {
 
     enum Destination {
+        case dismiss
     }
 
     override func initializeView() -> UIViewController {
         let viewModel = SettingsVM(coordinator: self)
         let view = SettingsView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
-        viewController.addCloseButton()
 
         viewModel.binding.navigateTo
             .sink { [weak self] in self?.navigate(to: $0) }
@@ -27,6 +27,9 @@ final class SettingsCoordinator: Coordinator {
     }
 
     private func navigate(to destination: Destination) {
-        guard let navigationController = navigationController else { return }
+        switch destination {
+        case .dismiss:
+            navigationController?.dismiss(animated: true)
+        }
     }
 }

@@ -26,7 +26,6 @@ final class CashFlowCategoryFormCoordinator: Coordinator {
         let viewModel = CashFlowCategoryFormVM(for: formType, coordinator: self)
         let view = CashFlowCategoryFormView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
-        viewController.addCloseButton()
 
         viewModel.binding.navigateTo
             .sink { [weak self] in self?.navigate(to: $0) }

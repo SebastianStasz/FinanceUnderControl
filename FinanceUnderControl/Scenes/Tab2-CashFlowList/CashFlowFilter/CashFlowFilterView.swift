@@ -26,6 +26,7 @@ struct CashFlowFilterView: BaseView {
                 MonthAndYearPicker(.cash_flow_filter_date_range, viewData: filter.datePickerViewData)
             }
         }
+        .closeButton { viewModel.binding.dismiss.send() }
         .horizontalButtons(primaryButton: .init(.button_apply, action: viewModel.binding.applyFilters.send),
                            secondaryButton: .init(.button_reset, action: viewModel.binding.resetFilters.send))
     }

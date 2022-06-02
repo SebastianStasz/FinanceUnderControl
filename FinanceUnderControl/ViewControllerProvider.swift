@@ -24,7 +24,6 @@ struct ViewControllerProvider {
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
         let navigationController = UINavigationController(rootViewController: viewController)
         viewController.title = .cash_flow_filter_title
-        viewController.addCloseButton()
 
         viewModel.binding.dismiss
             .sink { [weak navigationController] in navigationController?.dismiss(animated: true) }
