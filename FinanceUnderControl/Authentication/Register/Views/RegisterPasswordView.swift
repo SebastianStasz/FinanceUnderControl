@@ -32,12 +32,24 @@ struct PasswordView_Previews: PreviewProvider {
     }
 }
 
-extension View {
-    func onAppearFocus(_ isFieldFocused: FocusState<Bool>.Binding) -> some View {
-        self.onAppear {
+private struct OnAppearFocusModifier: ViewModifier {
+
+    @State private var wasFocused = false
+    var isFieldFocused: FocusState<Bool>.Binding
+
+    func body(content: Content) -> some View {
+        content.onAppear {
+            guard !wasFocused else { return }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                wasFocused = true
                 isFieldFocused.wrappedValue = true
             }
         }
+    }
+}
+
+extension View {
+    func onAppearFocus(_ isFieldFocused: FocusState<Bool>.Binding) -> some View {
+        modifier(OnAppearFocusModifier(isFieldFocused: isFieldFocused))
     }
 }
