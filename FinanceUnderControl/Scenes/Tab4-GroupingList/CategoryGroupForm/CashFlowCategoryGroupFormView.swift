@@ -16,7 +16,7 @@ struct CashFlowCategoryGroupFormView: BaseView {
 
     var baseBody: some View {
         FormView {
-            LabeledTextField(.create_cash_flow_name, viewModel: viewModel.nameInput)
+            BaseTextField(.create_cash_flow_name, viewModel: viewModel.nameInput)
                 .embedInSection(.create_cash_flow_name)
                 .focused($isFocused)
 

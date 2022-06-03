@@ -12,7 +12,7 @@ struct RegisterEmailView: BaseView {
     @ObservedObject var viewModel: RegisterVM
 
     var baseBody: some View {
-        LabeledTextField("Email", viewModel: viewModel.emailInput, showValidation: false, keyboardType: .emailAddress)
+        BaseTextField("Email", viewModel: viewModel.emailInput, showValidation: false, keyboardType: .emailAddress)
             .asRegisterView(for: .email)
             .environmentObject(viewModel)
             .closeButton { viewModel.binding.navigateTo.send(.dismiss) }

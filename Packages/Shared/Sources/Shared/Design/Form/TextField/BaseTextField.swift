@@ -1,5 +1,5 @@
 //
-//  LabeledTextField.swift
+//  BaseTextField.swift
 //  Shared
 //
 //  Created by Sebastian Staszczyk on 07/12/2021.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SSValidation
 
-public struct LabeledTextField<T>: View {
+public struct BaseTextField<T>: View {
 
     @ObservedObject private var viewModel: InputVM<T>
 
@@ -66,8 +66,8 @@ public struct LabeledTextField<T>: View {
 struct LabeledTextField_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            LabeledTextField("Field name", viewModel: TextInputVM())
-            LabeledTextField("Field name", viewModel: TextInputVM()).darkScheme()
+            BaseTextField("Field name", viewModel: TextInputVM())
+            BaseTextField("Field name", viewModel: TextInputVM()).darkScheme()
         }
         .sizeThatFits()
     }

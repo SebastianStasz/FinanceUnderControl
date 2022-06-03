@@ -14,7 +14,7 @@ struct RegisterPasswordView: View {
 
     var body: some View {
         VStack(spacing: .medium) {
-            LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true)
+            BaseTextField("Password", viewModel: viewModel.passwordInput, isSecure: true)
             RegisterPasswordHintView(viewData: viewModel.passwordHintVD)
         }
         .asRegisterView(for: .password)

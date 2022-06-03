@@ -18,7 +18,7 @@ struct CashFlowCategoryFormView: BaseView {
         FormView {
             VStack(alignment: .center, spacing: .medium) {
                 SquareView(icon: formModel.icon.rawValue, color: formModel.color.color, size: 95)
-                LabeledTextField(.create_cash_flow_name, viewModel: viewModel.nameInput, style: .secondary)
+                BaseTextField(.create_cash_flow_name, viewModel: viewModel.nameInput, style: .secondary)
                     .focused($isFocused)
             }
             .card()

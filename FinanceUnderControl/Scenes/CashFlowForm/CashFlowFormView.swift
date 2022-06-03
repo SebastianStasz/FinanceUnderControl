@@ -20,10 +20,10 @@ struct CashFlowFormView: BaseView {
     var baseBody: some View {
         FormView {
             Sector(.create_cash_flow_basic_label) {
-                LabeledTextField(.create_cash_flow_name, viewModel: viewModel.nameInput)
+                BaseTextField(.create_cash_flow_name, viewModel: viewModel.nameInput)
                     .focused($focusedField, equals: .name)
                     .onTapGesture { focusedField = .name }
-                LabeledTextField(.common_amount, viewModel: viewModel.valueInput)
+                BaseTextField(.common_amount, viewModel: viewModel.valueInput)
                     .focused($focusedField, equals: .amount)
                     .onTapGesture { focusedField = .amount }
             }

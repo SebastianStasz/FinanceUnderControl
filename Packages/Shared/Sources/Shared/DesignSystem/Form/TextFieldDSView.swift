@@ -17,8 +17,8 @@ public struct TextFieldDSView: View {
 
     public var body: some View {
         Group {
-            LabeledTextField("Enter number", viewModel: numberInput)
-                .designSystemComponent("Labeled text field")
+            BaseTextField("Enter number", viewModel: numberInput)
+                .designSystemComponent("Base text field")
         }
         .designSystemView("Text Fields")
     }

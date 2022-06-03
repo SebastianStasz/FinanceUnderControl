@@ -30,7 +30,7 @@ extension CantorView {
         Sector(.cantor_converter) {
             LabeledPicker(.cantor_from, elements: currencies, selection: $viewModel.currencySelector.primaryCurrency)
             LabeledPicker(.cantor_to, elements: currencies, selection: $viewModel.currencySelector.secondaryCurrency)
-            LabeledTextField(.common_amount, viewModel: viewModel.amountOfMoneyInput)
+            BaseTextField(.common_amount, viewModel: viewModel.amountOfMoneyInput)
         }
     }
 

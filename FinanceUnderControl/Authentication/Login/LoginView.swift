@@ -23,12 +23,12 @@ struct LoginView: BaseView {
 
             VStack(spacing: .xxlarge) {
                 VStack(spacing: .large) {
-                    LabeledTextField("Email", viewModel: viewModel.emailInput, keyboardType: .emailAddress)
+                    BaseTextField("Email", viewModel: viewModel.emailInput, keyboardType: .emailAddress)
                         .focused($focusedField, equals: .email)
                         .onTapGesture { focusedField = .email }
                         .textInputAutocapitalization(.never)
 
-                    LabeledTextField("Password", viewModel: viewModel.passwordInput, isSecure: true, validationMessage: viewModel.passwordMessage)
+                    BaseTextField("Password", viewModel: viewModel.passwordInput, isSecure: true, validationMessage: viewModel.passwordMessage)
                         .focused($focusedField, equals: .password)
                         .onTapGesture { focusedField = .password }
                         .textInputAutocapitalization(.never)
