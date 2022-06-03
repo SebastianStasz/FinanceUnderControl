@@ -12,21 +12,33 @@ public struct TextDSView: View {
     public init() {}
 
     public var body: some View {
-        Group {
-            Text("Headline big", style: .headlineLarge)
+        VStack(alignment: .leading, spacing: .xxlarge) {
+            Group {
+                Text("Title", style: .title)
+                Text("Subtitle", style: .subtitle)
+                Text("Nav headline", style: .navHeadline)
+            }
 
-            Text("Headline small - normal", style: .headlineSmall(.normal))
-            Text("Headline small - action", style: .headlineSmall(.action))
+            Group {
+                Text("Headline large", style: .headlineLarge)
+                Text("Headline small - normal", style: .headlineSmall(.normal))
+                Text("Headline small - action", style: .headlineSmall(.action))
+            }
 
-            Text("Body medium", style: .bodyMedium)
+            Group {
+                Text("Body medium", style: .bodyMedium)
+                Text("Body - normal", style: .body(.normal))
+                Text("Body - action", style: .body(.action))
+            }
 
-            Text("Body - normal", style: .body(.normal))
-            Text("Body - action", style: .body(.action))
+            Group {
+                Text("Footnote - info", style: .footnote(.info))
+                Text("Footnote - validation", style: .footnote(.invalid))
+            }
 
-            Text("Footnote - info", style: .footnote(.info))
-            Text("Footnote - validation", style: .footnote(.invalid))
-
-            Text("Currency", style: .currency)
+            Group {
+                Text("Currency", style: .currency)
+            }
         }
         .designSystemView("Texts")
     }
