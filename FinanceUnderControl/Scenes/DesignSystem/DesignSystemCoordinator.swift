@@ -21,7 +21,6 @@ final class DesignSystemCoordinator: CoordinatorProtocol {
         case picker
         case textField
         case sector
-        case description
         case circleView
     }
 
@@ -66,8 +65,6 @@ final class DesignSystemCoordinator: CoordinatorProtocol {
             vc = UIHostingController(rootView: TextFieldDSView())
         case .sector:
             vc = UIHostingController(rootView: SectorDSView())
-        case .description:
-            vc = UIHostingController(rootView: DescriptionDSView())
         case .circleView:
             vc = UIHostingController(rootView: CircleViewDSView())
         }

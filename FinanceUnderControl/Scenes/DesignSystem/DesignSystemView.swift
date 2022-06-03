@@ -31,7 +31,6 @@ public struct DesignSystemView: View {
 
             Sector("Other") {
                 Navigation("Sector", action: navigate(to: .sector))
-                Navigation("Description", action: navigate(to: .description))
                 Navigation("Circle view", action: navigate(to: .circleView))
             }
         }
