@@ -7,13 +7,15 @@
 
 import SwiftUI
 
-struct PickerDSView: View {
+public struct PickerDSView: View {
 
     @State private var labeledPickerSelection: PickerDSType? = .firstOption
     @State private var segmentedPickerSelection: PickerDSType = .firstOption
     @State private var dateRangePickerViewData = MonthAndYearPickerVD()
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         Group {
             LabeledPicker("Title", elements: PickerDSType.allCases, selection: $labeledPickerSelection)
                 .designSystemComponent("Labeled Picker")
@@ -22,7 +24,7 @@ struct PickerDSView: View {
                 .designSystemComponent("Segmented Picker")
 
             MonthAndYearPicker("Title", viewData: $dateRangePickerViewData)
-                .designSystemComponent("Date Range Picker")
+                .designSystemComponent("Month and year picker")
         }
         .designSystemView("Picker")
     }

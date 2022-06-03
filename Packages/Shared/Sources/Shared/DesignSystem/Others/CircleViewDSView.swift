@@ -7,8 +7,11 @@
 
 import SwiftUI
 
-struct CircleViewDSView: View {
-    var body: some View {
+public struct CircleViewDSView: View {
+
+    public init() {}
+
+    public var body: some View {
         Group {
             CircleView(color: .blue, size: 50)
                 .designSystemComponent("Colored circle")

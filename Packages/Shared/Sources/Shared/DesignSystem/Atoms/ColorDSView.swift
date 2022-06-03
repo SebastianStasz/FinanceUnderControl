@@ -7,9 +7,11 @@
 
 import SwiftUI
 
-struct ColorDSView: View {
+public struct ColorDSView: View {
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         ForEach(ColorDesign.groups, content: colorList)
             .navigationTitle("Color")
     }

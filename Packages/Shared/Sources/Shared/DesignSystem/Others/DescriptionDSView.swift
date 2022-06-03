@@ -7,8 +7,11 @@
 
 import SwiftUI
 
-struct DescriptionDSView: View {
-    var body: some View {
+public struct DescriptionDSView: View {
+
+    public init() {}
+
+    public var body: some View {
         Group {
             Description("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec feugiat laoreet nisl, a cursus lacus vehicula vitae. Nam tempus placerat leo, malesuada dapibus libero convallis.")
         }

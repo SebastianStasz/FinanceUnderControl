@@ -7,11 +7,13 @@
 
 import SwiftUI
 
-struct ToggleDSView: View {
+public struct ToggleDSView: View {
 
     @State private var toggle1 = false
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         Group {
             LabeledToggle("Toggle title", isOn: $toggle1)
                 .designSystemComponent("Labeled Toggle")

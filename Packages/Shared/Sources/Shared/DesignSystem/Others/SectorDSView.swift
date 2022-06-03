@@ -7,8 +7,11 @@
 
 import SwiftUI
 
-struct SectorDSView: View {
-    var body: some View {
+public struct SectorDSView: View {
+
+    public init() {}
+
+    public var body: some View {
         FormView {
             Sector("Clear style", style: .clear) { text }
             Sector("Card style", style: .card) { text }

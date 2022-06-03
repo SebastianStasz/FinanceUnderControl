@@ -7,8 +7,11 @@
 
 import SwiftUI
 
-struct CornerRadiusDSView: View {
-    var body: some View {
+public struct CornerRadiusDSView: View {
+
+    public init() {}
+
+    public var body: some View {
         Group {
             ForEach(CornerRadius.allCases) {
                 Rectangle()

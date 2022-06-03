@@ -12,6 +12,7 @@ final class SettingsCoordinator: Coordinator {
 
     enum Destination {
         case dismiss
+        case designSystem
     }
 
     override func initializeView() -> UIViewController {
@@ -30,6 +31,8 @@ final class SettingsCoordinator: Coordinator {
         switch destination {
         case .dismiss:
             navigationController?.dismiss(animated: true)
+        case .designSystem:
+            DesignSystemCoordinator(navigationController: navigationController!).start()
         }
     }
 }

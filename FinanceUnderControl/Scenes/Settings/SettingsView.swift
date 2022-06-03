@@ -20,7 +20,7 @@ struct SettingsView: View {
             }
 
             Sector("Debug") {
-                Navigation("Design system") { }
+                Navigation("Design system") { viewModel.binding.navigateTo.send(.designSystem) }
             }
         }
         .navigationTitle(String.tab_settings_title)

@@ -7,8 +7,11 @@
 
 import SwiftUI
 
-struct SpacingDSView: View {
-    var body: some View {
+public struct SpacingDSView: View {
+
+    public init() {}
+
+    public var body: some View {
         Group {
             ForEach(Spacing.allCases) {
                 Rectangle()

@@ -7,8 +7,11 @@
 
 import SwiftUI
 
-struct SFSymbolDSView: View {
-    var body: some View {
+public struct SFSymbolDSView: View {
+
+    public init() {}
+
+    public var body: some View {
         Group {
             ForEach(SFSymbol.allCases) {
                 $0.image

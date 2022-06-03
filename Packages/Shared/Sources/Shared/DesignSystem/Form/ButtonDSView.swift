@@ -7,9 +7,11 @@
 
 import SwiftUI
 
-struct ButtonDSView: View {
+public struct ButtonDSView: View {
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         Group {
             Button.edit {}
                 .designSystemComponent("Button - edit")

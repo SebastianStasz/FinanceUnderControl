@@ -18,6 +18,7 @@ private struct DesignSystemComponent: ViewModifier {
                 .opacity(0.25)
             content
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 }
 

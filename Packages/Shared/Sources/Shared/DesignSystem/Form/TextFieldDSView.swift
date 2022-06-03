@@ -8,12 +8,14 @@
 import SSValidation
 import SwiftUI
 
-struct TextFieldDSView: View {
+public struct TextFieldDSView: View {
 
     @State private var textInput = TextInputVM(validator: .notEmpty().and(.lengthBetween(3...9)))
     @State private var numberInput = DoubleInputVM(validator: .notEmpty().andDouble(.valueBetween(3...9)))
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         Group {
             LabeledTextField("Enter number", viewModel: numberInput)
                 .designSystemComponent("Labeled text field")

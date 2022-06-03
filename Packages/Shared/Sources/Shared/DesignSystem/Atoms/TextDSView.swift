@@ -7,9 +7,11 @@
 
 import SwiftUI
 
-struct TextDSView: View {
+public struct TextDSView: View {
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         Group {
             Text("Headline big", style: .headlineLarge)
 
