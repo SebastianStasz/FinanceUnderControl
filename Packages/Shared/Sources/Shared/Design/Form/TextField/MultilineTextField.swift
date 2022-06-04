@@ -28,6 +28,7 @@ public struct MultilineTextField: View {
                 .opacity(text.isEmpty ? 0.6 : 0)
         }
         .padding(.horizontal, 7)
+        .padding(.vertical, 2)
         .background(Color.backgroundSecondary)
         .cornerRadius(.base)
     }

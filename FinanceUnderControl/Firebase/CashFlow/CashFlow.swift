@@ -16,13 +16,15 @@ struct CashFlow: FirestoreDocument, CashFlowTypeSupport {
     let date: Date
     let type: CashFlowType
     let category: CashFlowCategory
+    let description: String?
 
     var nameLowercase: String {
         name.lowerCaseDiacriticInsensitive
     }
 
     enum Field: String, DocumentField {
-        case id, name, amount, currency, categoryId, date, type
+        case id, name, amount, description
+        case currency, categoryId, date, type
         case nameLowercase, year, month
     }
 
@@ -34,13 +36,14 @@ struct CashFlow: FirestoreDocument, CashFlowTypeSupport {
          Field.categoryId.key: category.id,
          Field.date.key: date,
          Field.type.key: type.rawValue,
+         Field.description.key: description as Any,
          Field.nameLowercase.key: name.lowerCaseDiacriticInsensitive,
          Field.year.key: date.year,
          Field.month.key: date.month]
     }
 
     var formModel: CashFlowFormModel {
-        .init(date: date, name: name, value: money.value, currency: money.currency, category: category, type: category.type)
+        .init(date: date, name: name, value: money.value, description: description ?? "", currency: money.currency, category: category, type: category.type)
     }
 }
 
@@ -53,6 +56,7 @@ extension CashFlow {
         money = Money(amount, currency: currency)
         type = CashFlowType(rawValue: document.getString(for: Field.type))!
         date = document.getDate(for: Field.date)
+        description = document.getOptionalString(for: Field.description)
         self.category = category
     }
 }

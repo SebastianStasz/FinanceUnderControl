@@ -26,9 +26,9 @@ struct CashFlowFormModel: Equatable {
         guard let name = name, let value = value, let category = category else { return nil }
         switch formType {
         case let .new(type):
-            return CashFlow(id: UUID().uuidString, name: name, money: .init(value, currency: currency ?? .PLN), date: date, type: type, category: category)
+            return CashFlow(id: UUID().uuidString, name: name, money: .init(value, currency: currency ?? .PLN), date: date, type: type, category: category, description: description)
         case let .edit(cashFlow):
-            return CashFlow(id: cashFlow.id, name: name, money: .init(value, currency: currency ?? .PLN), date: date, type: type, category: category)
+            return CashFlow(id: cashFlow.id, name: name, money: .init(value, currency: currency ?? .PLN), date: date, type: type, category: category, description: description)
         }
     }
 }
