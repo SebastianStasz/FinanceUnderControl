@@ -45,8 +45,9 @@ struct CashFlowFormView: BaseView {
                 focusedField = .name
             }
         }
-        .closeButton { viewModel.binding.navigateTo.send(.dismiss) }
+        .closeButton { viewModel.binding.didTapClose.send() }
         .handleViewModelActions(viewModel)
+        .interactiveDismissDisabled(viewModel.wasEdited)
     }
 
     private var primaruButton: HorizontalButtons.Configuration {

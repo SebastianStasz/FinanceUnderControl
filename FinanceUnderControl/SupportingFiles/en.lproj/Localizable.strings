@@ -43,6 +43,7 @@
 "common_add" = "Add";
 "common_delete" = "Delete";
 "common_cancel" = "Cancel";
+"common_discard_changes" = "Discard changes";
 
 "authorization_register_success_title" = "Registered successfully";
 "authorization_register_success_message" = "Now it's time to sign in!";

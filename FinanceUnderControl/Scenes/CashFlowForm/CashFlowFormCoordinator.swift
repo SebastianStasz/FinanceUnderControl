@@ -13,6 +13,7 @@ final class CashFlowFormCoordinator: Coordinator {
     typealias FormType = CashFlowFormType<CashFlow>
 
     enum Destination {
+        case askToDismiss
         case dismiss
     }
 
@@ -40,8 +41,21 @@ private extension CashFlowFormCoordinator {
 
     func navigate(to destination: Destination) {
         switch destination {
+        case .askToDismiss:
+            askToDismiss()
         case .dismiss:
-            navigationController?.dismiss(animated: true)
+            dismissForm()
         }
+    }
+
+    func askToDismiss() {
+        let alert = UIAlertController.actionSheet()
+        alert.addAction(title: .common_discard_changes, style: .destructive, action: dismissForm)
+        alert.addCancelAction()
+        navigationController?.present(alert, animated: true)
+    }
+
+    func dismissForm() {
+        navigationController?.dismiss(animated: true)
     }
 }

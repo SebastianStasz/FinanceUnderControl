@@ -20,6 +20,7 @@ final class CashFlowFormVM: ViewModel {
     struct Binding {
         let navigateTo = DriverSubject<CashFlowFormCoordinator.Destination>()
         let didTapConfirm = DriverSubject<Void>()
+        let didTapClose = DriverSubject<Void>()
     }
 
     private let service: CashFlowService
@@ -30,6 +31,7 @@ final class CashFlowFormVM: ViewModel {
     var valueInput = DecimalInputVM()
 
     @Published private(set) var categories: [CashFlowCategory] = []
+    @Published private(set) var wasEdited = false
     @Published var formModel: CashFlowFormModel
 
     init(for formType: FormType, coordinator: CoordinatorProtocol, service: CashFlowService = .init()) {
@@ -42,17 +44,22 @@ final class CashFlowFormVM: ViewModel {
         nameInput.result().weakAssign(to: \.formModel.name, on: self)
         valueInput.result().weakAssign(to: \.formModel.value, on: self)
 
-        let initialFormModel: CashFlowFormModel?
-        let errorTracker = DriverSubject<Error>()
-
         if case let .edit(cashFlow) = formType {
             nameInput.setText(to: cashFlow.name)
             valueInput.setValue(to: cashFlow.money.value)
             formModel = cashFlow.formModel
-            initialFormModel = formModel
-        } else {
-            initialFormModel = nil
         }
+
+        let errorTracker = DriverSubject<Error>()
+        let initialFormModel = formModel
+
+        $formModel.map { $0 != initialFormModel }.assign(to: &$wasEdited)
+
+        binding.didTapClose
+            .map(with: self) { vm, _ in !vm.wasEdited }
+            .sinkAndStore(on: self) { vm, canBeClosed in
+                vm.binding.navigateTo.send(canBeClosed ? .dismiss : .askToDismiss)
+            }
 
         let didTapConfirm = binding.didTapConfirm
             .withLatestFrom($formModel)
