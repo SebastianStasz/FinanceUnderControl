@@ -99,6 +99,7 @@ public extension String {
     static let create_cash_flow_expense = "create_cash_flow_expense".localize()
     static let create_cash_flow_basic_label = "create_cash_flow_basic_label".localize()
     static let create_cash_flow_more_label = "create_cash_flow_more_label".localize()
+    static let cash_flow_form_description_placeholder = "cash_flow_form_description_placeholder".localize()
 
     // MARK: - Cantor
 

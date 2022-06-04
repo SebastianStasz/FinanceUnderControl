@@ -13,6 +13,7 @@ struct CashFlowFormModel: Equatable {
     var date = Date()
     var name: String?
     var value: Decimal?
+    var description = ""
     var currency: Currency? = .PLN
     var category: CashFlowCategory?
     var type: CashFlowType

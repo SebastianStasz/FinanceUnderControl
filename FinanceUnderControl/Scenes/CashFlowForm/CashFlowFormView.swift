@@ -11,7 +11,7 @@ import SwiftUI
 struct CashFlowFormView: BaseView {
 
     private enum Field {
-        case name, amount
+        case name, amount, description
     }
 
     @ObservedObject var viewModel: CashFlowFormVM
@@ -23,9 +23,14 @@ struct CashFlowFormView: BaseView {
                 BaseTextField(.create_cash_flow_name, viewModel: viewModel.nameInput)
                     .focused($focusedField, equals: .name)
                     .onTapGesture { focusedField = .name }
+
                 BaseTextField(.common_amount, viewModel: viewModel.valueInput)
                     .focused($focusedField, equals: .amount)
                     .onTapGesture { focusedField = .amount }
+
+                MultilineTextField(text: $viewModel.formModel.description, placeholder: .cash_flow_form_description_placeholder)
+                    .focused($focusedField, equals: .description)
+                    .onTapGesture { focusedField = .description }
             }
             .onSubmit(didSubmit)
 
