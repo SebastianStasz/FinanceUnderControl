@@ -13,6 +13,7 @@ final class CashFlowCategoryFormCoordinator: Coordinator {
 
     enum Destination {
         case dismiss
+        case askToDismiss
     }
 
     private let formType: FormType
@@ -39,6 +40,8 @@ private extension CashFlowCategoryFormCoordinator {
 
     func navigate(to destination: Destination) {
         switch destination {
+        case .askToDismiss:
+            navigationController?.askToDismiss()
         case .dismiss:
             navigationController?.dismiss(animated: true)
         }

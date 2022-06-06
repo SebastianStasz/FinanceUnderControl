@@ -10,6 +10,15 @@ import SwiftUI
 
 extension UINavigationController {
 
+    func askToDismiss() {
+        let alert = UIAlertController.actionSheet()
+        alert.addAction(title: .common_discard_changes, style: .destructive) { [weak self] in
+            self?.dismiss(animated: true)
+        }
+        alert.addCancelAction()
+        present(alert, animated: true)
+    }
+
     func push<Content: View>(_ content: Content, animated: Bool = true) {
         pushViewController(UIHostingController(rootView: content), animated: animated)
     }

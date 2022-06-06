@@ -42,20 +42,9 @@ private extension CashFlowFormCoordinator {
     func navigate(to destination: Destination) {
         switch destination {
         case .askToDismiss:
-            askToDismiss()
+            navigationController?.askToDismiss()
         case .dismiss:
-            dismissForm()
+            navigationController?.dismiss(animated: true)
         }
-    }
-
-    func askToDismiss() {
-        let alert = UIAlertController.actionSheet()
-        alert.addAction(title: .common_discard_changes, style: .destructive, action: dismissForm)
-        alert.addCancelAction()
-        navigationController?.present(alert, animated: true)
-    }
-
-    func dismissForm() {
-        navigationController?.dismiss(animated: true)
     }
 }

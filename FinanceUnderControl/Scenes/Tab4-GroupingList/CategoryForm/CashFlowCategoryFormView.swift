@@ -41,10 +41,11 @@ struct CashFlowCategoryFormView: BaseView {
         }
         .navigationTitle(title)
         .horizontalButtons(primaryButton: primaryButton)
-        .closeButton { viewModel.binding.navigateTo.send(.dismiss) }
+        .closeButton { viewModel.binding.didTapClose.send() }
         .onTapGesture { isFocused = false }
         .onAppearFocus($isFocused)
         .handleViewModelActions(viewModel)
+        .interactiveDismissDisabled(viewModel.wasEdited)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {
