@@ -47,10 +47,9 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
 
         let cashFlows = CombineLatest(documents, storage.$categories)
             .map { result in
-                result.0.map { doc -> CashFlow in
+                result.0.compactMap { doc -> CashFlow? in
                     let categoryId = doc.getString(for: Field.categoryId)
-                    // TODO: Sometimes it fails
-                    let category = result.1.first(where: { $0.id == categoryId })!
+                    guard let category = result.1.first(where: { $0.id == categoryId }) else { return nil }
                     return CashFlow(from: doc, category: category)
                 }
             }
