@@ -11,6 +11,7 @@ import FinanceCoreData
 struct CurrencySelector<T: Equatable> {
 
     var primaryCurrency: T {
+        // TODO: EXC_BAD_ACCESS error
         didSet { if primaryCurrency == secondaryCurrency { secondaryCurrency = oldValue } }
     }
     var secondaryCurrency: T {
