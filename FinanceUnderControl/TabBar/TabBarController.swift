@@ -24,6 +24,7 @@ final class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.viewDidLoad()
 
         let dashboardVC = DashboardCoordinator().start()
         let cashFlowListVC = CashFlowListCoordinator().start()
