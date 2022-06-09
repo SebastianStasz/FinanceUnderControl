@@ -45,7 +45,6 @@ final class DashboardVM: ViewModel {
                 .mapValues { $0.map { $0.money.value }.reduce(0, +) }
                 .map { HorizontalBarVD.Bar(title: $0.key.name, value: $0.value.asDouble, color: $0.key.color) }
                 .sorted(by: { $0.value > $1.value })
-                .prefix(3)
 
             return HorizontalBarVD(bars: Array(categories), total: total.asDouble)
         }

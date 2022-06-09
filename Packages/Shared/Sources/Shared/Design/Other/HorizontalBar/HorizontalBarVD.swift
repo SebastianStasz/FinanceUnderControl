@@ -8,8 +8,8 @@
 import SwiftUI
 
 public struct HorizontalBarVD: Equatable {
-    let bars: [Bar]
-    let total: Double
+    public let bars: [Bar]
+    public let total: Double
 
     public init(bars: [Bar], total: Double) {
         self.bars = bars.sorted(by: { $0.value > $1.value })

@@ -30,7 +30,7 @@ struct ListSector<T: Identifiable> {
     }
 
     var header: SectorHeaderVD {
-        .init(title, editAction: editAction)
+        .init(title, editAction: editAction, handleEditMode: true)
     }
 }
 

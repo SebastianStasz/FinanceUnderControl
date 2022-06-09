@@ -27,7 +27,8 @@ public struct SectorHeader: View {
     }
 
     private var isEditing: Bool {
-        editMode?.wrappedValue == .active
+        guard viewData.handleEditMode else { return true }
+        return editMode?.wrappedValue == .active
     }
 
     // MARK: - Initializers

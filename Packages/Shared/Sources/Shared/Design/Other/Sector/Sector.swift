@@ -44,7 +44,7 @@ public struct Sector<Content: View>: View {
 }
 
 public extension View {
-    func embedInSection(_ title: String, style: SectorStyle = .clear) -> some View {
-        Sector(title, style: style) { self }
+    func embedInSection(_ title: String, style: SectorStyle = .clear, editAction: EditAction? = nil) -> some View {
+        Sector(title, style: style, editAction: editAction) { self }
     }
 }

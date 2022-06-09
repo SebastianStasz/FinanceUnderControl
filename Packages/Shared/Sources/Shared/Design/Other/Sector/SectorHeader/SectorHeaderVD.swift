@@ -11,10 +11,12 @@ public struct SectorHeaderVD {
 
     public let title: String
     public let editAction: EditAction?
+    public let handleEditMode: Bool
 
-    public init(_ title: String, editAction: EditAction? = nil) {
+    public init(_ title: String, editAction: EditAction? = nil, handleEditMode: Bool = false) {
         self.title = title
         self.editAction = editAction
+        self.handleEditMode = handleEditMode
     }
 
     public init?(_ title: String?, editAction: EditAction?) {
