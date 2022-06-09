@@ -16,11 +16,11 @@ struct CashFlowFilterView: BaseView {
         FormView {
             Sector(.cash_flow_filter_type) {
                 SegmentedPicker(.cash_flow_filter_type, selection: filter.cashFlowSelection, elements: CashFlowSelection.allCases)
-                LabeledPicker(.common_category, elements: viewModel.categories, selection: filter.cashFlowCategory)
+                LabeledPicker(.common_category, elements: viewModel.categories, selection: filter.cashFlowCategory, canDeselect: true)
                     .displayIf(filter.wrappedValue.cashFlowSelection != .all, withTransition: .scale)
             }
             Sector(.common_amount) {
-                LabeledPicker(.create_cash_flow_currency, elements: currenciesToSelect, selection: filter.currency)
+                LabeledPicker(.create_cash_flow_currency, elements: Currency.allCases, selection: filter.currency, canDeselect: true)
             }
             Sector(.cash_flow_filter_other) {
                 MonthAndYearPicker(.cash_flow_filter_date_range, viewData: filter.datePickerViewData)
@@ -33,25 +33,6 @@ struct CashFlowFilterView: BaseView {
 
     private var filter: Binding<CashFlowFilter> {
         $viewModel.filter
-    }
-
-    private var currenciesToSelect: [Currency?] {
-        var currencies: [Currency?] = Currency.allCases
-        currencies.append(nil)
-        return currencies
-    }
-
-    private var yearsToSelect: [Int?] {
-        let year = Calendar.current.component(.year, from: Date())
-        var years: [Int?] = (2020...year).map { $0 }
-        years.append(nil)
-        return years
-    }
-
-    private var monthsToSelect: [Int?] {
-        var months: [Int?] = (1...12).map { $0 }
-        months.append(nil)
-        return months
     }
 }
 

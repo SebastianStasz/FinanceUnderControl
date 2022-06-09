@@ -32,9 +32,22 @@ public struct LabeledPicker<T: Pickerable>: View {
 }
 
 public extension LabeledPicker {
-    init(_ title: String, validationMessage: String = .validation_no_elements_available, elements: [T?], selection: Binding<T?>) {
+    init(_ title: String, validationMessage: String = .validation_no_elements_available, elements: [T], selection: Binding<T>) {
         self.title = title
         self.validationMessage = validationMessage
+        self.elements = elements
+        let binding: Binding<T?> = Binding(
+            get: { selection.wrappedValue },
+            set: { selection.wrappedValue = $0! }
+        )
+        self._selection = binding
+    }
+
+    init(_ title: String, validationMessage: String = .validation_no_elements_available, elements: [T], selection: Binding<T?>, canDeselect: Bool = false) {
+        self.title = title
+        self.validationMessage = validationMessage
+        var elements: [T?] = elements
+        if canDeselect { elements.append(nil) }
         self.elements = elements
         self._selection = selection
     }
