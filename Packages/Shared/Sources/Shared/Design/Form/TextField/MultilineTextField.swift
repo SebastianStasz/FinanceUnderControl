@@ -25,7 +25,7 @@ public struct MultilineTextField: View {
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .padding(.leading, 4)
-                .opacity(text.isEmpty ? 0.6 : 0)
+                .opacity(text.isEmpty ? 0.5 : 0)
         }
         .padding(.horizontal, 7)
         .padding(.vertical, 2)

@@ -11,6 +11,7 @@ import SSValidation
 public struct BaseTextField<T>: View {
 
     @ObservedObject private var viewModel: InputVM<T>
+    @FocusState private var isFocused: Bool
 
     private let title: String
     private let style: CardStyle
@@ -41,8 +42,18 @@ public struct BaseTextField<T>: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: .micro) {
-            InputField(title, viewModel: viewModel, prompt: prompt ?? title, isSecure: isSecure, keyboardType: keyboardType).textStyle(.body())
-                .card(style: style)
+            HStack(spacing: .medium) {
+                InputField(title, viewModel: viewModel, prompt: prompt ?? title, isSecure: isSecure, keyboardType: keyboardType)
+                    .textStyle(.body())
+                    .focused($isFocused)
+
+                Button(systemImage: SFSymbol.clear.rawValue) {
+                    viewModel.setText("")
+                }
+                .buttonStyle(.plain)
+                .opacity(isClearButtonVisible ? 0.3 : 0)
+            }
+            .card(style: style)
 
             if let message = message {
                 Text(message, style: .footnote(.invalid))
@@ -58,6 +69,11 @@ public struct BaseTextField<T>: View {
             return message
         }
         return nil
+    }
+
+    private var isClearButtonVisible: Bool {
+        guard isFocused else { return false }
+        return viewModel.textInput.isNotEmpty
     }
 }
 
