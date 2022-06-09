@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import Shared
 
 final class DashboardCoordinator: RootCoordinator {
 
     enum Destination {
         case settings
+        case topExpenses(HorizontalBarVD)
     }
 
     private let navigationController = UINavigationController()
@@ -32,6 +34,9 @@ final class DashboardCoordinator: RootCoordinator {
         switch destination {
         case .settings:
             SettingsCoordinator(.presentFullScreen(on: navigationController)).start()
+        case let .topExpenses(viewData):
+            let vc = UIHostingController(rootView: TopExpensesView(viewData: viewData))
+            navigationController.presentModally(vc)
         }
     }
 }

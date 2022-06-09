@@ -36,7 +36,7 @@ struct DashboardView: View {
         guard let topExpenses = viewModel.topExpenses, topExpenses.bars.count > 3 else {
             return nil
         }
-        return EditAction(title: "Show all", action: {})
+        return EditAction(title: "Show all") { viewModel.binding.navigateTo.send(.topExpenses(topExpenses)) }
     }
 }
 
