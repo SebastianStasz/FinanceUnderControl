@@ -35,7 +35,7 @@ final class DashboardCoordinator: RootCoordinator {
         case .settings:
             SettingsCoordinator(.presentFullScreen(on: navigationController)).start()
         case let .topExpenses(viewData):
-            let vc = UIHostingController(rootView: TopExpensesView(viewData: viewData))
+            let vc = UIHostingController(rootView: ExpensesByCategoryView(viewData: viewData))
             navigationController.presentModally(vc)
         }
     }

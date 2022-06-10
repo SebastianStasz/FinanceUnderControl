@@ -44,6 +44,7 @@
 "common_delete" = "Usuń";
 "common_cancel" = "Anuluj";
 "common_discard_changes" = "Odrzuć zmiany";
+"common_show_all" = "Pokaż wszystko";
 
 "authorization_register_success_title" = "Zarejestrowano pomyślnie";
 "authorization_register_success_message" = "Czas zalogować się na swoje konto!";
@@ -52,6 +53,9 @@
 "authorization_register_account_invalid_email_title" = "Błędny email";
 "authorization_register_account_invalid_email_message" = "Podamy email jest niepoprawny. Spróbuj ponownie używając innego adresu.";
 "authorization_register_account_unknown_error_message" = "W trakcie rejestracji wystąpił błąd. Spróbuj ponownie później lub wybierz inną formę logowania.";
+
+"dashboard_top_expenses" = "Najwyższe wydatki";
+"expenses_by_category_title" = "Wydatki według kategorii";
 
 "cash_flow_filter_title" = "Filtruj";
 "cash_flow_filter_type" = "Typ przepływów";

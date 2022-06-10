@@ -20,7 +20,7 @@ struct DashboardView: View {
 
             if let topExpenses = viewModel.topExpenses {
                 HorizontalBarView(viewData: .init(bars: Array(topExpenses.bars.prefix(3)), total: topExpenses.total))
-                    .embedInSection("Top expenses", editAction: topExpensesEditAction)
+                    .embedInSection(.dashboard_top_expenses, editAction: topExpensesEditAction)
             }
         }
         .navigationBar(title: "Good morning") {
@@ -36,7 +36,7 @@ struct DashboardView: View {
         guard let topExpenses = viewModel.topExpenses, topExpenses.bars.count > 3 else {
             return nil
         }
-        return EditAction(title: "Show all") { viewModel.binding.navigateTo.send(.topExpenses(topExpenses)) }
+        return EditAction(title: .common_show_all) { viewModel.binding.navigateTo.send(.topExpenses(topExpenses)) }
     }
 }
 

@@ -64,6 +64,7 @@ public extension String {
     static let common_delete = "common_delete".localize()
     static let common_cancel = "common_cancel".localize()
     static let common_discard_changes = "common_discard_changes".localize()
+    static let common_show_all = "common_show_all".localize()
 
     // MARK: - Authorization
 
@@ -74,6 +75,9 @@ public extension String {
     static let authorization_register_account_invalid_email_title = "authorization_register_account_invalid_email_title".localize()
     static let authorization_register_account_invalid_email_message = "authorization_register_account_invalid_email".localize()
     static let authorization_register_account_unknown_error_message = "authorization_register_account_unknown_error_message".localize()
+
+    static let dashboard_top_expenses = "dashboard_top_expenses".localize()
+    static let expenses_by_category_title = "expenses_by_category_title".localize()
 
     // MARK: - Cash flow filter
 

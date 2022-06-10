@@ -1,5 +1,5 @@
 //
-//  TopExpensesView.swift
+//  ExpensesByCategoryView.swift
 //  FinanceUnderControl
 //
 //  Created by sebastianstaszczyk on 09/06/2022.
@@ -8,28 +8,25 @@
 import SwiftUI
 import Shared
 
-struct TopExpensesView: View {
+struct ExpensesByCategoryView: View {
     @Environment(\.dismiss) private var dismiss
 
     let viewData: HorizontalBarVD
 
     var body: some View {
-        NavigationView {
             ScrollView {
                 HorizontalBarView(viewData: viewData)
             }
-            .navigationTitle("This month top expenses")
-            .navigationBarTitleDisplayMode(.inline)
             .closeButton(action: dismiss.callAsFunction)
-        }
+            .embedInNavigationView(title: .expenses_by_category_title, displayMode: .inline)
     }
 }
 
 // MARK: - Preview
 
-struct TopExpensesView_Previews: PreviewProvider {
+struct ExpensesByCategoryView_Previews: PreviewProvider {
     static var previews: some View {
-        TopExpensesView(viewData: .sample)
-        TopExpensesView(viewData: .sample).darkScheme()
+        ExpensesByCategoryView(viewData: .sample)
+        ExpensesByCategoryView(viewData: .sample).darkScheme()
     }
 }

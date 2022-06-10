@@ -44,6 +44,7 @@
 "common_delete" = "Delete";
 "common_cancel" = "Cancel";
 "common_discard_changes" = "Discard changes";
+"common_show_all" = "Show all";
 
 "authorization_register_success_title" = "Registered successfully";
 "authorization_register_success_message" = "Now it's time to sign in!";
@@ -52,6 +53,9 @@
 "authorization_register_account_invalid_email_title" = "Invalid email";
 "authorization_register_account_invalid_email_message" = "Provided email is invalid. Try again with different one.";
 "authorization_register_account_unknown_error_message" = "An error occurred during registration. Please try again later or choose a different login method.";
+
+"dashboard_top_expenses" = "Top expenses";
+"expenses_by_category_title" = "Expenses by category";
 
 "cash_flow_filter_title" = "Filter";
 "cash_flow_filter_type" = "Cash flow type";
