@@ -45,6 +45,7 @@
 "common_cancel" = "Anuluj";
 "common_discard_changes" = "Odrzuć zmiany";
 "common_show_all" = "Pokaż wszystko";
+"common_ok" = "OK";
 
 "authorization_register_success_title" = "Zarejestrowano pomyślnie";
 "authorization_register_success_message" = "Czas zalogować się na swoje konto!";

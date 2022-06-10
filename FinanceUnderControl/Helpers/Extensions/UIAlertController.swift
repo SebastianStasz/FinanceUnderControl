@@ -19,6 +19,10 @@ extension UIAlertController {
         addAction(.init(title: .common_cancel, style: .cancel))
     }
 
+    func addOkAction() {
+        addAction(.init(title: .common_ok, style: .cancel))
+    }
+
     static func actionSheet(title: String? = nil) -> UIAlertController {
         .init(title: title, message: nil, preferredStyle: .actionSheet)
     }

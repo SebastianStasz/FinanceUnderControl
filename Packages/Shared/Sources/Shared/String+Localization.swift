@@ -65,6 +65,7 @@ public extension String {
     static let common_cancel = "common_cancel".localize()
     static let common_discard_changes = "common_discard_changes".localize()
     static let common_show_all = "common_show_all".localize()
+    static let common_ok = "common_ok".localize()
 
     // MARK: - Authorization
 

@@ -53,6 +53,12 @@ final class CashFlowGroupingListVM: ViewModel {
         binding.confirmCategoryDeletion
             .withLatestFrom(binding.categoryToDelete)
             .perform(on: self, isLoading: mainLoader, errorTracker: errorTracker) { vm, category in
+                guard try await vm.categoryService.canBeDeleted(category) else {
+                    DispatchQueue.main.async {
+                        vm.binding.navigateTo.send(.presentCategoryCanNotBeDeleted(category))
+                    }
+                    return
+                }
                 try await vm.categoryService.delete(category)
             }
             .sink {}.store(in: &cancellables)

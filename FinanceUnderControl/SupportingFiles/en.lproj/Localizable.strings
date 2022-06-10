@@ -45,6 +45,7 @@
 "common_cancel" = "Cancel";
 "common_discard_changes" = "Discard changes";
 "common_show_all" = "Show all";
+"common_ok" = "OK";
 
 "authorization_register_success_title" = "Registered successfully";
 "authorization_register_success_message" = "Now it's time to sign in!";

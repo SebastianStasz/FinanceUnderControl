@@ -15,6 +15,7 @@ final class CashFlowGroupingCoordinator: RootCoordinator, ObservableObject {
         case presentFormSelection(CashFlowType)
         case presentEditGroupForm(CashFlowCategoryGroup)
         case presentEditCategoryForm(CashFlowCategory)
+        case presentCategoryCanNotBeDeleted(CashFlowCategory)
     }
 
     private let navigationController = UINavigationController()
@@ -24,15 +25,7 @@ final class CashFlowGroupingCoordinator: RootCoordinator, ObservableObject {
         let viewModel = CashFlowGroupingListVM(coordinator: self)
         let view = CashFlowGroupingListView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
-//        viewController.title = "Categories"
         navigationController.viewControllers = [viewController]
-        let presentFormSelection = UIAction { _ in
-            viewModel.binding.navigateTo.send(.presentFormSelection(viewModel.cashFlowType))
-        }
-        
-//        viewController.navigationItem.rightBarButtonItems = [
-//            .init(systemItem: .add, primaryAction: presentFormSelection),
-//        ]
 
         viewModel.binding.navigateTo
             .sink { [weak self] in self?.navigate(to: $0) }
@@ -52,6 +45,8 @@ private extension CashFlowGroupingCoordinator {
             presentGroupForm(.edit(group))
         case let .presentEditCategoryForm(category):
             presentCategoryForm(.edit(category))
+        case let .presentCategoryCanNotBeDeleted(category):
+            presentCategoryCanNotBeDeleted(category)
         }
     }
 
@@ -69,5 +64,11 @@ private extension CashFlowGroupingCoordinator {
 
     func presentCategoryForm(_ formType: CashFlowFormType<CashFlowCategory>) {
         CashFlowCategoryFormCoordinator(.presentModally(on: navigationController), formType: formType).start()
+    }
+
+    func presentCategoryCanNotBeDeleted(_ category: CashFlowCategory) {
+        let alert = UIAlertController(title: "Can not delete category", message: "Category \"\(category.name)\" is used by some cash flows. You can not delete it.", preferredStyle: .alert)
+        alert.addOkAction()
+        navigationController.present(alert, animated: true)
     }
 }

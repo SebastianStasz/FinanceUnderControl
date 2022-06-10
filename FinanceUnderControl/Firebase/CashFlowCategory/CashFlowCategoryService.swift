@@ -21,6 +21,12 @@ final class CashFlowCategoryService: CollectionService {
         try await firestore.createOrEditDocuments(models, in: .cashFlowCategories)
     }
 
+    func canBeDeleted(_ category: CashFlowCategory) async throws -> Bool {
+        let configuration: QueryConfiguration<CashFlow> = .init(filters: [.isCategory(category)], limit: 1)
+        let cashFlow = try await firestore.getDocuments(from: .cashFlows, configuration: configuration).first
+        return cashFlow.isNil
+    }
+
     func delete(_ category: CashFlowCategory) async throws {
         try await firestore.deleteDocument(withId: category.id, from: .cashFlowCategories)
     }
