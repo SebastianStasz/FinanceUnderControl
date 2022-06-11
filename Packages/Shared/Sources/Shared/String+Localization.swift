@@ -125,6 +125,7 @@ public extension String {
 
     // MARK: - Settings
 
+    static let settings_language = "settings_language".localize()
     static let settings_create_group = "settings_create_group".localize()
     static let settings_create_category = "settings_create_category".localize()
     static let settings_edit_group = "settings_edit_group".localize()

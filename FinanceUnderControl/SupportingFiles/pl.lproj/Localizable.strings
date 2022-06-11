@@ -89,6 +89,7 @@
 "cantor_exchange_rates_info_message" = "Kursy walut dostarczone przez: \"exchangerate.host\"";
 "cantor_load_exchange_rates_error_message" = "Nie udało się załadować kursu wymiany dla waluty \"%@\". Spróbuj ponownie później.";
 
+"settings_language" = "Język";
 "settings_create_group" = "Utwórz grupę";
 "settings_create_category" = "Utwórz kategorię";
 "settings_edit_group" = "Edytuj grupę";

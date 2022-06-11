@@ -89,6 +89,7 @@
 "cantor_exchange_rates_info_message" = "Exchange rates data provided by: \"exchangerate.host\"";
 "cantor_load_exchange_rates_error_message" = "Failed to load exchange rates for \"%@\" currency. Please try again later.";
 
+"settings_language" = "Language";
 "settings_create_group" = "Create group";
 "settings_create_category" = "Create category";
 "settings_edit_group" = "Edit group";

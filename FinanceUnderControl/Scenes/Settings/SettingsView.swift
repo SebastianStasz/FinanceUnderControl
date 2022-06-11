@@ -19,6 +19,10 @@ struct SettingsView: View {
                 LabeledPicker(.common_secondary, elements: Currency.allCases, selection: $viewModel.currencySelector.secondaryCurrency)
             }
 
+            Sector(.cash_flow_filter_other) {
+                Navigation(.settings_language) { viewModel.binding.navigateTo.send(.appSettings) }
+            }
+
             Sector("Debug") {
                 Navigation("Design system") { viewModel.binding.navigateTo.send(.designSystem) }
             }

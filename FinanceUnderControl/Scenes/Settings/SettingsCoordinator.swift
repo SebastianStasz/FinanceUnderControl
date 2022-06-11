@@ -12,6 +12,7 @@ final class SettingsCoordinator: Coordinator {
 
     enum Destination {
         case dismiss
+        case appSettings
         case designSystem
     }
 
@@ -31,6 +32,8 @@ final class SettingsCoordinator: Coordinator {
         switch destination {
         case .dismiss:
             navigationController?.dismiss(animated: true)
+        case .appSettings:
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         case .designSystem:
             DesignSystemCoordinator(navigationController: navigationController!).start()
         }
