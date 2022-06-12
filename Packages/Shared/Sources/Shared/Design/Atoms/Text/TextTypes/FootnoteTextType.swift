@@ -15,7 +15,7 @@ public enum FootnoteTextType {
     var color: Color {
         switch self {
         case .info:
-            return .gray // TODO: Adapt to DS
+            return .grayMain
         case .valid:
             return .green.opacity(0.7) // TODO: Adapt to DS
         case .invalid:
