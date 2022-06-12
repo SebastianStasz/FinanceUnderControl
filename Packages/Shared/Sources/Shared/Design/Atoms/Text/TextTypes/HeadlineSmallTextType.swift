@@ -14,7 +14,7 @@ public enum HeadlineSmallTextType {
     var color: Color {
         switch self {
         case .normal:
-            return .gray // TODO: Adapt to DS
+            return .grayMain
         case .action:
             return .blue // TODO: Adapt to DS
         }

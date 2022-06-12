@@ -27,7 +27,7 @@ private struct CircleViewSelecting<T: Equatable>: ViewModifier {
     }
 
     private var strokeColor: Color {
-        element == selection ? .grayMedium : .clear
+        element == selection ? .grayMain : .clear
     }
 
     private func select() {

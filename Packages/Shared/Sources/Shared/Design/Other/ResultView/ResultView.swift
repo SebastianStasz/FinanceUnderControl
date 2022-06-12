@@ -19,7 +19,7 @@ public struct ResultView: View {
         VStack(alignment: .center, spacing: .micro) {
             Text(viewData.title, style: .title)
             Text(viewData.message, style: .subtitle)
-            BaseButton("OK", role: .primary, action: viewData.action)
+            BaseButton(.common_ok, role: .primary, action: viewData.action)
         }
     }
 }

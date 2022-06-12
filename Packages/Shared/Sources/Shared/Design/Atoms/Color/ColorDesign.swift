@@ -18,8 +18,14 @@ public enum ColorDesign: String {
         public var id: String { rawValue }
     }
 
-    public enum AccentGray: String, ColorAsset, CaseIterable, Identifiable {
-        case gray_medium
+    public enum Accent: String, ColorAsset, CaseIterable, Identifiable {
+        case accent_primary
+
+        public var id: String { rawValue }
+    }
+
+    public enum Gray: String, ColorAsset, CaseIterable, Identifiable {
+        case gray_main
 
         public var id: String { rawValue }
     }
@@ -46,7 +52,7 @@ extension ColorDesign: Identifiable, CaseIterable {
     var colors: [ColorAsset] {
         switch self {
         case .accentGray:
-            return AccentGray.allCases
+            return Gray.allCases
         case .basic:
             return Basic.allCases
         }

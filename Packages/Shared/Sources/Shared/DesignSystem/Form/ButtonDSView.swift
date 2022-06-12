@@ -23,10 +23,10 @@ public struct ButtonDSView: View {
                 .designSystemComponent("Button - delete")
             
             BaseButton("Button title", role: .primary, action: {})
-                .designSystemComponent("Base Button - action")
+                .designSystemComponent("Base Button - primary")
 
             BaseButton("Button title", role: .secondary, action: {})
-                .designSystemComponent("Base Button - cancel")
+                .designSystemComponent("Base Button - secondary")
         }
         .designSystemView("Buttons")
     }

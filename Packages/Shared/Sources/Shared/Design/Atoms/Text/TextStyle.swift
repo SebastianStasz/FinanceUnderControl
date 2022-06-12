@@ -22,16 +22,14 @@ public enum TextStyle {
     public var color: Color {
         switch self {
         case .subtitle:
-            return .gray
-        case .navHeadline:
-            return .primary
+            return .grayMain
         case .headlineLarge:
             return .white // TODO: Adapt to DS
-        case .headlineSmall(let type):
+        case let .headlineSmall(type):
             return type.color
-        case .footnote(let type):
+        case let .footnote(type):
             return type.color
-        case .body(let type):
+        case let .body(type):
             return type.color
         default:
             return .basicPrimaryInverted
