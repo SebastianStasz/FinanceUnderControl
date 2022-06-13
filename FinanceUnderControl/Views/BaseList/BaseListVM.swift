@@ -36,7 +36,7 @@ final class BaseListVM<T: Identifiable & Equatable>: ObservableObject {
 }
 
 extension BaseListVM.Input {
-    init(sectors: Driver<[ListSector<T>]>, isLoading: Driver<Bool>) {
+    init(sectors: Driver<[ListSector<T>]>, isLoading: Driver<Bool> = Just(false).asDriver) {
         self.sectors = sectors
         self.isMoreItems = Just(false).asDriver
         self.isSearching = Just(false).asDriver

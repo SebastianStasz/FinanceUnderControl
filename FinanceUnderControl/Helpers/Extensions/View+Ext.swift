@@ -21,6 +21,16 @@ extension View {
             }
     }
 
+    func editAction(_ action: @autoclosure @escaping Action) -> some View {
+        self
+            .contextMenu {
+                Button.edit(action: action)
+            }
+            .swipeActions {
+                Button.edit(action: action)
+            }
+    }
+
     func closeButton(action: @escaping Action) -> some View {
         toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
