@@ -29,16 +29,16 @@ final class TabBarController: UITabBarController, UITabBarControllerDelegate {
         let dashboardVC = DashboardCoordinator().start()
         let cashFlowListVC = CashFlowListCoordinator().start()
         let addCashFlows = UIViewController()
-        let cantorVC = CantorCoordinator().start()
+        let walletsListVM = WalletsListCoordinator().start()
         let cashFlowGroupingListVC = CashFlowGroupingCoordinator().start()
 
         dashboardVC.setTabBarItem(title: .tab_dashboard_title, icon: .dashboardTab, tag: 0)
         cashFlowListVC.setTabBarItem(title: .tab_cashFlow_title, icon: .cashFlowTab, tag: 1)
         addCashFlows.setTabBarItem(title: nil, icon: .plus, tag: 2)
-        cantorVC.setTabBarItem(title: .tab_currencies_title, icon: .currenciesTab, tag: 3)
+        walletsListVM.setTabBarItem(title: .tab_wallets_title, icon: .walletsTab, tag: 3)
         cashFlowGroupingListVC.setTabBarItem(title: .common_categories, icon: .cashFlowGroupingTab, tag: 4)
 
-        viewControllers = [dashboardVC, cashFlowListVC, addCashFlows, cantorVC, cashFlowGroupingListVC]
+        viewControllers = [dashboardVC, cashFlowListVC, addCashFlows, walletsListVM, cashFlowGroupingListVC]
     }
 
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {

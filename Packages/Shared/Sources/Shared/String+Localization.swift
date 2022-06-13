@@ -23,6 +23,7 @@ public extension String {
     // MARK: - Tab
     static let tab_dashboard_title = "tab_dashboard_title".localize()
     static let tab_cashFlow_title = "tab_cashFlow_title".localize()
+    static let tab_wallets_title = "tab_wallets_title".localize()
     static let tab_currencies_title = "tab_currencies_title".localize()
     static let tab_settings_title = "tab_settings_title".localize()
 

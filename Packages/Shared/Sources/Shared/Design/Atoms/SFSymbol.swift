@@ -11,6 +11,7 @@ public enum SFSymbol: String {
     case dashboardTab   = "house"
     case cashFlowTab    = "doc.text.magnifyingglass"
     case currenciesTab  = "dollarsign.circle"
+    case walletsTab     = "creditcard.circle"
     case cashFlowGroupingTab    = "circle.grid.cross"
     case plus           = "plus"
     case minus          = "minus"
