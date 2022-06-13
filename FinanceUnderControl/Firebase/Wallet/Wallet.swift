@@ -10,15 +10,12 @@ import Foundation
 import Shared
 
 struct Wallet: FirestoreDocument {
+    let id: String
     let currency: Currency
     let balance: Decimal
 
-    var id: String {
-        currency.id
-    }
-
     enum Field: String, DocumentField {
-        case currency, balance
+        case id, currency, balance
     }
 
     var data: [String: Any] {
@@ -29,6 +26,7 @@ struct Wallet: FirestoreDocument {
 
 extension Wallet {
     init(from document: QueryDocumentSnapshot) {
+        id = document.getString(for: Field.id)
         currency = document.getCurrency(for: Field.currency)
         balance = document.getDecimal(for: Field.balance)
     }
