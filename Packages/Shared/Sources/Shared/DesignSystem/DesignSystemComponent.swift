@@ -13,9 +13,7 @@ private struct DesignSystemComponent: ViewModifier {
 
     func body(content: Content) -> some View {
         VStack(alignment: .leading, spacing: .medium) {
-            Text(name)
-                .font(.title3)
-                .opacity(0.25)
+            Text(name, style: .footnote())
             content
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

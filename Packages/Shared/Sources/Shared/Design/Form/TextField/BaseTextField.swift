@@ -53,7 +53,10 @@ public struct BaseTextField<T>: View {
                 .buttonStyle(.plain)
                 .opacity(isClearButtonVisible ? 0.3 : 0)
             }
-            .card(style: style)
+            .frame(height: 48)
+            .padding(.horizontal, .medium)
+            .background(Color.backgroundSecondary)
+            .cornerRadius(.base)
 
             if let message = message {
                 Text(message, style: .footnote(.invalid))

@@ -34,7 +34,10 @@ public struct LabeledView<Content: View>: View {
                 Text(message, style: .footnote(.invalid))
             }
         }
-        .card()
+        .frame(height: 48)
+        .padding(.horizontal, .medium)
+        .background(Color.backgroundSecondary)
+        .cornerRadius(.base)
     }
 }
 

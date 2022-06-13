@@ -26,7 +26,10 @@ public struct LabeledToggle: View {
             Toggle(title, isOn: $isOn)
                 .labelsHidden()
         }
-        .card()
+        .frame(height: 48)
+        .padding(.horizontal, .medium)
+        .background(Color.backgroundSecondary)
+        .cornerRadius(.base)
     }
 }
 
