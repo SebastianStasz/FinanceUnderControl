@@ -31,4 +31,11 @@ struct ViewControllerProvider {
 
         return navigationController
     }
+
+    static func walletForm(for wallet: Wallet) -> UIViewController {
+        let viewModel = WalletFormVM(wallet: wallet)
+        let view = WalletFormView(viewModel: viewModel)
+        let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+        return viewController
+    }
 }

@@ -6,11 +6,17 @@
 //
 
 import Foundation
+import SSUtils
 
 final class AssetsListVM: ViewModel {
 
+    struct Binding {
+        let navigateTo = DriverSubject<AssetsListCoordinator.Destination>()
+    }
+
     @Published private(set) var walletsListVD = BaseListVD<Wallet>.initialState
 
+    let binding = Binding()
     let walletsListVM = BaseListVM<Wallet>()
     private var storage = Database.shared.wallets
 
