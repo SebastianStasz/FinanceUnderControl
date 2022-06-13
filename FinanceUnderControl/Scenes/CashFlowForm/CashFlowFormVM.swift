@@ -77,7 +77,6 @@ final class CashFlowFormVM: ViewModel {
                 try await service.createOrEdit($0)
             }
             .sinkAndStore(on: self) { vm, _ in
-                AppVM.shared.events.didChangeCashFlow.send()
                 vm.binding.navigateTo.send(.dismiss)
             }
     }

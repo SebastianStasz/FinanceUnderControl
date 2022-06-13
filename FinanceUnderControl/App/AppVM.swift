@@ -15,11 +15,6 @@ import Firebase
 final class AppVM {
     static let shared = AppVM()
 
-    struct Events {
-        let didChangeCashFlow = DriverSubject<Void>()
-    }
-
-    let events = Events()
     let context: NSManagedObjectContext
 
     private init() {

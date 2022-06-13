@@ -1,5 +1,5 @@
 //
-//  WalletService.swift
+//  WalletSubscription.swift
 //  FinanceUnderControl
 //
 //  Created by sebastianstaszczyk on 13/06/2022.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class WalletService {
+final class WalletSubscription {
     private let firestore = FirestoreService.shared
 
     @Published private(set) var wallets: [Wallet] = []

@@ -6,9 +6,26 @@
 //
 
 import Foundation
+import SSUtils
 import SSValidation
 
 final class WalletFormVM: ViewModel {
 
-    init(wallet: Wallet) {}
+    struct Binding {
+        let didTapConfirm = DriverSubject<Void>()
+    }
+
+    @Published private(set) var isFormValid = false
+
+    let binding = Binding()
+    let balanceInputVM = DecimalInputVM()
+
+    init(wallet: Wallet) {
+        super.init()
+        balanceInputVM.setValue(to: wallet.balance)
+    }
+
+    override func viewDidLoad() {
+        balanceInputVM.isValid.assign(to: &$isFormValid)
+    }
 }
