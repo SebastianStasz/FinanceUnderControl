@@ -32,6 +32,11 @@ struct Wallet: FirestoreDocument {
          Field.balanceDate.key: balanceDate,
          Field.balance.key: balance.asString]
     }
+
+    static func balanceData(for balance: Decimal) -> [String: Any] {
+        [Field.balance.key: balance.asString,
+         Field.balanceDate.key: Date.now]
+    }
 }
 
 extension Wallet {

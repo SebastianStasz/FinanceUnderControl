@@ -13,17 +13,28 @@ import SSUtils
 final class CashFlowService: CollectionService {
     typealias Document = CashFlow
 
-    private let limit = 10
     private let firestore = FirestoreService.shared
-    private let storage = Database.shared.grouping
     private let categoryService = CashFlowCategoryService()
-    private var lastDocument: QueryDocumentSnapshot?
+    private let walletService = WalletService.shared
 
-    func createOrEdit(_ model: CashFlow) async throws {
-        try await firestore.createOrEditDocument(withId: model.id, in: .cashFlows, data: model.data)
+    func create(_ cashFlow: CashFlow) async throws {
+        var batch = firestore.batch
+        batch = walletService.updateBalance(for: .new(cashFlow), using: batch)
+        batch = firestore.create(withId: cashFlow.id, in: .cashFlows, data: cashFlow.data, batch: batch)
+        try await batch.commit()
+    }
+
+    func edit(_ cashFlow: CashFlow, oldValue: Decimal) async throws {
+        var batch = firestore.batch
+        batch = walletService.updateBalance(for: .edit(cashFlow, oldValue: oldValue), using: batch)
+        batch = firestore.edit(withId: cashFlow.id, in: .cashFlows, data: cashFlow.data, batch: batch)
+        try await batch.commit()
     }
 
     func delete(_ cashFlow: CashFlow) async throws {
-        try await firestore.deleteDocument(withId: cashFlow.id, from: .cashFlows)
+        var batch = firestore.batch
+        batch = walletService.updateBalance(for: .delete(cashFlow), using: batch)
+        batch = firestore.deleteDocument(withId: cashFlow.id, from: .cashFlows, batch: batch)
+        try await batch.commit()
     }
 }

@@ -26,7 +26,7 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
 
     var cancellables: Set<AnyCancellable> = []
     private let firestore = FirestoreService.shared
-    private let storage = Database.shared.grouping
+    private let storage = CashFlowGroupingService.shared
     private var listener: ListenerRegistration?
 
     private let errorTracker = DriverSubject<Error>()

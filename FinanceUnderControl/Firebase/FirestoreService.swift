@@ -18,8 +18,22 @@ struct FirestoreService {
 
     private init() {}
 
+    var batch: WriteBatch {
+        db.batch()
+    }
+
     func createOrEditDocument(withId id: String, in collection: Collection, data: [String: Any]) async throws {
         try await documentReference(withId: id, in: collection).setData(data)
+    }
+
+    func edit(withId id: String, in collection: Collection, data: [String: Any], batch: WriteBatch) -> WriteBatch {
+        let document = documentReference(withId: id, in: collection)
+        return batch.updateData(data, forDocument: document)
+    }
+
+    func create(withId id: String, in collection: Collection, data: [String: Any], batch: WriteBatch) -> WriteBatch {
+        let document = documentReference(withId: id, in: collection)
+        return batch.setData(data, forDocument: document)
     }
 
     func createOrEditDocuments<T: FirestoreDocument>(_ documents: [T], in collection: Collection) async throws {
@@ -33,6 +47,11 @@ struct FirestoreService {
 
     func deleteDocument(withId id: String, from collection: Collection) async throws {
         try await documentReference(withId: id, in: collection).delete()
+    }
+
+    func deleteDocument(withId id: String, from collection: Collection, batch: WriteBatch) -> WriteBatch {
+        let document = documentReference(withId: id, in: collection)
+        return batch.deleteDocument(document)
     }
 
     func getDocument(fromReference reference: DocumentReference) async throws -> DocumentSnapshot {
@@ -82,15 +101,15 @@ struct FirestoreService {
 
         return query
     }
+
+    func documentReference(withId id: String, in collection: Collection) -> DocumentReference {
+        userDocument.collection(collection.name).document(collection.documentIdPrefix + id)
+    }
 }
 
 private extension FirestoreService {
 
     var userDocument: DocumentReference {
         db.collection(Collection.users.name).document(Collection.users.documentIdPrefix + userId)
-    }
-
-    func documentReference(withId id: String, in collection: Collection) -> DocumentReference {
-        userDocument.collection(collection.name).document(collection.documentIdPrefix + id)
     }
 }

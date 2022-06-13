@@ -18,7 +18,7 @@ final class AssetsListVM: ViewModel {
 
     let binding = Binding()
     let walletsListVM = BaseListVM<Wallet>()
-    private var storage = Database.shared.wallets
+    private var storage = WalletService.shared
 
     override func viewDidLoad() {
         let wallets = storage.$wallets.map { [ListSector("Wallets", elements: $0)] }.asDriver

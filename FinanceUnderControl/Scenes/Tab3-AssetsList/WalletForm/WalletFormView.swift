@@ -18,6 +18,10 @@ struct WalletFormView: View {
             Sector("Balance") {
                 BaseTextField("Balance", viewModel: viewModel.balanceInputVM)
             }
+
+            Sector("Last update") {
+                Text(viewModel.wallet.balanceDate.string(format: .medium))
+            }
         }
         .closeButton(action: dismiss.callAsFunction)
         .horizontalButtons(primaryButton: primaryButton)

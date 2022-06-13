@@ -24,7 +24,7 @@ final class CashFlowFormVM: ViewModel {
     }
 
     private let service: CashFlowService
-    private let storage = Database.shared.grouping
+    private let storage = CashFlowGroupingService.shared
     let formType: FormType
     let binding = Binding()
     var nameInput = TextInputVM()
@@ -73,8 +73,12 @@ final class CashFlowFormVM: ViewModel {
         didTapConfirm
             .filter { $0 != initialFormModel }
             .compactMap { $0.model(for: formType) }
-            .perform(isLoading: mainLoader, errorTracker: errorTracker) {
-                try await service.createOrEdit($0)
+            .perform(on: self, isLoading: mainLoader, errorTracker: errorTracker) { vm, cashFlow in
+                if vm.formType.isEdit {
+                    try await service.edit(cashFlow, oldValue: initialFormModel.value!)
+                } else {
+                    try await service.create(cashFlow)
+                }
             }
             .sinkAndStore(on: self) { vm, _ in
                 vm.binding.navigateTo.send(.dismiss)

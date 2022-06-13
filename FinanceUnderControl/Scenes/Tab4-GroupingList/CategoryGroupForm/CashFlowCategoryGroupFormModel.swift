@@ -17,7 +17,7 @@ struct CashFlowCategoryGroupFormModel: Equatable {
     init(name: String? = nil, color: CashFlowCategoryColor = .blue, type: CashFlowType) {
         self.name = name
         self.color = color
-        otherCategories = Database.shared.grouping.categories(type: type)
+        otherCategories = CashFlowGroupingService.shared.categories(type: type)
     }
 
     var isValid: Bool {
@@ -70,7 +70,7 @@ struct CashFlowCategoryGroupFormModel: Equatable {
 
 extension CashFlowCategoryGroupFormModel {
     init(from group: CashFlowCategoryGroup) {
-        let categories = Database.shared.grouping.categories(type: group.type)
+        let categories = CashFlowGroupingService.shared.categories(type: group.type)
         name = group.name
         color = group.color
         includedCategories = categories.filter { $0.group?.id == group.id }

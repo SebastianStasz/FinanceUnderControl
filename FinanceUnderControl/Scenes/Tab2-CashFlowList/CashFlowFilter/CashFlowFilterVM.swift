@@ -24,7 +24,7 @@ final class CashFlowFilterVM: ViewModel {
     let binding = Binding()
 
     private var initialFilter = CashFlowFilter()
-    private let storage = Database.shared.grouping
+    private let storage = CashFlowGroupingService.shared
 
     func filteringResult() -> AnyPublisher<CashFlowFilter, Never> {
         $filter.flatMap { [weak self] filter -> AnyPublisher<[CashFlowCategory], Never> in

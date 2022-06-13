@@ -45,6 +45,14 @@ struct CashFlow: FirestoreDocument, CashFlowTypeSupport {
     var formModel: CashFlowFormModel {
         .init(date: date, name: name, value: money.value, description: description ?? "", currency: money.currency, category: category, type: category.type)
     }
+
+    var isIncome: Bool {
+        type == .income
+    }
+
+    var value: Decimal {
+        money.value
+    }
 }
 
 extension CashFlow {

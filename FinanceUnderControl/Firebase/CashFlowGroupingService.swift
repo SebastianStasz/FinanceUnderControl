@@ -10,13 +10,13 @@ import Foundation
 import Shared
 
 final class CashFlowGroupingService {
-
+    static let shared = CashFlowGroupingService()
     private let firestore = FirestoreService.shared
 
     @Published private(set) var groups: [CashFlowCategoryGroup] = []
     @Published private(set) var categories: [CashFlowCategory] = []
 
-    init() {
+    private init() {
         subscribeGroups().output.assign(to: &$groups)
         subscribeCategories().output.assign(to: &$categories)
     }

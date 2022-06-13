@@ -21,7 +21,7 @@ final class CashFlowGroupingListVM: ViewModel {
 
     let binding = Binding()
     let listVM = BaseListVM<CashFlowCategory>()
-    private var storage = Database.shared.grouping
+    private var storage = CashFlowGroupingService.shared
     private let categoryService = CashFlowCategoryService()
 
     @Published var cashFlowType: CashFlowType = .expense

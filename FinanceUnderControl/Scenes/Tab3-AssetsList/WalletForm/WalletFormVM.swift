@@ -17,15 +17,17 @@ final class WalletFormVM: ViewModel {
 
     @Published private(set) var isFormValid = false
 
+    let wallet: Wallet
     let binding = Binding()
     let balanceInputVM = DecimalInputVM()
 
     init(wallet: Wallet) {
+        self.wallet = wallet
         super.init()
-        balanceInputVM.setValue(to: wallet.balance)
     }
 
     override func viewDidLoad() {
+        balanceInputVM.setValue(to: wallet.balance)
         balanceInputVM.isValid.assign(to: &$isFormValid)
     }
 }
