@@ -15,7 +15,7 @@ final class CashFlowService: CollectionService {
 
     private let limit = 10
     private let firestore = FirestoreService.shared
-    private let storage = CashFlowGroupingService.shared
+    private let storage = Database.shared.grouping
     private let categoryService = CashFlowCategoryService()
     private var lastDocument: QueryDocumentSnapshot?
 

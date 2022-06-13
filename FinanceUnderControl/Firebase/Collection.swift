@@ -10,6 +10,7 @@ import Shared
 
 enum Collection: String {
     case users
+    case wallets
     case cashFlows
     case cashFlowCategories
     case cashFlowCategoryGroups
@@ -22,6 +23,8 @@ enum Collection: String {
         switch self {
         case .users:
             return "user_"
+        case .wallets:
+            return "wallet_"
         case .cashFlows:
             return "cashFlow_"
         case .cashFlowCategories:
