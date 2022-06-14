@@ -19,13 +19,15 @@ struct AssetsListView: View {
                 MoneyView(from: wallet.money)
             }
             .card()
-            .editAction(presentForm(for: wallet))
+            .editAction(presentForm(for: .edit(wallet)))
         }
-        .navigationBar(title: .tab_assets_title) {}
+        .navigationBar(title: .tab_assets_title) {
+            Button(systemImage: SFSymbol.plus.rawValue) { presentForm(for: .new()) }
+        }
     }
 
-    private func presentForm(for wallet: Wallet) {
-        viewModel.binding.navigateTo.send(.walletForm(wallet))
+    private func presentForm(for formType: WalletFormType) {
+        viewModel.binding.navigateTo.send(.walletForm(formType))
     }
 }
 

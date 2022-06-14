@@ -30,4 +30,9 @@ public extension View {
             .background(style.color)
             .cornerRadius(.base)
     }
+
+    func enabled(_ isEnabled: Bool) -> some View {
+        disabled(!isEnabled)
+            .opacity(isEnabled ? 1 : 0.4)
+    }
 }

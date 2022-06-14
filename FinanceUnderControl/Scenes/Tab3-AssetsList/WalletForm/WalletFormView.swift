@@ -15,21 +15,27 @@ struct WalletFormView: View {
 
     var body: some View {
         FormView {
-            Sector("Balance") {
+            Sector(.create_cash_flow_basic_label) {
                 BaseTextField("Balance", viewModel: viewModel.balanceInputVM)
+                LabeledPicker(.create_cash_flow_currency, elements: viewModel.availableCurrencies, selection: $viewModel.formModel.currency)
+                    .enabled(!viewModel.formType.isEdit)
             }
 
-            Sector("Last update") {
-                Text(viewModel.wallet.balanceDate.string(format: .medium))
+            if let date = viewModel.formModel.lastUpdateDate {
+                Sector("Last update") {
+                    Text(date.string(format: .medium))
+                }
             }
         }
         .closeButton(action: dismiss.callAsFunction)
         .horizontalButtons(primaryButton: primaryButton)
         .embedInNavigationView(title: "Edit wallet", displayMode: .inline)
+        .onReceive(viewModel.binding.dismiss) { dismiss.callAsFunction() }
+        .handleViewModelActions(viewModel)
     }
 
     private var primaryButton: HorizontalButtons.Configuration {
-        .init(.common_save, enabled: viewModel.isFormValid) { viewModel.binding.didTapConfirm.send() }
+        .init(.common_save, enabled: viewModel.formModel.isValid) { viewModel.binding.didTapConfirm.send() }
     }
 }
 
@@ -37,8 +43,7 @@ struct WalletFormView: View {
 
 struct WalletFormView_Previews: PreviewProvider {
     static var previews: some View {
-        let wallet = Wallet(currency: .PLN, balanceDate: .now, balance: 50000)
-        WalletFormView(viewModel: .init(wallet: wallet))
-        WalletFormView(viewModel: .init(wallet: wallet)).darkScheme()
+        WalletFormView(viewModel: .init(formType: .new(.PLN)))
+        WalletFormView(viewModel: .init(formType: .new(.PLN))).darkScheme()
     }
 }

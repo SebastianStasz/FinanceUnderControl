@@ -19,6 +19,14 @@ final class WalletService {
         subscribeWallets().output.assign(to: &$wallets)
     }
 
+    func create(_ wallet: Wallet) async throws {
+        try await firestore.createOrEditDocument(withId: wallet.id, in: .wallets, data: wallet.data)
+    }
+
+    func setBalance(_ balance: Decimal, for wallet: Wallet) async throws {
+        try await firestore.edit(withId: wallet.id, in: .wallets, data: Wallet.balanceData(for: balance))
+    }
+
     func updateBalance(for type: WalletBalanceUpdateType, using batch: WriteBatch) -> WriteBatch {
         let wallet = wallets.first(where: { $0.currency == type.currency })! // TODO: Do not use force unwrap
         let newBalance = type.newBalance(for: wallet)

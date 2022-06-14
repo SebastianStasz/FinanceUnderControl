@@ -31,6 +31,10 @@ struct FirestoreService {
         return batch.updateData(data, forDocument: document)
     }
 
+    func edit(withId id: String, in collection: Collection, data: [String: Any]) async throws {
+        try await documentReference(withId: id, in: collection).updateData(data)
+    }
+
     func create(withId id: String, in collection: Collection, data: [String: Any], batch: WriteBatch) -> WriteBatch {
         let document = documentReference(withId: id, in: collection)
         return batch.setData(data, forDocument: document)

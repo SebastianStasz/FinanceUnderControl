@@ -10,7 +10,7 @@ import UIKit
 final class AssetsListCoordinator: RootCoordinator {
 
     enum Destination {
-        case walletForm(Wallet)
+        case walletForm(WalletFormType)
     }
 
     private let navigationController = UINavigationController()
@@ -33,13 +33,13 @@ private extension AssetsListCoordinator {
 
     func navigate(to destination: Destination) {
         switch destination {
-        case let .walletForm(wallet):
-            presentWalletForm(for: wallet)
+        case let .walletForm(formType):
+            presentWalletForm(for: formType)
         }
     }
 
-    func presentWalletForm(for wallet: Wallet) {
-        let viewController = ViewControllerProvider.walletForm(for: wallet)
+    func presentWalletForm(for formType: WalletFormType) {
+        let viewController = ViewControllerProvider.walletForm(for: formType)
         navigationController.presentModally(viewController)
     }
 }
