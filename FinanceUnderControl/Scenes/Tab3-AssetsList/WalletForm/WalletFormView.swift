@@ -10,7 +10,6 @@ import SwiftUI
 
 struct WalletFormView: View {
 
-    @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: WalletFormVM
 
     var body: some View {
@@ -27,10 +26,10 @@ struct WalletFormView: View {
                 }
             }
         }
-        .closeButton(action: dismiss.callAsFunction)
+        .navigationTitle("Edit wallet")
+        .closeButton(action: viewModel.binding.didTapClose.send)
         .horizontalButtons(primaryButton: primaryButton)
-        .embedInNavigationView(title: "Edit wallet", displayMode: .inline)
-        .onReceive(viewModel.binding.dismiss) { dismiss.callAsFunction() }
+        .interactiveDismissDisabled(viewModel.wasEdited)
         .handleViewModelActions(viewModel)
     }
 

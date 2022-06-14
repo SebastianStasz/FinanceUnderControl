@@ -14,11 +14,13 @@ import SSValidation
 final class WalletFormVM: ViewModel {
 
     struct Binding {
+        let navigateTo = DriverSubject<WalletFormCoordinator.Destination>()
         let didTapConfirm = DriverSubject<Void>()
-        let dismiss = DriverSubject<Void>()
+        let didTapClose = DriverSubject<Void>()
     }
 
     @Published private(set) var availableCurrencies: [Currency] = []
+    @Published private(set) var wasEdited = false
     @Published var formModel: WalletFormModel
 
     let binding = Binding()
@@ -26,23 +28,32 @@ final class WalletFormVM: ViewModel {
     let formType: WalletFormType
     private let service = WalletService.shared
 
-    init(formType: WalletFormType) {
+    init(formType: WalletFormType, coordinator: CoordinatorProtocol? = nil) {
         self.formType = formType
         formModel = .init(for: formType)
-        super.init()
+        super.init(coordinator: coordinator)
+
+        balanceInputVM.result().weakAssign(to: \.formModel.balance, on: self)
 
         if case let .edit(wallet) = formType {
             balanceInputVM.setValue(to: wallet.balance)
+            formModel.balance = wallet.balance
         }
-
-        balanceInputVM.result().weakAssign(to: \.formModel.balance, on: self)
 
         let errorTracker = DriverSubject<Error>()
         let initialFormModel = formModel
 
+        $formModel.map { $0 != initialFormModel }.assign(to: &$wasEdited)
+
         errorTracker.sinkAndStore(on: self) { _, error in
             print(error)
         }
+
+        binding.didTapClose
+            .map(with: self) { vm, _ in !vm.wasEdited }
+            .sinkAndStore(on: self) { vm, canBeClosed in
+                vm.binding.navigateTo.send(canBeClosed ? .dismiss : .askToDismiss)
+            }
 
         CombineLatest(Just(Currency.allCases), service.$wallets)
             .map { result in
@@ -58,7 +69,7 @@ final class WalletFormVM: ViewModel {
         didTapConfirm
             .filter { $0 == initialFormModel }
             .sinkAndStore(on: self) { vm, _ in
-                vm.binding.dismiss.send()
+                vm.binding.navigateTo.send(.dismiss)
             }
 
         didTapConfirm
@@ -73,7 +84,7 @@ final class WalletFormVM: ViewModel {
                 }
             }
             .sinkAndStore(on: self) { vm, _ in
-                vm.binding.dismiss.send()
+                vm.binding.navigateTo.send(.dismiss)
             }
     }
 }

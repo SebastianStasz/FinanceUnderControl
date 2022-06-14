@@ -34,12 +34,7 @@ private extension AssetsListCoordinator {
     func navigate(to destination: Destination) {
         switch destination {
         case let .walletForm(formType):
-            presentWalletForm(for: formType)
+            WalletFormCoordinator(.presentModally(on: navigationController), formType: formType).start()
         }
-    }
-
-    func presentWalletForm(for formType: WalletFormType) {
-        let viewController = ViewControllerProvider.walletForm(for: formType)
-        navigationController.presentModally(viewController)
     }
 }
