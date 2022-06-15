@@ -29,6 +29,7 @@ final class WalletService {
 
     func updateBalance(for type: WalletBalanceUpdateType, using batch: WriteBatch) -> WriteBatch {
         let wallet = wallets.first(where: { $0.currency == type.currency })! // TODO: Do not use force unwrap
+        guard wallet.lastChangeDate < type.cashFlow.date else { return batch }
         let newBalance = type.newBalance(for: wallet)
         return firestore.edit(withId: wallet.id, in: .wallets, data: Wallet.balanceData(for: newBalance), batch: batch)
     }

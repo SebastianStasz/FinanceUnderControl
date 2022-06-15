@@ -19,7 +19,7 @@ struct WalletFormModel: Equatable {
             lastUpdateDate = nil
             self.currency = currency
         case .edit(let wallet):
-            lastUpdateDate = wallet.balanceDate
+            lastUpdateDate = wallet.lastChangeDate
             currency = wallet.currency
             balance = wallet.balance
         }
@@ -36,9 +36,9 @@ struct WalletFormModel: Equatable {
         guard let currency = currency, let balance = balance, balance >= 0 else { return nil }
         switch formType {
         case .new:
-            return Wallet(currency: currency, balanceDate: .now, balance: balance)
+            return Wallet(currency: currency, lastChangeDate: .now, balance: balance)
         case let .edit(wallet):
-            return Wallet(currency: wallet.currency, balanceDate: .now, balance: balance)
+            return Wallet(currency: wallet.currency, lastChangeDate: .now, balance: balance)
         }
     }
 }

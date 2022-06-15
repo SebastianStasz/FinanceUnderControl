@@ -24,6 +24,17 @@ enum WalletBalanceUpdateType {
         }
     }
 
+    var cashFlow: CashFlow {
+        switch self {
+        case let .new(cashFlow):
+            return cashFlow
+        case let .delete(cashFlow):
+            return cashFlow
+        case let .edit(cashFlow, _):
+            return cashFlow
+        }
+    }
+
     func newBalance(for wallet: Wallet) -> Decimal {
         switch self {
         case let .new(cashFlow):

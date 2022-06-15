@@ -14,8 +14,8 @@ final class CashFlowService: CollectionService {
     typealias Document = CashFlow
 
     private let firestore = FirestoreService.shared
-    private let categoryService = CashFlowCategoryService()
     private let walletService = WalletService.shared
+    private let categoryService = CashFlowCategoryService()
 
     func create(_ cashFlow: CashFlow) async throws {
         var batch = firestore.batch
