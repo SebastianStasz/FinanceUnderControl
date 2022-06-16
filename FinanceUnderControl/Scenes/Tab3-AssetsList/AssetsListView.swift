@@ -13,13 +13,16 @@ struct AssetsListView: View {
     @ObservedObject var viewModel: AssetsListVM
 
     var body: some View {
-        BaseList(viewModel: viewModel.walletsListVM, viewData: viewModel.walletsListVD, emptyTitle: "No wallets", emptyDescription: "") { wallet in
-            VStack(spacing: .medium) {
-                Text(wallet.currency.code, style: .bodyMedium)
-                MoneyView(from: wallet.money)
+        VStack {
+            Text("Total balance: \(viewModel.totalBalance.asString)")
+            BaseList(viewModel: viewModel.walletsListVM, viewData: viewModel.walletsListVD, emptyTitle: "No wallets", emptyDescription: "") { wallet in
+                VStack(spacing: .medium) {
+                    Text(wallet.currency.code, style: .bodyMedium)
+                    MoneyView(from: wallet.money)
+                }
+                .card()
+                .editAction(presentWalletEditForm(for: wallet))
             }
-            .card()
-            .editAction(presentWalletEditForm(for: wallet))
         }
         .navigationBar(title: .tab_assets_title) {
             Button(systemImage: SFSymbol.plus.rawValue, action: presentAddAssetSelection)
