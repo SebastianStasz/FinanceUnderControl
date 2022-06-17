@@ -14,7 +14,9 @@ struct AssetsListView: View {
 
     var body: some View {
         VStack {
-            Text("Total balance: \(viewModel.totalBalance.asString)")
+            if let totalBalance = viewModel.totalBalance {
+                Text("Total balance: \(totalBalance.asString)")
+            }
             BaseList(viewModel: viewModel.walletsListVM, viewData: viewModel.walletsListVD, emptyTitle: "No wallets", emptyDescription: "") { wallet in
                 VStack(spacing: .medium) {
                     Text(wallet.currency.code, style: .bodyMedium)

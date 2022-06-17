@@ -16,7 +16,7 @@ final class AssetsListVM: ViewModel {
     }
 
     @Published private(set) var walletsListVD = BaseListVD<Wallet>.initialState
-    @Published private(set) var totalBalance: Decimal = 0
+    @Published private(set) var totalBalance: Decimal?
 
     let binding = Binding()
     let walletsListVM = BaseListVM<Wallet>()
@@ -27,14 +27,20 @@ final class AssetsListVM: ViewModel {
         let listOutput = walletsListVM.transform(input: .init(sectors: wallets))
         listOutput.viewData.assign(to: &$walletsListVD)
 
+        let primaryCurrency = PersistentStorage.primaryCurrency
+
         storage.$wallets.map {
-            $0.map { wallet -> Decimal in
-                guard wallet.currency != .PLN else { return wallet.balance }
-                let currency = CurrencyEntity.get(withCode: wallet.currency.code, from: AppVM.shared.context)!
-                let exchangeRate = currency.getExchangeRate(for: "PLN")!
+            $0.map { wallet -> Decimal? in
+                guard wallet.currency != primaryCurrency else { return wallet.balance }
+                guard let currency = CurrencyEntity.get(withCode: wallet.currency.code, from: AppVM.shared.context),
+                      let exchangeRate = currency.getExchangeRate(for: primaryCurrency.code)
+                else { return nil }
                 return wallet.balance * exchangeRate.rateValue
             }
-            .reduce(0, +)
+        }
+        .map { balances -> Decimal? in
+            guard balances.notContains(nil) else { return nil }
+            return balances.compactMap { $0 }.reduce(0, +)
         }
         .assign(to: &$totalBalance)
     }
