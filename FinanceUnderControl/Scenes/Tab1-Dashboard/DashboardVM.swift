@@ -20,12 +20,14 @@ final class DashboardVM: ViewModel {
 
     @Published private(set) var monthBalance: MonthBalance = .empty
     @Published private(set) var topExpenses: HorizontalBarVD?
+    @Published var monthAndYearPickerVD = MonthAndYearPickerVD()
     private let cashFlowSubscription = CashFlowSubscription()
 
     override func viewDidLoad() {
-        let date = Date()
-        let configuration = QueryConfiguration<CashFlow>(filters: [.isDate(year: date.year, month: date.month)])
-        let subscription = cashFlowSubscription.transform(input: .init(queryConfiguration: Just(configuration).asDriver))
+        let configuration = $monthAndYearPickerVD
+            .map { QueryConfiguration<CashFlow>(filters: [.isDate(year: $0.year, month: $0.month)]) }
+
+        let subscription = cashFlowSubscription.transform(input: .init(queryConfiguration: configuration.asDriver))
         subscription.canFetchMore.sinkAndStore(on: self, action: { _, _ in })
 
         let cashFlows = subscription.cashFlows

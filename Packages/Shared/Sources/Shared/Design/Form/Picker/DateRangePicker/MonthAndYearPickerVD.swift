@@ -12,7 +12,7 @@ public struct MonthAndYearPickerVD: Equatable {
     public var year: Int
     public var month: Int
 
-    let yearRange: ClosedRange<Int>
+    public let yearRange: ClosedRange<Int>
 
     public init() {
         let year = Calendar.current.component(.year, from: .now)

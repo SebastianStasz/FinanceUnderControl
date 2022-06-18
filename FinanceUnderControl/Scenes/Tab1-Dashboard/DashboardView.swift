@@ -16,16 +16,40 @@ struct DashboardView: View {
         FormView {
             Sector("Current month balance") {
                 MonthBalanceWidgetView(monthBalance: viewModel.monthBalance)
+                    .animation(.easeInOut)
             }
 
             if let topExpenses = viewModel.topExpenses {
                 HorizontalBarView(viewData: .init(bars: Array(topExpenses.bars.prefix(3)), total: topExpenses.total))
                     .embedInSection(.dashboard_top_expenses, editAction: topExpensesEditAction)
+                    .animation(.easeInOut)
             }
+
+            HStack(alignment: .center) {
+                Picker("Year", selection: $viewModel.monthAndYearPickerVD.year) {
+                    ForEach(viewModel.monthAndYearPickerVD.yearRange, id: \.self) { Text($0.asString).tag($0) }
+                }
+                .frame(width: pickerWidth, height: 100)
+                .clipped()
+                .padding(.leading, .large)
+
+                Picker("Month", selection: $viewModel.monthAndYearPickerVD.month) {
+                    ForEach(1...12, id: \.self) { Text(Calendar.current.shortMonthSymbols[$0-1]).tag($0) }
+                }
+                .frame(width: pickerWidth, height: 100)
+                .clipped()
+            }
+            .zIndex(-1)
+            .pickerStyle(.wheel)
+            .padding(.top, -4)
         }
         .navigationBar(title: "Good morning") {
             Button(systemImage: SFSymbol.settings.rawValue, action: presentSettings)
         }
+    }
+
+    private var pickerWidth: CGFloat {
+        UIScreen.screenWidth / 2 - .large
     }
 
     private func presentSettings() {
