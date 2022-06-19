@@ -20,7 +20,7 @@ struct DashboardView: View {
             }
 
             if let topExpenses = viewModel.topExpenses {
-                HorizontalBarView(viewData: .init(bars: Array(topExpenses.bars.prefix(3)), total: topExpenses.total))
+                HorizontalBarView(viewData: .init(bars: Array(topExpenses.bars.prefix(3)), total: topExpenses.total, currency: topExpenses.currency))
                     .embedInSection(.dashboard_top_expenses, editAction: topExpensesEditAction)
                     .animation(.easeInOut)
             }

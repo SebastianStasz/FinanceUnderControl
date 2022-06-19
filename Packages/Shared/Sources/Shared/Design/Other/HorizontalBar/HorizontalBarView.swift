@@ -23,10 +23,11 @@ public struct HorizontalBarView: View {
                         Text(bar.title, style: .footnote())
                             .padding(.leading, .micro)
                         Spacer()
-                        Text("\((bar.value / viewData.total * 100).asString(roundToDecimalPlaces: 0))%", style: .footnote())
+                        MoneyView(from: .init(bar.value, currency: viewData.currency), isBigStyle: false)
+                        Text("\((bar.value.asDouble / viewData.total.asDouble * 100).asString(roundToDecimalPlaces: 0))%", style: .footnote())
                     }
 
-                    BarView(value: bar.value, total: viewData.total, color: bar.color)
+                    BarView(value: bar.value.asDouble, total: viewData.total.asDouble, color: bar.color)
                 }
             }
         }

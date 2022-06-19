@@ -11,16 +11,18 @@ public struct MoneyView: View {
 
     private let money: Money
     private let type: CashFlowType?
+    private let isBigStyle: Bool
 
-    public init(from money: Money, type: CashFlowType? = nil) {
+    public init(from money: Money, isBigStyle: Bool = true, type: CashFlowType? = nil) {
         self.money = money
+        self.isBigStyle = isBigStyle
         self.type = type
     }
 
     public var body: some View {
         SwiftUI.Text(money.asString)
-            .foregroundColor(type?.color ?? .primary)
-            .font(.subheadline.weight(.medium))
+            .foregroundColor(type?.color ?? (isBigStyle ? .primary : .grayMain))
+            .textStyle(isBigStyle ? .bodyMedium : .footnote())
     }
 }
 

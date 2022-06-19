@@ -45,10 +45,10 @@ final class DashboardVM: ViewModel {
             let total = expenses.reduce(0, { $0 + $1.money.value })
             let categories = Dictionary(grouping: expenses, by: { $0.category })
                 .mapValues { $0.map { $0.money.value }.reduce(0, +) }
-                .map { HorizontalBarVD.Bar(title: $0.key.name, value: $0.value.asDouble, color: $0.key.color) }
+                .map { HorizontalBarVD.Bar(title: $0.key.name, value: $0.value, color: $0.key.color) }
                 .sorted(by: { $0.value > $1.value })
 
-            return HorizontalBarVD(bars: Array(categories), total: total.asDouble)
+            return HorizontalBarVD(bars: Array(categories), total: total, currency: PersistentStorage.primaryCurrency)
         }
         .assign(to: &$topExpenses)
     }
