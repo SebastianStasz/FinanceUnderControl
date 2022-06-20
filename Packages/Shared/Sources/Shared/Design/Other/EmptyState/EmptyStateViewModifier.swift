@@ -20,12 +20,11 @@ private struct EmptyStateViewModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        Color.clear.overlay(
-            Group {
-                if !isEmpty { content }
-                else { EmptyStateView(viewData, isLoading: isLoading) }
-            }
-        )
+        Group {
+            if !isEmpty { content }
+            else { EmptyStateView(viewData, isLoading: isLoading) }
+        }
+        .overlay(LoadingIndicator(isLoading: isLoading))
     }
 }
 

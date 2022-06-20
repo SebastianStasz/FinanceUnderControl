@@ -5,6 +5,7 @@
 //  Created by sebastianstaszczyk on 14/03/2022.
 //
 
+import Shared
 import SwiftUI
 
 private struct ViewModelActionsModifier: ViewModifier {

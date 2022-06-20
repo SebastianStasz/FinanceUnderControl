@@ -15,13 +15,16 @@ struct ExchangeRateListView: View {
     @ObservedObject var viewModel: ExchangeRateListVM
 
     var body: some View {
-        BaseList(viewModel: viewModel.listVM, viewData: viewModel.listVD, emptyTitle: "No exchange rates", emptyDescription: "There is no exchange rates for selected currency.") { exchageRate in
-            HStack(spacing: .medium) {
-                Text(exchageRate.code, style: .currency)
-                Text(exchageRate.rateValue.formatted(for: exchageRate.currency))
+        ScrollView {
+            BaseList(viewModel: viewModel.listVM, viewData: viewModel.listVD) { exchageRate in
+                HStack(spacing: .medium) {
+                    Text(exchageRate.code, style: .currency)
+                    Text(exchageRate.rateValue.formatted(for: exchageRate.currency))
+                }
+                .card()
             }
-            .card()
         }
+        .emptyState(listVD: viewModel.listVD, title: "No exchange rates", description: "There is no exchange rates for selected currency.")
     }
 }
 

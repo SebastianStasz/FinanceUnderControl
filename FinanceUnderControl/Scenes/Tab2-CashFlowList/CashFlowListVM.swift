@@ -19,7 +19,6 @@ final class CashFlowListVM: ViewModel {
     }
 
     private let service = CashFlowService()
-    private let searchTextVM = TextSearchVM()
     private let cashFlowFilterVM: CashFlowFilterVM
     private let cashFlowSubscription = CashFlowSubscription()
     let listVM = BaseListVM<CashFlow>()

@@ -21,11 +21,15 @@ struct CashFlowGroupingListView: View {
     }
 
     var body: some View {
-        BaseList(viewModel: viewModel.listVM, viewData: listSectors, emptyTitle: "No elements yet", emptyDescription: "Groups and categories will appear here after you create it") {
-            CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
-                .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
-                .environment(\.editMode, $editMode)
+        ScrollView {
+            SectoredList(viewModel: viewModel.listVM, viewData: listSectors) {
+                CashFlowCategoryRow(for: $0, editCategory: presentEditCategoryForm($0))
+                    .actions(edit: presentEditCategoryForm($0), delete: reportDeleteCategory($0))
+                    .environment(\.editMode, $editMode)
+            }
         }
+        .emptyState(listVD: listSectors, title: "No elements yet", description: "Groups and categories will appear here after you create it")
+        .background(Color.backgroundPrimary)
         .environment(\.editMode, $editMode)
         .navigationBar(title: .common_categories) {
             Button(editMode.isEditing ? .common_done : .common_edit, action: toggleEditMode)

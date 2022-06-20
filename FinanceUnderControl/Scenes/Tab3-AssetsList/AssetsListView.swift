@@ -13,11 +13,11 @@ struct AssetsListView: View {
     @ObservedObject var viewModel: AssetsListVM
 
     var body: some View {
-        VStack {
+        ScrollView {
             if let totalBalance = viewModel.totalBalance {
                 Text("Total balance: \(totalBalance.asString)")
             }
-            BaseList(viewModel: viewModel.walletsListVM, viewData: viewModel.walletsListVD, emptyTitle: "No wallets", emptyDescription: "") { wallet in
+            SectoredList(viewModel: viewModel.walletsListVM, viewData: viewModel.walletsListVD) { wallet in
                 VStack(spacing: .medium) {
                     Text(wallet.currency.code, style: .bodyMedium)
                     MoneyView(from: wallet.money)
@@ -26,6 +26,8 @@ struct AssetsListView: View {
                 .editAction(presentWalletEditForm(for: wallet))
             }
         }
+        .emptyState(listVD: viewModel.walletsListVD, title: "No assets", description: "")
+        .background(Color.backgroundPrimary)
         .navigationBar(title: .tab_assets_title) {
             Button(systemImage: SFSymbol.plus.rawValue, action: presentAddAssetSelection)
         }

@@ -13,10 +13,14 @@ struct CashFlowListView: BaseView {
     @State private var isDeleteConfirmationShown = false
 
     var baseBody: some View {
-        BaseList(viewModel: viewModel.listVM, viewData: viewModel.listVD, emptyTitle: "No cash flows yet", emptyDescription: "Cash flows will appear here after you create it") {
-            CashFlowCardView($0)
-                .actions(edit: presentEditForm(for: $0), delete: reportDeleteCashFlow($0))
+        ScrollView {
+            SectoredList(viewModel: viewModel.listVM, viewData: viewModel.listVD) {
+                CashFlowCardView($0)
+                    .actions(edit: presentEditForm(for: $0), delete: reportDeleteCashFlow($0))
+            }
         }
+        .emptyState(listVD: viewModel.listVD, title: "No cash flows yet", description: "Cash flows will appear here after you create it", isSearching: viewModel.isFiltering)
+        .background(Color.backgroundPrimary)
         .confirmationDialog(String.settings_select_action, isPresented: $isDeleteConfirmationShown) {
             Button.delete(action: confirmCashFlowDeletion)
         }
