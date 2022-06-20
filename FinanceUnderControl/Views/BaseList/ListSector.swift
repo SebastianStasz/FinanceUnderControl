@@ -37,15 +37,3 @@ struct ListSector<T: Identifiable> {
 extension ListSector: Identifiable {
     var id: String { title }
 }
-
-// MARK: - Helpers
-
-extension ListSector {
-    static func unvisibleSector(_ elements: [T]) -> [ListSector] {
-        [.init(unvisibleSectorTitle, elements: elements)]
-    }
-
-    static var unvisibleSectorTitle: String {
-        "Unvisible Sector Title"
-    }
-}

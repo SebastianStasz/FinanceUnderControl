@@ -12,12 +12,14 @@ public struct SectorVD<Content: View> {
     public let style: SectorStyle
     public let content: Content
 
-    public init(_ title: String? = nil,
-         style: SectorStyle = .clear,
-         editAction: EditAction? = nil,
-         @ViewBuilder content: @escaping () -> Content
+    public init(
+        _ title: String,
+        style: SectorStyle = .clear,
+        editAction: EditAction? = nil,
+        handleEditMode: Bool,
+        @ViewBuilder content: @escaping () -> Content
     ) {
-        self.header = SectorHeaderVD(title, editAction: editAction)
+        self.header = SectorHeaderVD(title, editAction: editAction, handleEditMode: handleEditMode)
         self.style = style
         self.content = content()
     }

@@ -44,7 +44,7 @@ extension BaseListVM.Input {
     }
 
     init(elements: Driver<[T]>) {
-        self.sectors = elements.map { [ListSector<T>(ListSector<T>.unvisibleSectorTitle, elements: $0)] }.asDriver
+        self.sectors = elements.map { [ListSector<T>("", elements: $0)] }.asDriver
         self.isMoreItems = Just(false).asDriver
         self.isSearching = Just(false).asDriver
         self.isLoading = Just(false).asDriver

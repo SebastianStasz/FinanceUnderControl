@@ -21,11 +21,10 @@ struct CashFlowCategoryRow: View {
             SquareView(icon: icon.rawValue, color: color, size: 18)
             Text(name)
             Spacer()
-            Button(action: {}) {
+            Button(action: editCategory) {
                 SFSymbol.infoCircle.image
                     .frame(width: 18, height: 18)
             }
-            .onTapGesture { editCategory() }
             .displayIf(isEditing, withTransition: .scale)
         }
         .card()

@@ -34,17 +34,19 @@ public struct Sector<Content: View>: View {
         self.viewData = viewData
     }
 
-    public init(_ title: String,
-         style: SectorStyle = .clear,
-         editAction: EditAction? = nil,
-         @ViewBuilder content: @escaping () -> Content
+    public init(
+        _ title: String,
+        style: SectorStyle = .clear,
+        editAction: EditAction? = nil,
+        handleEditMode: Bool = true,
+        @ViewBuilder content: @escaping () -> Content
     ) {
-        self.init(SectorVD(title, style: style, editAction: editAction, content: content))
+        self.init(SectorVD(title, style: style, editAction: editAction, handleEditMode: handleEditMode, content: content))
     }
 }
 
 public extension View {
     func embedInSection(_ title: String, style: SectorStyle = .clear, editAction: EditAction? = nil) -> some View {
-        Sector(title, style: style, editAction: editAction) { self }
+        Sector(title, style: style, editAction: editAction, handleEditMode: false) { self }
     }
 }
