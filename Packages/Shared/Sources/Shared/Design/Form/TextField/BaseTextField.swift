@@ -55,7 +55,7 @@ public struct BaseTextField<T>: View {
             }
             .frame(height: 48)
             .padding(.horizontal, .medium)
-            .background(Color.backgroundSecondary)
+            .background(style.color)
             .cornerRadius(.base)
 
             if let message = message {

@@ -12,21 +12,14 @@ struct ListSector<T: Identifiable> {
     let title: String
     var elements: [T]
     let editAction: EditAction?
-    let visibleIfEmpty: Bool
 
     init(_ title: String,
          elements: [T],
-         editAction: EditAction? = nil,
-         visibleIfEmpty: Bool = true
+         editAction: EditAction? = nil
     ) {
         self.title = title
         self.elements = elements
         self.editAction = editAction
-        self.visibleIfEmpty = visibleIfEmpty
-    }
-
-    var shouldBePresented: Bool {
-        elements.isNotEmpty || visibleIfEmpty
     }
 
     var header: SectorHeaderVD {

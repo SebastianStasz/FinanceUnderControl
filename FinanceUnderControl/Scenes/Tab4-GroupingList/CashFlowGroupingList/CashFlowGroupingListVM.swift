@@ -77,7 +77,9 @@ final class CashFlowGroupingListVM: ViewModel {
                 self?.binding.navigateTo.send(.presentEditGroupForm(group))
             }))
         }
-        sectors.append(ListSector("Ungrouped", elements: ungroupedCategories, visibleIfEmpty: false))
+        if ungroupedCategories.isNotEmpty {
+            sectors.append(ListSector("Ungrouped", elements: ungroupedCategories))
+        }
         return sectors
     }
 }
