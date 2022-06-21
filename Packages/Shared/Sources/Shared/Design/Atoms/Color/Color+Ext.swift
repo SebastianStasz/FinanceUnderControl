@@ -9,13 +9,19 @@ import SwiftUI
 
 public extension Color {
     private typealias Accent = ColorDesign.Accent
+    private typealias Color = ColorDesign.Color
     private typealias Background = ColorDesign.Background
     private typealias Gray = ColorDesign.Gray
     private typealias Basic = ColorDesign.Basic
 
-    // MARK: - Background
+    // MARK: - Accent
 
     static let accentPrimary = Accent.accent_primary.color
+
+    // MARK: - Color
+
+    static let mainGreen = Color.main_green.color
+    static let mainRed = Color.main_red.color
 
     // MARK: - Background
 
@@ -30,7 +36,4 @@ public extension Color {
 
     static let basicPrimary = Basic.basic_primary.color
     static let basicPrimaryInverted = Basic.basic_primary_inverted.color
-
-    static let accentRed = Color.red
-    static let accentGreen = Color.green
 }

@@ -30,7 +30,7 @@ public extension CashFlowType {
     }
 
     var color: Color {
-        isIncome ? .accentGreen : .accentRed
+        isIncome ? .mainGreen : .mainRed
     }
 
     private var isIncome: Bool {

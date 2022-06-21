@@ -13,21 +13,28 @@ struct AssetsListView: View {
     @ObservedObject var viewModel: AssetsListVM
 
     var body: some View {
-        ScrollView {
-            if let totalBalance = viewModel.totalBalance {
-                Text("Total balance: \(totalBalance.asString)")
-            }
-            SectoredList(viewModel: viewModel.walletsListVM, viewData: viewModel.walletsListVD) { wallet in
-                VStack(spacing: .medium) {
-                    Text(wallet.currency.code, style: .bodyMedium)
-                    MoneyView(from: wallet.money)
+        BaseScroll(viewData: viewModel.walletsListVD) {
+            VStack(spacing: .xxlarge) {
+                if let totalBalance = viewModel.totalBalance {
+                    VStack {
+                        SwiftUI.Text("Total balance: \(totalBalance.asString)")
+                            .foregroundColor(.white)
+                    }
+                    .padding(.vertical, .xxlarge)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.accentPrimary)
                 }
-                .card()
-                .editAction(presentWalletEditForm(for: wallet))
+                SectoredList(viewModel: viewModel.walletsListVM, viewData: viewModel.walletsListVD) { wallet in
+                    VStack(spacing: .medium) {
+                        Text(wallet.currency.code, style: .bodyMedium)
+                        MoneyView(from: wallet.money)
+                    }
+                    .card()
+                    .editAction(presentWalletEditForm(for: wallet))
+                }
             }
         }
-        .emptyState(listVD: viewModel.walletsListVD, title: "No assets", description: "")
-        .background(Color.backgroundPrimary)
+        .topPadding(.medium)
         .navigationBar(title: .tab_assets_title) {
             Button(systemImage: SFSymbol.plus.rawValue, action: presentAddAssetSelection)
         }

@@ -22,26 +22,42 @@ struct MonthBalanceWidgetView: View {
     }
 
     var body: some View {
-        HStack(spacing: .medium) {
+        HStack(spacing: .xxlarge) {
             BalanceIndicatorView(incomesValue: income.value,
                                  expensesValue: expense.value)
-            .frame(width: 80, height: 80)
-            .padding(4)
+            .frame(width: 100, height: 100)
+            .shadow(radius: .micro)
 
-            VStack(spacing: .medium) {
-                MoneyView(from: income, type: .income)
-                MoneyView(from: expense, type: .expense)
+            VStack(spacing: .xlarge) {
+                HStack(alignment: .bottom, spacing: .medium) {
+                    SquareView(icon: "arrow.up", color: .mainGreen, size: 24)
+                    VStack(spacing: .micro) {
+                        Text(.common_income, style: .footnote())
+                        SwiftUI.Text(income.asString)
+                    }
+                }
+
+                HStack(alignment: .bottom, spacing: .medium) {
+                    SquareView(icon: "arrow.down", color: .mainRed, size: 24)
+                    VStack(spacing: .micro) {
+                        Text(.common_expenses, style: .footnote())
+                        SwiftUI.Text(expense.asString)
+                    }
+                }
             }
+            .foregroundColor(.white)
+            .font(.title3.weight(.medium))
             .infiniteWidth()
         }
-        .card()
+        .padding(.xxlarge)
+        .background(Color.accentPrimary)
         .overlay(loadingIndicator)
     }
 
     @ViewBuilder
     private var loadingIndicator: some View {
         if monthBalance.isLoading {
-            Color.backgroundSecondary.overlay(ProgressView())
+            Color.accentPrimary.overlay(ProgressView())
                 .cornerRadius(.base)
         }
     }

@@ -13,36 +13,38 @@ struct DashboardView: View {
     @ObservedObject var viewModel: DashboardVM
 
     var body: some View {
-        FormView {
-            Sector("Current month balance") {
+        ScrollView {
+            VStack(spacing: .xxlarge) {
                 MonthBalanceWidgetView(monthBalance: viewModel.monthBalance)
                     .animation(.easeInOut)
-            }
 
-            if let topExpenses = viewModel.topExpenses {
-                HorizontalBarView(viewData: .init(bars: Array(topExpenses.bars.prefix(3)), total: topExpenses.total, currency: topExpenses.currency))
-                    .embedInSection(.dashboard_top_expenses, editAction: topExpensesEditAction)
-                    .animation(.easeInOut)
-            }
-
-            HStack(alignment: .center) {
-                Picker("Year", selection: $viewModel.monthAndYearPickerVD.year) {
-                    ForEach(viewModel.monthAndYearPickerVD.yearRange, id: \.self) { Text($0.asString).tag($0) }
+                if let topExpenses = viewModel.topExpenses {
+                    HorizontalBarView(viewData: .init(bars: Array(topExpenses.bars.prefix(3)), total: topExpenses.total, currency: topExpenses.currency))
+                        .embedInSection(.dashboard_top_expenses, editAction: topExpensesEditAction)
+                        .animation(.easeInOut)
                 }
-                .frame(width: pickerWidth, height: 100)
-                .clipped()
-                .padding(.leading, .large)
 
-                Picker("Month", selection: $viewModel.monthAndYearPickerVD.month) {
-                    ForEach(1...12, id: \.self) { Text(Calendar.current.shortMonthSymbols[$0-1]).tag($0) }
+                HStack(alignment: .center) {
+                    Picker("Year", selection: $viewModel.monthAndYearPickerVD.year) {
+                        ForEach(viewModel.monthAndYearPickerVD.yearRange, id: \.self) { Text($0.asString).tag($0) }
+                    }
+                    .frame(width: pickerWidth, height: 100)
+                    .clipped()
+                    .padding(.leading, .large)
+
+                    Picker("Month", selection: $viewModel.monthAndYearPickerVD.month) {
+                        ForEach(1...12, id: \.self) { Text(Calendar.current.shortMonthSymbols[$0-1]).tag($0) }
+                    }
+                    .frame(width: pickerWidth, height: 100)
+                    .clipped()
                 }
-                .frame(width: pickerWidth, height: 100)
-                .clipped()
+                .zIndex(-1)
+                .pickerStyle(.wheel)
+                .padding(.top, -4)
             }
-            .zIndex(-1)
-            .pickerStyle(.wheel)
-            .padding(.top, -4)
+            .padding(.top, .medium)
         }
+        .background(Color.backgroundPrimary)
         .navigationBar(title: "Good morning") {
             Button(systemImage: SFSymbol.settings.rawValue, action: presentSettings)
         }

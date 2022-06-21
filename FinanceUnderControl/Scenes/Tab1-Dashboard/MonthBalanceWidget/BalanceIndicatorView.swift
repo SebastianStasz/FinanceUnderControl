@@ -11,7 +11,7 @@ import SwiftUI
 
 struct BalanceIndicatorView: View {
 
-    private let lineWidth: CGFloat = 6
+    private let lineWidth: CGFloat = 9
     private let incomesValue: Double
     private let expensesValue: Double
 

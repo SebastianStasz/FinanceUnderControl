@@ -35,7 +35,6 @@ struct SectoredList<Item: Identifiable & Equatable, RowView: View>: View {
                 }
             }
         }
-        .padding(.vertical, .xlarge)
     }
 }
 
