@@ -16,12 +16,14 @@ struct AssetsListView: View {
         BaseScroll(viewData: viewModel.walletsListVD) {
             VStack(spacing: .xxlarge) {
                 if let totalBalance = viewModel.totalBalance {
-                    VStack {
-                        SwiftUI.Text("Total balance: \(totalBalance.asString)")
+                    VStack(alignment: .leading, spacing: .micro) {
+                        Text("Total balance", style: .footnote())
+                        SwiftUI.Text(totalBalance.asString)
                             .foregroundColor(.white)
+                            .font(.title3.weight(.medium))
                     }
-                    .padding(.vertical, .xxlarge)
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.xxlarge)
                     .background(Color.accentPrimary)
                 }
                 SectoredList(viewModel: viewModel.walletsListVM, viewData: viewModel.walletsListVD) { wallet in

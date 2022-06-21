@@ -7,6 +7,7 @@
 
 import FinanceCoreData
 import Foundation
+import Shared
 import SSUtils
 
 final class AssetsListVM: ViewModel {
@@ -16,7 +17,7 @@ final class AssetsListVM: ViewModel {
     }
 
     @Published private(set) var walletsListVD = BaseListVD<Wallet>.initialState
-    @Published private(set) var totalBalance: Decimal?
+    @Published private(set) var totalBalance: Money?
 
     let binding = Binding()
     let walletsListVM = BaseListVM<Wallet>()
@@ -38,9 +39,10 @@ final class AssetsListVM: ViewModel {
                 return wallet.balance * exchangeRate.rateValue
             }
         }
-        .map { balances -> Decimal? in
+        .map { balances -> Money? in
             guard balances.notContains(nil) else { return nil }
-            return balances.compactMap { $0 }.reduce(0, +)
+            let total = balances.compactMap { $0 }.reduce(0, +)
+            return Money(total, currency: primaryCurrency)
         }
         .assign(to: &$totalBalance)
     }

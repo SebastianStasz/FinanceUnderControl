@@ -31,7 +31,7 @@ struct MonthBalanceWidgetView: View {
             VStack(spacing: .xlarge) {
                 HStack(alignment: .bottom, spacing: .medium) {
                     SquareView(icon: "arrow.up", color: .mainGreen, size: 24)
-                    VStack(spacing: .micro) {
+                    VStack(alignment: .leading, spacing: .micro) {
                         Text(.common_income, style: .footnote())
                         SwiftUI.Text(income.asString)
                     }
@@ -39,7 +39,7 @@ struct MonthBalanceWidgetView: View {
 
                 HStack(alignment: .bottom, spacing: .medium) {
                     SquareView(icon: "arrow.down", color: .mainRed, size: 24)
-                    VStack(spacing: .micro) {
+                    VStack(alignment: .leading, spacing: .micro) {
                         Text(.common_expenses, style: .footnote())
                         SwiftUI.Text(expense.asString)
                     }
