@@ -11,7 +11,7 @@ final class AssetsListCoordinator: RootCoordinator {
 
     enum Destination {
         case addAssetSelection
-        case walletEditForm(Wallet)
+        case assetEditForm(Asset)
     }
 
     private let navigationController = UINavigationController()
@@ -34,8 +34,8 @@ private extension AssetsListCoordinator {
 
     func navigate(to destination: Destination) {
         switch destination {
-        case let .walletEditForm(wallet):
-            presentWalletForm(for: .edit(wallet))
+        case let .assetEditForm(asset):
+            presentAssetEditForm(for: asset)
         case .addAssetSelection:
             presentAddAssetSelection()
         }
@@ -46,6 +46,13 @@ private extension AssetsListCoordinator {
         alert.addAction(title: "Wallet", action: onSelf { $0.presentWalletForm(for: .new()) })
         alert.addCancelAction()
         navigationController.present(alert, animated: true)
+    }
+
+    func presentAssetEditForm(for asset: Asset) {
+        switch asset {
+        case .wallet(let wallet):
+            presentWalletForm(for: .edit(wallet))
+        }
     }
 
     func presentWalletForm(for formType: WalletFormType) {

@@ -13,7 +13,7 @@ struct AssetsListView: View {
     @ObservedObject var viewModel: AssetsListVM
 
     var body: some View {
-        BaseScroll(viewData: viewModel.walletsListVD) {
+        BaseScroll(viewData: viewModel.listVD) {
             VStack(spacing: .xxlarge) {
                 if let totalBalance = viewModel.totalBalance {
                     VStack(alignment: .leading, spacing: .micro) {
@@ -26,13 +26,19 @@ struct AssetsListView: View {
                     .padding(.xxlarge)
                     .background(Color.accentPrimary)
                 }
-                SectoredList(viewModel: viewModel.walletsListVM, viewData: viewModel.walletsListVD) { wallet in
-                    VStack(spacing: .medium) {
-                        Text(wallet.currency.code, style: .bodyMedium)
-                        MoneyView(from: wallet.money)
+                SectoredList(viewModel: viewModel.listVM, viewData: viewModel.listVD) { asset in
+                    HStack {
+                        VStack(spacing: .medium) {
+                            Text(asset.name, style: .bodyMedium)
+                            MoneyView(from: asset.money)
+                        }
+                        Spacer()
+                        if let percentageShare = asset.percentageShare {
+                            Text("\(percentageShare.asString)%")
+                        }
                     }
                     .card()
-                    .editAction(presentWalletEditForm(for: wallet))
+                    .editAction(presentAssetEditForm(for: asset.type))
                 }
             }
         }
@@ -42,8 +48,8 @@ struct AssetsListView: View {
         }
     }
 
-    private func presentWalletEditForm(for wallet: Wallet) {
-        viewModel.binding.navigateTo.send(.walletEditForm(wallet))
+    private func presentAssetEditForm(for asset: Asset) {
+        viewModel.binding.navigateTo.send(.assetEditForm(asset))
     }
 
     private func presentAddAssetSelection() {
