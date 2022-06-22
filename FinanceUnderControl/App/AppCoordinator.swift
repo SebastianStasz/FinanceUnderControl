@@ -16,6 +16,7 @@ final class AppCoordinator {
 
     init(with window: UIWindow) {
         self.window = window
+        window.overrideUserInterfaceStyle = PersistentStorage.appTheme.userInterfaceStyle
         handleUserState()
 
         AppVM.shared.binding.didChangeAppTheme

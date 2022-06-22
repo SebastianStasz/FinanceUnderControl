@@ -25,7 +25,10 @@ public struct Navigation: View {
     public var body: some View {
         Text(title).lineLimit(1)
             .trailingAction(.forward(action: action))
-            .card()
+            .frame(height: 48)
+            .padding(.horizontal, .medium)
+            .background(Color.backgroundSecondary)
+            .cornerRadius(.base)
     }
 }
 

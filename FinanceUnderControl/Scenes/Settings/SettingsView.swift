@@ -24,7 +24,7 @@ struct SettingsView: View {
                 LabeledPicker(.app_theme_title, elements: AppTheme.allCases, selection: $viewModel.appTheme)
             }
 
-            Sector("Debug") {
+            Sector("Developer") {
                 Navigation("Design system") { viewModel.binding.navigateTo.send(.designSystem) }
             }
         }
