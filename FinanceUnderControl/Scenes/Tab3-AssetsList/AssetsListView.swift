@@ -27,14 +27,21 @@ struct AssetsListView: View {
                     .background(Color.accentPrimary)
                 }
                 SectoredList(viewModel: viewModel.listVM, viewData: viewModel.listVD) { asset in
-                    HStack {
-                        VStack(spacing: .medium) {
-                            Text(asset.name, style: .bodyMedium)
-                            MoneyView(from: asset.money)
+                    VStack(spacing: .medium) {
+                        HStack(alignment: .top) {
+                            Text(asset.name, style: .currency)
+                            Spacer()
+                            if let percentageShare = asset.percentageShare {
+                                Text("\(percentageShare.asString)%")
+                            }
                         }
-                        Spacer()
-                        if let percentageShare = asset.percentageShare {
-                            Text("\(percentageShare.asString)%")
+
+                        HStack {
+                            Text(asset.money.asString, style: .bodyMedium)
+                            Spacer()
+                            if let moneyInPrimaryCurrency = asset.moneyInPrimaryCurrency {
+                                Text(moneyInPrimaryCurrency.asString, style: .footnote())
+                            }
                         }
                     }
                     .card()

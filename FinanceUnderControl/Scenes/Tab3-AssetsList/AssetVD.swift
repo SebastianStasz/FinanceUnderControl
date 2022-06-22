@@ -13,6 +13,7 @@ struct AssetVD: Identifiable, Equatable {
     let type: Asset
     let name: String
     let money: Money
+    let moneyInPrimaryCurrency: Money?
     let percentageShare: Int?
 }
 
@@ -21,10 +22,16 @@ extension AssetVD {
         name = wallet.currency.code
         type = .wallet(wallet)
         money = wallet.money
-        if let total = total, let balance = wallet.money.value(in: PersistentStorage.primaryCurrency)?.value {
+
+        if wallet.currency == PersistentStorage.primaryCurrency, let total = total {
+            percentageShare = Int(((wallet.balance / total).asDouble * 100).rounded())
+            moneyInPrimaryCurrency = nil
+        } else if let total = total, let balance = wallet.money.value(in: PersistentStorage.primaryCurrency)?.value {
             percentageShare = Int(((balance / total).asDouble * 100).rounded())
+            moneyInPrimaryCurrency = Money(balance, currency: PersistentStorage.primaryCurrency)
         } else {
             percentageShare = nil
+            moneyInPrimaryCurrency = nil
         }
     }
 }
