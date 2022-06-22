@@ -21,6 +21,7 @@ struct SettingsView: View {
 
             Sector(.cash_flow_filter_other) {
                 Navigation(.settings_language) { viewModel.binding.navigateTo.send(.appSettings) }
+                LabeledPicker(.app_theme_title, elements: AppTheme.allCases, selection: $viewModel.appTheme)
             }
 
             Sector("Debug") {

@@ -17,6 +17,11 @@ final class AppCoordinator {
     init(with window: UIWindow) {
         self.window = window
         handleUserState()
+
+        AppVM.shared.binding.didChangeAppTheme
+            .map { PersistentStorage.appTheme }
+            .sink { window.overrideUserInterfaceStyle = $0.userInterfaceStyle }
+            .store(in: &cancellables)
     }
 
     private func handleUserState() {

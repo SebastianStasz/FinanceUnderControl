@@ -11,6 +11,11 @@
 "tab_currencies_title" = "Currencies";
 "tab_settings_title" = "Settings";
 
+"app_theme_title" = "App theme";
+"app_theme_system_name" = "System";
+"app_theme_light_name" = "Light";
+"app_theme_dark_name" = "Dark";
+
 "button_apply" = "Apply";
 "button_reset" = "Reset";
 "button_create" = "Create";

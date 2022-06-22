@@ -11,6 +11,11 @@
 "tab_currencies_title" = "Waluty";
 "tab_settings_title" = "Ustawienia";
 
+"app_theme_title" = "Motyw aplikacji";
+"app_theme_system_name" = "Systemowy";
+"app_theme_light_name" = "Jasny";
+"app_theme_dark_name" = "Ciemny";
+
 "button_apply" = "Zastosuj";
 "button_reset" = "Zresetuj";
 "button_create" = "Utwórz";

@@ -15,7 +15,12 @@ import Firebase
 final class AppVM {
     static let shared = AppVM()
 
+    struct Binding {
+        let didChangeAppTheme = DriverSubject<Void>()
+    }
+
     let context: NSManagedObjectContext
+    let binding = Binding()
 
     private init() {
         context = PersistenceController.shared.context

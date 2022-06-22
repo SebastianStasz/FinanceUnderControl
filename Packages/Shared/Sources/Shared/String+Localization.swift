@@ -27,6 +27,13 @@ public extension String {
     static let tab_currencies_title = "tab_currencies_title".localize()
     static let tab_settings_title = "tab_settings_title".localize()
 
+    // MARK: - App theme
+
+    static let app_theme_title = "app_theme_title".localize()
+    static let app_theme_system_name = "app_theme_system_name".localize()
+    static let app_theme_light_name = "app_theme_light_name".localize()
+    static let app_theme_dark_name = "app_theme_dark_name".localize()
+
     // MARK: - Button
 
     static let button_apply = "button_apply".localize()

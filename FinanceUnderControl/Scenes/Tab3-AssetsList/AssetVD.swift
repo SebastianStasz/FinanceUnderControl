@@ -28,7 +28,3 @@ extension AssetVD {
         }
     }
 }
-
-enum Asset: Equatable {
-    case wallet(Wallet)
-}

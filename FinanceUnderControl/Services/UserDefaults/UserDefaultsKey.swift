@@ -8,6 +8,7 @@
 import Foundation
 
 enum UserDefaultsKey: String {
+    case appTheme
     case primaryCurrency
     case secondaryCurrency
 }
