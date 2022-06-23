@@ -37,10 +37,10 @@ struct AssetsListView: View {
                         }
 
                         HStack {
-                            Text(asset.money.asString, style: .bodyMedium)
+                            Text(asset.amount, style: .bodyMedium)
                             Spacer()
-                            if let moneyInPrimaryCurrency = asset.moneyInPrimaryCurrency {
-                                Text(moneyInPrimaryCurrency.asString, style: .footnote())
+                            if let amountInPrimaryCurrency = asset.amountInPrimaryCurrency {
+                                Text(amountInPrimaryCurrency, style: .footnote())
                             }
                         }
                     }

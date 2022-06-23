@@ -9,4 +9,5 @@ import Foundation
 
 enum Asset: Equatable {
     case wallet(Wallet)
+    case preciousMetal(PreciousMetal)
 }
