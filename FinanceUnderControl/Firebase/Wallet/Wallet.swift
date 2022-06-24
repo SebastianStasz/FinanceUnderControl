@@ -6,6 +6,7 @@
 //
 
 import FirebaseFirestore
+import FinanceCoreData
 import Foundation
 import Shared
 

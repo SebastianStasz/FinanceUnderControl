@@ -6,8 +6,18 @@
 //
 
 import Foundation
+import Shared
 
 struct PreciousMetal: Equatable {
     let type: PreciousMetalType
     let ouncesAmount: Decimal
+
+    func moneyInCurrency(_ currency: Currency) -> Money? {
+        // TODO: Temporary value
+        Money(ouncesAmount * 8200, currency: currency)
+    }
+
+    var amount: String {
+        "\(ouncesAmount.asString) oz"
+    }
 }

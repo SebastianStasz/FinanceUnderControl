@@ -50,9 +50,9 @@ private extension AssetsListCoordinator {
 
     func presentAssetEditForm(for asset: Asset) {
         switch asset {
-        case let .wallet(wallet):
+        case let .wallet(wallet, _):
             presentWalletForm(for: .edit(wallet))
-        case let .preciousMetal(preciousMetal):
+        case let .preciousMetal(preciousMetal, _):
             print(preciousMetal)
         }
     }

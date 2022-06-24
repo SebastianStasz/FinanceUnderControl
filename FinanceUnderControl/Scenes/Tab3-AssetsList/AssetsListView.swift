@@ -26,26 +26,26 @@ struct AssetsListView: View {
                     .padding(.xxlarge)
                     .background(Color.accentPrimary)
                 }
-                SectoredList(viewModel: viewModel.listVM, viewData: viewModel.listVD) { asset in
+                SectoredList(viewModel: viewModel.listVM, viewData: viewModel.listVD) { viewData in
                     VStack(spacing: .medium) {
                         HStack(alignment: .top) {
-                            Text(asset.name, style: .currency)
+                            Text(viewData.name, style: .currency)
                             Spacer()
-                            if let percentageShare = asset.percentageShare {
+                            if let percentageShare = viewData.percentageShare {
                                 Text("\(percentageShare.asString)%")
                             }
                         }
 
                         HStack {
-                            Text(asset.amount, style: .bodyMedium)
+                            Text(viewData.amount, style: .bodyMedium)
                             Spacer()
-                            if let amountInPrimaryCurrency = asset.amountInPrimaryCurrency {
+                            if let amountInPrimaryCurrency = viewData.amountInPrimaryCurrency {
                                 Text(amountInPrimaryCurrency, style: .footnote())
                             }
                         }
                     }
                     .card()
-                    .editAction(presentAssetEditForm(for: asset.type))
+                    .editAction(presentAssetEditForm(for: viewData.asset))
                 }
             }
         }

@@ -38,3 +38,29 @@ public extension Decimal {
         return formatter.string(for: self)!
     }
 }
+
+public extension Optional where Wrapped == Money {
+    static func +(lhs: Money?, rhs: Money?) -> Money? {
+        guard let lhs = lhs, let rhs = rhs, lhs.currency == rhs.currency else { return nil }
+        return Money(lhs.value + rhs.value, currency: lhs.currency)
+    }
+
+    static func /(lhs: Money?, rhs: Money?) -> Money? {
+        guard let lhs = lhs, let rhs = rhs, lhs.currency == rhs.currency else { return nil }
+        return Money(lhs.value / rhs.value, currency: lhs.currency)
+    }
+}
+
+public extension Array where Element == Money? {
+    func sum() -> Money? {
+        notContains(nil) ? compactMap { $0 }.sum() : nil
+    }
+}
+
+public extension Array where Element == Money {
+    func sum() -> Money? {
+        guard let currency = first?.currency, allSatisfy({ $0.currency == currency }) else { return nil }
+        let value = map { $0.value }.reduce(0, +)
+        return Money(value, currency: currency)
+    }
+}
