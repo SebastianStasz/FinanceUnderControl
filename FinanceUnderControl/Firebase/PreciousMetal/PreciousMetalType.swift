@@ -8,7 +8,7 @@
 import Foundation
 import Shared
 
-enum PreciousMetalType: String, Equatable {
+enum PreciousMetalType: String, Equatable, CaseIterable {
     case XAU
     case XAG
 

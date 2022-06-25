@@ -50,8 +50,8 @@ public extension String {
 
     // MARK: - Precious metal form
 
-    static let precious_metal_form_add_metal_title = "wallet_form_add_wallet_title".localize()
-    static let precious_metal_form_edit_metal_title = "wallet_form_edit_wallet_title".localize()
+    static let precious_metal_form_add_metal_title = "precious_metal_form_add_metal_title".localize()
+    static let precious_metal_form_edit_metal_title = "precious_metal_form_edit_metal_title".localize()
     static let precious_metal_form_type_label = "precious_metal_form_type_label".localize()
 
     // MARK: - Button
