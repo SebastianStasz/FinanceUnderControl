@@ -52,6 +52,12 @@
 "common_discard_changes" = "Discard changes";
 "common_show_all" = "Show all";
 "common_ok" = "OK";
+"common_wallet" = "Wallet";
+"common_wallets" = "Wallets";
+"common_precious_metals" = "Precious metals";
+"common_gold" = "Gold";
+"common_silver" = "Silver";
+"common_total_balance" = "Total balance";
 
 "authorization_register_success_title" = "Registered successfully";
 "authorization_register_success_message" = "Now it's time to sign in!";

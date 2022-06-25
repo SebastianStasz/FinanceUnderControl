@@ -43,7 +43,7 @@ private extension AssetsListCoordinator {
 
     func presentAddAssetSelection() {
         let alert = UIAlertController(title: .common_add, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(title: "Wallet", action: onSelf { $0.presentWalletForm(for: .new()) })
+        alert.addAction(title: .common_wallet, action: onSelf { $0.presentWalletForm(for: .new()) })
         alert.addCancelAction()
         navigationController.present(alert, animated: true)
     }

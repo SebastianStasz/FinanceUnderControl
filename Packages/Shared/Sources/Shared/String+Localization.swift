@@ -74,6 +74,12 @@ public extension String {
     static let common_discard_changes = "common_discard_changes".localize()
     static let common_show_all = "common_show_all".localize()
     static let common_ok = "common_ok".localize()
+    static let common_wallet = "common_wallet".localize()
+    static let common_wallets = "common_wallets".localize()
+    static let common_precious_metals = "common_precious_metals".localize()
+    static let common_gold = "common_gold".localize()
+    static let common_silver = "common_silver".localize()
+    static let common_total_balance = "common_total_balance".localize()
 
     // MARK: - Authorization
 

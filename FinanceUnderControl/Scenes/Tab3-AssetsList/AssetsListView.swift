@@ -17,7 +17,7 @@ struct AssetsListView: View {
             VStack(spacing: .xxlarge) {
                 if let totalBalance = viewModel.totalBalance {
                     VStack(alignment: .leading, spacing: .micro) {
-                        Text("Total balance", style: .footnote())
+                        Text(.common_total_balance, style: .footnote())
                         SwiftUI.Text(totalBalance.asString)
                             .foregroundColor(.white)
                             .font(.title3.weight(.medium))

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Shared
 
 enum PreciousMetalType: String, Equatable {
     case XAU
@@ -18,9 +19,9 @@ enum PreciousMetalType: String, Equatable {
     var name: String {
         switch self {
         case .XAU:
-            return "Gold"
+            return .common_gold
         case .XAG:
-            return "Silver"
+            return .common_silver
         }
     }
 }
