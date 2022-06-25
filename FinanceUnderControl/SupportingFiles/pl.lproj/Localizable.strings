@@ -26,6 +26,10 @@
 "wallet_form_add_wallet_title" = "Dodaj portfel";
 "wallet_form_edit_wallet_title" = "Edytuj portfel";
 
+"precious_metal_form_add_metal_title" = "Dodaj metal szlachetny";
+"precious_metal_form_edit_metal_title" = "Edytuj metal szlachetny";
+"precious_metal_form_type_label" = "Rodzaj";
+
 "button_apply" = "Zastosuj";
 "button_reset" = "Zresetuj";
 "button_create" = "Utwórz";
@@ -33,7 +37,8 @@
 "common_all" = "Wszystko";
 "common_none" = "Brak";
 "common_info" = "Informacja";
-"common_amount" = "Kwota";
+"common_money_amount" = "Kwota";
+"common_amount" = "Ilość";
 "common_categories" = "Kategorie";
 "common_groups" = "Grupy";
 "common_currencies" = "Waluty";

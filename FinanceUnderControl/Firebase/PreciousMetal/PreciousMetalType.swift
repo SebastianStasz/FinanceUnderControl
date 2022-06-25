@@ -25,3 +25,7 @@ enum PreciousMetalType: String, Equatable {
         }
     }
 }
+
+extension PreciousMetalType: Pickerable {
+    var valueName: String { name }
+}

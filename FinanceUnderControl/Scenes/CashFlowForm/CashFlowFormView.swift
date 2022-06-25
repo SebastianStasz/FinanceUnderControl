@@ -24,7 +24,7 @@ struct CashFlowFormView: BaseView {
                     .focused($focusedField, equals: .name)
                     .onTapGesture { focusedField = .name }
 
-                BaseTextField(.common_amount, viewModel: viewModel.valueInput)
+                BaseTextField(.common_money_amount, viewModel: viewModel.valueInput)
                     .focused($focusedField, equals: .amount)
                     .onTapGesture { focusedField = .amount }
 

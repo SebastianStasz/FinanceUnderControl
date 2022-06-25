@@ -19,7 +19,7 @@ struct CashFlowFilterView: BaseView {
                 LabeledPicker(.common_category, elements: viewModel.categories, selection: filter.cashFlowCategory, canDeselect: true)
                     .displayIf(filter.wrappedValue.cashFlowSelection != .all, withTransition: .scale)
             }
-            Sector(.common_amount) {
+            Sector(.common_money_amount) {
                 LabeledPicker(.create_cash_flow_currency, elements: Currency.allCases, selection: filter.currency, canDeselect: true)
             }
             Sector(.cash_flow_filter_other) {

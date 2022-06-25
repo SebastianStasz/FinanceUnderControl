@@ -26,6 +26,10 @@
 "wallet_form_add_wallet_title" = "Add wallet";
 "wallet_form_edit_wallet_title" = "Edit wallet";
 
+"precious_metal_form_add_metal_title" = "Add precious metal";
+"precious_metal_form_edit_metal_title" = "Edit precious metal";
+"precious_metal_form_type_label" = "Type";
+
 "button_apply" = "Apply";
 "button_reset" = "Reset";
 "button_create" = "Create";
@@ -33,6 +37,7 @@
 "common_all" = "All";
 "common_none" = "None";
 "common_info" = "Info";
+"common_money_amount" = "Amount";
 "common_amount" = "Amount";
 "common_categories" = "Categories";
 "common_groups" = "Groups";

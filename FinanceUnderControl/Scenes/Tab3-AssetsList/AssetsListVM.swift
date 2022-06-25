@@ -23,7 +23,7 @@ final class AssetsListVM: ViewModel {
     let binding = Binding()
     let listVM = BaseListVM<AssetVD>()
     private var storage = WalletService.shared
-    private let preciousMetals = Just([PreciousMetal(type: .XAU, ouncesAmount: 2)])
+    private let preciousMetals = Just([PreciousMetal(type: .XAU, lastChangeDate: .now, ouncesAmount: 2)])
 
     override func viewDidLoad() {
         let primaryCurrency = PersistentStorage.primaryCurrency

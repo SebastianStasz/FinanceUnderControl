@@ -10,6 +10,8 @@ import UIKit
 final class PreciousMetalFormCoordinator: Coordinator {
 
     enum Destination {
+        case askToDismiss
+        case dismiss
     }
 
     private let formType: PreciousMetalFormType
@@ -34,5 +36,11 @@ final class PreciousMetalFormCoordinator: Coordinator {
 private extension PreciousMetalFormCoordinator {
 
     func navigate(to destination: Destination) {
+        switch destination {
+        case .askToDismiss:
+            navigationController?.askToDismiss()
+        case .dismiss:
+            navigationController?.dismiss(animated: true)
+        }
     }
 }

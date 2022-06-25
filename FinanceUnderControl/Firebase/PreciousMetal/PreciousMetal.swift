@@ -10,6 +10,7 @@ import Shared
 
 struct PreciousMetal: Equatable {
     let type: PreciousMetalType
+    let lastChangeDate: Date?
     let ouncesAmount: Decimal
 
     func moneyInCurrency(_ currency: Currency) -> Money? {
