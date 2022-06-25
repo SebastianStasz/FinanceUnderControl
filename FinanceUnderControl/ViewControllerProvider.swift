@@ -37,4 +37,10 @@ struct ViewControllerProvider {
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
         return viewController
     }
+
+    static func preciousMetalForm(viewModel: PreciousMetalFormVM) -> UIViewController {
+        let view = PreciousMetalFormView(viewModel: viewModel)
+        let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+        return viewController
+    }
 }

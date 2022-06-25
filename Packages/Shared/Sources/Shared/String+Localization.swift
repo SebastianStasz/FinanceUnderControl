@@ -34,6 +34,15 @@ public extension String {
     static let app_theme_light_name = "app_theme_light_name".localize()
     static let app_theme_dark_name = "app_theme_dark_name".localize()
 
+    // MARK: - Asset
+
+    static let asset_wallet = "asset_wallet".localize()
+    static let asset_wallets = "asset_wallets".localize()
+    static let asset_precious_metal = "asset_precious_metal".localize()
+    static let asset_precious_metals = "asset_precious_metals".localize()
+    static let asset_gold = "asset_gold".localize()
+    static let asset_silver = "asset_silver".localize()
+
     // MARK: - Button
 
     static let button_apply = "button_apply".localize()
@@ -74,11 +83,6 @@ public extension String {
     static let common_discard_changes = "common_discard_changes".localize()
     static let common_show_all = "common_show_all".localize()
     static let common_ok = "common_ok".localize()
-    static let common_wallet = "common_wallet".localize()
-    static let common_wallets = "common_wallets".localize()
-    static let common_precious_metals = "common_precious_metals".localize()
-    static let common_gold = "common_gold".localize()
-    static let common_silver = "common_silver".localize()
     static let common_total_balance = "common_total_balance".localize()
 
     // MARK: - Authorization
@@ -91,6 +95,9 @@ public extension String {
     static let authorization_register_account_invalid_email_message = "authorization_register_account_invalid_email".localize()
     static let authorization_register_account_unknown_error_message = "authorization_register_account_unknown_error_message".localize()
 
+    // MARK: - Dashboard
+
+    static let dashboard_this_month_title = "dashboard_this_month_title".localize()
     static let dashboard_top_expenses = "dashboard_top_expenses".localize()
     static let expenses_by_category_title = "expenses_by_category_title".localize()
 

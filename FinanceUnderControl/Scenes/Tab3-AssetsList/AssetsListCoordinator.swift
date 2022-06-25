@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Shared
 
 final class AssetsListCoordinator: RootCoordinator {
 
@@ -43,7 +44,8 @@ private extension AssetsListCoordinator {
 
     func presentAddAssetSelection() {
         let alert = UIAlertController(title: .common_add, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(title: .common_wallet, action: onSelf { $0.presentWalletForm(for: .new()) })
+        alert.addAction(title: .asset_wallet, action: onSelf { $0.presentWalletForm(for: .new()) })
+        alert.addAction(title: .asset_precious_metal, action: onSelf { $0.presentPreciousMetalForm(for: .new()) })
         alert.addCancelAction()
         navigationController.present(alert, animated: true)
     }
@@ -53,11 +55,15 @@ private extension AssetsListCoordinator {
         case let .wallet(wallet, _):
             presentWalletForm(for: .edit(wallet))
         case let .preciousMetal(preciousMetal, _):
-            print(preciousMetal)
+            presentPreciousMetalForm(for: .edit(preciousMetal))
         }
     }
 
     func presentWalletForm(for formType: WalletFormType) {
         WalletFormCoordinator(.presentModally(on: navigationController), formType: formType).start()
+    }
+
+    func presentPreciousMetalForm(for formType: PreciousMetalFormType) {
+        PreciousMetalFormCoordinator(.presentModally(on: navigationController), formType: formType).start()
     }
 }

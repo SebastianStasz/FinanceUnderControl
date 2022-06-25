@@ -47,7 +47,7 @@ final class AssetsListVM: ViewModel {
             .map { result in result.0.map { AssetVD(from: $0, total: result.1) } }
 
         let sectors = CombineLatest(walletAssetsVD, preciousMetalsAssetsVD)
-            .map { [ListSector(.common_wallets, elements: $0.0), .init(.common_precious_metals, elements: $0.1)] }
+            .map { [ListSector(.asset_wallets, elements: $0.0), .init(.asset_precious_metals, elements: $0.1)] }
 
         let listOutput = listVM.transform(input: .init(sectors: sectors.asDriver))
         listOutput.viewData.assign(to: &$listVD)

@@ -19,9 +19,9 @@ enum PreciousMetalType: String, Equatable {
     var name: String {
         switch self {
         case .XAU:
-            return .common_gold
+            return .asset_gold
         case .XAG:
-            return .common_silver
+            return .asset_silver
         }
     }
 }

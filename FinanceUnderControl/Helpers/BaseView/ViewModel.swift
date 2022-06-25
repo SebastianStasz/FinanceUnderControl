@@ -27,5 +27,6 @@ class ViewModel: ObservableObject, CombineHelper {
     func commonInit() {}
 
     func viewDidLoad() {}
+    func viewDidAppear() {}
     func viewDidDisappear() {}
 }

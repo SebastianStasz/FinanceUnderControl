@@ -16,6 +16,13 @@
 "app_theme_light_name" = "Jasny";
 "app_theme_dark_name" = "Ciemny";
 
+"asset_wallet" = "Portfel";
+"asset_wallets" = "Portfele";
+"asset_precious_metal" = "Metal szlachetny";
+"asset_precious_metals" = "Metale szlachetne";
+"asset_gold" = "Złoto";
+"asset_silver" = "Srebro";
+
 "button_apply" = "Zastosuj";
 "button_reset" = "Zresetuj";
 "button_create" = "Utwórz";
@@ -52,11 +59,6 @@
 "common_discard_changes" = "Odrzuć zmiany";
 "common_show_all" = "Pokaż wszystko";
 "common_ok" = "OK";
-"common_wallet" = "Portfel";
-"common_wallets" = "Portfele";
-"common_precious_metals" = "Metale szlachetne";
-"common_gold" = "Złoto";
-"common_silver" = "Srebro";
 "common_total_balance" = "Całkowite saldo";
 
 "authorization_register_success_title" = "Zarejestrowano pomyślnie";
@@ -67,6 +69,7 @@
 "authorization_register_account_invalid_email_message" = "Podamy email jest niepoprawny. Spróbuj ponownie używając innego adresu.";
 "authorization_register_account_unknown_error_message" = "W trakcie rejestracji wystąpił błąd. Spróbuj ponownie później lub wybierz inną formę logowania.";
 
+"dashboard_this_month_title" = "W tym miesiącu";
 "dashboard_top_expenses" = "Najwyższe wydatki";
 "expenses_by_category_title" = "Wydatki według kategorii";
 

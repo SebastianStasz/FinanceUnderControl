@@ -45,7 +45,7 @@ struct DashboardView: View {
             .padding(.top, .medium)
         }
         .background(Color.backgroundPrimary)
-        .navigationBar(title: "Good morning") {
+        .navigationBar(title: .dashboard_this_month_title) {
             Button(systemImage: SFSymbol.settings.rawValue, action: presentSettings)
         }
     }

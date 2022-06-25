@@ -16,6 +16,13 @@
 "app_theme_light_name" = "Light";
 "app_theme_dark_name" = "Dark";
 
+"asset_wallet" = "Wallet";
+"asset_wallets" = "Wallets";
+"asset_precious_metal" = "Precious metal";
+"asset_precious_metals" = "Precious metals";
+"asset_gold_gold" = "Gold";
+"asset_gold_silver" = "Silver";
+
 "button_apply" = "Apply";
 "button_reset" = "Reset";
 "button_create" = "Create";
@@ -52,11 +59,6 @@
 "common_discard_changes" = "Discard changes";
 "common_show_all" = "Show all";
 "common_ok" = "OK";
-"common_wallet" = "Wallet";
-"common_wallets" = "Wallets";
-"common_precious_metals" = "Precious metals";
-"common_gold" = "Gold";
-"common_silver" = "Silver";
 "common_total_balance" = "Total balance";
 
 "authorization_register_success_title" = "Registered successfully";
@@ -67,6 +69,7 @@
 "authorization_register_account_invalid_email_message" = "Provided email is invalid. Try again with different one.";
 "authorization_register_account_unknown_error_message" = "An error occurred during registration. Please try again later or choose a different login method.";
 
+"dashboard_this_month_title" = "This month";
 "dashboard_top_expenses" = "Top expenses";
 "expenses_by_category_title" = "Expenses by category";
 
