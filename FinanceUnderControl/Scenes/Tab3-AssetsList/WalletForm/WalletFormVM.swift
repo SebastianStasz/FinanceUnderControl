@@ -24,7 +24,7 @@ final class WalletFormVM: ViewModel {
     @Published var formModel: WalletFormModel
 
     let binding = Binding()
-    let balanceInputVM = DecimalInputVM()
+    let balanceInputVM = DecimalInputVM(validator: .alwaysValid)
     let formType: WalletFormType
     private let service = WalletService.shared
 
@@ -33,7 +33,7 @@ final class WalletFormVM: ViewModel {
         formModel = .init(for: formType)
         super.init(coordinator: coordinator)
 
-        balanceInputVM.result().weakAssign(to: \.formModel.balance, on: self)
+        balanceInputVM.result().map { $0 ?? 0 }.weakAssign(to: \.formModel.balance, on: self)
 
         if case let .edit(wallet) = formType {
             balanceInputVM.setValue(to: wallet.balance)

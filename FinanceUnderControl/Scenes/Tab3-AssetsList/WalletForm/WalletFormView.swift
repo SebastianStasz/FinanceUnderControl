@@ -14,19 +14,20 @@ struct WalletFormView: View {
 
     var body: some View {
         FormView {
-            Sector(.create_cash_flow_basic_label) {
-                BaseTextField("Balance", viewModel: viewModel.balanceInputVM)
+            Sector(.common_balance) {
+                BaseTextField(.common_balance, viewModel: viewModel.balanceInputVM, prompt: balancePrompt)
                 LabeledPicker(.create_cash_flow_currency, elements: viewModel.availableCurrencies, selection: $viewModel.formModel.currency)
                     .enabled(!viewModel.formType.isEdit)
             }
 
             if let date = viewModel.formModel.lastUpdateDate {
-                Sector("Last update") {
+                Sector(.common_last_edition_date) {
                     Text(date.string(format: .medium))
+                        .card()
                 }
             }
         }
-        .navigationTitle("Edit wallet")
+        .navigationTitle(viewModel.formType.title)
         .closeButton(action: viewModel.binding.didTapClose.send)
         .horizontalButtons(primaryButton: primaryButton)
         .interactiveDismissDisabled(viewModel.wasEdited)
@@ -35,6 +36,10 @@ struct WalletFormView: View {
 
     private var primaryButton: HorizontalButtons.Configuration {
         .init(.common_save, enabled: viewModel.formModel.isValid) { viewModel.binding.didTapConfirm.send() }
+    }
+
+    private var balancePrompt: String {
+        Decimal(0).formatted(for: PersistentStorage.primaryCurrency)
     }
 }
 

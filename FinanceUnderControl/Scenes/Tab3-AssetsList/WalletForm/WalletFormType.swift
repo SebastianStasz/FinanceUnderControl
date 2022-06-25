@@ -24,6 +24,15 @@ enum WalletFormType {
         return nil
     }
 
+    var title: String {
+        switch self {
+        case .new:
+            return .wallet_form_add_wallet_title
+        case .edit:
+            return .wallet_form_edit_wallet_title
+        }
+    }
+
     var confirmButtonTitle: String {
         switch self {
         case .new:

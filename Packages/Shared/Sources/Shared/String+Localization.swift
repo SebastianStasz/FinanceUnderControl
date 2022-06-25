@@ -43,6 +43,11 @@ public extension String {
     static let asset_gold = "asset_gold".localize()
     static let asset_silver = "asset_silver".localize()
 
+    // MARK: - Wallet form
+
+    static let wallet_form_add_wallet_title = "wallet_form_add_wallet_title".localize()
+    static let wallet_form_edit_wallet_title = "wallet_form_edit_wallet_title".localize()
+
     // MARK: - Button
 
     static let button_apply = "button_apply".localize()
@@ -83,7 +88,9 @@ public extension String {
     static let common_discard_changes = "common_discard_changes".localize()
     static let common_show_all = "common_show_all".localize()
     static let common_ok = "common_ok".localize()
+    static let common_balance = "common_balance".localize()
     static let common_total_balance = "common_total_balance".localize()
+    static let common_last_edition_date = "common_last_edition_date".localize()
 
     // MARK: - Authorization
 

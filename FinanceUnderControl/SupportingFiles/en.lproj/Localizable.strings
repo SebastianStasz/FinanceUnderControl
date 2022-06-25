@@ -23,6 +23,9 @@
 "asset_gold_gold" = "Gold";
 "asset_gold_silver" = "Silver";
 
+"wallet_form_add_wallet_title" = "Add wallet";
+"wallet_form_edit_wallet_title" = "Edit wallet";
+
 "button_apply" = "Apply";
 "button_reset" = "Reset";
 "button_create" = "Create";
@@ -59,7 +62,9 @@
 "common_discard_changes" = "Discard changes";
 "common_show_all" = "Show all";
 "common_ok" = "OK";
+"common_balance" = "Balance";
 "common_total_balance" = "Total balance";
+"common_last_edition_date" = "Last edition date";
 
 "authorization_register_success_title" = "Registered successfully";
 "authorization_register_success_message" = "Now it's time to sign in!";

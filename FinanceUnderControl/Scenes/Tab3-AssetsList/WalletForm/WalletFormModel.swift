@@ -11,7 +11,7 @@ import Shared
 struct WalletFormModel: Equatable {
     let lastUpdateDate: Date?
     var currency: Currency?
-    var balance: Decimal?
+    var balance: Decimal = 0
 
     init(for formType: WalletFormType) {
         switch formType {
@@ -26,14 +26,14 @@ struct WalletFormModel: Equatable {
     }
 
     var isValid: Bool {
-        guard let balance = balance, balance >= 0, currency.notNil else {
+        guard balance >= 0, currency.notNil else {
             return false
         }
         return true
     }
 
     func model(for formType: WalletFormType) -> Wallet? {
-        guard let currency = currency, let balance = balance, balance >= 0 else { return nil }
+        guard let currency = currency, balance >= 0 else { return nil }
         switch formType {
         case .new:
             return Wallet(currency: currency, lastChangeDate: .now, balance: balance)

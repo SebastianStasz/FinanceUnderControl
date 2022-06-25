@@ -23,6 +23,9 @@
 "asset_gold" = "Złoto";
 "asset_silver" = "Srebro";
 
+"wallet_form_add_wallet_title" = "Dodaj portfel";
+"wallet_form_edit_wallet_title" = "Edytuj portfel";
+
 "button_apply" = "Zastosuj";
 "button_reset" = "Zresetuj";
 "button_create" = "Utwórz";
@@ -59,7 +62,9 @@
 "common_discard_changes" = "Odrzuć zmiany";
 "common_show_all" = "Pokaż wszystko";
 "common_ok" = "OK";
+"common_balance" = "Saldo";
 "common_total_balance" = "Całkowite saldo";
+"common_last_edition_date" = "Data ostatniej edycji";
 
 "authorization_register_success_title" = "Zarejestrowano pomyślnie";
 "authorization_register_success_message" = "Czas zalogować się na swoje konto!";
