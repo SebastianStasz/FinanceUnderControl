@@ -79,7 +79,7 @@ final class PreciousMetalFormVM: ViewModel {
                 case .new:
                     try await vm.service.create(newPreciousMetal)
                 case let .edit(preciousMetal):
-                    print(preciousMetal)
+                    try await vm.service.setOuncesAmount(newPreciousMetal.ouncesAmount, for: preciousMetal)
                 }
             }
             .sinkAndStore(on: self) { vm, _ in

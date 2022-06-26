@@ -22,6 +22,11 @@ final class PreciousMetalService {
         try await firestore.createOrEditDocument(withId: preciousMetal.id, in: .preciousMetals, data: preciousMetal.data)
     }
 
+    func setOuncesAmount(_ amount: Decimal, for preciousMetal: PreciousMetal) async throws {
+        let data = [PreciousMetal.Field.ouncesAmount.key: amount.asString]
+        try await firestore.edit(withId: preciousMetal.id, in: .preciousMetals, data: data)
+    }
+
     private func subscribePreciousMetals() -> FirestoreSubscription<[PreciousMetal]> {
         let configuration = QueryConfiguration<PreciousMetal>(sorters: [PreciousMetal.Order.type()])
         let subscription = firestore.subscribe(to: .preciousMetals, configuration: configuration)
