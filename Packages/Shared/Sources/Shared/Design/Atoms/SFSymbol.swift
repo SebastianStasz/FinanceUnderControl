@@ -22,7 +22,7 @@ public enum SFSymbol: String {
     case filter         = "slider.horizontal.3"
     case settings       = "gearshape"
     case clear          = "clear"
-
+    case profile = "person.crop.circle"
     case trash = "trash.fill"
 
     case radioUnchecked = "circle"

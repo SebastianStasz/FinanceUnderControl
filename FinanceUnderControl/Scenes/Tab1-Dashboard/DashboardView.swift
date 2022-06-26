@@ -47,6 +47,7 @@ struct DashboardView: View {
         .background(Color.backgroundPrimary)
         .navigationBar(title: .dashboard_this_month_title) {
             Button(systemImage: SFSymbol.settings.rawValue, action: presentSettings)
+            Button(systemImage: SFSymbol.profile.rawValue, action: presentProfile)
         }
     }
 
@@ -56,6 +57,10 @@ struct DashboardView: View {
 
     private func presentSettings() {
         viewModel.binding.navigateTo.send(.settings)
+    }
+
+    private func presentProfile() {
+        viewModel.binding.navigateTo.send(.profile)
     }
 
     private var topExpensesEditAction: EditAction? {

@@ -11,6 +11,7 @@ import Shared
 final class DashboardCoordinator: RootCoordinator {
 
     enum Destination {
+        case profile
         case settings
         case topExpenses(HorizontalBarVD)
     }
@@ -32,6 +33,8 @@ final class DashboardCoordinator: RootCoordinator {
 
     private func navigate(to destination: Destination, viewController: UIViewController) {
         switch destination {
+        case .profile:
+            ProfileCoordinator(.presentFullScreen(on: navigationController)).start()
         case .settings:
             SettingsCoordinator(.presentFullScreen(on: navigationController)).start()
         case let .topExpenses(viewData):

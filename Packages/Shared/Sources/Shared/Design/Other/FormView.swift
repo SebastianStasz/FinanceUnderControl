@@ -20,7 +20,7 @@ public struct FormView<Content: View>: View {
         ScrollView {
             VStack(alignment: .leading, spacing: .xxlarge) { content }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, .large)
+                .padding(.vertical, .xlarge)
                 .toolbar {
                     Toolbar.keyboard {
                         Button(systemImage: "keyboard.chevron.compact.down", action: hideKeyboard)

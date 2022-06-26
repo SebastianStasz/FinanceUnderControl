@@ -28,8 +28,11 @@ struct SettingsView: View {
                 Navigation("Design system") { viewModel.binding.navigateTo.send(.designSystem) }
             }
         }
-        .navigationTitle(String.tab_settings_title)
-        .closeButton { viewModel.binding.navigateTo.send(.dismiss) }
+        .navigationBar(title: .tab_settings_title, content: {
+            Button(systemImage: SFSymbol.close.name) {
+                viewModel.binding.navigateTo.send(.dismiss)
+            }
+        })
     }
 }
 
