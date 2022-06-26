@@ -18,6 +18,10 @@ final class PreciousMetalService {
         subscribePreciousMetals().output.assign(to: &$preciousMetals)
     }
 
+    func create(_ preciousMetal: PreciousMetal) async throws {
+        try await firestore.createOrEditDocument(withId: preciousMetal.id, in: .preciousMetals, data: preciousMetal.data)
+    }
+
     private func subscribePreciousMetals() -> FirestoreSubscription<[PreciousMetal]> {
         let configuration = QueryConfiguration<PreciousMetal>(sorters: [PreciousMetal.Order.type()])
         let subscription = firestore.subscribe(to: .preciousMetals, configuration: configuration)

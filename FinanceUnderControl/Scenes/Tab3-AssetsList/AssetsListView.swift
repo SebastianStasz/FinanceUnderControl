@@ -49,7 +49,7 @@ struct AssetsListView: View {
                 }
             }
         }
-        .topPadding(.medium)
+        .topPadding(viewModel.totalBalance.notNil ? .medium : 0)
         .navigationBar(title: .tab_assets_title) {
             Button(systemImage: SFSymbol.plus.rawValue, action: presentAddAssetSelection)
         }

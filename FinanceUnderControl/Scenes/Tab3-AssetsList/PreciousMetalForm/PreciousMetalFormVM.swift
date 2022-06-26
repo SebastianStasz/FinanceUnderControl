@@ -74,7 +74,13 @@ final class PreciousMetalFormVM: ViewModel {
         didTapConfirm
             .filter { $0 != initialFormModel }
             .compactMap { $0.model(for: formType) }
-            .perform(on: self, isLoading: mainLoader, errorTracker: errorTracker) { vm, newWallet in
+            .perform(on: self, isLoading: mainLoader, errorTracker: errorTracker) { vm, newPreciousMetal in
+                switch vm.formType {
+                case .new:
+                    try await vm.service.create(newPreciousMetal)
+                case let .edit(preciousMetal):
+                    print(preciousMetal)
+                }
             }
             .sinkAndStore(on: self) { vm, _ in
                 vm.binding.navigateTo.send(.dismiss)
