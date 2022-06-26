@@ -22,12 +22,13 @@ final class AssetsListVM: ViewModel {
 
     let binding = Binding()
     let listVM = BaseListVM<AssetVD>()
-    private var storage = WalletService.shared
-    private let preciousMetals = Just([PreciousMetal(type: .XAU, lastChangeDate: .now, ouncesAmount: 2)])
+    private let walletService = WalletService.shared
+    private let preciousMetalService = PreciousMetalService.shared
 
     override func viewDidLoad() {
         let primaryCurrency = PersistentStorage.primaryCurrency
-        let wallets = storage.$wallets
+        let wallets = walletService.$wallets
+        let preciousMetals = preciousMetalService.$preciousMetals
 
         let walletAssets = wallets.map {
             $0.map { Asset.wallet($0, moneyPrimaryCurrency: $0.money.convert(to: primaryCurrency)) }
@@ -37,7 +38,12 @@ final class AssetsListVM: ViewModel {
         }
 
         CombineLatest(walletAssets, preciousMetalAssets)
-            .map { $0.0.map { $0.moneyPrimaryCurrency }.sum() + $0.1.map { $0.moneyPrimaryCurrency }.sum() }
+            .map {
+                let zeroMoney = Money(0, currency: primaryCurrency)
+                let walletsTotal = $0.0.isEmpty ? zeroMoney : $0.0.map { $0.moneyPrimaryCurrency }.sum()
+                let preciousMetalsTotal = $0.1.isEmpty ? zeroMoney : $0.1.map { $0.moneyPrimaryCurrency }.sum()
+                return walletsTotal + preciousMetalsTotal
+            }
             .assign(to: &$totalBalance)
 
         let walletAssetsVD = CombineLatest(walletAssets, $totalBalance)
@@ -47,7 +53,16 @@ final class AssetsListVM: ViewModel {
             .map { result in result.0.map { AssetVD(from: $0, total: result.1) } }
 
         let sectors = CombineLatest(walletAssetsVD, preciousMetalsAssetsVD)
-            .map { [ListSector(.asset_wallets, elements: $0.0), .init(.asset_precious_metals, elements: $0.1)] }
+            .map {
+                var sectors: [ListSector<AssetVD>] = []
+                if $0.0.isNotEmpty {
+                    sectors.append(.init(.asset_wallets, elements: $0.0))
+                }
+                if $0.1.isNotEmpty {
+                    sectors.append(.init(.asset_precious_metals, elements: $0.1))
+                }
+                return sectors
+            }
 
         let listOutput = listVM.transform(input: .init(sectors: sectors.asDriver))
         listOutput.viewData.assign(to: &$listVD)

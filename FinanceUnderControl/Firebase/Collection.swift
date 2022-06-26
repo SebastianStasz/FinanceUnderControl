@@ -11,6 +11,7 @@ import Shared
 enum Collection: String {
     case users
     case wallets
+    case preciousMetals
     case cashFlows
     case cashFlowCategories
     case cashFlowCategoryGroups
@@ -25,6 +26,8 @@ enum Collection: String {
             return "user_"
         case .wallets:
             return "wallet_"
+        case .preciousMetals:
+            return "preciousMetal_"
         case .cashFlows:
             return "cashFlow_"
         case .cashFlowCategories:

@@ -20,8 +20,8 @@
 "asset_wallets" = "Wallets";
 "asset_precious_metal" = "Precious metal";
 "asset_precious_metals" = "Precious metals";
-"asset_gold_gold" = "Gold";
-"asset_gold_silver" = "Silver";
+"asset_gold" = "Gold";
+"asset_silver" = "Silver";
 
 "wallet_form_add_wallet_title" = "Add wallet";
 "wallet_form_edit_wallet_title" = "Edit wallet";
