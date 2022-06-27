@@ -9,16 +9,17 @@ import UIKit
 
 final class TabBarCoordinator: RootCoordinator {
     
-    private var tabBarController: TabBarController!
+    private weak var tabBarController: TabBarController?
 
     func start() -> UIViewController {
         let viewModel = TabBarVM(coordinator: self)
-        tabBarController = TabBarController(viewModel: viewModel)
+        let tabBarController = TabBarController(viewModel: viewModel)
 
         viewModel.binding.presentCashFlowTypeSelection
             .sink { [weak self] tab in self?.presentCashFlowTypeSelection() }
             .store(in: &viewModel.cancellables)
 
+        self.tabBarController = tabBarController
         return tabBarController
     }
 
@@ -27,7 +28,7 @@ final class TabBarCoordinator: RootCoordinator {
         alert.addAction(title: .common_expense, action: onSelf { $0.presentCashFlowForm(for: .new(.expense)) })
         alert.addAction(title: .common_income, action: onSelf { $0.presentCashFlowForm(for: .new(.income)) })
         alert.addCancelAction()
-        tabBarController.present(alert, animated: true)
+        tabBarController?.present(alert, animated: true)
     }
 
     private func presentCashFlowForm(for formType: CashFlowFormType<CashFlow>) {
