@@ -18,19 +18,21 @@ final class CashFlowGroupingCoordinator: RootCoordinator, ObservableObject {
         case presentCategoryCanNotBeDeleted(CashFlowCategory)
     }
 
-    private let navigationController = UINavigationController()
+    private weak var navigationController: UINavigationController?
     @State var isEditMode = false
 
     func start() -> UIViewController {
         let viewModel = CashFlowGroupingListVM(coordinator: self)
         let view = CashFlowGroupingListView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+        let navigationController = UINavigationController()
         navigationController.viewControllers = [viewController]
 
         viewModel.binding.navigateTo
             .sink { [weak self] in self?.navigate(to: $0) }
             .store(in: &viewModel.cancellables)
 
+        self.navigationController = navigationController
         return navigationController
     }
 }
@@ -55,7 +57,7 @@ private extension CashFlowGroupingCoordinator {
         alert.addAction(title: .settings_create_group, action: onSelf { $0.presentGroupForm(.new(type)) })
         alert.addAction(title: .settings_create_category, action: onSelf { $0.presentCategoryForm(.new(type)) })
         alert.addCancelAction()
-        navigationController.present(alert, animated: true)
+        navigationController?.present(alert, animated: true)
     }
 
     func presentGroupForm(_ formType: CashFlowFormType<CashFlowCategoryGroup>) {
@@ -69,6 +71,6 @@ private extension CashFlowGroupingCoordinator {
     func presentCategoryCanNotBeDeleted(_ category: CashFlowCategory) {
         let alert = UIAlertController(title: "Can not delete category", message: "Category \"\(category.name)\" is used by some cash flows. You can not delete it.", preferredStyle: .alert)
         alert.addOkAction()
-        navigationController.present(alert, animated: true)
+        navigationController?.present(alert, animated: true)
     }
 }

@@ -15,18 +15,20 @@ final class AssetsListCoordinator: RootCoordinator {
         case assetEditForm(Asset)
     }
 
-    private let navigationController = UINavigationController()
+    private weak var navigationController: UINavigationController?
 
     func start() -> UIViewController {
         let viewModel = AssetsListVM(coordinator: self)
         let view = AssetsListView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+        let navigationController = UINavigationController()
         navigationController.viewControllers = [viewController]
 
         viewModel.binding.navigateTo
             .sink { [weak self] in self?.navigate(to: $0) }
             .store(in: &viewModel.cancellables)
 
+        self.navigationController = navigationController
         return navigationController
     }
 }
@@ -47,7 +49,7 @@ private extension AssetsListCoordinator {
         alert.addAction(title: .asset_wallet, action: onSelf { $0.presentWalletForm(for: .new()) })
         alert.addAction(title: .asset_precious_metal, action: onSelf { $0.presentPreciousMetalForm(for: .new()) })
         alert.addCancelAction()
-        navigationController.present(alert, animated: true)
+        navigationController?.present(alert, animated: true)
     }
 
     func presentAssetEditForm(for asset: Asset) {

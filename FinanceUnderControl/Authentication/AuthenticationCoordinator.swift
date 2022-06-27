@@ -15,17 +15,19 @@ final class AuthenticationCoordinator: RootCoordinator {
         case loginError(AuthErrorCode.Code)
     }
 
-    private let navigationController = UINavigationController()
+    private weak var navigationController: UINavigationController?
 
     func start() -> UIViewController {
         let viewModel = LoginVM(coordinator: self)
         let viewController = SwiftUIVC(viewModel: viewModel, view: LoginView(viewModel: viewModel))
+        let navigationController = UINavigationController()
         navigationController.viewControllers = [viewController]
 
         viewModel.binding.navigateTo
             .sink { [weak self] in self?.navigate(to: $0) }
             .store(in: &viewController.cancellables)
 
+        self.navigationController = navigationController
         return navigationController
     }
 
@@ -40,6 +42,6 @@ final class AuthenticationCoordinator: RootCoordinator {
 
     private func handleLoginEror(_ error: AuthErrorCode.Code) {
         let resultData = ResultData.error(title: "Failed to login", message: "Something went wrong. Please try again in a moment.")
-        navigationController.presentResultView(viewData: resultData)
+        navigationController?.presentResultView(viewData: resultData)
     }
 }

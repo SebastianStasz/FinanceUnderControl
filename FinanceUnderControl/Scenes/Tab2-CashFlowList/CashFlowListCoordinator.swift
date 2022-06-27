@@ -15,19 +15,21 @@ final class CashFlowListCoordinator: RootCoordinator {
         case editForm(for: CashFlow)
     }
 
-    private let navigationController = UINavigationController()
+    private weak var navigationController: UINavigationController?
 
     func start() -> UIViewController {
         let cashFlowFilterVM = CashFlowFilterVM()
         let viewModel = CashFlowListVM(coordinator: self, cashFlowFilterVM: cashFlowFilterVM)
         let view = CashFlowListView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+        let navigationController = UINavigationController()
         navigationController.viewControllers = [viewController]
 
         viewModel.binding.navigateTo
             .sink { [weak self] in self?.navigate(to: $0, cashFlowFilterVM: cashFlowFilterVM) }
             .store(in: &viewModel.cancellables)
 
+        self.navigationController = navigationController
         return navigationController
     }
 }
@@ -45,7 +47,7 @@ private extension CashFlowListCoordinator {
 
     func presentFilterView(viewModel: CashFlowFilterVM) {
         let viewController = ViewControllerProvider.cashFlowFilterVC(viewModel: viewModel)
-        navigationController.presentModally(viewController)
+        navigationController?.presentModally(viewController)
     }
 
     func presentEditForm(for cashFlow: CashFlow) {

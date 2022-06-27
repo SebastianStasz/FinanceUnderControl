@@ -49,11 +49,11 @@ class Coordinator: CoordinatorProtocol {
         viewController.present(navigationController, animated: true)
     }
 
-    private func presentFullScreen(on viewController: UIViewController) {
+    private func presentFullScreen(on viewController: UIViewController?) {
         let navigationController = UINavigationController(rootViewController: initializeView())
         navigationController.modalPresentationStyle = .fullScreen
         self.navigationController = navigationController
-        viewController.present(navigationController, animated: true)
+        viewController?.present(navigationController, animated: true)
     }
 }
 

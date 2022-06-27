@@ -16,18 +16,20 @@ final class DashboardCoordinator: RootCoordinator {
         case topExpenses(HorizontalBarVD)
     }
 
-    private let navigationController = UINavigationController()
+    private weak var navigationController: UINavigationController?
 
     func start() -> UIViewController {
         let viewModel = DashboardVM(coordinator: self)
         let view = DashboardView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view)
+        let navigationController = UINavigationController()
         navigationController.viewControllers = [viewController]
 
         viewModel.binding.navigateTo
             .sink { [weak self] in self?.navigate(to: $0, viewController: viewController) }
             .store(in: &viewModel.cancellables)
 
+        self.navigationController = navigationController
         return navigationController
     }
 
@@ -39,7 +41,7 @@ final class DashboardCoordinator: RootCoordinator {
             SettingsCoordinator(.presentFullScreen(on: navigationController)).start()
         case let .topExpenses(viewData):
             let vc = UIHostingController(rootView: ExpensesByCategoryView(viewData: viewData))
-            navigationController.presentModally(vc)
+            navigationController?.presentModally(vc)
         }
     }
 }

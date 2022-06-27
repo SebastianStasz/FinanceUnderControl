@@ -14,25 +14,27 @@ final class CantorCoordinator: RootCoordinator {
         case exchangeRateList(for: CurrencyEntity)
     }
 
-    private let navigationController = UINavigationController()
+    private weak var navigationController: UINavigationController?
 
     func start() -> UIViewController {
         let viewModel = CantorVM(coordinator: self)
         let view = CantorView(viewModel: viewModel)
         let viewController = SwiftUIVC(viewModel: viewModel, view: view.environment(\.managedObjectContext, AppVM.shared.context))
+        let navigationController = UINavigationController()
         navigationController.viewControllers = [viewController]
 
         viewModel.binding.navigateTo
             .sink { [weak self] in self?.navigate(to: $0) }
             .store(in: &viewModel.cancellables)
 
+        self.navigationController = navigationController
         return navigationController
     }
 
     private func navigate(to destination: Destination) {
         switch destination {
         case let .exchangeRateList(currencyEntity):
-            navigationController.push(ViewControllerProvider.exchangeRateList(for: currencyEntity))
+            navigationController?.push(ViewControllerProvider.exchangeRateList(for: currencyEntity))
         }
     }
 }
