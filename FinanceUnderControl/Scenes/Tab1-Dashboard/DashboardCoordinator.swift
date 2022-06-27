@@ -26,14 +26,14 @@ final class DashboardCoordinator: RootCoordinator {
         navigationController.viewControllers = [viewController]
 
         viewModel.binding.navigateTo
-            .sink { [weak self] in self?.navigate(to: $0, viewController: viewController) }
+            .sink { [weak self] in self?.navigate(to: $0) }
             .store(in: &viewModel.cancellables)
 
         self.navigationController = navigationController
         return navigationController
     }
 
-    private func navigate(to destination: Destination, viewController: UIViewController) {
+    private func navigate(to destination: Destination) {
         switch destination {
         case .profile:
             ProfileCoordinator(.presentFullScreen(on: navigationController)).start()
