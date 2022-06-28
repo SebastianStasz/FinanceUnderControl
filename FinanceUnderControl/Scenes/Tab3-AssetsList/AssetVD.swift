@@ -25,7 +25,12 @@ extension AssetVD {
         amountInPrimaryCurrency = asset.isMainWallet ? nil : asset.moneyPrimaryCurrency?.asString
         
         if let money = asset.moneyPrimaryCurrency / total {
-            percentageShare = Int((money.value.asDouble * 100).rounded())
+            let value = money.value.asDouble * 100
+            if value.isFinite && !value.isNaN {
+                percentageShare = Int((value).rounded())
+            } else {
+                percentageShare = nil
+            }
         } else {
             percentageShare = nil
         }
