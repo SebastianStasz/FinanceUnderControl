@@ -75,13 +75,17 @@ struct FirestoreService {
         }
     }
 
-    func subscribe<T: FirestoreDocument>(to collection: Collection, configuration: QueryConfiguration<T>) -> FirestoreSubscription<[QueryDocumentSnapshot]> where T == T.Order.Document {
+    func subscribe<T: FirestoreDocument>(
+        to collection: Collection,
+        configuration: QueryConfiguration<T>
+    ) -> (ListenerRegistration, FirestoreSubscription<[QueryDocumentSnapshot]>)
+    where T == T.Order.Document {
         let documentsSubject = PassthroughSubject<[QueryDocumentSnapshot], Never>()
         let firstResultDocument = documentsSubject.map { $0.first }.asDriver
         let lastResultDocument = documentsSubject.map { $0.last }.asDriver
         let errorsSubject = PassthroughSubject<Error, Never>()
 
-        getQuery(for: collection, configuration: configuration)
+        let listenerRegistration = getQuery(for: collection, configuration: configuration)
             .addSnapshotListener { querySnapshot, error in
                 if let querySnapshot = querySnapshot {
                     documentsSubject.send(querySnapshot.documents)
@@ -89,7 +93,7 @@ struct FirestoreService {
                     errorsSubject.send(error)
                 }
             }
-        return FirestoreSubscription(output: documentsSubject.eraseToAnyPublisher(), firstDocument: firstResultDocument, lastDocument: lastResultDocument, error: errorsSubject.eraseToAnyPublisher())
+        return (listenerRegistration, FirestoreSubscription(output: documentsSubject.eraseToAnyPublisher(), firstDocument: firstResultDocument, lastDocument: lastResultDocument, error: errorsSubject.eraseToAnyPublisher()))
     }
 
     func getQuery<T: FirestoreDocument>(for collection: Collection, configuration: QueryConfiguration<T>) -> Query where T == T.Order.Document {

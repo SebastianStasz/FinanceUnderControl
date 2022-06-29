@@ -24,12 +24,17 @@ final class CashFlowFilterVM: ViewModel {
     let binding = Binding()
 
     private var initialFilter = CashFlowFilter()
-    private let storage = CashFlowGroupingService.shared
+    private let storage: FirestoreStorageProtocol
+
+    init(storage: FirestoreStorageProtocol = FirestoreStorage.shared, coordinator: CoordinatorProtocol? = nil) {
+        self.storage = storage
+        super.init(coordinator: coordinator)
+    }
 
     func filteringResult() -> AnyPublisher<CashFlowFilter, Never> {
         $filter.flatMap { [weak self] filter -> AnyPublisher<[CashFlowCategory], Never> in
             guard let self = self, let type = filter.cashFlowSelection.type else { return Just([]).asDriver }
-            return self.storage.categoriesSubscription(type: type)
+            return self.storage.categories(ofType: type)
         }
         .assign(to: &$categories)
 

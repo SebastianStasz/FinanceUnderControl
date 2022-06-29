@@ -25,10 +25,15 @@ final class PreciousMetalFormVM: ViewModel {
     let binding = Binding()
     let amountInputVM = DecimalInputVM(validator: .alwaysValid)
     let formType: PreciousMetalFormType
-    private let service = PreciousMetalService.shared
+    private let service = PreciousMetalService()
+    private let storage: FirestoreStorageProtocol
     
-    init(formType: PreciousMetalFormType, coordinator: CoordinatorProtocol? = nil) {
+    init(formType: PreciousMetalFormType,
+         storage: FirestoreStorageProtocol = FirestoreStorage.shared,
+         coordinator: CoordinatorProtocol? = nil
+    ) {
         self.formType = formType
+        self.storage = storage
         formModel = .init(for: formType)
         super.init(coordinator: coordinator)
 
@@ -54,7 +59,7 @@ final class PreciousMetalFormVM: ViewModel {
                 vm.binding.navigateTo.send(canBeClosed ? .dismiss : .askToDismiss)
             }
 
-        CombineLatest(Just(PreciousMetalType.allCases), service.$preciousMetals)
+        CombineLatest(Just(PreciousMetalType.allCases), storage.preciousMetals)
             .map { result in
                 let createdPreciousMetals = result.1.map { $0.type }
                 return result.0.filter { createdPreciousMetals.notContains($0) }

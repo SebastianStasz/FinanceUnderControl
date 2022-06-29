@@ -26,11 +26,15 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
 
     var cancellables: Set<AnyCancellable> = []
     private let firestore = FirestoreService.shared
-    private let storage = CashFlowGroupingService.shared
+    private let storage: FirestoreStorageProtocol
     private var listener: ListenerRegistration?
 
     private let errorTracker = DriverSubject<Error>()
     private let documents = DriverSubject<[QueryDocumentSnapshot]>()
+
+    init(storage: FirestoreStorageProtocol = FirestoreStorage.shared) {
+        self.storage = storage
+    }
 
     private lazy var query = firestore.getQuery(for: .cashFlows, configuration: QueryConfiguration<Document>(sorters: [Order.date(.reverse)], limit: 0)) {
         didSet { updateListener() }
@@ -45,7 +49,7 @@ final class CashFlowSubscription: CollectionService, CombineHelper {
                 loadingIndicator.send(true)
             })
 
-        let cashFlows = CombineLatest(documents, storage.$categories)
+        let cashFlows = CombineLatest(documents, storage.categories)
             .map { result in
                 result.0.compactMap { doc -> CashFlow? in
                     let categoryId = doc.getString(for: Field.categoryId)

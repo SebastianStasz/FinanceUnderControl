@@ -26,10 +26,15 @@ final class WalletFormVM: ViewModel {
     let binding = Binding()
     let balanceInputVM = DecimalInputVM(validator: .alwaysValid)
     let formType: WalletFormType
-    private let service = WalletService.shared
+    private let service = WalletService()
+    private let storage: FirestoreStorageProtocol
 
-    init(formType: WalletFormType, coordinator: CoordinatorProtocol? = nil) {
+    init(formType: WalletFormType,
+         storage: FirestoreStorageProtocol = FirestoreStorage.shared,
+         coordinator: CoordinatorProtocol? = nil
+    ) {
         self.formType = formType
+        self.storage = storage
         formModel = .init(for: formType)
         super.init(coordinator: coordinator)
 
@@ -55,7 +60,7 @@ final class WalletFormVM: ViewModel {
                 vm.binding.navigateTo.send(canBeClosed ? .dismiss : .askToDismiss)
             }
 
-        CombineLatest(Just(Currency.allCases), service.$wallets)
+        CombineLatest(Just(Currency.allCases), storage.wallets)
             .map { result in
                 let usedCurrencies = result.1.map { $0.currency }
                 return result.0.filter { usedCurrencies.notContains($0) }

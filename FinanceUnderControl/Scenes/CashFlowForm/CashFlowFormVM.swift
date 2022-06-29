@@ -24,7 +24,7 @@ final class CashFlowFormVM: ViewModel {
     }
 
     private let service: CashFlowService
-    private let storage = CashFlowGroupingService.shared
+    private let storage: FirestoreStorageProtocol
     let formType: FormType
     let binding = Binding()
     var nameInput = TextInputVM()
@@ -34,13 +34,18 @@ final class CashFlowFormVM: ViewModel {
     @Published private(set) var wasEdited = false
     @Published var formModel: CashFlowFormModel
 
-    init(for formType: FormType, coordinator: CoordinatorProtocol, service: CashFlowService = .init()) {
+    init(for formType: FormType,
+         storage: FirestoreStorageProtocol = FirestoreStorage.shared,
+         coordinator: CoordinatorProtocol,
+         service: CashFlowService = .init()
+    ) {
         self.formType = formType
+        self.storage = storage
         self.service = service
         formModel = .init(type: formType.cashFlowType)
         super.init(coordinator: coordinator)
 
-        storage.categoriesSubscription(type: formType.cashFlowType).assign(to: &$categories)
+        storage.categories(ofType: formType.cashFlowType).assign(to: &$categories)
         nameInput.result().weakAssign(to: \.formModel.name, on: self)
         valueInput.result().weakAssign(to: \.formModel.value, on: self)
 

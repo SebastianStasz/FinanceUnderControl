@@ -22,13 +22,17 @@ final class AssetsListVM: ViewModel {
 
     let binding = Binding()
     let listVM = BaseListVM<AssetVD>()
-    private let walletService = WalletService.shared
-    private let preciousMetalService = PreciousMetalService.shared
+    private let storage: FirestoreStorageProtocol
+
+    init(storage: FirestoreStorageProtocol = FirestoreStorage.shared, coordinator: CoordinatorProtocol? = nil) {
+        self.storage = storage
+        super.init(coordinator: coordinator)
+    }
 
     override func viewDidLoad() {
         let primaryCurrency = PersistentStorage.primaryCurrency
-        let wallets = walletService.$wallets
-        let preciousMetals = preciousMetalService.$preciousMetals
+        let wallets = storage.wallets
+        let preciousMetals = storage.preciousMetals
 
         let walletAssets = wallets.map {
             $0.map { Asset.wallet($0, moneyPrimaryCurrency: $0.money.convert(to: primaryCurrency)) }

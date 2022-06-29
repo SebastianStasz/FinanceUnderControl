@@ -10,14 +10,8 @@ import FirebaseFirestore
 import Shared
 
 final class WalletService {
-    static let shared = WalletService()
     private let firestore = FirestoreService.shared
-
-    @Published private(set) var wallets: [Wallet] = []
-
-    private init() {
-        subscribeWallets().output.assign(to: &$wallets)
-    }
+    private let storage = FirestoreStorage.shared
 
     func create(_ wallet: Wallet) async throws {
         try await firestore.createOrEditDocument(withId: wallet.id, in: .wallets, data: wallet.data)
@@ -28,19 +22,9 @@ final class WalletService {
     }
 
     func updateBalance(for type: WalletBalanceUpdateType, using batch: WriteBatch) -> WriteBatch {
-        let wallet = wallets.first(where: { $0.currency == type.currency })! // TODO: Do not use force unwrap
+        let wallet = storage.currentWallets.first(where: { $0.currency == type.currency })! // TODO: Do not use force unwrap
         guard wallet.lastChangeDate < type.cashFlow.date else { return batch }
         let newBalance = type.newBalance(for: wallet)
         return firestore.edit(withId: wallet.id, in: .wallets, data: Wallet.balanceData(for: newBalance), batch: batch)
-    }
-
-    private func subscribeWallets() -> FirestoreSubscription<[Wallet]> {
-        let configuration = QueryConfiguration<Wallet>(sorters: [Wallet.Order.currency()])
-        let subscription = firestore.subscribe(to: .wallets, configuration: configuration)
-        let wallets = subscription.output
-            .map { $0.map { Wallet(from: $0) } }
-            .eraseToAnyPublisher()
-
-        return .init(output: wallets, firstDocument: subscription.firstDocument, lastDocument: subscription.lastDocument, error: subscription.error)
     }
 }

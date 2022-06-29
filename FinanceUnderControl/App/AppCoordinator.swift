@@ -17,18 +17,17 @@ final class AppCoordinator {
     init(with window: UIWindow) {
         self.window = window
         window.overrideUserInterfaceStyle = PersistentStorage.appTheme.userInterfaceStyle
-        handleUserState()
 
         AppVM.shared.binding.didChangeAppTheme
             .map { PersistentStorage.appTheme }
             .sink { window.overrideUserInterfaceStyle = $0.userInterfaceStyle }
             .store(in: &cancellables)
-    }
 
-    private func handleUserState() {
-        Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            let coordinator: RootCoordinator = user != nil ? TabBarCoordinator() : AuthenticationCoordinator()
-            self?.window.rootViewController = coordinator.start()
-        }
+        AppVM.shared.output.isUserLoggedIn
+            .sink { isLoggedIn in
+                let coordinator: RootCoordinator = isLoggedIn ? TabBarCoordinator() : AuthenticationCoordinator()
+                window.rootViewController = coordinator.start()
+            }
+            .store(in: &cancellables)
     }
 }
