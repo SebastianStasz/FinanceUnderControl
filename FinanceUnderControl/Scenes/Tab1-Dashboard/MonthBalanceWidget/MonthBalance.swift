@@ -12,6 +12,10 @@ struct MonthBalance {
     let income: Money?
     let expense: Money?
 
+    var balance: Money? {
+        income - expense
+    }
+
     var isLoading: Bool {
         income.isNil || expense.isNil
     }

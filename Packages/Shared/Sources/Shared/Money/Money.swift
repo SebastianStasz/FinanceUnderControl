@@ -45,6 +45,11 @@ public extension Optional where Wrapped == Money {
         return Money(lhs.value + rhs.value, currency: lhs.currency)
     }
 
+    static func -(lhs: Money?, rhs: Money?) -> Money? {
+        guard let lhs = lhs, let rhs = rhs, lhs.currency == rhs.currency else { return nil }
+        return Money(lhs.value - rhs.value, currency: lhs.currency)
+    }
+
     static func /(lhs: Money?, rhs: Money?) -> Money? {
         guard let lhs = lhs, let rhs = rhs, lhs.currency == rhs.currency else { return nil }
         return Money(lhs.value / rhs.value, currency: lhs.currency)

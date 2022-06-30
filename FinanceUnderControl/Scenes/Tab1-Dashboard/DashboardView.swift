@@ -18,6 +18,19 @@ struct DashboardView: View {
                 MonthBalanceWidgetView(monthBalance: viewModel.monthBalance)
                     .animation(.easeInOut)
 
+                if let balance = viewModel.monthBalance.balance {
+                    VStack(alignment: .leading, spacing: .medium) {
+                        Text(.common_balance, style: .headlineSmall())
+                        SwiftUI.Text(balance.asString)
+                            .font(.title3.weight(.medium))
+                    }
+                    .infiniteWidth(alignment: .leading)
+                    .padding(.large)
+                    .background(Color.backgroundSecondary)
+                    .cornerRadius(.base)
+                    .padding(.horizontal, .large)
+                }
+
                 if let topExpenses = viewModel.topExpenses {
                     HorizontalBarView(viewData: .init(bars: Array(topExpenses.bars.prefix(3)), total: topExpenses.total, currency: topExpenses.currency))
                         .embedInSection(.dashboard_top_expenses, editAction: topExpensesEditAction)
