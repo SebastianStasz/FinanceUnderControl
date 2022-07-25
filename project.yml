@@ -19,6 +19,7 @@ localPackages:
   - ./Packages/Domain
   - ./Packages/FinanceCoreData
   - ./Packages/Shared
+  - ./Packages/Widgets
   - ~/Developer/ss_libraries/SSValidation
   - ~/Developer/ss_libraries/SSUtils
 
@@ -36,6 +37,7 @@ targets:
       - package: Domain
       - package: FinanceCoreData
       - package: Shared
+      - package: Widgets
       - package: SSUtils
       - package: SSValidation
       - package: Firebase
